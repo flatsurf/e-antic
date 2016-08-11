@@ -11,24 +11,57 @@
 
 
 #include "nf_emb.h"
-#include "fmpq_poly_extra.h"
+#include "poly_extra.h"
 
-void nf_emb_init(nf_emb_t nf, fmpq_poly_t pol, arb_t emb)
+void _nf_emb_init_common(nf_emb_t nf, fmpq_poly_t pol, slong prec)
 {
-	if(!fmpq_poly_check_unique_root(pol, emb, DEFAULT_PREC))
+	const slong len = fmpq_poly_length(pol);
+
+	nf_init(nf->nf, pol);
+
+	fmpz_poly_init(nf->der);
+	fmpz_poly_fit_length(nf->der, len - 1);
+	_fmpz_poly_derivative(nf->der->coeffs, fmpq_poly_numref(pol), len);
+	_fmpz_poly_set_length(nf->der, len - 1);
+
+	nf->prec = prec;
+ 
+	nf_emb_refine_embedding(nf, 2*prec);
+}
+
+void nf_emb_real_init(nf_emb_t nf, fmpq_poly_t pol, arb_t emb, slong prec)
+{
+	if(!fmpq_poly_check_unique_real_root(pol, emb, prec))
+	{
+		printf("the given polynomial does not define a unique root\n");
+		exit(EXIT_FAILURE);
+	}
+#ifdef DEBUG
+	printf("[nf_emb_real_init]: pol = "); fmpq_poly_print_pretty(pol, "x"); printf("\n");
+	printf("[nf_emb_real_init]: emb = "); arb_printd(emb, 10); printf("\n");
+	printf("[nf_emb_real_init]: prec = %ld\n", prec);
+#endif
+
+	arb_init(NF_REMB_REF(nf));
+	arb_set(NF_REMB_REF(nf), emb);
+
+	nf->flag = NF_EMB_REAL;
+
+	_nf_emb_init_common(nf, pol, prec);
+}
+
+void nf_emb_complex_init(nf_emb_t nf, fmpq_poly_t pol, acb_t emb, slong prec)
+{
+	if(!fmpq_poly_check_unique_complex_root(pol, emb, prec))
 	{
 		printf("the given polynomial does not define a unique root\n");
 		exit(EXIT_FAILURE);
 	}
 
-	nf_init(nf->nf, pol);
+	acb_init(NF_CEMB_REF(nf));
+	acb_set(NF_CEMB_REF(nf), emb);
 
-	fmpq_poly_init(nf->der);
-	fmpq_poly_derivative(nf->der, pol);
+	nf->flag = NF_EMB_COMPLEX;
 
-	arb_init(nf->emb);
-	arb_set(nf->emb, emb);
- 
-	nf_emb_refine_embedding(nf, 64);
+	_nf_emb_init_common(nf, pol, prec);
 }
-

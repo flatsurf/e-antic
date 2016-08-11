@@ -14,36 +14,45 @@
 
 void nf_emb_elem_ceil(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
 {
-	arf_t cl, cr;
-	slong prec;
+    arf_t cl, cr;
+    slong prec;
+    arb_ptr emb;
 
-	arf_init(cl);
-	arf_init(cr);
-	prec = DEFAULT_PREC;
-	do{
-		arb_get_interval_arf(cl, cr, b->emb, prec);
+    if(nf->flag & NF_EMB_COMPLEX)
+    {
+        fprintf(stderr, "only available for real embedding");
+        exit(EXIT_FAILURE);
+    }
+
+    emb = NF_ELEM_REMB_REF(b);
+
+    arf_init(cl);
+    arf_init(cr);
+    prec = nf->prec;
+    do{
+        arb_get_interval_arf(cl, cr, emb, prec);
 #ifdef DEBUG
-		printf("[ceil] cl = "); arf_printd(cl, 30); printf("\n");
-		printf("[ceil] cr = "); arf_printd(cr, 30); printf("\n");
+        printf("[ceil] cl = "); arf_printd(cl, 30); printf("\n");
+        printf("[ceil] cr = "); arf_printd(cr, 30); printf("\n");
 #endif
-		arf_ceil(cl, cl);
-		arf_ceil(cr, cr);
+        arf_ceil(cl, cl);
+        arf_ceil(cr, cr);
 #ifdef DEBUG
-		printf("[ceil] ceil(cl) = "); arf_printd(cl, 30); printf("\n");
-		printf("[ceil] ceil(cr) = "); arf_printd(cr, 30); printf("\n");
+        printf("[ceil] ceil(cl) = "); arf_printd(cl, 30); printf("\n");
+        printf("[ceil] ceil(cr) = "); arf_printd(cr, 30); printf("\n");
 #endif
-		if(arf_equal(cl,cr))
-		{
-			arf_get_fmpz(a, cl, ARF_RND_NEAR);
-			arf_clear(cl);
-			arf_clear(cr);
-			return;
-		}
-		prec *= 2;
-		if(arf_bits(arb_midref(nf->emb)) < prec)
-			nf_emb_refine_embedding(nf, 2*prec);
-		if(2*arf_bits(arb_midref(b->emb)) < prec)
-			nf_emb_elem_set_evaluation(b, nf, prec);
-	}while(1);
+        if(arf_equal(cl,cr))
+        {
+            arf_get_fmpz(a, cl, ARF_RND_NEAR);
+            arf_clear(cl);
+            arf_clear(cr);
+            return;
+        }
+        prec *= 2;
+        if(arf_bits(arb_midref(emb)) < prec)
+            nf_emb_refine_embedding(nf, 2*prec);
+        if(2*arf_bits(arb_midref(emb)) < prec)
+            nf_emb_elem_set_evaluation(b, nf, prec);
+    }while(1);
 }
 

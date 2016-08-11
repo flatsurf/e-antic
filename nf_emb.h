@@ -21,24 +21,33 @@
 #include "arb.h"
 #include "arb_poly.h"
 
-#define DEFAULT_PREC 64
-
 #ifdef __cplusplus
  extern "C" {
 #endif
 
-/* embedding of the generators of a nf */
+#define NF_EMB_REAL 1
+#define NF_EMB_COMPLEX 2
+
 typedef struct
 {
   nf_t nf;
-  fmpq_poly_t der;  /* derivative */
-  arb_t emb;        /* embedding of generator as a ball */
+  fmpz_poly_t der;  /* derivative (without denominator)         */
+  slong prec;       /* default precision for arb computations   */
+  union {
+	  arb_t remb;   /* embedding of generator as a real ball    */
+	  acb_t cemb;   /* embedding of generator as a complex ball */
+  } emb;
+  ulong flag;       /* whether this is real or complex          */
 } nf_emb_struct;
 
 typedef nf_emb_struct nf_emb_t[1];
 
-void nf_emb_init(nf_emb_t nf, fmpq_poly_t pol, arb_t emb);
-void nf_emb_init_nth_root_fmpq(nf_emb_t nf, fmpq_t d, ulong n);
+#define NF_REMB_REF(xxx) (((xxx)->emb).remb)
+#define NF_CEMB_REF(xxx) (((xxx)->emb).cemb)
+
+void nf_emb_real_init(nf_emb_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
+void nf_emb_complex_init(nf_emb_t nf, fmpq_poly_t pol, acb_t emb, slong prec);
+void nf_emb_init_nth_root_fmpq(nf_emb_t nf, fmpq_t d, ulong n, slong prec);
 
 void nf_emb_clear(nf_emb_t nf);
 void nf_emb_refine_embedding(nf_emb_t nf, slong prec);

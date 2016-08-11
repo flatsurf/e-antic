@@ -15,8 +15,12 @@
 void nf_emb_clear(nf_emb_t nf)
 {
 	nf_clear(nf->nf);
-	fmpq_poly_clear(nf->der);
-	arb_clear(nf->emb);
+	fmpz_poly_clear(nf->der);
+
+	if(nf->flag & NF_EMB_REAL)
+		arb_clear(NF_REMB_REF(nf));
+	else
+		acb_clear(NF_CEMB_REF(nf));
 }
 
 

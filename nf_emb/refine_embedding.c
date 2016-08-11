@@ -9,10 +9,44 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "fmpq_poly_extra.h"
+#include "poly_extra.h"
 #include "nf_emb.h"
 
 void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
 {
-	fmpq_poly_newton_step_arb(nf->emb, nf->nf->pol, nf->der, nf->emb, prec);
+    if(nf->flag & NF_EMB_REAL)
+	{
+		arb_t tmp;
+		arb_init(tmp);
+#ifdef DEBUG
+		printf("[_nf_emb_refine_embedding]: before emb=");
+		arb_printd(NF_REMB_REF(nf), 10);
+		printf("\n");
+#endif
+        _fmpz_poly_newton_step_arb(tmp,
+                fmpq_poly_numref(nf->nf->pol),
+                nf->der->coeffs,
+                fmpq_poly_length(nf->nf->pol),
+                NF_REMB_REF(nf), prec);
+		arb_swap(tmp, NF_REMB_REF(nf));
+		arb_clear(tmp);
+#ifdef DEBUG
+		printf("[_nf_emb_refine_embedding]: after emb=");
+		arb_printd(NF_REMB_REF(nf), 10);
+		printf("\n");
+#endif
+
+	}
+    else
+	{
+		acb_t tmp;
+		acb_init(tmp);
+        _fmpz_poly_newton_step_acb(tmp,
+                fmpq_poly_numref(nf->nf->pol),
+                nf->der->coeffs,
+                fmpq_poly_length(nf->nf->pol),
+                NF_CEMB_REF(nf), prec);
+		acb_swap(tmp, NF_CEMB_REF(nf));
+		acb_clear(tmp);
+	}
 }

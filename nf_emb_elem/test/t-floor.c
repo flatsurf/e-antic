@@ -14,7 +14,7 @@
 #include "nf_emb_elem.h"
 #include "arb.h"
 
-int check_floor(nf_emb_elem_t a, nf_emb_t nf, int ans, const char * s)
+void check_floor(nf_emb_elem_t a, nf_emb_t nf, int ans, const char * s)
 {
 	fmpz_t n;
 	int test;
@@ -26,14 +26,13 @@ int check_floor(nf_emb_elem_t a, nf_emb_t nf, int ans, const char * s)
 
 	if(test)
 	{
-		printf("ERROR:\n");
+		printf("FAIL:\n");
 		printf("nf = "); nf_print(nf->nf); printf("\n");
-		printf("emb = "); arb_printd(nf->emb, 10); printf("\n");
-		printf("a = "); nf_emb_elem_print_pretty(a,nf,s); printf("\n");
+		printf("emb = "); arb_printd(NF_REMB_REF(nf), 10); printf("\n");
+		printf("a = "); nf_emb_elem_print_pretty(a, nf, s, 10); printf("\n");
 		printf("got n = "); fmpz_print(n); printf(" but expected %d\n", ans);
-		return 1;
+		abort();
 	}
-	return 0;
 }
 
 #define TEST_FLOOR_CLEANUP \
@@ -42,17 +41,17 @@ int check_floor(nf_emb_elem_t a, nf_emb_t nf, int ans, const char * s)
 	fmpq_clear(k); \
 	fmpq_poly_clear(p);
  
-int test_field1()
+void test_field1()
 {
 	/* tests in QQ[sqrt(5)] */
 	int iter;
 
-	/* QQ[(1+sqrt(5))/2] */
 	fmpq_t k;
 	fmpq_poly_t p;
 	arb_t emb;
 	nf_emb_t nf;
 	nf_emb_elem_t a;
+    FLINT_TEST_INIT(state);
 
 	fmpq_init(k);
 	fmpq_poly_init(p);
@@ -64,7 +63,7 @@ int test_field1()
 	arb_init(emb);
 	arb_set_d(emb, 1.61803398874989);
 	arb_add_error_2exp_si(emb, -20);
-	nf_emb_init(nf, p, emb);
+	nf_emb_real_init(nf, p, emb, 20 + n_randint(state, 100));
 	arb_clear(emb);
 
 	nf_emb_elem_init(a, nf);
@@ -79,27 +78,27 @@ int test_field1()
 		fmpz_fib_ui(fmpq_denref(k), iter);
 		fmpq_poly_set_coeff_fmpq(p, 0, k);
 		nf_emb_elem_set_fmpq_poly(a, p, nf);
-		if(check_floor(a,nf,-iter%2,"sqrt(5)")) {TEST_FLOOR_CLEANUP; return 1;}
+		check_floor(a,nf,-iter%2,"sqrt(5)");
 	}
 
-	{TEST_FLOOR_CLEANUP; return 0;}
+    FLINT_TEST_CLEANUP(state);
+	TEST_FLOOR_CLEANUP;
 }
 
-int test_field2()
+void test_field2()
 {
 	/* tests in QQ[3^(1/4)] */
 	nf_emb_t nf;
 	nf_emb_elem_t a;
 	fmpq_t d,k;
 	fmpq_poly_t p;
-
 	FLINT_TEST_INIT(state);
 
 	fmpq_init(d);
 	fmpq_poly_init(p);
 
 	fmpq_set_si(d, 3, 1);
-	nf_emb_init_nth_root_fmpq(nf, d, 4);
+	nf_emb_init_nth_root_fmpq(nf, d, 4, 20 + n_randint(state,100));
 
 	fmpq_clear(d);
 
@@ -114,7 +113,7 @@ int test_field2()
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
 
-	if(check_floor(a, nf, 1, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, 1, "3^(1/4)");
 
 	/* --> 3^(1/4) - p_34 / q_34 */
 	/*     floor = 0 */
@@ -124,7 +123,7 @@ int test_field2()
 	fmpq_poly_set_coeff_fmpq(p, 0, k);
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
-	if(check_floor(a, nf, 0, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, 0, "3^(1/4)");
 
 	/* --> 3^(1/4) - p_35 / q_35 */
 	/*     floor = -1            */
@@ -134,7 +133,7 @@ int test_field2()
 	fmpq_poly_set_coeff_fmpq(p, 0, k);
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
-	if(check_floor(a, nf, -1, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, -1, "3^(1/4)");
 
 	/* --> 3^(1/4) - p_200 / q_200 */
 	fmpz_set_str(fmpq_numref(k), "51566086581654990699052199424489069476470199719930170996263916596162993841059250500042162091", 10);
@@ -143,7 +142,7 @@ int test_field2()
 	fmpq_poly_set_coeff_fmpq(p, 0, k);
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
-	if(check_floor(a, nf, 0, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, 0, "3^(1/4)");
 
 	/* --> 3^(1/4) - p_201 / q_201 */
 	fmpz_set_str(fmpq_numref(k), "80796322887694335717970676356641716096406222234122724217891106756946083353628876437327250032", 10);
@@ -152,7 +151,7 @@ int test_field2()
 	fmpq_poly_set_coeff_fmpq(p, 0, k);
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
-	if(check_floor(a, nf, -1, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, -1, "3^(1/4)");
 
 	/* */
 	fmpz_set_str(fmpq_numref(k), "13231942875843754343234", 10);
@@ -171,9 +170,10 @@ int test_field2()
 	fmpq_poly_set_coeff_fmpq(p, 0, k);
 	nf_emb_elem_set_fmpq_poly(a, p, nf);
 
-	if(check_floor(a, nf, 230, "3^(1/4)")) {TEST_FLOOR_CLEANUP; return 1;}
+	check_floor(a, nf, 230, "3^(1/4)");
 
-	{TEST_FLOOR_CLEANUP; return 0;}
+    FLINT_TEST_CLEANUP(state);
+	TEST_FLOOR_CLEANUP;
 }
 
 int main()
@@ -182,8 +182,8 @@ int main()
 	printf("floor....");
 	fflush(stdout);
 
-	if(test_field1()) abort();
-	if(test_field2()) abort();
+	test_field1();
+	test_field2();
 
 	printf("PASS\n");
 	return 0;

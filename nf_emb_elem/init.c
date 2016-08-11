@@ -14,8 +14,11 @@
 
 void nf_emb_elem_init(nf_emb_elem_t a, const nf_emb_t nf)
 {
-	nf_elem_init(a->elem, nf->nf);
-	arb_init(a->emb);
+    nf_elem_init(a->elem, nf->nf);
+    if(nf->flag & NF_EMB_REAL)
+        arb_init(NF_ELEM_REMB_REF(a));
+    else
+        acb_init(NF_ELEM_CEMB_REF(a));
 }
 
 
