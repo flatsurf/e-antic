@@ -27,9 +27,9 @@ void nf_emb_elem_floor(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
     }
 
 #ifdef DEBUG
-	printf("[nf_emb_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
-	printf("[nf_emb_elem_floor]: embedding "); arb_printd(NF_REMB_REF(nf), 10); printf("\n");
-	printf("[nf_emb_elem_floor]: b = "); nf_emb_elem_print_pretty(b, nf, "a", 10); printf("\n");
+    printf("[nf_emb_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
+    printf("[nf_emb_elem_floor]: embedding "); arb_printd(NF_REMB_REF(nf), 10); printf("\n");
+    printf("[nf_emb_elem_floor]: b = "); nf_emb_elem_print_pretty(b, nf, "a", 10); printf("\n");
 #endif
 
     bemb = NF_ELEM_REMB_REF(b);
@@ -59,9 +59,9 @@ void nf_emb_elem_floor(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
         }
         prec *= 2;
         if(arf_bits(arb_midref(nfemb)) < prec)
-            nf_emb_refine_embedding(nf, 2*prec);
-        if(2*arf_bits(arb_midref(bemb)) < prec)
+            nf_emb_refine_embedding(nf, 2 * prec);
+        if(2 * arf_bits(arb_midref(bemb)) < prec)
             nf_emb_elem_set_evaluation(b, nf, prec);
-    }while(1);
+    }while (1);
 }
 

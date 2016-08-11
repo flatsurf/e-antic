@@ -38,12 +38,12 @@ int main()
         fmpq_poly_init(p);
         fmpq_poly_set_coeff_si(p, 0, 1);
         fmpq_poly_set_coeff_si(p, 1, 1);
-        for(iter=0; iter<1000; iter++)
+        for (iter = 0; iter < 1000; iter++)
         {
             k = n_randint(state, 10000);
             arb_set_si(a, k);
             fmpq_poly_evaluate_arb(b, p, a, 30 + n_randint(state, 100));
-            if(!arb_equal_si(b, k+1))
+            if (!arb_equal_si(b, k + 1))
             {
                 printf("FAIL (fmpq_poly_evaluate_arb):\n");
                 printf("a = "); arb_print(a); printf("\n");
@@ -53,7 +53,7 @@ int main()
             }
             arf_set_si(c, k);
             fmpq_poly_evaluate_arf(d, p, c, 30 + n_randint(state, 100));
-            if(!arf_equal_si(d, k+1))
+            if (!arf_equal_si(d, k + 1))
             {
                 printf("FAIL (fmpq_poly_evaluate_arf):\n");
                 printf("c = "); arf_print(c); printf("\n");
@@ -66,13 +66,13 @@ int main()
         /* x^2 */
         fmpq_poly_zero(p);
         fmpq_poly_set_coeff_si(p, 2, 1);
-        for(iter=0; iter<1000; iter++)
+        for (iter = 0; iter < 1000; iter++)
         {
             k = n_randint(state, 10000);
 
             arb_set_si(a, k);
             fmpq_poly_evaluate_arb(b, p, a, 30 + n_randint(state, 100));
-            if(!arb_equal_si(b, k*k))
+            if (!arb_equal_si(b, k * k))
             {
                 printf("Error (test_fmpq_poly_evaluate_arb):\n");
                 printf("a = "); arb_print(a); printf("\n");
@@ -83,7 +83,7 @@ int main()
 
             arf_set_si(c, k);
             fmpq_poly_evaluate_arf(d, p, c, 30 + n_randint(state, 100));
-            if(!arf_equal_si(d, k*k))
+            if (!arf_equal_si(d, k * k))
             {
                 printf("Error (test_fmpq_poly_evaluate_arf):\n");
                 printf("c = "); arf_print(c); printf("\n");
@@ -95,7 +95,7 @@ int main()
     }
 
     /* check evaluate_arb agains exact evaluate_fmpq */
-    for(iter=0; iter < 1000; iter++)
+    for (iter = 0; iter < 1000; iter++)
     {
         fmpq_poly_t p;
         fmpq_t x,y;
@@ -114,7 +114,7 @@ int main()
         fmpq_poly_evaluate_fmpq(y, p, x);
         fmpq_poly_evaluate_arb(b, p, a, 60);
 
-        if(!arb_contains_fmpq(b, y))
+        if (!arb_contains_fmpq(b, y))
         {
             printf("FAIL (y not in b):\n");
             printf("p = "); fmpq_poly_print(p); printf("\n");
@@ -126,7 +126,7 @@ int main()
         }
 
         fmpq_poly_evaluate_arb(a, p, a, 60);
-        if(!arb_equal(a,b))
+        if (!arb_equal(a,b))
         {
             printf("FAIL (a not equal b):\n");
             printf("p = "); fmpq_poly_print(p); printf("\n");
@@ -146,13 +146,12 @@ int main()
 
 
     /* test aliasing */
-    for(iter=0; iter < 1000; iter++)
+    for (iter = 0; iter < 1000; iter++)
     {
         fmpq_poly_t p;
 
         arb_t a,b;
         arf_t c,d;
-
 
         fmpq_poly_init(p);
         arb_init(a);
@@ -169,7 +168,7 @@ int main()
         fmpq_poly_evaluate_arb(b, p, a, 60);
         fmpq_poly_evaluate_arb(a, p, a, 60);
 
-        if(!arb_equal(a,b))
+        if (!arb_equal(a, b))
         {
             printf("FAIL (a not equal b):\n");
             printf("p = "); fmpq_poly_print(p); printf("\n");
@@ -181,7 +180,7 @@ int main()
         fmpq_poly_evaluate_arf(d, p, c, 60);
         fmpq_poly_evaluate_arf(c, p, c, 60);
 
-        if(!arf_equal(c,d))
+        if (!arf_equal(c, d))
         {
             printf("FAIL (c not equal d):\n");
             printf("p = "); fmpq_poly_print(p); printf("\n");

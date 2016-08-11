@@ -25,7 +25,7 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
     arb_init(b);
     fmpq_poly_evaluate_arb(b, pol, a, prec);
     /*printf("a="); arb_print(a); printf("\n");*/
-    if(!arb_contains_zero(b))
+    if (!arb_contains_zero(b))
     {
         arb_clear(b);
         return 0;
@@ -36,7 +36,7 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
     fmpq_poly_evaluate_arb(b, der, a, prec);
     /*printf("der="); fmpq_poly_print(der); printf("\n");*/
     /*printf("b="); arb_print(b); printf("\n");*/
-    if(arb_contains_zero(b))
+    if (arb_contains_zero(b))
     {
         arb_clear(b);
         fmpq_poly_clear(der);

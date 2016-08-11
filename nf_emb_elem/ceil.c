@@ -18,7 +18,7 @@ void nf_emb_elem_ceil(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
     slong prec;
     arb_ptr emb;
 
-    if(nf->flag & NF_EMB_COMPLEX)
+    if (nf->flag & NF_EMB_COMPLEX)
     {
         fprintf(stderr, "only available for real embedding");
         exit(EXIT_FAILURE);
@@ -49,10 +49,10 @@ void nf_emb_elem_ceil(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
             return;
         }
         prec *= 2;
-        if(arf_bits(arb_midref(emb)) < prec)
-            nf_emb_refine_embedding(nf, 2*prec);
-        if(2*arf_bits(arb_midref(emb)) < prec)
+        if (arf_bits(arb_midref(emb)) < prec)
+            nf_emb_refine_embedding(nf, 2 * prec);
+        if (2 * arf_bits(arb_midref(emb)) < prec)
             nf_emb_elem_set_evaluation(b, nf, prec);
-    }while(1);
+    }while (1);
 }
 

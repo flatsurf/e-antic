@@ -16,7 +16,7 @@
 void nf_emb_elem_set_fmpq_poly(nf_emb_elem_t a, const fmpq_poly_t pol, const nf_emb_t nf)
 {
     nf_elem_set_fmpq_poly(a->elem, pol, nf->nf);
-    if(nf->flag & NF_EMB_REAL)
+    if (nf->flag & NF_EMB_REAL)
         fmpq_poly_evaluate_arb(NF_ELEM_REMB_REF(a), pol, NF_REMB_REF(nf), nf->prec);
     else
         fmpq_poly_evaluate_acb(NF_ELEM_CEMB_REF(a), pol, NF_CEMB_REF(nf), nf->prec);

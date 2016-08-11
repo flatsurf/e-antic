@@ -14,13 +14,13 @@
 
 void nf_emb_elem_print_pretty(const nf_emb_elem_t a, const nf_emb_t nf, const char * var, slong prec)
 {
-	nf_elem_print_pretty(a->elem, nf->nf, var);
-	printf(" in [");
-	if(nf->flag & NF_EMB_REAL)
-		arb_printd(NF_ELEM_REMB_REF(a), prec);
-	else
-		acb_printd(NF_ELEM_CEMB_REF(a), prec);
-	printf("]");
+    nf_elem_print_pretty(a->elem, nf->nf, var);
+    printf(" in [");
+    if(nf->flag & NF_EMB_REAL)
+        arb_printd(NF_ELEM_REMB_REF(a), prec);
+    else
+        acb_printd(NF_ELEM_CEMB_REF(a), prec);
+    printf("]");
 }
 
 

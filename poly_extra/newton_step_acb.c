@@ -13,8 +13,8 @@
 
 void _fmpz_poly_newton_step_acb(acb_t res, const fmpz * pol, const fmpz * der, slong len, acb_t a, slong prec)
 {
-	fprintf(stderr, "NOT IMPLEMENTED");
-	exit(EXIT_FAILURE);
+    fprintf(stderr, "NOT IMPLEMENTED");
+    exit(EXIT_FAILURE);
 }
 
 void fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, acb_t a, slong prec)
@@ -22,12 +22,12 @@ void fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly
 {
     acb_t rres;
 
-    if(a == res) acb_init(rres);
+    if (a == res) acb_init(rres);
     else acb_swap(rres, res);
 
     _fmpz_poly_newton_step_acb(res, pol->coeffs, der->coeffs, fmpz_poly_length(pol), a, prec);
 
     acb_swap(rres, res);
-    if(a == res) acb_clear(rres);
+    if (a == res) acb_clear(rres);
 
 }

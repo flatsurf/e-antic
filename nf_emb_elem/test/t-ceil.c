@@ -23,12 +23,12 @@ int check_ceil(nf_emb_elem_t a, nf_emb_t nf, int ans, const char * s)
     test = fmpz_cmp_si(n, ans);
     fmpz_clear(n);
 
-    if(test)
+    if (test)
     {
         printf("FAIL:\n");
-        printf("a = "); nf_emb_elem_print_pretty(a,nf,s,10); printf("\n");
+        printf("a = "); nf_emb_elem_print_pretty(a, nf, s, 10); printf("\n");
         printf("got n = "); fmpz_print(n); printf(" but expected %d\n", ans);
-		abort();
+        abort();
     }
     return 0;
 }
@@ -71,13 +71,13 @@ void test_field1()
     /* (1+sqrt(5))/2 vs Fibonacci */
     fmpq_poly_zero(p);
     fmpq_poly_set_coeff_si(p, 1, -1);
-    for(iter=1; iter<2000; iter++)
+    for (iter = 1; iter < 2000; iter++)
     {
         fmpz_fib_ui(fmpq_numref(k), iter+1);
         fmpz_fib_ui(fmpq_denref(k), iter);
         fmpq_poly_set_coeff_fmpq(p, 0, k);
         nf_emb_elem_set_fmpq_poly(a, p, nf);
-        check_ceil(a,nf,1-iter%2,"sqrt(5)");
+        check_ceil(a, nf, 1 - iter % 2, "sqrt(5)");
     }
 
     FLINT_TEST_CLEANUP(state);
@@ -90,7 +90,7 @@ void test_field2()
     /* test in QQ[3^(1/4)] */
     nf_emb_t nf;
     nf_emb_elem_t a;
-    fmpq_t d,k;
+    fmpq_t d, k;
     fmpq_poly_t p;
 
     FLINT_TEST_INIT(state);
@@ -103,7 +103,6 @@ void test_field2()
 
     fmpq_clear(d);
 
-
     fmpq_init(k);
     nf_emb_elem_init(a, nf);
 
@@ -112,7 +111,6 @@ void test_field2()
     /* --> 3^(1/4)  */
     fmpq_poly_set_coeff_si(p, 1, 1);
     nf_emb_elem_set_fmpq_poly(a, p, nf);
-
 
     check_ceil(a, nf, 2, "3^(1/4)");
 

@@ -15,25 +15,25 @@
 
 void nf_emb_init_nth_root_fmpq(nf_emb_t nf, fmpq_t d, ulong n, slong prec)
 {
-	fmpq_t p0;
-	fmpq_poly_t pol;
-	arb_t emb;
+    fmpq_t p0;
+    fmpq_poly_t pol;
+    arb_t emb;
 
-	fmpq_poly_init(pol);
-	fmpq_init(p0);
-	fmpq_set(p0, d);
-	fmpq_neg(p0, p0);
-	fmpq_poly_set_coeff_fmpq(pol, 0, p0);
-	fmpq_poly_set_coeff_ui(pol, n, 1);
+    fmpq_poly_init(pol);
+    fmpq_init(p0);
+    fmpq_set(p0, d);
+    fmpq_neg(p0, p0);
+    fmpq_poly_set_coeff_fmpq(pol, 0, p0);
+    fmpq_poly_set_coeff_ui(pol, n, 1);
 
-	arb_init(emb);
-	arb_set_fmpq(emb, d, prec);
-	arb_root_ui(emb, emb, n, prec);
+    arb_init(emb);
+    arb_set_fmpq(emb, d, prec);
+    arb_root_ui(emb, emb, n, prec);
 
-	nf_emb_real_init(nf, pol, emb, prec);
+    nf_emb_real_init(nf, pol, emb, prec);
 
-	fmpq_clear(p0);
-	fmpq_poly_clear(pol);
-	arb_clear(emb);
+    fmpq_clear(p0);
+    fmpq_poly_clear(pol);
+    arb_clear(emb);
 }
 

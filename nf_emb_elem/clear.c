@@ -14,11 +14,11 @@
 
 void nf_emb_elem_clear(nf_emb_elem_t a, const nf_emb_t nf)
 {
-	nf_elem_clear(a->elem, nf->nf);
-	if(nf->flag & NF_EMB_REAL)
-		arb_clear(NF_ELEM_REMB_REF(a));
-	else
-		acb_clear(NF_ELEM_CEMB_REF(a));
+    nf_elem_clear(a->elem, nf->nf);
+    if (nf->flag & NF_EMB_REAL)
+        arb_clear(NF_ELEM_REMB_REF(a));
+    else
+        acb_clear(NF_ELEM_CEMB_REF(a));
 }
 
 

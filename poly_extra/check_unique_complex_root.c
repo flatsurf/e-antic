@@ -23,7 +23,7 @@ int fmpq_poly_check_unique_complex_root(const fmpq_poly_t pol, const acb_t a, sl
 
     acb_init(b);
     fmpq_poly_evaluate_acb(b, pol, a, prec);
-    if(!acb_contains_zero(b))
+    if (!acb_contains_zero(b))
     {
         acb_clear(b);
         return 0;
@@ -32,7 +32,7 @@ int fmpq_poly_check_unique_complex_root(const fmpq_poly_t pol, const acb_t a, sl
     fmpq_poly_init(der);
     fmpq_poly_derivative(der, pol);
     fmpq_poly_evaluate_acb(b, der, a, prec);
-    if(acb_contains_zero(b))
+    if (acb_contains_zero(b))
     {
         acb_clear(b);
         fmpq_poly_clear(der);

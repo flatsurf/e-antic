@@ -34,8 +34,8 @@ typedef struct
   fmpz_poly_t der;  /* derivative (without denominator)         */
   slong prec;       /* default precision for arb computations   */
   union {
-	  arb_t remb;   /* embedding of generator as a real ball    */
-	  acb_t cemb;   /* embedding of generator as a complex ball */
+      arb_t remb;   /* embedding of generator as a real ball    */
+      acb_t cemb;   /* embedding of generator as a complex ball */
   } emb;
   ulong flag;       /* whether this is real or complex          */
 } nf_emb_struct;

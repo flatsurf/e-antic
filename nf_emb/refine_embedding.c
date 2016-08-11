@@ -14,7 +14,7 @@
 
 void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
 {
-    if(nf->flag & NF_EMB_REAL)
+    if (nf->flag & NF_EMB_REAL)
 	{
 		arb_t tmp;
 		arb_init(tmp);

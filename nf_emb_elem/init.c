@@ -21,4 +21,3 @@ void nf_emb_elem_init(nf_emb_elem_t a, const nf_emb_t nf)
         acb_init(NF_ELEM_CEMB_REF(a));
 }
 
-

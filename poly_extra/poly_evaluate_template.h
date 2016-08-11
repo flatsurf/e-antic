@@ -52,7 +52,7 @@ void _FMPZ_POLY_EVALUATE(NUM_T res, const fmpz * pol, slong len, const NUM_T a, 
     slong i;
 
     ZERO(res);
-    for(i=len-1; i>=0; i--)
+    for (i = len - 1; i >= 0; i--)
     {
         MUL(res, res, a, prec);
         ADD_FMPZ(res, res, pol+i, prec);
@@ -63,27 +63,27 @@ void FMPZ_POLY_EVALUATE(NUM_T res, const fmpz_poly_t pol, const NUM_T a, slong p
 {
     NUM_T rres;
 
-    if(a == res) INIT(rres);
+    if (a == res) INIT(rres);
     else SWAP(rres, res);
 
     _FMPZ_POLY_EVALUATE(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
 
     SWAP(rres, res);
-    if(a == res) CLEAR(rres);
+    if (a == res) CLEAR(rres);
 }
 
 void FMPQ_POLY_EVALUATE(NUM_T res, const fmpq_poly_t pol, const NUM_T a, slong prec)
 {
-	NUM_T rres;
+    NUM_T rres;
 
-	if(a == res) INIT(rres);
-	else SWAP(rres, res);
+    if (a == res) INIT(rres);
+    else SWAP(rres, res);
 
-	_FMPZ_POLY_EVALUATE(rres, fmpq_poly_numref(pol), fmpq_poly_length(pol), a, prec);
-	DIV_FMPZ(rres, rres, fmpq_poly_denref(pol), prec);
+    _FMPZ_POLY_EVALUATE(rres, fmpq_poly_numref(pol), fmpq_poly_length(pol), a, prec);
+    DIV_FMPZ(rres, rres, fmpq_poly_denref(pol), prec);
 
-	SWAP(rres, res);
-	if(a == res) CLEAR(rres);
+    SWAP(rres, res);
+    if (a == res) CLEAR(rres);
 }
 
 #undef PASTE2
