@@ -12,6 +12,9 @@
 #include "poly_extra.h"
 #include "nf_emb.h"
 
+/* TODO: use bisection if it fails */
+/* TODO: use multiple Newton if possible */
+
 void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
 {
     if (nf->flag & NF_EMB_REAL)
@@ -27,7 +30,8 @@ void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
                 fmpq_poly_numref(nf->nf->pol),
                 nf->der->coeffs,
                 fmpq_poly_length(nf->nf->pol),
-                NF_REMB_REF(nf), prec);
+                NF_REMB_REF(nf),
+                prec);
 		arb_swap(tmp, NF_REMB_REF(nf));
 		arb_clear(tmp);
 #ifdef DEBUG
@@ -37,6 +41,7 @@ void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
 #endif
 
 	}
+
     else
 	{
 		acb_t tmp;
@@ -45,7 +50,8 @@ void nf_emb_refine_embedding(nf_emb_t nf, slong prec)
                 fmpq_poly_numref(nf->nf->pol),
                 nf->der->coeffs,
                 fmpq_poly_length(nf->nf->pol),
-                NF_CEMB_REF(nf), prec);
+                NF_CEMB_REF(nf),
+                prec);
 		acb_swap(tmp, NF_CEMB_REF(nf));
 		acb_clear(tmp);
 	}

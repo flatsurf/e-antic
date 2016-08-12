@@ -11,13 +11,10 @@
 
 #include "poly_extra.h"
 
-void _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec)
+int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec)
 {
     arf_t m;
     arb_t arbm;
-
-    arf_init(m);
-    arb_init(arbm);
 
 #ifdef DEBUG
     flint_printf("[_fmpz_poly_newton_step]: len = %wd\n", len);
@@ -25,8 +22,12 @@ void _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, s
     flint_printf("[_fmpz_poly_newton_step]: a = "); arb_printd(a,10); printf("\n");
 #endif
 
-    _fmpz_poly_evaluate_arf(m, pol, len, arb_midref(a), prec);
     _fmpz_poly_evaluate_arb(res, der, len - 1, a, prec);
+    if (arb_contains_zero(res)) return 0;
+
+    arf_init(m);
+    arb_init(arbm);
+    _fmpz_poly_evaluate_arf(m, pol, len, arb_midref(a), prec);
 
 #ifdef DEBUG
     printf("[_fmpz_poly_newton_step]: after poly_evaluate m = "); arf_printd(m,10); printf("\n");
@@ -44,18 +45,23 @@ void _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, s
 
     arf_clear(m);
     arb_clear(arbm);
+
+    return arb_contains(a, res) && !arb_equal(a, res);
 }
 
-void fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec)
+int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec)
 
 {
     arb_t rres;
+    int ans;
 
     if (a == res) arb_init(rres);
     else arb_swap(rres, res);
 
-    _fmpz_poly_newton_step_arb(rres, pol->coeffs, der->coeffs, fmpz_poly_length(pol), a, prec);
+    ans = _fmpz_poly_newton_step_arb(rres, pol->coeffs, der->coeffs, fmpz_poly_length(pol), a, prec);
 
     arb_swap(rres, res);
     if (a == res) arb_clear(rres);
+
+    return ans;
 }
