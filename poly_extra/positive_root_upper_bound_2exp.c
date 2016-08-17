@@ -26,22 +26,22 @@ slong _fmpz_poly_positive_root_upper_bound_2exp(fmpz * pol, slong len)
     int ad_sgn = fmpz_sgn(pol + len - 1);
 
     q1 = WORD_MIN;
-    for (i = 0; i < len - 1; ++i)
+    for (i = 0; i < len - 1; i++)
     {
-        if ( (fmpz_sgn(pol + i) == ad_sgn) || (fmpz_sgn(pol + i) == 0) ) continue;
+        if ((fmpz_sgn(pol + i) == ad_sgn) || (fmpz_sgn(pol + i) == 0)) continue;
 
         q2 = WORD_MAX;
-        for (j = i + 1; j <= len - 1; ++ j)
+        for (j = i + 1; j <= len - 1; j++)
         {
-            if ( fmpz_sgn(pol + j) != ad_sgn ) continue;
+            if (fmpz_sgn(pol + j) != ad_sgn) continue;
             p = fmpz_bits(pol + i) - fmpz_bits(pol + j) - 1;
             q2 = FLINT_MIN(q2, p / (j - i));
         }
         q1 = FLINT_MAX(q1, q2);
     }
 
-    if (q1 == WORD_MIN) return -1;
-    return q1+2;
+    if (q1 == WORD_MIN) return WORD_MIN;
+    return q1+3;
 }
 
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol)

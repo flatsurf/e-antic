@@ -10,6 +10,7 @@
 */
 
 #include "flint.h"
+#include "fmpz.h"
 #include "poly_extra.h"
 
 int main()
@@ -17,55 +18,21 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
     
-    /* test polynomials with random integer roots */
+    /* test polynomials with random rational roots */
     for( iter = 0; iter <= 1000; iter++ )
     {
         int real_pos_roots, real_neg_roots, complex_roots;
-        int i;
-        int a,b;
         slong bound;
-        fmpz_poly_t p,q;
+        fmpz_poly_t p;
 
-        real_neg_roots = n_randint(state, 50);
-        real_pos_roots = n_randint(state, 50);
-        complex_roots = n_randint(state, 50);
-
-        if ( !real_neg_roots && !real_pos_roots && !complex_roots )
-            continue;
+        real_neg_roots = n_randint(state, 20);
+        real_pos_roots = n_randint(state, 20);
+        complex_roots = n_randint(state, 20);
 
         fmpz_poly_init(p);
-        fmpz_poly_init(q);
-        fmpz_poly_one(p);
-        fmpz_poly_set_coeff_si(q, 1, 1);
-        for ( i = 0; i < real_pos_roots; i++)
-        {
-            fmpz_poly_set_coeff_si(q, 0, -1 - n_randint(state, 100));
-            fmpz_poly_mul(p, p, q);
-        }
-        for ( i = 0; i < real_neg_roots; i++)
-        {
-            fmpz_poly_set_coeff_si(q, 0, 1 + n_randint(state, 100));
-            fmpz_poly_mul(p, p, q);
-        }
+        fmpz_poly_randtest_rational_roots(p, state, 50, real_pos_roots, real_neg_roots, complex_roots);
 
-        fmpz_poly_set_coeff_si(q, 2, 1);
-        for( i = 0; i < complex_roots; i++ )
-        {
-            a = n_randint(state, 100);
-            b = 1 + n_randint(state, 100);
-            fmpz_poly_set_coeff_si(q, 1, 2*a);
-            fmpz_poly_set_coeff_si(q, 0, a*a + b*b);
-            fmpz_poly_mul(p, p, q);
-        }
-
-#ifdef DEBUG
-        printf("p = "); fmpz_poly_print_pretty(p, "x"); printf("\n");
-        printf(" pos = %d  neg = %d  complex = %d\n", real_pos_roots, real_neg_roots, complex_roots);
-#endif
         bound = fmpz_poly_descartes_bound(p);
-#ifdef DEBUG
-        flint_printf("bound = %wd\n\n", bound);
-#endif
 
         if ( real_pos_roots > bound )
         {

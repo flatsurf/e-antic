@@ -1,4 +1,4 @@
-/* TODO: to be moved within FLINT! */
+/* TODO/TOTHINK: to be moved within FLINT! */
 /*
     Copyright (C) 2015, Elias Tsigaridas
     Copyright (C) 2016, Vincent Delecroix
@@ -19,19 +19,23 @@
 #include "poly_extra.h"
 #include "fmpz.h"
 
-
-/* set pol(X) to pol(2^k X) / content(poly(2^k X)) */
-void _fmpz_poly_scale_2exp(fmpz * pol, slong len, ulong k)
+/* set pol(X) to pol(2^k X) (and scaled coeffs) */
+void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k)
 {
-    ulong p, z;
     slong i;
+    ulong p, z;
 
     if (fmpz_sgn(pol))
         z = fmpz_val2(pol);
     else
         z = ULONG_MAX;
 
-    p = k;
+    if (k == 0) return;
+    else if (k < 0)
+        p = (len-1)*(-k);
+    else
+        p = k;
+
     for (i = 1; i < len; i++, p += k)
     {
         if (fmpz_sgn(pol+i))
@@ -40,6 +44,7 @@ void _fmpz_poly_scale_2exp(fmpz * pol, slong len, ulong k)
             fmpz_mul_2exp(pol+i, pol+i, p);
         }
     }
+
     if (z)
     {
         for (i = 0; i < len; i++)
@@ -48,7 +53,7 @@ void _fmpz_poly_scale_2exp(fmpz * pol, slong len, ulong k)
 }
 
 /* The function below gives an upper bound for the number of roots of p in (0,1) */
-/* It is assumed that neither 0 nor 1 is a root */
+/* It is assumed that neither 0 nor 1 is a root                                  */
 slong _fmpz_poly_descartes_bound(fmpz * p, fmpz * q, slong len)
 {
     slong V = 0;
@@ -59,15 +64,13 @@ slong _fmpz_poly_descartes_bound(fmpz * p, fmpz * q, slong len)
     j = deg;
     t = fmpz_sgn(p + deg);
 
-    while ( (j >= 0) && ((fmpz_sgn(p + j) == t) || fmpz_sgn(p + j) == 0))
+    while ((j >= 0) && ((fmpz_sgn(p + j) == t) || fmpz_sgn(p + j) == 0))
         j--;
 
-    if ( j < 0 )
+    if (j < 0)
         /* all coefficients are non-negative */
         return 0;
 
-    /* if p = a0 + a1 X + a2 X^2 + ... the loop below sets */
-    /* q = a0 + (a0+a1)X + (a0+a1+a2)X^2 + ...             */
     fmpz_set(q, p);
     for (j = 0; j <= deg - 1; j++)
     {
@@ -78,40 +81,37 @@ slong _fmpz_poly_descartes_bound(fmpz * p, fmpz * q, slong len)
 
     s = fmpz_sgn(q + deg);  /* = sign(p(1)) */
 
-    for ( i = 1; i <= deg - 1; i++)
+    for (i = 1; i <= deg - 1; i++)
     {
         j = deg - i;
         t = s;
 
-        while ( (j >= 0) && (t == 0) )
+        while ((j >= 0) && (t == 0))
         {
             t = fmpz_sgn(q + j);
             j--;
         }
 
-        while ( (j >= 0) && ( (fmpz_sgn(q + j) == t) || (fmpz_sgn(q + j) == 0) ) )
+        while ((j >= 0) && ((fmpz_sgn(q + j) == t) || (fmpz_sgn(q + j) == 0)))
             j--;
 
-        if ( j < 0 )
+        if (j < 0)
             /* all coefficients of q are non-negative */
             return V;
 
-        for ( j = 0; j <= deg - i - 1; j++)
+        for (j = 0; j <= deg - i - 1; j++)
             fmpz_add(q + j + 1, q + j + 1, q + j);
 
-        if ( s == 0 )
+        if (s == 0)
             s = fmpz_sgn(q + deg - i);
-        else
+        else if (s == -fmpz_sgn(q + deg - i))
         {
-            if ( s == -fmpz_sgn(q + deg - i) )
-            {
-                V++;
-                s = -s;
-            }
+            V++;
+            s = -s;
         }
     }
 
-    if ( s == -fmpz_sgn(q) ) V++;
+    if (s == -fmpz_sgn(q)) V++;
 
     return V;
 }
@@ -119,12 +119,19 @@ slong _fmpz_poly_descartes_bound(fmpz * p, fmpz * q, slong len)
 slong fmpz_poly_descartes_bound(fmpz_poly_t pol)
 {
     slong i0, ret;
-    ulong k;
+    slong k;
     fmpz *pol2, *buffer;
     slong len = fmpz_poly_length(pol);
 
     if (fmpz_poly_is_zero(pol))
         return 0;
+
+#ifdef DEBUG
+    printf("[fmpz_poly_descartes_bound] pol = ");
+    fmpz_poly_print_pretty(pol, "x");
+    printf("\n");
+    fflush(stdout);
+#endif
 
     i0 = 0;
     while (fmpz_is_zero(pol->coeffs + i0))
@@ -137,9 +144,21 @@ slong fmpz_poly_descartes_bound(fmpz_poly_t pol)
 
     /* we rescale pol2 to pol2(2^k X) in order that all roots belong to (0,1) */
     /* TODO:FIXME do we need to check whether 2^k is a root of pol2? */
+#ifdef DEBUG
+    printf("[fmpz_poly_descartes_bound] calling upper bound...");
+    fflush(stdout);
+#endif
     k = _fmpz_poly_positive_root_upper_bound_2exp(pol2, len - i0);
-    if (k == -1) return 0;
+#ifdef DEBUG
+    flint_printf("got k = %wd\n", k);
+    fflush(stdout);
+#endif
+    if (k == WORD_MIN) return 0;
     _fmpz_poly_scale_2exp(pol2, len - i0, k);
+#ifdef DEBUG
+    printf("scaling done\n");
+    fflush(stdout);
+#endif
 
     ret = _fmpz_poly_descartes_bound(pol2, buffer, len - i0);
 
