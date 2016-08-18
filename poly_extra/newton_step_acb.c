@@ -11,13 +11,12 @@
 
 #include "poly_extra.h"
 
-void _fmpz_poly_newton_step_acb(acb_t res, const fmpz * pol, const fmpz * der, slong len, acb_t a, slong prec)
+int _fmpz_poly_newton_step_acb(acb_t res, const fmpz * pol, const fmpz * der, slong len, acb_t a, slong prec)
 {
-    fprintf(stderr, "NOT IMPLEMENTED");
-    exit(EXIT_FAILURE);
+    return 0;
 }
 
-void fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, acb_t a, slong prec)
+int fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, acb_t a, slong prec)
 
 {
     acb_t rres;
@@ -30,4 +29,5 @@ void fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly
     acb_swap(rres, res);
     if (a == res) acb_clear(rres);
 
+    return 0;
 }
