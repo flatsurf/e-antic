@@ -28,6 +28,7 @@ void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t
 void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong prec);
 void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
 
+void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
 void _fmpz_poly_evaluate_acb(acb_t b, const fmpz * pol, slong len, const acb_t a, slong prec);
 void fmpz_poly_evaluate_acb(acb_t b, const fmpz_poly_t pol, const acb_t a, slong prec);
@@ -54,8 +55,11 @@ int fmpz_poly_num_real_roots(arb_t res, const fmpz_t pol, slong len);
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
 slong _fmpz_poly_positive_root_upper_bound_2exp(fmpz * pol, slong len);
 
-slong _fmpz_poly_descartes_bound(fmpz * p, fmpz * q, slong len);
+slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
 slong fmpz_poly_descartes_bound(fmpz_poly_t pol);
+
+void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_slongervals, fmpz * pol, slong len);
+void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_array, slong * k_array, slong * n_slongerval, fmpz_poly_t pol);
 
 #ifdef __cplusplus
  }
