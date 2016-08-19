@@ -12,6 +12,7 @@
 
 #include "poly_extra.h"
 
+/*#define DEBUG*/
 
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k)
 {

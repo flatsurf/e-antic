@@ -13,9 +13,13 @@
 
 int main()
 {
-    fmpz_poly_t p;
+    fmpz_poly_t p, q;
+
+    printf("scale_2exp....");
+    fflush(stdout);
 
     fmpz_poly_init(p);
+    fmpz_poly_init(q);
 
     fmpz_poly_set_coeff_si(p, 0, 1);
     fmpz_poly_set_coeff_si(p, 1, -1);
@@ -23,23 +27,35 @@ int main()
     fmpz_poly_set_coeff_si(p, 3, -1);
     fmpz_poly_set_coeff_si(p, 4, 1);
 
-    fmpz_poly_print_pretty(p, "x"); printf("\n");
+    fmpz_poly_set(q, p);
 
-    printf("+1: ");
     _fmpz_poly_scale_2exp(p->coeffs, p->length, 1);
-    fmpz_poly_print_pretty(p, "x"); printf("\n");
-
-    printf("-1: ");
     _fmpz_poly_scale_2exp(p->coeffs, p->length, -1);
-    fmpz_poly_print_pretty(p, "x"); printf("\n");
 
-    printf("-1: ");
+    if (!fmpz_poly_equal(p,q))
+    {
+        printf("ERROR:\n");
+        printf("after +1 and -1 scaling it is not identity");
+        printf("p = "); fmpz_poly_print(p); printf("\n");
+        printf("q = "); fmpz_poly_print(q); printf("\n");
+        abort();
+    }
+
     _fmpz_poly_scale_2exp(p->coeffs, p->length, -1);
-    fmpz_poly_print_pretty(p, "x"); printf("\n");
-
-    printf("+1: ");
     _fmpz_poly_scale_2exp(p->coeffs, p->length, 1);
-    fmpz_poly_print_pretty(p, "x"); printf("\n");
 
+    if (!fmpz_poly_equal(p,q))
+    {
+        printf("ERROR:\n");
+        printf("after -1 and +1 scaling it is not identity");
+        printf("p = "); fmpz_poly_print(p); printf("\n");
+        printf("q = "); fmpz_poly_print(q); printf("\n");
+        abort();
+    }
+
+    fmpz_poly_clear(p);
+    fmpz_poly_clear(q);
+
+    printf("PASS\n");
     return 0;
 }

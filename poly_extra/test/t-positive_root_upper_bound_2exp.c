@@ -16,15 +16,23 @@ int main()
 {
     int iter;
     FLINT_TEST_INIT(state);
+
+    printf("positive_root_upper_bound_2exp....");
+    fflush(stdout);
     
     /* test polynomials with random Gaussian integer roots */
-    for( iter = 0; iter <= 1000; iter++ )
+    for (iter = 0; iter <= 1000; iter++)
     {
         int real_roots, complex_roots;
         int i;
         fmpz_t a, b, c, max_root;
         slong bound;
         fmpz_poly_t p,q;
+
+#ifdef DEBUG
+        printf("iter = %d\n", iter);
+        fflush(stdout);
+#endif
 
         real_roots = n_randint(state, 50);
         complex_roots = n_randint(state, 50);
@@ -42,7 +50,7 @@ int main()
         fmpz_poly_set_coeff_si(q, 1, 1);
         for ( i = 0; i < real_roots; i++)
         {
-            fmpz_randtest(a, state, 1 + n_randint(state, 200));
+            fmpz_randtest(a, state, 1 + n_randint(state, 100));
             if(fmpz_cmp(max_root, a) < 0)
                 fmpz_set(max_root, a);
 
@@ -54,8 +62,8 @@ int main()
         fmpz_poly_set_coeff_si(q, 2, 1);
         for( i = 0; i < complex_roots; i++ )
         {
-            fmpz_randtest(a, state, n_randint(state, 200));
-            fmpz_randtest(b, state, 1 + n_randint(state, 200));
+            fmpz_randtest(a, state, n_randint(state, 100));
+            fmpz_randtest(b, state, 1 + n_randint(state, 100));
 
             fmpz_mul_si(c, a, 2);
             fmpz_poly_set_coeff_fmpz(q, 1, c);  /* 2*a */
@@ -66,10 +74,18 @@ int main()
 
             fmpz_poly_mul(p, p, q);
         }
+#ifdef DEBUG
+/*        printf("p = "); fmpz_poly_print(p); printf("\n");*/
+        fflush(stdout);
+#endif
 
         bound = fmpz_poly_positive_root_upper_bound_2exp(p);
 
-        if ((bound == -1))
+#ifdef DEBUG
+        flint_printf("Descartes bound = %wd\n", bound);
+#endif
+
+        if ((bound == WORD_MIN))
         {
            if (fmpz_cmp_si(max_root, 0) > 0)
             {
@@ -106,5 +122,7 @@ int main()
     }
 
     FLINT_TEST_CLEANUP(state);
+
+    printf("PASS\n");
     return 0;
 }

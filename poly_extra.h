@@ -22,7 +22,15 @@
  extern "C" {
 #endif
 
+void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
+void _fmpq_vec_sort(fmpq * vec, slong len);
+
+int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);
+void _fmpq_vec_print(const fmpq * vec, slong len);
+
 void fmpz_poly_randtest_rational_roots(fmpz_poly_t p, flint_rand_t state, mp_bitcnt_t bits, int real_pos_roots, int real_neg_roots, int complex_roots);
+
+void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
 void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong prec);
@@ -50,16 +58,14 @@ int fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_
 void _fmpz_poly_bisection_step_arb(arb_t res, const fmpz * pol, slong len, arb_t a, slong prec);
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec);
 
-int fmpz_poly_num_real_roots(arb_t res, const fmpz_t pol, slong len);
-
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
 slong _fmpz_poly_positive_root_upper_bound_2exp(fmpz * pol, slong len);
 
 slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
 slong fmpz_poly_descartes_bound(fmpz_poly_t pol);
 
-void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_slongervals, fmpz * pol, slong len);
-void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_array, slong * k_array, slong * n_slongerval, fmpz_poly_t pol);
+void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_intervals, fmpz * pol, slong len);
+void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_array, slong * k_array, slong * n_interval, fmpz_poly_t pol);
 
 #ifdef __cplusplus
  }
