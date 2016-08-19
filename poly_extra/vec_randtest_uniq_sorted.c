@@ -28,9 +28,9 @@ void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, m
     {
         if (fmpq_equal(vec + i, vec + i + 1))
         {
-            fmpq_add(vec + i, vec + i - 1, vec + i + 1);
-            /* division by 2 */
-            fmpz_mul_si(fmpq_denref(vec + i), fmpq_denref(vec + i), 2);
+            /* set vec[i] = a_i/b_i <-- (a_{i-1} + a_{i+1}) / (b_{i-1} + b_{i+1}) */
+            fmpz_add(fmpq_numref(vec + i), fmpq_numref(vec + i - 1), fmpq_numref(vec + i + 1));
+            fmpz_add(fmpq_denref(vec + i), fmpq_denref(vec + i - 1), fmpq_denref(vec + i + 1));
             fmpq_canonicalise(vec + i);
         }
     }
