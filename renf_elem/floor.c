@@ -10,36 +10,24 @@
 */
 
 
-#include "nf_emb_elem.h"
+#include "renf_elem.h"
 
-void nf_emb_elem_floor(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
+void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf)
 {
-    arb_ptr bemb;
-    arb_ptr nfemb;
     arf_t cl, cr;
     slong prec;
 
-    /* TODO FIXME */
-    if(nf->flag & NF_EMB_COMPLEX)
-    {
-        fprintf(stderr, "ERROR: floor not available for complex embeddings");
-        exit(EXIT_FAILURE);
-    }
-
 #ifdef DEBUG
-    printf("[nf_emb_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
-    printf("[nf_emb_elem_floor]: embedding "); arb_printd(NF_REMB_REF(nf), 10); printf("\n");
-    printf("[nf_emb_elem_floor]: b = "); nf_emb_elem_print_pretty(b, nf, "a", 10); printf("\n");
+    printf("[renf_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
+    printf("[renf_elem_floor]: embedding "); arb_printd(nf->emb, 10); printf("\n");
+    printf("[renf_elem_floor]: b = "); renf_elem_print_pretty(b, nf, "a", 10); printf("\n");
 #endif
-
-    bemb = NF_ELEM_REMB_REF(b);
-    nfemb = NF_REMB_REF(nf);
 
     arf_init(cl);
     arf_init(cr);
     prec = nf->prec;
     do{
-        arb_get_interval_arf(cl, cr, bemb, prec);
+        arb_get_interval_arf(cl, cr, b->emb, prec);
 #ifdef DEBUG
         printf("[floor] cl = "); arf_printd(cl, 30); printf("\n");
         printf("[floor] cr = "); arf_printd(cr, 30); printf("\n");
@@ -58,10 +46,10 @@ void nf_emb_elem_floor(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
             return;
         }
         prec *= 2;
-        if(arf_bits(arb_midref(nfemb)) < prec)
-            nf_emb_refine_embedding(nf, 2 * prec);
-        if(2 * arf_bits(arb_midref(bemb)) < prec)
-            nf_emb_elem_set_evaluation(b, nf, prec);
+        if(arf_bits(arb_midref(nf->emb)) < prec)
+            renf_refine_embedding(nf, 2 * prec);
+        if(2 * arf_bits(arb_midref(b->emb)) < prec)
+            renf_elem_set_evaluation(b, nf, prec);
     }while (1);
 }
 

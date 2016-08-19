@@ -10,17 +10,12 @@
 */
 
 
-#include "nf_emb.h"
+#include "renf_elem.h"
 
-void nf_emb_clear(nf_emb_t nf)
+void renf_elem_clear(renf_elem_t a, const renf_t nf)
 {
-	nf_clear(nf->nf);
-	fmpz_poly_clear(nf->der);
-
-	if (nf->flag & NF_EMB_REAL)
-		arb_clear(NF_REMB_REF(nf));
-	else
-		acb_clear(NF_CEMB_REF(nf));
+    nf_elem_clear(a->elem, nf->nf);
+    arb_clear(a->emb);
 }
 
 

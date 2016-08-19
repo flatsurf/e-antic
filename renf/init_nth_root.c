@@ -10,10 +10,10 @@
 */
 
 
-#include "nf_emb.h"
+#include "renf.h"
 #include "fmpq.h"
 
-void nf_emb_init_nth_root_fmpq(nf_emb_t nf, fmpq_t d, ulong n, slong prec)
+void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec)
 {
     fmpq_t p0;
     fmpq_poly_t pol;
@@ -30,7 +30,7 @@ void nf_emb_init_nth_root_fmpq(nf_emb_t nf, fmpq_t d, ulong n, slong prec)
     arb_set_fmpq(emb, d, prec);
     arb_root_ui(emb, emb, n, prec);
 
-    nf_emb_real_init(nf, pol, emb, prec);
+    renf_init(nf, pol, emb, prec);
 
     fmpq_clear(p0);
     fmpq_poly_clear(pol);

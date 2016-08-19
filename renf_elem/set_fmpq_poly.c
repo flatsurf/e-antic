@@ -10,14 +10,13 @@
 */
 
 
-#include "nf_emb_elem.h"
+#include "renf_elem.h"
+#include "poly_extra.h"
 
-void nf_emb_elem_init(nf_emb_elem_t a, const nf_emb_t nf)
+void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf)
 {
-    nf_elem_init(a->elem, nf->nf);
-    if(nf->flag & NF_EMB_REAL)
-        arb_init(NF_ELEM_REMB_REF(a));
-    else
-        acb_init(NF_ELEM_CEMB_REF(a));
+    nf_elem_set_fmpq_poly(a->elem, pol, nf->nf);
+    fmpq_poly_evaluate_arb(a->emb, pol, nf->emb, nf->prec);
 }
+
 

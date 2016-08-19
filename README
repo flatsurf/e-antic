@@ -1,7 +1,7 @@
-E-ANTIC -- (Embedded) Algebraic Number Theory In C
-===================================================
+RE-ANTIC -- (Real Embedded) Algebraic Number Theory In C
+=========================================================
 
-E-Antic is a library to deal with embedded number fields built
+re-Antic is a library to deal with real embedded number fields built
 on top of ANTIC (https://github.com/wbhart/antic). It allows to
 consider number fields as subfield of the real or complex numbers.
 Operations such as comparison, floor, ceil, abs, ... are available.

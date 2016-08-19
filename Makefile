@@ -28,7 +28,7 @@ QUIET_CXX = @echo '   ' CXX ' ' $@;
 QUIET_AR  = @echo '   ' AR  ' ' $@;
 
 AT=@
-BUILD_DIRS = poly_extra nf_emb nf_emb_elem
+BUILD_DIRS = poly_extra renf renf_elem
 LIB_SOURCES = $(wildcard $(patsubst %, %/*.c, $(BUILD_DIRS)))
 HEADERS = $(patsubst %, %.h, $(BUILD_DIRS))
 LIB_OBJS = $(patsubst %, build/%/*.o, $(BUILD_DIRS))

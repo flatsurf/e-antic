@@ -10,27 +10,18 @@
 */
 
 
-#include "nf_emb_elem.h"
+#include "renf_elem.h"
 
-void nf_emb_elem_ceil(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
+void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf)
 {
     arf_t cl, cr;
     slong prec;
-    arb_ptr emb;
-
-    if (nf->flag & NF_EMB_COMPLEX)
-    {
-        fprintf(stderr, "only available for real embedding");
-        exit(EXIT_FAILURE);
-    }
-
-    emb = NF_ELEM_REMB_REF(b);
 
     arf_init(cl);
     arf_init(cr);
     prec = nf->prec;
     do{
-        arb_get_interval_arf(cl, cr, emb, prec);
+        arb_get_interval_arf(cl, cr, b->emb, prec);
 #ifdef DEBUG
         printf("[ceil] cl = "); arf_printd(cl, 30); printf("\n");
         printf("[ceil] cr = "); arf_printd(cr, 30); printf("\n");
@@ -49,10 +40,10 @@ void nf_emb_elem_ceil(fmpz_t a, nf_emb_elem_t b, nf_emb_t nf)
             return;
         }
         prec *= 2;
-        if (arf_bits(arb_midref(emb)) < prec)
-            nf_emb_refine_embedding(nf, 2 * prec);
-        if (2 * arf_bits(arb_midref(emb)) < prec)
-            nf_emb_elem_set_evaluation(b, nf, prec);
+        if (arf_bits(arb_midref(b->emb)) < prec)
+            renf_refine_embedding(nf, 2 * prec);
+        if (2 * arf_bits(arb_midref(b->emb)) < prec)
+            renf_elem_set_evaluation(b, nf, prec);
     }while (1);
 }
 

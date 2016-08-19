@@ -10,17 +10,10 @@
 */
 
 
-#include "nf_emb_elem.h"
+#include "renf_elem.h"
 
-void nf_emb_elem_print_pretty(const nf_emb_elem_t a, const nf_emb_t nf, const char * var, slong prec)
+void renf_elem_init(renf_elem_t a, const renf_t nf)
 {
-    nf_elem_print_pretty(a->elem, nf->nf, var);
-    printf(" in [");
-    if(nf->flag & NF_EMB_REAL)
-        arb_printd(NF_ELEM_REMB_REF(a), prec);
-    else
-        acb_printd(NF_ELEM_CEMB_REF(a), prec);
-    printf("]");
+    nf_elem_init(a->elem, nf->nf);
+    arb_init(a->emb);
 }
-
-
