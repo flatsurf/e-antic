@@ -9,44 +9,52 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "flint.h"
-#include "fmpz.h"
 #include "poly_extra.h"
+#include "fmpq_vec.h"
 
 int main()
 {
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("descartes_bound....");
+    printf("num_real_roots_upper_bound....");
     fflush(stdout);
     
     /* test polynomials with random rational roots */
     for( iter = 0; iter <= 1000; iter++ )
     {
-        int real_pos_roots, real_neg_roots, complex_roots;
-        slong bound;
-        fmpz_poly_t p;
+        int n_real_roots, n_complex_roots;
+        fmpq * real_roots;
 
-        real_neg_roots = n_randint(state, 20);
-        real_pos_roots = n_randint(state, 20);
-        complex_roots = n_randint(state, 20);
+        slong bound;
+        fmpz_poly_t p,q;
+
+        n_real_roots = n_randint(state, 30);
+        n_complex_roots = n_randint(state, 20);
+
+        real_roots = _fmpq_vec_init(n_real_roots);
+
+        _fmpq_vec_randtest(real_roots, state, n_real_roots, 50);
 
         fmpz_poly_init(p);
-        fmpz_poly_randtest_rational_roots(p, state, 50, real_pos_roots, real_neg_roots, complex_roots);
+        fmpz_poly_init(q);
+        fmpz_poly_randtest_no_real_root(p, state, n_complex_roots, 40);
+        fmpz_poly_set_rational_roots(q, real_roots, n_real_roots);
+        fmpz_poly_mul(p, p, q);
 
-        bound = fmpz_poly_descartes_bound(p);
+        bound = fmpz_poly_num_real_roots_upper_bound(p);
 
-        if ( real_pos_roots > bound )
+        if ( n_real_roots > bound )
         {
             printf("FAIL:\n");
             printf("p = "); fmpz_poly_print(p); printf("\n");
-            printf("real_pos_roots = %d\n", real_pos_roots);
-            printf("real_neg_roots = %d\n", real_neg_roots);
-            printf("complex_roots  = %d\n", complex_roots);
+            printf("n_real_roots = %d\n", n_real_roots);
+            printf("n_complex_roots  = %d\n", n_complex_roots);
             flint_printf("got bound = %wd\n", bound);
             abort();
         }
+
+        _fmpq_vec_clear(real_roots, n_real_roots);
     }
 
     FLINT_TEST_CLEANUP(state);

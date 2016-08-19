@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2009 William Hart
-    Copyright (C) 2011 Sebastian Pancratz
+    Copyright (C) 2016 Vincent Delecroix
 
     This file is part of e-ANTIC
 
@@ -40,10 +39,10 @@ void _fmpq_vec_print(const fmpq * vec, slong len)
 
 *******************************************************************************
 
-void fmpz_poly_randtest_rational_roots(fmpz_poly_t p, flint_rand_t state, mp_bitcnt_t bits, int real_pos_roots, int real_neg_roots, int complex_roots)
+void fmpz_poly_set_rational_roots(fmpz_t pol, fmpq * vec, slong len)
 
-    Set \code{p} to a random polynomials with rational roots. The number of positive roots is set by \code{real_pos_roots}, of negative ones by \code{real_neg_roots} and complex roots by \code{complex_roots}.
-
+    Set \code{pol} to be the integer polynomial whose roots are
+    exactly \code{(vec, len)}.
 
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k)
 
@@ -120,10 +119,10 @@ slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound)
     the result is larger than \code{bound} then \code{WORD_MAX} is
     returned.
 
-slong fmpz_poly_descartes_bound(fmpz_poly_t pol)
+slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol)
 
     Gives an upper bound on the number of real roots of the polynomial
-    \code{pol} using Decartes rule of sign.
+    \code{pol} (currently using Decartes rule of sign).
 
 void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_intervals, fmpz * pol, slong len)
 
