@@ -19,7 +19,7 @@ int main()
 
     printf("positive_root_upper_bound_2exp....");
     fflush(stdout);
-    
+
     /* test polynomials with random Gaussian integer roots */
     for (iter = 0; iter <= 1000; iter++)
     {

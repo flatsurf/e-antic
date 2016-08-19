@@ -29,30 +29,38 @@ void _fmpq_vec_sort(fmpq * vec, slong len);
 void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
 int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);
+
 void _fmpq_vec_print(const fmpq * vec, slong len);
 
-
 /* extra polynomial functions */
-void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
 void fmpz_poly_set_rational_roots(fmpz_poly_t pol, fmpq * vec, slong len);
 
+void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
+/* polynomial evaluation */
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
+
 void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong prec);
+
 void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
 
 void _fmpz_poly_evaluate_acb(acb_t b, const fmpz * pol, slong len, const acb_t a, slong prec);
+
 void fmpz_poly_evaluate_acb(acb_t b, const fmpz_poly_t pol, const acb_t a, slong prec);
+
 void fmpq_poly_evaluate_acb(acb_t b, const fmpq_poly_t pol, const acb_t a, slong prec);
 
 void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, slong len, const arf_t a, slong prec);
+
 void fmpz_poly_evaluate_arf(arf_t res, const fmpz_poly_t pol, const arf_t a, slong prec);
+
 void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec);
 
-/* root isolation and refinement */
+/* root refinement */
 int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);
 
 int fmpq_poly_check_unique_complex_root(const fmpq_poly_t pol, const acb_t a, slong prec);
@@ -62,11 +70,14 @@ int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, sl
 int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec);
 
 int _fmpz_poly_newton_step_acb(acb_t res, const fmpz * pol, const fmpz * der, slong len, acb_t a, slong prec);
+
 int fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, acb_t a, slong prec);
 
 void _fmpz_poly_bisection_step_arb(arb_t res, const fmpz * pol, slong len, arb_t a, slong prec);
 
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec);
+
+/* root isolation */
 
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
 

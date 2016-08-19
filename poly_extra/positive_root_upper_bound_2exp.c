@@ -6,7 +6,7 @@
 
     The implementation follows the function slv_poly_root_upper_bound_2exp in
     the library SLV version 0.5 by Elias Tsigaridas (in the file poly_ops.c
-    lines 67-125). 
+    lines 67-125).
 
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published

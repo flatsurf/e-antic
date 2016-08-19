@@ -217,7 +217,7 @@ int main(void)
 
         fmpz_poly_init(p);
         fmpz_poly_from_fmpq_roots(p, vec, n);
-        
+
         fmpz_poly_init(q);
         fmpz_poly_randtest_no_real_root(q, state, nc, 100);
         fmpz_poly_mul(p, p, q);

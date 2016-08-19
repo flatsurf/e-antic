@@ -1,9 +1,8 @@
-/* TODO: to be moved within FLINT! */
 /*
     Copyright (C) 2015, Elias Tsigaridas
     Copyright (C) 2016, Vincent Delecroix
 
-    This file is part of FLINT.
+    This file is part of e-antic.
 
     The implementation follows the SLV library version 0.5 by Elias Tsigaridas
     (namely from the file poly_ops.c lines 119-139).
@@ -11,7 +10,7 @@
     (namely the function Descartes_test in the file vca_solver_1.c lines
     67-125)
 
-    FLINT is free software: you can redistribute it and/or modify it under
+    e-atnci is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.

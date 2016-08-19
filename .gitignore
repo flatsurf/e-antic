@@ -1,3 +1,5 @@
+.gitignore
 build/
 libnfemb.a
 *.swp
+tmp/

@@ -19,7 +19,7 @@ int main()
 
     printf("num_real_roots_upper_bound....");
     fflush(stdout);
-    
+
     /* test polynomials with random rational roots */
     for( iter = 0; iter <= 1000; iter++ )
     {
