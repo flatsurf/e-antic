@@ -18,8 +18,9 @@
 /* using VCA (Vincent-Collins-Akritas) method       */
 /* the output are arrays of fmpz c and integers k so that the roots belong to */
 /* [c/2^k, (c+1)/2^k[ */
-/* the function returns the number of roots (hence the length of the arrays) */
-/* (some of the roots might be exact) */
+/* if exact_roots is NULL only n_exact is updated */
+/* similarly if c_array/k_array is NULL only n_intervals is updated (useful to */
+/* count the roots) */
 void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
         fmpz * c_array, slong * k_array, slong * n_intervals,
         fmpz * pol, slong len)
@@ -65,9 +66,13 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
             flint_printf(" k = %wd\n", k);
             fflush(stdout);
 #endif
-            fmpz_set(fmpq_numref(exact_roots + *n_exact), c);
-            fmpz_one(fmpq_denref(exact_roots + *n_exact));
-            fmpq_div_2exp(exact_roots + *n_exact, exact_roots + *n_exact, k);
+
+            if (exact_roots != NULL)
+            {
+                fmpz_set(fmpq_numref(exact_roots + *n_exact), c);
+                fmpz_one(fmpq_denref(exact_roots + *n_exact));
+                fmpq_div_2exp(exact_roots + *n_exact, exact_roots + *n_exact, k);
+            }
             (*n_exact)++;
             p++;
             len--;
@@ -95,8 +100,11 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
                 printf("[_fmpz_poly_isolate_real_roots_0_1_vca] case 1\n");
 #endif
                 /* got a root! */
-                fmpz_set(c_array + *n_intervals, c);
-                k_array[*n_intervals] = -k;
+                if ((c_array != NULL) && (k_array != NULL))
+                {
+                    fmpz_set(c_array + *n_intervals, c);
+                    k_array[*n_intervals] = -k;
+                }
                 (*n_intervals)++;
             case 0:
 #ifdef DEBUG
@@ -195,46 +203,56 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
 #ifdef DEBUG
         flint_printf("[fmpz_poly_isolate_real_roots] got %wd interval and %wd exact roots\n", n_neg, n_neg_exact);
 #endif
-        for (i = 0; i < *n_interval; i++)
+        if ((c_array != NULL) && (k_array != NULL))
         {
-            fmpz_add_ui(c_array + i, c_array + i, 1);
-            fmpz_neg(c_array + i, c_array + i);
-            k_array[i] += k;
+            for (i = 0; i < *n_interval; i++)
+            {
+                fmpz_add_ui(c_array + i, c_array + i, 1);
+                fmpz_neg(c_array + i, c_array + i);
+                k_array[i] += k;
+            }
+            for (i = 0; i < *n_interval / 2; i++)
+            {
+                fmpz_swap(c_array + i, c_array + *n_interval - i - 1);
+                tmp = k_array[i];
+                k_array[i] = k_array[*n_interval - i - 1];
+                k_array[*n_interval - i - 1] = tmp;
+            }
         }
-        for (i = 0; i < *n_interval / 2; i++)
+
+        if (exact_roots != NULL)
         {
-            fmpz_swap(c_array + i, c_array + *n_interval - i - 1);
-            tmp = k_array[i];
-            k_array[i] = k_array[*n_interval - i - 1];
-            k_array[*n_interval - i - 1] = tmp;
-        }
-        for (i = 0; i < *n_exact; i++)
-        {
+            for (i = 0; i < *n_exact; i++)
+            {
 #ifdef DEBUG
-            flint_printf("rescaling %wd-th exact root\n ", i);
-            fmpq_print(exact_roots + i);
-            printf(" --> ");
+                flint_printf("rescaling %wd-th exact root\n ", i);
+                fmpq_print(exact_roots + i);
+                printf(" --> ");
 #endif
-            fmpq_neg(exact_roots + i, exact_roots + i);
-            if (k > 0)
-                fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
-            else if (k < 0)
-                fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
+                fmpq_neg(exact_roots + i, exact_roots + i);
+                if (k > 0)
+                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
+                else if (k < 0)
+                    fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
 #ifdef DEBUG
-            fmpq_print(exact_roots + i);
-            printf("\n");
+                fmpq_print(exact_roots + i);
+                printf("\n");
 #endif
-        }
-        for (i = 0; i < (*n_exact)/2; i++)
-        {
-            fmpq_swap(exact_roots + i, exact_roots + *n_exact - i - 1);
+            }
+            for (i = 0; i < (*n_exact)/2; i++)
+            {
+                fmpq_swap(exact_roots + i, exact_roots + *n_exact - i - 1);
+            }
         }
     }
     else
         n_neg = 0;
 
     /* insert zero roots */
-    for (i = *n_exact; i < *n_exact+n_zeros; i++) fmpq_zero(exact_roots + i);
+    if (exact_roots != NULL)
+    {
+        for (i = *n_exact; i < *n_exact+n_zeros; i++) fmpq_zero(exact_roots + i);
+    }
     *n_exact += n_zeros;
 
 #ifdef DEBUG
@@ -246,6 +264,7 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     flint_printf("[fmpz_poly_isolate_real_roots] n_interval = %wd\n", *n_interval);
     fflush(stdout);
 #endif
+
     /* positive roots */
     _fmpz_vec_set(p, pol->coeffs + n_zeros, len);
 #ifdef DEBUG
@@ -265,14 +284,22 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
         fflush(stdout);
 #endif
         _fmpz_poly_isolate_real_roots_0_1_vca(exact_roots, n_exact, c_array, k_array, n_interval, p, len);
-        for (i = n_neg; i < *n_interval; i++)
-            k_array[i] += k;
-        for (i = n_neg_exact + n_zeros; i < *n_exact; i++)
+
+        if ((c_array != NULL) && (k_array != NULL))
         {
-            if (k > 0)
-                fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
-            else if (k < 0)
-                fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
+            for (i = n_neg; i < *n_interval; i++)
+                k_array[i] += k;
+        }
+
+        if (exact_roots != NULL)
+        {
+            for (i = n_neg_exact + n_zeros; i < *n_exact; i++)
+            {
+                if (k > 0)
+                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
+                else if (k < 0)
+                    fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
+            }
         }
     }
 
@@ -285,4 +312,12 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     flint_printf("[fmpz_poly_isolate_real_roots] n_interval = %wd\n", *n_interval);
     fflush(stdout);
 #endif
+}
+
+slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)
+{
+    slong n_exact, n_interval;
+    n_exact = n_interval = 0;
+    fmpz_poly_isolate_real_roots(NULL, &n_exact, NULL, NULL, &n_interval, pol);
+    return n_exact + n_interval;
 }

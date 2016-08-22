@@ -9,39 +9,43 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include "flint.h"
 #include "poly_extra.h"
 #include "fmpq_vec.h"
 
 int main()
 {
-    int iter;
+    slong iter;
+
     FLINT_TEST_INIT(state);
 
-    printf("randtest_uniq_sorted....");
+    printf("set_rational_roots....");
 
     for (iter = 0; iter < 100; iter++)
     {
-        slong i;
-        slong n;
         fmpq * vec;
+        fmpz_poly_t p;
+        slong n;
 
-        n = n_randint(state, 20);
+        n = n_randint(state, 100);
         vec = _fmpq_vec_init(n);
-        _fmpq_vec_randtest_uniq_sorted(vec, state, n, 100);
+        _fmpq_vec_randtest(vec, state, n, 100);
 
-        for (i = 0; i < n-1; i++)
+        fmpz_poly_init(p);
+        fmpz_poly_set_rational_roots(p, vec, n);
+
+        if (fmpz_poly_degree(p) != n)
         {
-            if (fmpq_cmp(vec + i + 1, vec + i) != 1)
-            {
-                printf("ERROR:\n");
-                flint_printf("got vec[%wd] = ", i); fmpq_print(vec + i);
-                flint_printf(" and vec[%wd] = ", i+1); fmpq_print(vec + i + 1);
-                printf("\n");
-                abort();
-            }
+            printf("ERROR:\n");
+            flint_printf("expected degree %wd and got %wd",
+                    n, fmpz_poly_degree(p));
+            printf("vec = "); _fmpq_vec_print(vec, n); printf("\n");
+            printf("p = "); fmpz_poly_print(p); printf("\n");
+            abort();
         }
 
         _fmpq_vec_clear(vec, n);
+        fmpz_poly_clear(p);
     }
 
     FLINT_TEST_CLEANUP(state);
