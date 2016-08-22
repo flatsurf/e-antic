@@ -15,23 +15,22 @@
 void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits)
 {
     slong i;
+    int do_again;
 
     _fmpq_vec_randtest(vec, state, len, bits);
     if (len <= 1) return;
 
-    _fmpq_vec_sort(vec, len);
-
-    if (fmpq_equal(vec, vec + 1))
-        fmpq_add_si(vec, vec, -1);
-
-    for (i = 1; i < len; i++)
+    do
     {
-        if (fmpq_equal(vec + i, vec + i + 1))
+        do_again = 0;
+        _fmpq_vec_sort(vec, len);
+        for (i = 0; i < len - 1; i++)
         {
-            /* set vec[i] = a_i/b_i <-- (a_{i-1} + a_{i+1}) / (b_{i-1} + b_{i+1}) */
-            fmpz_add(fmpq_numref(vec + i), fmpq_numref(vec + i - 1), fmpq_numref(vec + i + 1));
-            fmpz_add(fmpq_denref(vec + i), fmpq_denref(vec + i - 1), fmpq_denref(vec + i + 1));
-            fmpq_canonicalise(vec + i);
+            if (fmpq_equal(vec + i, vec + i + 1))
+            {
+                fmpq_randtest(vec + i, state, bits);
+                do_again = 1;
+            }
         }
-    }
+    }while(do_again);
 }
