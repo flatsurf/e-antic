@@ -66,7 +66,7 @@ shared: $(NF_EMB_LIB)
 
 static: libnfemb.a
 
-tests: library $(TESTS)
+tests: library
 	$(AT)$(foreach dir, $(BUILD_DIRS), mkdir -p build/$(dir)/test; BUILD_DIR=../build/$(dir); export BUILD_DIR; $(MAKE) -f ../Makefile.subdirs -C $(dir) tests || exit $$?;)
 
 check: library
