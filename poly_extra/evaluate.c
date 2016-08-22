@@ -13,7 +13,6 @@
 #include "fmpz_poly.h"
 #include "fmpq_poly.h"
 #include "arb.h"
-#include "acb.h"
 #include "arf.h"
 
 #define NUMBER arb
@@ -25,9 +24,5 @@
 #define MUL(z,x,y,prec) arf_mul(z,x,y,prec,ARF_RND_NEAR)
 #define ADD_FMPZ(z,x,y,prec) arf_add_fmpz(z,x,y,prec,ARF_RND_NEAR)
 #define DIV_FMPZ(z,x,y,prec) arf_div_fmpz(z,x,y,prec,ARF_RND_NEAR)
-#include "poly_evaluate_template.h"
-#undef NUMBER
-
-#define NUMBER acb
 #include "poly_evaluate_template.h"
 #undef NUMBER

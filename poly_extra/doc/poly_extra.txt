@@ -24,25 +24,12 @@ void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, m
 
     Set \code{(vec, len)} to a vector of distinct and sorted rationals.
 
-int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len)
-
-    Print \code{(vec, len)} in \code{file}.
-
-void _fmpq_vec_print(const fmpq * vec, slong len)
-
-    Print \code{(vec, len)} on standard output.
-
 
 *******************************************************************************
 
     Polynomial functions
 
 *******************************************************************************
-
-void fmpz_poly_set_rational_roots(fmpz_t pol, fmpq * vec, slong len)
-
-    Set \code{pol} to be the integer polynomial whose roots are
-    exactly \code{(vec, len)}.
 
 void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong d, mp_bitcnt_t bits)
 
@@ -124,6 +111,11 @@ slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol)
 
     Gives an upper bound on the number of real roots of the polynomial
     \code{pol} (currently using Decartes rule of sign).
+
+slong fmpz_poly_num_real_roots_in_interval_sturm(fmpz_poly_t pol, fmpq_t a, fmpq_t b)
+
+    Compute the number of real roots of \code{pol} in the half-open
+    interval (a, b] using Sturm sequence (perform pseudo-division). 
 
 void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_intervals, fmpz * pol, slong len)
 

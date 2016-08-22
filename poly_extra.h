@@ -14,7 +14,6 @@
 #define FMPQ_POLY_EXTRA_H
 
 #include "arb.h"
-#include "acb.h"
 #include "fmpz_poly.h"
 #include "fmpq_poly.h"
 
@@ -33,12 +32,6 @@ void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong
 
 void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
 
-void _fmpz_poly_evaluate_acb(acb_t b, const fmpz * pol, slong len, const acb_t a, slong prec);
-
-void fmpz_poly_evaluate_acb(acb_t b, const fmpz_poly_t pol, const acb_t a, slong prec);
-
-void fmpq_poly_evaluate_acb(acb_t b, const fmpq_poly_t pol, const acb_t a, slong prec);
-
 void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, slong len, const arf_t a, slong prec);
 
 void fmpz_poly_evaluate_arf(arf_t res, const fmpz_poly_t pol, const arf_t a, slong prec);
@@ -48,15 +41,9 @@ void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong
 /* root refinement */
 int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);
 
-int fmpq_poly_check_unique_complex_root(const fmpq_poly_t pol, const acb_t a, slong prec);
-
 int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec);
 
 int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec);
-
-int _fmpz_poly_newton_step_acb(acb_t res, const fmpz * pol, const fmpz * der, slong len, acb_t a, slong prec);
-
-int fmpz_poly_newton_step_acb(acb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, acb_t a, slong prec);
 
 void _fmpz_poly_bisection_step_arb(arb_t res, const fmpz * pol, slong len, arb_t a, slong prec);
 
