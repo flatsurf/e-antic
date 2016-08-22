@@ -17,7 +17,7 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("num_real_roots_upper_bound....");
+    printf("descartes_upper_bound....");
     fflush(stdout);
 
     /* test polynomials with random rational roots */
@@ -30,11 +30,11 @@ int main()
         fmpz_poly_t p,q;
 
         n_real_roots = n_randint(state, 30);
-        n_complex_roots = n_randint(state, 20);
+        n_complex_roots = 1 + n_randint(state, 20);
 
         real_roots = _fmpq_vec_init(n_real_roots);
 
-        _fmpq_vec_randtest(real_roots, state, n_real_roots, 50);
+        _fmpq_vec_randtest(real_roots, state, n_real_roots, 100);
 
         fmpz_poly_init(p);
         fmpz_poly_init(q);

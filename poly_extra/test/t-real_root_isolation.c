@@ -180,7 +180,7 @@ int main(void)
 
     FLINT_TEST_INIT(state);
 
-    printf("t-isolate_real_roots....");
+    printf("t-real_root_isolation....");
     fflush(stdout);
 
     for (iter = 0; iter < 200; iter++)
@@ -191,7 +191,7 @@ int main(void)
         fmpq exact_array[30];
         fmpz_poly_t p,q;
         slong n = n_randint(state, 30);  /* real roots            */
-        slong nc = n_randint(state, 30); /* pair of complex roots */
+        slong nc = 1 + n_randint(state, 30); /* complex roots */
         slong i;
         slong n_exact, n_interval;
 

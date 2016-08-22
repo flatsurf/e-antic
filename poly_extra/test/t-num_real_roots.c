@@ -19,7 +19,7 @@ int main()
 
     FLINT_TEST_INIT(state);
 
-    printf("num_real_roots_sturm....");
+    printf("num_real_roots....");
 
     /* check with rational roots */
     for (iter = 0; iter < 500; iter++)
@@ -36,7 +36,7 @@ int main()
         fmpz_poly_init(p);
         fmpz_poly_init(q);
         fmpz_poly_set_rational_roots(p, vec, n);
-        fmpz_poly_randtest_no_real_root(q, state, n_randint(state, 10), 50);
+        fmpz_poly_randtest_no_real_root(q, state, 1 + n_randint(state, 10), 50);
         fmpz_poly_mul(p, p, q);
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
