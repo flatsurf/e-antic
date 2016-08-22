@@ -24,7 +24,7 @@ int main()
     /* check with rational roots */
     for (iter = 0; iter < 500; iter++)
     {
-        slong k1, k2, n;
+        slong k1, k2, k3, n;
         fmpz_poly_t p,q;
         fmpq * vec;
 
@@ -41,12 +41,13 @@ int main()
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
         k2 = fmpz_poly_num_real_roots_vca(p);
-        if ((k1 != n) || (k2 != n))
+        k3 = fmpz_poly_num_real_roots(p);
+        if ((k1 != n) || (k2 != n) || (k3 != n))
         {
             printf("ERROR:\n");
-            flint_printf("found k1=%wd and k2=%wd instead of %wd\n", k1, k2, n);
+            flint_printf("found k1=%wd, k2=%wd and k3=%wd instead of %wd\n", k1, k2, k3, n);
             printf("vec = "); _fmpq_vec_print(vec, n); printf("\n");
-            printf("p = "); fmpz_poly_print_pretty(p, "x"); printf("\n");
+            printf("p = "); fmpz_poly_print(p); printf("\n");
             abort();
         }
 
@@ -54,23 +55,24 @@ int main()
         fmpz_poly_clear(q);
     }
 
-    /* check sturm vs vca on random polynomials */
-    for (iter = 0; iter < 500; iter++)
+    /* check sturm vs vca vs discriminant on random polynomials */
+    for (iter = 0; iter < 1000; iter++)
     {
-        slong k1, k2;
+        slong k1, k2, k3;
         fmpz_poly_t p;
 
         fmpz_poly_init(p);
-        fmpz_poly_randtest_not_zero(p, state, 1 + n_randint(state, 20), 100);
+        fmpz_poly_randtest_not_zero(p, state, 1 + n_randint(state, 10), 100);
         if (!fmpz_poly_is_squarefree(p)) continue;
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
         k2 = fmpz_poly_num_real_roots_vca(p);
-        if (k1 != k2)
+        k3 = fmpz_poly_num_real_roots(p);
+        if ((k1 != k2) || (k1 != k3))
         {
             printf("ERROR:\n");
-            flint_printf("Sturm and Descartes disagree when counting real roots: k1=%wd and k2=%wd\n", k1, k2);
-            printf("p = "); fmpz_poly_print_pretty(p, "x"); printf("\n");
+            flint_printf("Sturm, discriminant and Descartes disagree: k1=%wd, k2=%wd and k3=%wd\n", k1, k2, k3);
+            printf("p = "); fmpz_poly_print(p); printf("\n");
             abort();
         }
 
