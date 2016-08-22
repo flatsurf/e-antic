@@ -22,26 +22,6 @@
  extern "C" {
 #endif
 
-/* extra vector functions */
-
-/* TODO: submit to FLINT */
-void _fmpq_vec_sort(fmpq * vec, slong len);
-
-/* TODO: submit to FLINT */
-void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
-
-/* merged in FLINT (#278) */
-/*int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);*/
-/*void _fmpq_vec_print(const fmpq * vec, slong len);*/
-
-/* extra polynomial functions */
-
-/* submitted to FLINT (#279) */
-/*void fmpz_poly_set_rational_roots(fmpz_poly_t pol, fmpq * vec, slong len);*/
-
-/* TODO: submit to FLINT */
-void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
-
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
@@ -85,9 +65,6 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
 /* root isolation */
 
 /* TODO: submit to FLINT */
-slong fmpz_poly_num_real_roots_sturm(fmpz_poly_t pol);
-
-/* TODO: submit to FLINT */
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
 
 /* TODO: submit to FLINT */
@@ -107,6 +84,28 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
 
 /* TODO: submit to FLINT */
 slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
+slong fmpz_poly_num_real_roots(fmpz_poly_t pol);
+
+/* OLD ****************************************************************/
+
+/* submitted to FLINT (#282) */
+/* void _fmpq_vec_sort(fmpq * vec, slong len); */
+
+/* submitted to FLINT (#282) */
+/* void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits); */
+
+/* merged in FLINT (#278) */
+/*int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);*/
+/*void _fmpq_vec_print(const fmpq * vec, slong len);*/
+
+/* merged in FLINT (#279) */
+/*void fmpz_poly_set_rational_roots(fmpz_poly_t pol, fmpq * vec, slong len);*/
+
+/* submitted to FLINT (#282) */
+/* void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits); */
+
+/* submitted to FLINT (#282) */
+/* slong fmpz_poly_num_real_roots_sturm(fmpz_poly_t pol); */
 
 #ifdef __cplusplus
  }
