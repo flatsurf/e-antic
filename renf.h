@@ -31,9 +31,9 @@ typedef struct
   fmpz_poly_t der;  /* derivative (without denominator)         */
   slong prec;       /* default precision for arb computations   */
   arb_t emb;        /* embedding of generator as a real ball    */
-} renf_struct;
+} renf;
 
-typedef renf_struct renf_t[1];
+typedef renf renf_t[1];
 
 void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
 void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
@@ -47,6 +47,8 @@ renf_clear(renf_t nf)
     arb_clear(nf->emb);
 }
 void renf_refine_embedding(renf_t nf, slong prec);
+
+slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
 #ifdef __cplusplus
 }

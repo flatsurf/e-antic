@@ -18,16 +18,22 @@ void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec)
     const slong len = pol->length;
 
 #ifdef DEBUG
-    printf("[renf_real_init]: pol = "); fmpq_poly_print_pretty(pol, "x"); printf("\n");
-    printf("[renf_real_init]: emb = "); arb_printd(emb, 10); printf("\n");
-    flint_printf("[renf_real_init]: prec = %wd\n", prec);
+    printf("[renf_real_init] pol = "); fmpq_poly_print_pretty(pol, "x"); printf("\n");
+    printf("[renf_real_init] emb = "); arb_printd(emb, 10); printf("\n");
+    flint_printf("[renf_real_init] prec = %wd\n", prec);
+    fflush(stdout);
 #endif
 
     if (!fmpq_poly_check_unique_real_root(pol, emb, prec))
     {
-        printf("the given polynomial does not define a unique root\n");
-        exit(EXIT_FAILURE);
+        printf("ERROR (renf_init): the given polynomial does not define a unique root\n");
+        flint_abort();
     }
+
+#ifdef DEBUG
+    printf("[renf_real_init] done checking unique root\n");
+    fflush(stdout);
+#endif
 
     arb_init(nf->emb);
     arb_set(nf->emb, emb);
