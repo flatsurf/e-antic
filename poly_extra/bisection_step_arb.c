@@ -11,124 +11,99 @@
 
 #include "poly_extra.h"
 
-#define CLEANUP \
-    arb_set_interval_arf(res, l, r, prec); \
-    arf_clear(l); \
-    arf_clear(r); \
-    arf_clear(m); \
-    arb_clear(al); \
-    arb_clear(bl); \
-    arb_clear(ar); \
-    arb_clear(br);
-
-void _fmpz_poly_bisection_step_arb(arb_t res, const fmpz * pol, slong len, arb_t a, slong prec)
+void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len, int sl, int sr, slong prec)
 {
-    arb_t al, ar, bl, br;
-    arf_t l,r,m;
+    arb_t b, c;
+    arf_t m;
 
-    arf_init(l);
-    arf_init(r);
     arf_init(m);
-    arb_init(al);
-    arb_init(bl);
-    arb_init(ar);
-    arb_init(br);
+    arb_init(b);
+    arb_init(c);
 
-    arb_get_interval_arf(l, r, a, prec);
-    printf("a = "); arb_printd(a,20); printf("\n");
     do
     {
-#ifdef DEBUG
-        printf("l = "); arf_printd(l,20); printf("\n");
-        printf("r = "); arf_printd(r,20); printf("\n");
-#endif
-
+        /* TODO: we should do the mean operation faster */
+        /* it is likely that l and r shares a lot       */
         arf_add(m, l, r, prec, ARF_RND_NEAR);
-        arf_div_si(m, m, 2, prec, ARF_RND_NEAR);
-#ifdef DEBUG
-        printf("m = "); arf_printd(m,20); printf("\n");
-#endif
-
-        if ((arf_cmp(l,m) >= 0) || (arf_cmp(r,m) <= 0))
+        arf_div_ui(m, m, 2, prec, ARF_RND_NEAR);
+        if ((arf_cmp(m, l) <= 0) || (arf_cmp(r, m) <= 0))
         {
-#ifdef DEBUG
-            printf("step 1\n");
-#endif
-            CLEANUP;
-            return;
+            arf_clear(m);
+            arb_clear(b);
+            arb_clear(c);
+            break;
         }
 
-        arb_set_interval_arf(al, l, m, prec);
-        _fmpz_poly_evaluate_arb(bl, pol, len, al, prec);
-        arb_set_interval_arf(ar, m, r, prec);
-        _fmpz_poly_evaluate_arb(br, pol, len, ar, prec);
-#ifdef DEBUG
-        printf("bl = "); arb_printd(bl,20); printf("\n");
-        printf("br = "); arb_printd(br,20); printf("\n");
-
-        printf("bl contains zero: %d\n", arb_contains_zero(bl));
-        printf("br contains zero: %d\n", arb_contains_zero(br));
-#endif
-
-        if (arb_contains_zero(bl))
+        arb_set_arf(b, m);
+        _fmpz_poly_evaluate_arb(c, pol, len, b, prec);
+        if (arb_contains_zero(c))
         {
-            if (!arb_contains_zero(br))
-                arf_swap(r, m);
-            else
-            {
-                /* the precision is not enough to choose the next subinterval */
-                CLEANUP;
-                return;
-            }
+            arf_clear(m);
+            arb_clear(b);
+            arb_clear(c);
+            break;
         }
+        if (arf_sgn(arb_midref(c)) == sl)
+            arf_set(l, m);
         else
-        {
-            if (arb_contains_zero(br))
-                arf_swap(l, m);
-            else
-            {
-                fprintf(stderr, "PROBLEM\n");
-                CLEANUP;
-                return;
-            }
-         }
+            arf_set(r, m);
+
     } while (1);
-
-    CLEANUP;
 }
-
-#undef CLEANUP
 
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec)
 {
-    int ans;
-    arb_t rres;
+    int sl, sr, ans;
+    arb_t b, c, rres;
+    arf_t l, r;
 
-    if(a == res) arb_init(rres);
-    else arb_swap(res, rres);
+    arf_init(l);
+    arf_init(r);
+    arb_init(b);
+    arb_init(c);
+    arb_init(rres);
 
-#ifdef DEBUG
-    printf("[fmpz_poly_bisection_step_arb]: before a = "); arb_printd(a,prec); printf("\n");
-#endif
+    /* set l, r as the left and right endpoint of the ball */
+    /* compute the signs of pol(l) and pol(r)              */
+    arb_get_interval_arf(l, r, a, prec);
 
-    _fmpz_poly_bisection_step_arb(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
+    arb_set_arf(b, l);
+    fmpz_poly_evaluate_arb(c, pol, b, prec);
+    if (arb_contains_zero(c))
+    {
+        arf_clear(l);
+        arf_clear(r);
+        arb_clear(b);
+        arb_clear(c);
+        arb_clear(rres);
+        return 0;
+    }
+    sl = arf_sgn(arb_midref(c));
 
-#ifdef DEBUG
-    printf("[fmpz_poly_bisection_step_arb]: after a = "); arb_printd(a,prec); printf("\n");
-    printf("[fmpz_poly_bisection_step_arb]: after rres = "); arb_printd(rres,prec); printf("\n");
-#endif
+    arb_set_arf(b, r);
+    fmpz_poly_evaluate_arb(c, pol, b, prec);
+    if (arb_contains_zero(c))
+    {
+        arf_clear(l);
+        arf_clear(r);
+        arb_clear(b);
+        arb_clear(c);
+        arb_clear(rres);
+        return 0;
+    }
+    sr = arf_sgn(arb_midref(c));
 
+    _fmpz_poly_bisection_step_arf(l, r, pol->coeffs, fmpz_poly_length(pol), sl, sr, prec);
+    arb_set_interval_arf(rres, l, r, prec);
     ans = arb_contains(a, rres) && !arb_equal(rres, a);
-
     if (ans)
-    {
         arb_swap(res, rres);
-        if (a == res) arb_clear(rres);
-    }
-    else
-    {
-        if (a == rres) arb_clear(res);
-    }
+
+    arb_clear(b);
+    arb_clear(c);
+    arb_clear(rres);
+    arf_clear(l);
+    arf_clear(r);
 
     return ans;
 }

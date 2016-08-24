@@ -13,38 +13,29 @@
 
 int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec)
 {
-    arf_t m;
-    arb_t arbm;
-
-#ifdef DEBUG
-    flint_printf("[_fmpz_poly_newton_step]: len = %wd\n", len);
-    flint_printf("[_fmpz_poly_newton_step]: prec = %wd\n", prec);
-    flint_printf("[_fmpz_poly_newton_step]: a = "); arb_printd(a,10); printf("\n");
-#endif
+    /* Newton step corresponds to set: res = a - f(a) / f'(a)            */
+    /* In order to make it works with intervals, we do the following     */
+    /*   - set m to be the ball with radius 0 and same center as a       */
+    /*   - set res = m - f(m) / f'(a) where evaluation of both f and f'  */
+    /*     is done with ball evaluation                                  */
+    arb_t m, y;
 
     _fmpz_poly_evaluate_arb(res, der, len - 1, a, prec);
     if (arb_contains_zero(res)) return 0;
 
-    arf_init(m);
-    arb_init(arbm);
-    _fmpz_poly_evaluate_arf(m, pol, len, arb_midref(a), prec);
+    arb_init(m);
+    arb_init(y);
+    arf_set(arb_midref(m), arb_midref(a));
+    mag_zero(arb_radref(m));
 
-#ifdef DEBUG
-    printf("[_fmpz_poly_newton_step]: after poly_evaluate m = "); arf_printd(m,10); printf("\n");
-    printf("[_fmpz_poly_newton_step]: after poly_evaluate res = "); arb_printd(res,10); printf("\n");
-#endif
+    _fmpz_poly_evaluate_arb(y, pol, len, m, prec);
 
-    arb_set_arf(arbm, m);
-    arb_div(res, arbm, res, prec);
-    arb_sub_arf(res, res, arb_midref(a), prec);
+    arb_div(res, y, res, prec);
+    arb_sub(res, res, m, prec);
     arb_neg(res, res);
 
-#ifdef DEBUG
-    printf("[_fmpz_poly_newton_step]: after newton step res = "); arb_printd(res,10); printf("\n");
-#endif
-
-    arf_clear(m);
-    arb_clear(arbm);
+    arb_clear(m);
+    arb_clear(y);
 
     return arb_contains(a, res) && !arb_equal(a, res);
 }
@@ -52,16 +43,5 @@ int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, sl
 int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec)
 
 {
-    arb_t rres;
-    int ans;
-
-    if (a == res) arb_init(rres);
-    else arb_swap(rres, res);
-
-    ans = _fmpz_poly_newton_step_arb(rres, pol->coeffs, der->coeffs, fmpz_poly_length(pol), a, prec);
-
-    arb_swap(rres, res);
-    if (a == res) arb_clear(rres);
-
-    return ans;
+    return _fmpz_poly_newton_step_arb(res, pol->coeffs, der->coeffs, fmpz_poly_length(pol), a, prec);
 }

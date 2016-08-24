@@ -183,7 +183,7 @@ int main(void)
     printf("t-real_root_isolation....");
     fflush(stdout);
 
-    for (iter = 0; iter < 200; iter++)
+    for (iter = 0; iter < 50; iter++)
     {
         fmpq vec[30];
         fmpz c_array[30];

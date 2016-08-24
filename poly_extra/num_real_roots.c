@@ -98,12 +98,12 @@ slong fmpz_poly_num_real_roots(fmpz_poly_t pol)
             fprintf(stderr, "ERROR (fmpz_poly_num_real_roots): non squarefree polynomial\n");
             flint_abort();
         }
-        else if (s == 1)
+        else if (s > 0)
         {
             if (len == 5)
                 return _num_roots_quartic_positive_discriminant(pol->coeffs);
             else
-                return len-1;
+                return len - 1;
         }
         else
         {
@@ -120,4 +120,5 @@ slong fmpz_poly_num_real_roots(fmpz_poly_t pol)
     /* should never happen */
     return -1;
 }
+
 

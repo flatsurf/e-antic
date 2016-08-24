@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
+   Copyright (C) 2016 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -24,6 +24,12 @@
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
+/* TODO: submit to FLINT */
+void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
+
+
+void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+
 /* polynomial evaluation */
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
@@ -45,7 +51,7 @@ int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, sl
 
 int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec);
 
-void _fmpz_poly_bisection_step_arb(arb_t res, const fmpz * pol, slong len, arb_t a, slong prec);
+void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len, int sl, int sr, slong prec);
 
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec);
 
@@ -72,6 +78,11 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
 /* TODO: submit to FLINT */
 slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
 slong fmpz_poly_num_real_roots(fmpz_poly_t pol);
+
+slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol);
+slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol);
+slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol);
+#define fmpz_poly_num_real_roots_0_1 fmpz_poly_num_real_roots_0_1_vca
 
 /* OLD ****************************************************************/
 
