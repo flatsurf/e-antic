@@ -39,7 +39,7 @@ int main()
         fmpz_poly_init(p);
         fmpz_poly_init(q);
         fmpz_poly_randtest_no_real_root(p, state, n_complex_roots, 40);
-        fmpz_poly_set_rational_roots(q, real_roots, n_real_roots);
+        fmpz_poly_product_roots_fmpq_vec(q, real_roots, n_real_roots);
         fmpz_poly_mul(p, p, q);
 
         bound = fmpz_poly_num_real_roots_upper_bound(p);

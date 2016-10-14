@@ -16,6 +16,8 @@ void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b)
     slong i;
     fmpz_t c, t, p1, q;
 
+    if (len <= 1) return;
+
     fmpz_init(p1);
     fmpz_init(q);
     fmpz_init(c);

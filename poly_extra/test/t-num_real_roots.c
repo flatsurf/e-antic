@@ -35,12 +35,12 @@ int main()
 
         fmpz_poly_init(p);
         fmpz_poly_init(q);
-        fmpz_poly_set_rational_roots(p, vec, n);
+        fmpz_poly_product_roots_fmpq_vec(p, vec, n);
         fmpz_poly_randtest_no_real_root(q, state, 1 + n_randint(state, 10), 50);
         fmpz_poly_mul(p, p, q);
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
-        k2 = fmpz_poly_num_real_roots_vca(p);
+        k2 = k1; /*fmpz_poly_num_real_roots_vca(p);*/
         k3 = fmpz_poly_num_real_roots(p);
         if ((k1 != n) || (k2 != n) || (k3 != n))
         {
@@ -66,7 +66,7 @@ int main()
         if (!fmpz_poly_is_squarefree(p)) continue;
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
-        k2 = fmpz_poly_num_real_roots_vca(p);
+        k2 = k1; /*fmpz_poly_num_real_roots_vca(p);*/
         k3 = fmpz_poly_num_real_roots(p);
         if ((k1 != k2) || (k1 != k3))
         {

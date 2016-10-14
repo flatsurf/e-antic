@@ -13,48 +13,44 @@
 
 int main()
 {
-    fmpz_poly_t p, q;
+    int iter;
+    FLINT_TEST_INIT(state);
 
     printf("scale_2exp....");
     fflush(stdout);
 
-    fmpz_poly_init(p);
-    fmpz_poly_init(q);
-
-    fmpz_poly_set_coeff_si(p, 0, 1);
-    fmpz_poly_set_coeff_si(p, 1, -1);
-    fmpz_poly_set_coeff_si(p, 2, 1);
-    fmpz_poly_set_coeff_si(p, 3, -1);
-    fmpz_poly_set_coeff_si(p, 4, 1);
-
-    fmpz_poly_set(q, p);
-
-    _fmpz_poly_scale_2exp(p->coeffs, p->length, 1);
-    _fmpz_poly_scale_2exp(p->coeffs, p->length, -1);
-
-    if (!fmpz_poly_equal(p,q))
+    for (iter = 0; iter < 1000; iter++)
     {
-        printf("ERROR:\n");
-        printf("after +1 and -1 scaling it is not identity");
-        printf("p = "); fmpz_poly_print(p); printf("\n");
-        printf("q = "); fmpz_poly_print(q); printf("\n");
-        abort();
+        fmpz_poly_t f, g;
+        slong k;
+
+        k = n_randint(state, 200);
+
+        fmpz_poly_init(f);
+        fmpz_poly_init(g);
+
+
+        fmpz_poly_randtest(f, state, n_randint(state, 100), 200);
+        _fmpz_poly_remove_content_2exp(f->coeffs, f->length);
+        fmpz_poly_set(g, f);
+
+        _fmpz_poly_scale_2exp(f->coeffs, f->length, k);
+        _fmpz_poly_scale_2exp(f->coeffs, f->length, -k);
+
+        if ( !fmpz_poly_equal(f, g) )
+        {
+            flint_printf("FAIL:\n");
+            fmpz_poly_print(f); printf("\n\n");
+            printf("ERROR \n");
+            abort();
+        }
+
+
+        fmpz_poly_clear(f);
+        fmpz_poly_clear(g);
     }
 
-    _fmpz_poly_scale_2exp(p->coeffs, p->length, -1);
-    _fmpz_poly_scale_2exp(p->coeffs, p->length, 1);
-
-    if (!fmpz_poly_equal(p,q))
-    {
-        printf("ERROR:\n");
-        printf("after -1 and +1 scaling it is not identity");
-        printf("p = "); fmpz_poly_print(p); printf("\n");
-        printf("q = "); fmpz_poly_print(q); printf("\n");
-        abort();
-    }
-
-    fmpz_poly_clear(p);
-    fmpz_poly_clear(q);
+    FLINT_TEST_CLEANUP(state);
 
     printf("PASS\n");
     return 0;

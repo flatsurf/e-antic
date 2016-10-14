@@ -183,14 +183,14 @@ int main(void)
     printf("t-real_root_isolation....");
     fflush(stdout);
 
-    for (iter = 0; iter < 50; iter++)
+    for (iter = 0; iter < 500; iter++)
     {
         fmpq vec[30];
         fmpz c_array[30];
         slong k_array[30];
         fmpq exact_array[30];
         fmpz_poly_t p,q;
-        slong n = n_randint(state, 30);  /* real roots            */
+        slong n = n_randint(state, 30);      /* real roots            */
         slong nc = 1 + n_randint(state, 30); /* complex roots */
         slong i;
         slong n_exact, n_interval;
@@ -204,7 +204,7 @@ int main(void)
             fmpq_init(exact_array + i);
         }
 
-        _fmpq_vec_randtest_uniq_sorted(vec, state, n, 100);
+        _fmpq_vec_randtest_uniq_sorted(vec, state, n, 30);
 
 #ifdef DEBUG
         printf("\n=============== NEW POLY =====================\n");

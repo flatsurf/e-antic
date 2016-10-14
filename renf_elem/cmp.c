@@ -35,7 +35,7 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
     {
         if (2 * arf_bits(arb_midref(a->emb)) < prec)
             renf_elem_set_evaluation(a, nf, prec);
-        if (2 * arb_bits(arb_midref(b->emb)) < prec)
+        if (2 * arf_bits(arb_midref(b->emb)) < prec)
             renf_elem_set_evaluation(b, nf, prec);
         arb_sub(difference, a->emb, b->emb, prec);
         if (!arb_contains_zero(difference))

@@ -50,6 +50,10 @@ void renf_refine_embedding(renf_t nf, slong prec);
 
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
+/* Randomisation */
+
+void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits);
+
 #ifdef __cplusplus
 }
 #endif

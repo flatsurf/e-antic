@@ -11,6 +11,7 @@
 
 #include "poly_extra.h"
 #include "fmpq_vec.h"
+#include "fmpz_poly.h"
 
 int main()
 {
@@ -37,14 +38,12 @@ int main()
             fmpq_randtest(b, state, 30);
         }while (fmpq_equal(a, b));
 
-        if (fmpq_cmp(a, b) > 0) fmpq_swap(a, b);
-
         n = 1 + n_randint(state, 20);
         
         v1 = _fmpq_vec_init(n);
         v2 = _fmpq_vec_init(n);
         _fmpq_vec_randtest(v1, state, n, 20);
-        fmpz_poly_set_rational_roots(p1, v1, n);
+        fmpz_poly_product_roots_fmpq_vec(p1, v1, n);
         fmpz_poly_set(p2, p1);
 
         _fmpz_poly_scale_0_1_fmpq(p2->coeffs, p2->length, a, b);

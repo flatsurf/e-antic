@@ -8,8 +8,8 @@ NF_EMB_LIBNAME=libnfemb.so
 PREFIX=/usr/local
 
 INCS=-I$(CURDIR) -I/usr/local/include -I/usr/local/include/flint/ -I/usr/local/include/arb/ -I/opt/antic
-LIBS=-L$(CURDIR) -L/usr/local/lib -lnfemb -larb -lflint -lgmp -lmpfr -lm
-LIBS2=-L$(CURDIR) -L/usr/local/lib -larb -lflint -lgmp -lmpfr -lm
+LIBS=-L$(CURDIR) -L/usr/local/lib -lnfemb -lflint -lgmp -lmpfr -lm
+LIBS2=-L$(CURDIR) -L/usr/local/lib -lflint -lgmp -lmpfr -lm
 
 CC=gcc
 CXX=g++

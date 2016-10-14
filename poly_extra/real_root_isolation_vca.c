@@ -46,7 +46,7 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
     while (1)
     {
 #ifdef DEBUG
-        if (k > 50)
+        if (k > 100)
         {
             printf("[_fmpz_poly_isolate_real_roots_0_1_vca]: get above depth 50!");
             abort();
@@ -149,6 +149,7 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     len = pol->length;
 
 #ifdef DEBUG
+    printf("[fmpz_poly_isolate_real_roots] ************************\n");
     printf("[fmpz_poly_isolate_real_roots] pol = ");
     fmpz_poly_print_pretty(pol, "x");
     printf("\n");
@@ -222,7 +223,7 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
 
         if (exact_roots != NULL)
         {
-            for (i = 0; i < *n_exact; i++)
+            for (i = 0; i < n_neg_exact; i++)
             {
 #ifdef DEBUG
                 flint_printf("rescaling %wd-th exact root\n ", i);
@@ -239,7 +240,7 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
                 printf("\n");
 #endif
             }
-            for (i = 0; i < (*n_exact)/2; i++)
+            for (i = 0; i < n_neg_exact/2; i++)
             {
                 fmpq_swap(exact_roots + i, exact_roots + *n_exact - i - 1);
             }
@@ -256,7 +257,7 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     *n_exact += n_zeros;
 
 #ifdef DEBUG
-    flint_printf("[fmpz_poly_isolate_real_roots] done treating negative\n");
+    flint_printf("[fmpz_poly_isolate_real_roots] done treating negative and zeros\n");
     flint_printf("[fmpz_poly_isolate_real_roots] n_zeros = %wd\n", n_zeros);
     flint_printf("[fmpz_poly_isolate_real_roots] n_neg = %wd\n", n_neg);
     flint_printf("[fmpz_poly_isolate_real_roots] n_neg_exact = %wd\n", n_neg_exact);

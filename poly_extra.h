@@ -9,7 +9,6 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef FMPQ_POLY_EXTRA_H
 #define FMPQ_POLY_EXTRA_H
 
@@ -27,10 +26,19 @@ void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
 
-
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
 /* polynomial evaluation */
+
+static __inline__
+void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
+{
+    slong i;
+
+    fmpz_set(res, p);
+    for (i = 1; i < len; i++)
+        fmpz_add(res, res, p + i);
+}
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
 
@@ -58,6 +66,20 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
 /* root isolation */
 
 /* TODO: submit to FLINT */
+int _fmpz_poly_has_real_root(fmpz * pol, slong len);
+
+/* TODO: submit to FLINT */
+int fmpz_poly_has_complex_root(fmpz_poly_t pol);
+
+static __inline__
+int fmpz_poly_has_real_root(fmpz_poly_t pol)
+{
+    return _fmpz_poly_has_real_root(pol->coeffs, pol->length);
+}
+
+slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
+
+/* TODO: submit to FLINT */
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
 
 /* TODO: submit to FLINT */
@@ -65,6 +87,7 @@ slong _fmpz_poly_positive_root_upper_bound_2exp(fmpz * pol, slong len);
 
 /* TODO: submit to FLINT */
 slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
+slong _fmpz_poly_descartes_bound(fmpz * p, slong len, slong bound);
 
 /* TODO: submit to FLINT */
 slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol);
@@ -77,33 +100,36 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
 
 /* TODO: submit to FLINT */
 slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
-slong fmpz_poly_num_real_roots(fmpz_poly_t pol);
 
-slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol);
 slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol);
 slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol);
-#define fmpz_poly_num_real_roots_0_1 fmpz_poly_num_real_roots_0_1_vca
+static __inline__
+slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
+{
+    return fmpz_poly_num_real_roots_0_1_vca(pol);
+}
+
+/* slong fmpz_poly_num_real_roots_interval_fmpq_sturm(fmpz_poly_t p, fmpq_t a, fmpq_t b);*/
+/* slong fmpz_poly_num_real_roots_interval_fmpq_vca(fmpz_poly_t p, fmpq_t a, fmpq_t b);*/
+/* slong fmpz_poly_num_real_roots_interval_fmpq(fmpz_poly_t p, fmpq_t a, fmpq_t b); */
 
 /* OLD ****************************************************************/
 
-/* submitted to FLINT (#282) */
+/* merged in FLINT (#282) */
 /* void _fmpq_vec_sort(fmpq * vec, slong len); */
-
-/* submitted to FLINT (#282) */
 /* void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits); */
+/* void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits); */
+/* void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len); */
+/* slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t poly); */
+/* slong _fmpz_poly_num_real_roots(const fmpz * pol, slong len); */
+/* slong fmpz_poly_num_real_roots(const fmpz_poly_t poly); */
+
+/* merged in FLINT (#279 and #295) */
+/*void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t pol, fmpq * vec, slong len);*/
 
 /* merged in FLINT (#278) */
 /*int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);*/
 /*void _fmpq_vec_print(const fmpq * vec, slong len);*/
-
-/* merged in FLINT (#279) */
-/*void fmpz_poly_set_rational_roots(fmpz_poly_t pol, fmpq * vec, slong len);*/
-
-/* submitted to FLINT (#282) */
-/* void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits); */
-
-/* submitted to FLINT (#282) */
-/* slong fmpz_poly_num_real_roots_sturm(fmpz_poly_t pol); */
 
 #ifdef __cplusplus
  }
