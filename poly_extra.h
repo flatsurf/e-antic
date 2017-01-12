@@ -20,8 +20,6 @@
  extern "C" {
 #endif
 
-/* TODO: submit to FLINT */
-void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
@@ -77,7 +75,6 @@ int fmpz_poly_has_real_root(fmpz_poly_t pol)
     return _fmpz_poly_has_real_root(pol->coeffs, pol->length);
 }
 
-slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
 
 /* TODO: submit to FLINT */
 slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
@@ -113,7 +110,13 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
 /* slong fmpz_poly_num_real_roots_interval_fmpq_vca(fmpz_poly_t p, fmpq_t a, fmpq_t b);*/
 /* slong fmpz_poly_num_real_roots_interval_fmpq(fmpz_poly_t p, fmpq_t a, fmpq_t b); */
 
+
+
 /* OLD ****************************************************************/
+
+/* submitted to FLINT (#308) */
+/* slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len); */
+/* void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);  */
 
 /* merged in FLINT (#282) */
 /* void _fmpq_vec_sort(fmpq * vec, slong len); */
