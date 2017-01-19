@@ -42,8 +42,8 @@ static __inline__
 void
 renf_clear(renf_t nf)
 {
-	nf_clear(nf->nf);
-	fmpz_poly_clear(nf->der);
+    nf_clear(nf->nf);
+    fmpz_poly_clear(nf->der);
     arb_clear(nf->emb);
 }
 void renf_refine_embedding(renf_t nf, slong prec);

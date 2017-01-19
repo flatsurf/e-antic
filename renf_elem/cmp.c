@@ -16,6 +16,7 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
 {
     arb_t difference;
     slong prec;
+    int s;
 
     /* equality? */
     if (nf_elem_equal(a->elem, b->elem, nf->nf)) return 0;
@@ -25,8 +26,9 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
     arb_sub(difference, a->emb, b->emb, nf->prec);
     if (!arb_contains_zero(difference))
     {
+        s = arf_sgn(arb_midref(difference));
         arb_clear(difference);
-        return arf_sgn(arb_midref(difference));
+        return s;
     }
 
     /* precision doubling up to the current precision */
@@ -40,8 +42,9 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
         arb_sub(difference, a->emb, b->emb, prec);
         if (!arb_contains_zero(difference))
         {
+            s = arf_sgn(arb_midref(difference));
             arb_clear(difference);
-            return arf_sgn(arb_midref(difference));
+            return s;
         }
         prec *= 2;
     }
@@ -54,11 +57,11 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
         arb_sub(difference, a->emb, b->emb, prec);
         if(!arb_contains_zero(difference))
         {
+            s = arf_sgn(arb_midref(difference));
             arb_clear(difference);
-            return arf_sgn(arb_midref(difference));
+            return s;
         }
         prec *= 2;
     }while (1);
 }
-
 

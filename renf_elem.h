@@ -45,12 +45,46 @@ void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t 
 void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);
 int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
+int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf);
+
+slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, renf_t nf);
 
 void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec);
 
 void renf_elem_print_pretty(const renf_elem_t a, const renf_t nf, const char * var, slong prec);
 
+void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf);
+
 /* inline set and binary operations */
+
+static __inline__
+int renf_elem_is_zero(const renf_elem_t a, const renf_t nf)
+{
+    return nf_elem_is_zero(a->elem, nf->nf);
+}
+
+/* TODO: move to ANTIC */
+int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
+
+static __inline__
+int renf_elem_is_rational(const renf_elem_t a, const renf_t nf)
+{
+    return _nf_elem_is_rational(a->elem, nf->nf);
+}
+
+static __inline__
+void renf_elem_set_nf_elem(renf_elem_t a, const nf_elem_t b, renf_t nf, slong prec)
+{
+    nf_elem_set(a->elem, b, nf->nf);
+    renf_elem_set_evaluation(a, nf, prec);
+}
+
+static __inline__
+void renf_elem_set(renf_elem_t a, const renf_elem_t b, const renf_t nf)
+{
+    nf_elem_set(a->elem, b->elem, nf->nf);
+    arb_set(a->emb, b->emb);
+}
 
 static __inline__
 void renf_elem_set_fmpz(renf_elem_t a, const fmpz_t c, const renf_t nf)

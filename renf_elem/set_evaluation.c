@@ -9,7 +9,6 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-
 #include "renf_elem.h"
 #include "poly_extra.h"
 
