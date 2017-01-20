@@ -39,7 +39,6 @@ typedef renf_elem_struct renf_elem_t[1];
 void renf_elem_init(renf_elem_t a, const renf_t nf);
 void renf_elem_clear(renf_elem_t a, const renf_t nf);
 
-void renf_elem_set_si(renf_elem_t a, slong c, const renf_t nf);
 void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf);
 
 void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
@@ -70,6 +69,20 @@ static __inline__
 int renf_elem_is_rational(const renf_elem_t a, const renf_t nf)
 {
     return _nf_elem_is_rational(a->elem, nf->nf);
+}
+
+static __inline__
+void renf_elem_zero(renf_elem_t a, const renf_t nf)
+{
+    nf_elem_zero(a->elem, nf->nf);
+    arb_zero(a->emb);
+}
+
+static __inline__
+void renf_elem_set_si(renf_elem_t a, slong n, const renf_t nf)
+{
+    nf_elem_set_si(a->elem, n, nf->nf);
+    arb_set_si(a->emb, n);
 }
 
 static __inline__
