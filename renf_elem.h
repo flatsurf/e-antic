@@ -66,6 +66,12 @@ int renf_elem_is_zero(const renf_elem_t a, const renf_t nf)
 int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
 
 static __inline__
+int renf_elem_equal(const renf_elem_t a, const renf_elem_t b, const renf_t nf)
+{
+    return nf_elem_equal(a->elem, b->elem, nf->nf);
+}
+
+static __inline__
 int renf_elem_is_rational(const renf_elem_t a, const renf_t nf)
 {
     return _nf_elem_is_rational(a->elem, nf->nf);
