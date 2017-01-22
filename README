@@ -13,5 +13,13 @@ The dependencies are:
  - arb
  - antic
 
+The library can be compiled as flint extensions
+
+$ cd FLINT_ROOT
+$ ./configure --extensions="ARB_DIR ANTIC_DIR REANTIC_DIR"
+$ make
+
+Or as an independent library
+
 Vincent Delecroix -- 10 August 2016.
 
