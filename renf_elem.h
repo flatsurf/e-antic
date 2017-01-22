@@ -62,6 +62,12 @@ int renf_elem_is_zero(const renf_elem_t a, const renf_t nf)
     return nf_elem_is_zero(a->elem, nf->nf);
 }
 
+static __inline__
+int renf_elem_is_one(const renf_elem_t a, const renf_t nf)
+{
+    return nf_elem_is_one(a->elem, nf->nf);
+}
+
 /* TODO: move to ANTIC */
 int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
 
@@ -82,6 +88,13 @@ void renf_elem_zero(renf_elem_t a, const renf_t nf)
 {
     nf_elem_zero(a->elem, nf->nf);
     arb_zero(a->emb);
+}
+
+static __inline__
+void renf_elem_one(renf_elem_t a, const renf_t nf)
+{
+    nf_elem_one(a->elem, nf->nf);
+    arb_one(a->emb);
 }
 
 static __inline__
