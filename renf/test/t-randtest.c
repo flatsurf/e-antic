@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
+    Copyright (C) 2017 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -11,35 +11,26 @@
 
 #include "renf.h"
 #include "poly_extra.h"
-
-#define MAX_DEGREE 20
+#include "flint.h"
 
 int main()
 {
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("real_embeddings....");
+    printf("randtest....");
     fflush(stdout);
 
-    for (iter = 0; iter < 100; iter++)
+    for (iter = 0; iter < 50; iter++)
     {
-        fmpz_poly_t p;
-        renf nfemb[MAX_DEGREE];
-
-        fmpz_poly_init(p);
-
-        do{
-            fmpz_poly_randtest_irreducible(p, state, MAX_DEGREE + 1, 20);
-        }while(fmpz_poly_degree(p) < 1);
-
-        renf_set_embeddings_fmpz_poly(nfemb, p, MAX_DEGREE, 64);
-
-        fmpz_poly_clear(p);
+        slong len = 2 + n_randint(state, 6);
+        mp_bitcnt_t bits = 30 + n_randint(state, 100);
+        renf_t nf;
+        renf_randtest(nf, state, len, bits);
+        renf_clear(nf);
     }
 
     FLINT_TEST_CLEANUP(state);
-
     printf("PASS\n");
     return 0;
 }

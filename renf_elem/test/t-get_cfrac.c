@@ -89,7 +89,7 @@ int main()
     fmpq_t d;
     FLINT_TEST_INIT(state);
 
-    printf("continued_fraction....");
+    printf("get_cfrac....");
 
     fmpq_init(d);
     fmpq_set_si(d, 2, 1);
@@ -102,7 +102,7 @@ int main()
 
     renf_clear(nf);
 
-    printf("PASS\n");
     FLINT_TEST_CLEANUP(state);
+    printf("PASS\n");
     return 0;
 }

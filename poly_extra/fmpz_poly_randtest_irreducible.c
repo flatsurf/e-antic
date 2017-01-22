@@ -23,6 +23,9 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
     fmpz_randprime(c, state, bits, 1);
     fmpz_mod_poly_init(q, c);
     fmpz_mod_poly_randtest_irreducible(q, state, len);
+
+    /* TODO: this is very not random */
+    /* all coefficients are in {0, 1, ..., p-1} */
     fmpz_mod_poly_get_fmpz_poly(p, q);
 
     fmpz_mod_poly_clear(q);

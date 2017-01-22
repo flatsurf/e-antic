@@ -41,7 +41,7 @@ void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
     fmpq_clear(k); \
     fmpq_poly_clear(p);
  
-void test_field1()
+void test_field1(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
     int iter;
@@ -51,7 +51,6 @@ void test_field1()
     arb_t emb;
     renf_t nf;
     renf_elem_t a;
-    FLINT_TEST_INIT(state);
 
     fmpq_init(k);
     fmpq_poly_init(p);
@@ -81,18 +80,16 @@ void test_field1()
         check_floor(a, nf, -iter % 2, "sqrt(5)");
     }
 
-    FLINT_TEST_CLEANUP(state);
     TEST_FLOOR_CLEANUP;
 }
 
-void test_field2()
+void test_field2(flint_rand_t state)
 {
     /* tests in QQ[3^(1/4)] */
     renf_t nf;
     renf_elem_t a;
     fmpq_t d,k;
     fmpq_poly_t p;
-    FLINT_TEST_INIT(state);
 
     fmpq_init(d);
     fmpq_poly_init(p);
@@ -171,20 +168,57 @@ void test_field2()
 
     check_floor(a, nf, 230, "3^(1/4)");
 
-    FLINT_TEST_CLEANUP(state);
     TEST_FLOOR_CLEANUP;
 }
 
 int main()
 {
+    int iter;
+    FLINT_TEST_INIT(state);
 
     printf("floor....");
     fflush(stdout);
 
-    test_field1();
-    test_field2();
+    test_field1(state);
+    test_field2(state);
+
+    for (iter = 0; iter < 100; iter++)
+    {
+        renf_t nf;
+        renf_elem_t a;
+        fmpz_t f;
+        arb_t e;
+
+        fmpz_init(f);
+        arb_init(e);
+        renf_randtest(nf, state, 2 + n_randint(state, 20), 50 + n_randint(state, 10));
+        renf_elem_init(a, nf);
+        renf_elem_randtest(a, state, 100 + n_randint(state, 10), nf);
+
+        renf_elem_floor(f, a, nf);
+
+        arb_sub_fmpz(e, a->emb, f, 1024);
+        if (arb_is_negative(e))
+        {
+            printf("FAIL:\n");
+            flint_abort();
+        }
+        arb_sub_ui(e, e, 1, 1024);
+        if (arb_is_positive(e))
+        {
+            printf("FAIL:\n");
+            flint_abort();
+        }
+
+        renf_elem_clear(a, nf);
+        renf_clear(nf);
+        fmpz_clear(f);
+        arb_clear(e);
+    }
+
 
     printf("PASS\n");
+    FLINT_TEST_CLEANUP(state);
     return 0;
 }
 

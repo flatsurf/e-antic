@@ -16,8 +16,7 @@ void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec)
 {
     if (nf->nf->flag & NF_LINEAR)
     {
-        fprintf(stderr, "[renf_elem_set_evaluation] LINEAR");
-        exit(EXIT_FAILURE);
+        arb_fmpz_div_fmpz(a->emb, LNF_ELEM_NUMREF(a->elem), LNF_ELEM_DENREF(a->elem), prec);
     }
     else if (nf->nf->flag & NF_QUADRATIC)
     {

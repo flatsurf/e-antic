@@ -17,6 +17,19 @@ void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf)
     arf_t cl, cr;
     slong prec;
 
+    if (_nf_elem_is_integer(b->elem, nf->nf))
+    {
+        if (nf_elem_is_zero(b->elem, nf->nf))
+            fmpz_zero(a);
+        if (nf->nf->flag & NF_LINEAR)
+            fmpz_set(a, LNF_ELEM_NUMREF(b->elem));
+        else if (nf->nf->flag & NF_QUADRATIC)
+            fmpz_set(a, QNF_ELEM_NUMREF(b->elem));
+        else
+            fmpz_set(a, NF_ELEM_NUMREF(b->elem));
+        return;
+    }
+
 #ifdef DEBUG
     printf("[renf_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
     printf("[renf_elem_floor]: embedding "); arb_printd(nf->emb, 10); printf("\n");

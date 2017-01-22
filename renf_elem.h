@@ -21,6 +21,7 @@
 #include "arb.h"
 #include "arb_poly.h"
 
+#include "poly_extra.h"
 #include "renf.h"
 
 #ifdef __cplusplus
@@ -54,6 +55,8 @@ void renf_elem_print_pretty(const renf_elem_t a, const renf_t nf, const char * v
 
 void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf);
 
+void renf_elem_check_embedding(const renf_elem_t a, const renf_t nf, slong prec);
+
 /* inline set and binary operations */
 
 static __inline__
@@ -70,6 +73,7 @@ int renf_elem_is_one(const renf_elem_t a, const renf_t nf)
 
 /* TODO: move to ANTIC */
 int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
+int _nf_elem_is_integer(const nf_elem_t a, const nf_t nf);
 
 static __inline__
 int renf_elem_equal(const renf_elem_t a, const renf_elem_t b, const renf_t nf)
@@ -188,6 +192,22 @@ void renf_elem_div_fmpz(renf_elem_t a, const renf_elem_t b, fmpz_t c, const renf
     nf_elem_scalar_div_fmpz(a->elem, b->elem, c, nf->nf);
     arb_div_fmpz(a->emb, b->emb, c, nf->prec);
 }
+
+static __inline__
+void renf_elem_add_fmpq(renf_elem_t a, const renf_elem_t b, fmpq_t c, const renf_t nf)
+{
+    nf_elem_add_fmpq(a->elem, b->elem, c, nf->nf);
+    arb_add_fmpq(a->emb, b->emb, c, nf->prec);
+}
+
+static __inline__
+void renf_elem_sub_fmpq(renf_elem_t a, const renf_elem_t b, fmpq_t c, const renf_t nf)
+{
+    nf_elem_sub_fmpq(a->elem, b->elem, c, nf->nf);
+    arb_sub_fmpq(a->emb, b->emb, c, nf->prec);
+}
+
+
 
 static __inline__ 
 void renf_elem_add(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf)

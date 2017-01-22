@@ -40,7 +40,7 @@ int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
     fmpq_poly_clear(p);
  
  
-void test_field1()
+void test_field1(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
     int iter;
@@ -50,7 +50,6 @@ void test_field1()
     arb_t emb;
     renf_t nf;
     renf_elem_t a;
-    FLINT_TEST_INIT(state);
 
     fmpq_init(k);
     fmpq_poly_init(p);
@@ -67,7 +66,6 @@ void test_field1()
 
     renf_elem_init(a, nf);
 
-
     /* (1+sqrt(5))/2 vs Fibonacci */
     fmpq_poly_zero(p);
     fmpq_poly_set_coeff_si(p, 1, -1);
@@ -79,21 +77,16 @@ void test_field1()
         renf_elem_set_fmpq_poly(a, p, nf);
         check_ceil(a, nf, 1 - iter % 2, "sqrt(5)");
     }
-
-    FLINT_TEST_CLEANUP(state);
-    TEST_CEIL_CLEANUP;
 }
 
 
-void test_field2()
+void test_field2(flint_rand_t state)
 {
     /* test in QQ[3^(1/4)] */
     renf_t nf;
     renf_elem_t a;
     fmpq_t d, k;
     fmpq_poly_t p;
-
-    FLINT_TEST_INIT(state);
 
     fmpq_init(d);
     fmpq_poly_init(p);
@@ -172,17 +165,54 @@ void test_field2()
     check_ceil(a, nf, 231, "3^(1/4)");
 
     TEST_CEIL_CLEANUP;
-   FLINT_TEST_CLEANUP(state);
 }
 
 int main()
 {
+    int iter;
+    FLINT_TEST_INIT(state);
 
     printf("ceil....");
     fflush(stdout);
 
-    test_field1();
-    test_field2();
+    test_field1(state);
+    test_field2(state);
+
+    for (iter = 0; iter < 100; iter++)
+    {
+        renf_t nf;
+        renf_elem_t a;
+        fmpz_t f;
+        arb_t e;
+
+        fmpz_init(f);
+        arb_init(e);
+        renf_randtest(nf, state, 2 + n_randint(state, 20), 50 + n_randint(state, 10));
+        renf_elem_init(a, nf);
+        renf_elem_randtest(a, state, 100 + n_randint(state, 10), nf);
+
+        renf_elem_ceil(f, a, nf);
+
+        arb_sub_fmpz(e, a->emb, f, 1024);
+        if (arb_is_positive(e))
+        {
+            printf("FAIL:\n");
+            flint_abort();
+        }
+        arb_add_ui(e, e, 1, 1024);
+        if (arb_is_negative(e))
+        {
+            printf("FAIL:\n");
+            flint_abort();
+        }
+
+        renf_elem_clear(a, nf);
+        renf_clear(nf);
+        fmpz_clear(f);
+        arb_clear(e);
+    }
+
+    FLINT_TEST_CLEANUP(state);
 
     printf("PASS\n");
     return 0;

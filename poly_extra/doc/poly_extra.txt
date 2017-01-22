@@ -120,7 +120,7 @@ slong fmpz_poly_num_real_roots_in_interval_sturm(fmpz_poly_t pol, fmpq_t a, fmpq
 void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_intervals, fmpz * pol, slong len)
 
     Isolate the real roots of \code{(pol, len)} contained in the
-    interval $(0, 1). The array \code{exact_roots} will be set by
+    interval $(0, 1)$. The array \code{exact_roots} will be set by
     the exact diadic roots found by the algorithm and
     \code{n_exact_roots} updated accordingly. The arrays
     \code{c_array} and \code{k_array} are set to be interval data

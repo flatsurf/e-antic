@@ -62,7 +62,7 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, const char * s, int ans)
     renf_elem_clear(b, nf); \
     renf_clear(nf);
 
-void test_field1()
+void test_field1(flint_rand_t state)
 {
     /* QQ[sqrt(5)] */
 
@@ -72,7 +72,6 @@ void test_field1()
     arb_t emb;
     renf_t nf;
     renf_elem_t a,b;
-    FLINT_TEST_INIT(state);
 
     arb_init(emb);
 
@@ -97,17 +96,15 @@ void test_field1()
         check_cmp(a,b,nf,"sqrt(5)", -1 + 2 * (iter % 2));
     }
 
-    FLINT_TEST_CLEANUP(state);
 }
 
-void test_field2()
+void test_field2(flint_rand_t state)
 {
     fmpq_t k;
     fmpq_poly_t pol;
     arb_t emb;
     renf_t nf;
     renf_elem_t a,b;
-    FLINT_TEST_INIT(state);
 
     fmpq_init(k);
     fmpq_poly_init(pol);
@@ -195,16 +192,69 @@ void test_field2()
 
     check_cmp(a, b, nf, "a1", 1);
 
-    FLINT_TEST_CLEANUP(state);
 }
 
 int main()
 {
+    int iter;
+    FLINT_TEST_INIT(state);
+
     printf("cmp....");
 
-    test_field1();
-    test_field2();
+    test_field1(state);
+    test_field2(state);
 
+    for (iter = 0; iter < 30; iter++)
+    {
+        renf_t nf;
+        renf_elem_t a, b;
+        fmpq_t x;
+
+        renf_randtest(nf, state, 2 + n_randint(state, 20), 20 + n_randint(state, 20));
+        renf_elem_init(a, nf);
+        renf_elem_init(b, nf);
+        fmpq_init(x);
+        fmpq_one(x);
+
+        renf_elem_randtest(a, state, 20 + n_randint(state, 10), nf);
+
+
+        if (renf_elem_cmp(a, a, nf) != 0)
+        {
+            printf("FAIL:\n");
+            printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+            abort();
+        }
+
+        renf_elem_add_fmpq(b, a, x, nf);
+
+        if (renf_elem_cmp(a, b, nf) != -1 || renf_elem_cmp(b, a, nf) != 1)
+        {
+            printf("FAIL:\n");
+            printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+            printf("b = "); renf_elem_print_pretty(b, nf, "x", 10); printf("\n");
+            abort();
+        }
+
+        fmpz_set_ui(fmpq_denref(x), 2);
+        fmpz_mul_2exp(fmpq_denref(x), fmpq_denref(x), 500);
+        renf_elem_add_fmpq(b, a, x, nf);
+
+        if (renf_elem_cmp(a, b, nf) != -1 || renf_elem_cmp(b, a, nf) != 1)
+        {
+            printf("FAIL:\n");
+            printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+            printf("b = "); renf_elem_print_pretty(b, nf, "x", 10); printf("\n");
+            abort();
+        }
+
+        fmpq_clear(x);
+        renf_elem_clear(a, nf);
+        renf_elem_clear(b, nf);
+        renf_clear(nf);
+    }
+
+    FLINT_TEST_CLEANUP(state);
     printf("PASS\n");
     return 0;
 }

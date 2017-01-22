@@ -25,4 +25,8 @@
 #define ADD_FMPZ(z,x,y,prec) arf_add_fmpz(z,x,y,prec,ARF_RND_NEAR)
 #define DIV_FMPZ(z,x,y,prec) arf_div_fmpz(z,x,y,prec,ARF_RND_NEAR)
 #include "poly_evaluate_template.h"
+#undef ADD
+#undef MUL
+#undef ADD_FMPZ
+#undef DIV_FMPZ
 #undef NUMBER

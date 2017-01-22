@@ -51,7 +51,7 @@ void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len
     } while (1);
 }
 
-int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec)
+int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slong prec)
 {
     int sl, sr, ans;
     arb_t b, c, rres;
@@ -68,7 +68,7 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
     arb_get_interval_arf(l, r, a, prec);
 
     arb_set_arf(b, l);
-    fmpz_poly_evaluate_arb(c, pol, b, prec);
+    _fmpz_poly_evaluate_arb(c, pol, len, b, prec);
     if (arb_contains_zero(c))
     {
         arf_clear(l);
@@ -81,7 +81,7 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
     sl = arf_sgn(arb_midref(c));
 
     arb_set_arf(b, r);
-    fmpz_poly_evaluate_arb(c, pol, b, prec);
+    _fmpz_poly_evaluate_arb(c, pol, len, b, prec);
     if (arb_contains_zero(c))
     {
         arf_clear(l);
@@ -93,7 +93,7 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
     }
     sr = arf_sgn(arb_midref(c));
 
-    _fmpz_poly_bisection_step_arf(l, r, pol->coeffs, fmpz_poly_length(pol), sl, sr, prec);
+    _fmpz_poly_bisection_step_arf(l, r, pol, len, sl, sr, prec);
     arb_set_interval_arf(rres, l, r, prec);
     ans = arb_contains(a, rres) && !arb_equal(rres, a);
     if (ans)
@@ -107,3 +107,9 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
 
     return ans;
 }
+
+int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec)
+{
+    return _fmpz_poly_bisection_step_arb(res, pol->coeffs, pol->length, a, prec);
+}
+

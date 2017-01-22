@@ -20,6 +20,10 @@
  extern "C" {
 #endif
 
+void arb_add_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
+void arb_sub_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
+void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
+void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
@@ -55,11 +59,15 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
 
 int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec);
 
+int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slong prec);
+
 int fmpz_poly_newton_step_arb(arb_t res, const fmpz_poly_t pol, const fmpz_poly_t der, arb_t a, slong prec);
 
 void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len, int sl, int sr, slong prec);
 
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec);
+
+void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly);
 
 /* root isolation */
 

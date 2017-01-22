@@ -12,7 +12,6 @@
 #include "poly_extra.h"
 #include "renf.h"
 
-/* TODO: use bisection if it fails */
 /* TODO: use multiple Newton if possible */
 
 void renf_refine_embedding(renf_t nf, slong prec)
@@ -24,12 +23,19 @@ void renf_refine_embedding(renf_t nf, slong prec)
     arb_printd(nf->emb, 10);
     printf("\n");
 #endif
-    _fmpz_poly_newton_step_arb(tmp,
+    if(!_fmpz_poly_newton_step_arb(tmp,
             fmpq_poly_numref(nf->nf->pol),
             nf->der->coeffs,
             fmpq_poly_length(nf->nf->pol),
             nf->emb,
-            prec);
+            prec))
+    {
+        _fmpz_poly_bisection_step_arb(tmp,
+                fmpq_poly_numref(nf->nf->pol),
+                fmpq_poly_length(nf->nf->pol),
+                nf->emb,
+                prec);
+    }
     arb_swap(tmp, nf->emb);
     arb_clear(tmp);
 #ifdef DEBUG
