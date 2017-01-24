@@ -10,7 +10,7 @@
 */
 
 #include "poly_extra.h"
-#include "fmpq_vec.h"
+#include "flint/fmpq_vec.h"
 
 void _slong_vec_print(const slong * vec, slong len)
 {

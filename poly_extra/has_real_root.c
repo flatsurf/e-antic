@@ -12,7 +12,7 @@
 #include "poly_extra.h"
 
 #ifdef DEBUG
-#include "fmpz_vec.h"
+#include "flint/fmpz_vec.h"
 #endif
 
 int _fmpz_poly_has_real_root(fmpz * p, slong len)

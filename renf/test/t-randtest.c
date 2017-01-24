@@ -11,7 +11,6 @@
 
 #include "renf.h"
 #include "poly_extra.h"
-#include "flint.h"
 
 int main()
 {

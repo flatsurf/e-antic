@@ -9,7 +9,6 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "flint.h"
 #include "poly_extra.h"
 
 int main()

@@ -10,8 +10,7 @@
 */
 
 #include "poly_extra.h"
-#include "fmpq_vec.h"
-#include "fmpz_poly.h"
+#include "flint/fmpq_vec.h"
 
 int main()
 {

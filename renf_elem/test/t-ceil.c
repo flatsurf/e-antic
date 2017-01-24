@@ -10,7 +10,6 @@
 */
 
 
-#include "flint.h"
 #include "renf_elem.h"
 
 int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)

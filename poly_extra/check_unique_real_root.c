@@ -11,7 +11,6 @@
 
 
 #include "poly_extra.h"
-#include "arb.h"
 
 static __inline__ int
 arb_sgn2(arb_t a)

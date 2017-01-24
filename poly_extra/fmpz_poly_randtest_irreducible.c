@@ -10,8 +10,7 @@
 */
 
 #include "poly_extra.h"
-#include "flint.h"
-#include "fmpz_mod_poly.h"
+#include "flint/fmpz_mod_poly.h"
 
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits)
 {

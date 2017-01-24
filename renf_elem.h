@@ -13,13 +13,12 @@
 #ifndef NF_EMB_ELEM_H
 #define NF_EMB_ELEM_H
 
-#include "gmp.h"
-#include "flint.h"
-#include "fmpq_poly.h"
-#include "nf.h"
-#include "nf_elem.h"
-#include "arb.h"
-#include "arb_poly.h"
+#include "flint/flint.h"
+#include "flint/fmpq_poly.h"
+#include "flint/nf.h"
+#include "flint/nf_elem.h"
+#include "flint/arb.h"
+#include "flint/arb_poly.h"
 
 #include "poly_extra.h"
 #include "renf.h"

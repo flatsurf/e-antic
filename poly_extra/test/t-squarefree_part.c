@@ -10,7 +10,6 @@
 */
 
 #include "poly_extra.h"
-#include "flint.h"
 
 int main()
 {

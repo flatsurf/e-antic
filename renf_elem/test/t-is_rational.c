@@ -10,7 +10,6 @@
 */
 
 
-#include "flint.h"
 #include "renf_elem.h"
 
 int main()

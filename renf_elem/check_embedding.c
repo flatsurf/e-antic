@@ -10,7 +10,6 @@
 */
 
 #include "poly_extra.h"
-#include "arb.h"
 #include "renf_elem.h"
 
 void renf_elem_check_embedding(const renf_elem_t a, const renf_t nf, slong prec)

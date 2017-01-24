@@ -10,9 +10,7 @@
 */
 
 
-#include "flint.h"
 #include "renf_elem.h"
-#include "arb.h"
 
 void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
 {

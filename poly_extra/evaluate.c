@@ -10,10 +10,6 @@
 */
 
 #include "poly_extra.h"
-#include "fmpz_poly.h"
-#include "fmpq_poly.h"
-#include "arb.h"
-#include "arf.h"
 
 #define NUMBER arb
 #include "poly_evaluate_template.h"
