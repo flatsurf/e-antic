@@ -1,27 +1,25 @@
-SHELL=/bin/sh
-
-NF_EMB_STATIC=1
-NF_EMB_SHARED=0
-
-NF_EMB_LIB=libnfemb.so.0.1
-NF_EMB_LIBNAME=libnfemb.so
-PREFIX=/usr/local
-
-INCS=-I$(CURDIR) -I/usr/local/include -I/usr/local/include/flint/ -I/usr/local/include/arb/ -I/opt/antic
-LIBS=-L$(CURDIR) -L/usr/local/lib -lnfemb -lflint -lgmp -lmpfr -lm
-LIBS2=-L$(CURDIR) -L/usr/local/lib -lflint -lgmp -lmpfr -lm
-
-CC=gcc
-CXX=g++
-AR=ar
-LDCONFIG=/sbin/ldconfig
-
-CFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
-CXXFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
-
-DLPATH=LD_LIBRARY_PATH
-DLPATH_ADD=$(CURDIR):/usr/local/lib:/usr/local/lib
-EXTRA_BUILD_DIRS=
+#NFEMB_STATIC=1
+#NFEMB_SHARED=0
+#
+#NFEMB_LIB=libnfemb.so.0.1
+#NFEMB_LIBNAME=libnfemb.so
+#PREFIX=/usr/local
+#
+#INCS=-I$(CURDIR) -I/usr/local/include -I/usr/local/include/flint/ -I/opt/antic
+#LIBS=-L$(CURDIR) -L/usr/local/lib -lnfemb -lflint -lgmp -lmpfr -lm
+#LIBS2=-L$(CURDIR) -L/usr/local/lib -lflint -lgmp -lmpfr -lm
+#
+#CC=gcc
+#CXX=g++
+#AR=ar
+#LDCONFIG=/sbin/ldconfig
+#
+#CFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
+#CXXFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
+#
+#DLPATH=LD_LIBRARY_PATH
+#DLPATH_ADD=$(CURDIR):/usr/local/lib:/usr/local/lib
+#EXTRA_BUILD_DIRS=
 
 QUIET_CC  = @echo '   ' CC  ' ' $@;
 QUIET_CXX = @echo '   ' CXX ' ' $@;
@@ -47,10 +45,10 @@ clean:
 	rm -rf build
 
 library: $(LIB_SOURCES)
-	$(AT)if [ "$(NF_EMB_SHARED)" -eq "1" ]; then \
+	$(AT)if [ "$(NFEMB_SHARED)" -eq "1" ]; then \
 		$(MAKE) shared; \
 	fi
-	$(AT)if [ "$(NF_EMB_STATIC)" -eq "1" ]; then \
+	$(AT)if [ "$(NFEMB_STATIC)" -eq "1" ]; then \
 		$(MAKE) static; \
 	fi
 
@@ -59,10 +57,10 @@ libnfemb.a: $(LIB_SOURCES) $(HEADERS)
 	$(QUIET_AR) $(AR) rcs libnfemb.a
 	$(AT) $(foreach mod, $(BUILD_DIRS), $(AR) rcs libnfemb.a build/$(mod)/*.o || exit $$?;)
 
-$(NF_EMB_LIB): $(LIB_SOURCES) $(HEADERS)
+$(NFEMB_LIB): $(LIB_SOURCES) $(HEADERS)
 	echo "HEY"
 
-shared: $(NF_EMB_LIB)
+shared: $(NFEMB_LIB)
 
 static: libnfemb.a
 
