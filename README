@@ -10,16 +10,25 @@ The library is currently under active development.
 
 The dependencies are:
  - flint2 (see http://flintlib.org).
- - arb
- - antic
+ - arb (see http://arblib.org/)
+ - antic (see https://github.com/wbhart/antic/)
 
-The library can be compiled as flint extensions
+Installation
 
-$ cd FLINT_ROOT
-$ ./configure --extensions="ARB_DIR ANTIC_DIR REANTIC_DIR"
-$ make
+1) Compile flint with arb and antic as extensions
 
-Or as an independent library
+    $ cd FLINT_ROOT
+    $ ./configure --extensions="ARB_ROOT ANTIC_ROOT"
+    $ make
+    $ sudo make install
+
+2) Compile reantic
+
+    $ cd REANTIC_ROOT
+    $ ./configure
+    $ make
+
+Soon enough, it will be possible to build reantic as a flint extension as well.
 
 Vincent Delecroix -- 10 August 2016.
 
