@@ -21,8 +21,6 @@ void _slong_vec_print(const slong * vec, slong len)
 }
 
 
-/*#define DEBUG*/
-
 void check_intervals(
       fmpq * vec, slong len,
       fmpq * exact, slong n_exact,
@@ -45,9 +43,6 @@ void check_intervals(
     i = j = k = 0;
     while ((j < n_exact) || (k < n_interval))
     {
-#ifdef DEBUG
-        flint_printf("[check_intervals] j = %wd  k = %wd\n", j, k);
-#endif
         if (k < n_interval)
         {
             fmpz_set(fmpq_numref(x), c_array + k);
@@ -67,18 +62,6 @@ void check_intervals(
             }
         }
 
-#ifdef DEBUG
-        if (k < n_interval)
-        {
-            flint_printf("[check intervals] %wd-th interval is ", k);
-            printf("("); fmpq_print(x); printf(","); fmpq_print(y); printf(")\n");
-        }
-
-        if (j < n_exact)
-        {
-            flint_printf("[check intervals] %wd-th exact root is ", j); fmpq_print(exact +j); printf("\n");
-        }
-#endif
 
         if ((j < n_exact) && (k < n_interval))
         {
@@ -207,15 +190,6 @@ int main(void)
 
         _fmpq_vec_randtest_uniq_sorted(vec, state, n, 30);
 
-#ifdef DEBUG
-        printf("\n=============== NEW POLY =====================\n");
-        flint_printf("n = %wd\n", n);
-        printf("vec = ");
-        _fmpq_vec_print(vec, n);
-        printf("\n");
-        fflush(stdout);
-#endif
-
         fmpz_poly_init(p);
         fmpz_poly_from_fmpq_roots(p, vec, n);
 
@@ -223,10 +197,6 @@ int main(void)
         fmpz_poly_randtest_no_real_root(q, state, nc, 100);
         fmpz_poly_mul(p, p, q);
 
-#ifdef DEBUG
-        printf("p = "); fmpz_poly_print_pretty(p, "x"); printf("\n");
-        fflush(stdout);
-#endif
         fmpz_poly_isolate_real_roots(exact_array, &n_exact, c_array, k_array, &n_interval, p);
 
         check_intervals(vec, n, exact_array, n_exact, c_array, k_array, n_interval);

@@ -22,16 +22,8 @@ void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf)
     prec = nf->prec;
     do{
         arb_get_interval_arf(cl, cr, b->emb, prec);
-#ifdef DEBUG
-        printf("[ceil] cl = "); arf_printd(cl, 30); printf("\n");
-        printf("[ceil] cr = "); arf_printd(cr, 30); printf("\n");
-#endif
         arf_ceil(cl, cl);
         arf_ceil(cr, cr);
-#ifdef DEBUG
-        printf("[ceil] ceil(cl) = "); arf_printd(cl, 30); printf("\n");
-        printf("[ceil] ceil(cr) = "); arf_printd(cr, 30); printf("\n");
-#endif
         if(arf_equal(cl,cr))
         {
             arf_get_fmpz(a, cl, ARF_RND_NEAR);

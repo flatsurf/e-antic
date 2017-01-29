@@ -30,27 +30,13 @@ void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf)
         return;
     }
 
-#ifdef DEBUG
-    printf("[renf_elem_floor]: nf with pol "); fmpq_poly_print_pretty(nf->nf->pol, "x"); printf("\n");
-    printf("[renf_elem_floor]: embedding "); arb_printd(nf->emb, 10); printf("\n");
-    printf("[renf_elem_floor]: b = "); renf_elem_print_pretty(b, nf, "a", 10); printf("\n");
-#endif
-
     arf_init(cl);
     arf_init(cr);
     prec = nf->prec;
     do{
         arb_get_interval_arf(cl, cr, b->emb, prec);
-#ifdef DEBUG
-        printf("[floor] cl = "); arf_printd(cl, 30); printf("\n");
-        printf("[floor] cr = "); arf_printd(cr, 30); printf("\n");
-#endif
         arf_floor(cl, cl);
         arf_floor(cr, cr);
-#ifdef DEBUG
-        printf("[floor] floor(cl) = "); arf_printd(cl, 30); printf("\n");
-        printf("[floor] floor(cr) = "); arf_printd(cr, 30); printf("\n");
-#endif
         if(arf_equal(cl,cr))
         {
             arf_get_fmpz(a, cl, ARF_RND_NEAR);

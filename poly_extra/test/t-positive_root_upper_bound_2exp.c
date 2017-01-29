@@ -28,11 +28,6 @@ int main()
         slong bound;
         fmpz_poly_t p,q;
 
-#ifdef DEBUG
-        printf("iter = %d\n", iter);
-        fflush(stdout);
-#endif
-
         real_roots = n_randint(state, 50);
         complex_roots = n_randint(state, 50);
 
@@ -73,16 +68,8 @@ int main()
 
             fmpz_poly_mul(p, p, q);
         }
-#ifdef DEBUG
-/*        printf("p = "); fmpz_poly_print(p); printf("\n");*/
-        fflush(stdout);
-#endif
 
         bound = fmpz_poly_positive_root_upper_bound_2exp(p);
-
-#ifdef DEBUG
-        flint_printf("Descartes bound = %wd\n", bound);
-#endif
 
         if ((bound == WORD_MIN))
         {

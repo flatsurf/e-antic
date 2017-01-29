@@ -30,23 +30,12 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
     fmpz_poly_t pol2;
     slong n;
 
-#ifdef DEBUG
-    printf("[fmpq_poly_check_unique_real_root] pol = "); fmpq_poly_print(pol); printf("\n");
-    printf("[fmpq_poly_check_unique_real_root] a = "); arb_printd(a, 10); printf("\n");
-    fflush(stdout);
-#endif
-
     if(pol->length < 2)
         return 0;
 
     /* 1 - cheap test:                    */
     /*   - sign(left) * sign(right) = -1  */
     /*   - no zero of the derivative      */
-#ifdef DEBUG
-    printf("[fmpq_poly_check_unique_real_root] cheap test\n");
-    fflush(stdout);
-#endif
-
     arb_init(b);
     arb_init(c);
     arf_init(l);
@@ -80,10 +69,6 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
     /* 2 - expensive test                                          */
     /* enclose a in an interval of the form [c / 2^k, (c + 1)/2^k] */
     /* then call the algorithm to find roots in [0, 1]             */
-#ifdef DEBUG
-    printf("[fmpq_poly_check_unique_real_root] expensive test\n");
-    fflush(stdout);
-#endif
     arb_clear(b);
 
     fmpq_init(ql);
@@ -91,25 +76,11 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
     arf_get_fmpq(ql, l);
     arf_get_fmpq(qr, r);
 
-#ifdef DEBUG
-    printf("[fmpq_poly_check_unique_real_root] ql = "); fmpq_print(ql); printf("\n");
-    printf("[fmpq_poly_check_unique_real_root] qr = "); fmpq_print(qr); printf("\n");
-    fflush(stdout);
-#endif
-
     fmpz_poly_init(pol2);
     fmpz_poly_fit_length(pol2, pol->length);
     _fmpz_vec_set(pol2->coeffs, pol->coeffs, pol->length);
     pol2->length = pol->length;
     _fmpz_poly_scale_0_1_fmpq(pol2->coeffs, pol2->length, ql, qr);
-#ifdef DEBUG
-    flint_printf("[fmpq_poly_check_unique_real_root] scaled poly = "); fmpz_poly_print(pol2); printf("\n");
-    flint_printf("[fmpq_poly_check_unique_real_root] vca count = %wd\n",
-            fmpz_poly_num_real_roots_0_1_vca(pol2));
-    flint_printf("[fmpq_poly_check_unique_real_root] Sturm count = %wd\n",
-            fmpz_poly_num_real_roots_0_1_sturm(pol2));
-    fflush(stdout);
-#endif
 
     n = fmpz_poly_num_real_roots_0_1(pol2);
     fmpz_poly_clear(pol2);

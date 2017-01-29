@@ -18,11 +18,7 @@ void renf_refine_embedding(renf_t nf, slong prec)
 {
     arb_t tmp;
     arb_init(tmp);
-#ifdef DEBUG
-    printf("[_renf_refine_embedding]: before emb=");
-    arb_printd(nf->emb, 10);
-    printf("\n");
-#endif
+
     if(!_fmpz_poly_newton_step_arb(tmp,
             fmpq_poly_numref(nf->nf->pol),
             nf->der->coeffs,
@@ -38,9 +34,4 @@ void renf_refine_embedding(renf_t nf, slong prec)
     }
     arb_swap(tmp, nf->emb);
     arb_clear(tmp);
-#ifdef DEBUG
-    printf("[_renf_refine_embedding]: after emb=");
-    arb_printd(nf->emb, 10);
-    printf("\n");
-#endif
 }

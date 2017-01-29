@@ -11,29 +11,16 @@
 
 #include "poly_extra.h"
 
-#ifdef DEBUG
-#include "flint/fmpz_vec.h"
-#endif
-
 int _fmpz_poly_has_real_root(fmpz * p, slong len)
 {
     slong n, i;
     int s, t;
-
-#ifdef DEBUG
-    printf("[_fmpz_poly_has_real_root] p = "); _fmpz_vec_print(p, len); printf("\n");
-    fflush(stdout);
-#endif
 
     /* O(1) conditions:                          */
     /*    - constant polynomial                  */
     /*    - odd degree                           */
     /*    - p(0) = 0                             */
     /*    - sign(p(0)) * sign(p(+infinity)) = -1 */
-#ifdef DEBUG
-    printf("[_fmpz_poly_has_real_root] O(1) conditions\n");
-    fflush(stdout);
-#endif
     if (len == 1)
         return 0;
     if (len % 2 == 0)
@@ -42,10 +29,6 @@ int _fmpz_poly_has_real_root(fmpz * p, slong len)
        return 1;
 
     /* O(len) conditions: Descartes rule of sign */
-#ifdef DEBUG
-    printf("[_fmpz_poly_has_real_root] O(len) conditions\n");
-    fflush(stdout);
-#endif
     n = 0;
     s = fmpz_sgn(p);
     for (i = 1; i < len; i++)
@@ -58,10 +41,6 @@ int _fmpz_poly_has_real_root(fmpz * p, slong len)
             s = t;
         }
     }
-#ifdef DEBUG
-    flint_printf("[_fmpz_poly_has_real_root] Descartes+:  n = %wd\n", n);
-    fflush(stdout);
-#endif
     if (n % 2 == 1) return 1;
 
     n = 0;
@@ -77,17 +56,8 @@ int _fmpz_poly_has_real_root(fmpz * p, slong len)
             s = t;
         }
     }
-#ifdef DEBUG
-    flint_printf("[_fmpz_poly_has_real_root] Descartes-:  n = %wd\n", n);
-    fflush(stdout);
-#endif
     if (n % 2 == 1) return 1;
 
     /* try to isolate one root */
-#ifdef DEBUG
-    printf("[_fmpz_poly_has_real_root] root isolation\n");
-    fflush(stdout);
-#endif
-
     return _fmpz_poly_num_real_roots(p, len) != 0;
 }
