@@ -190,6 +190,7 @@ int main(void)
         slong k_array[30];
         fmpq exact_array[30];
         fmpz_poly_t p,q;
+
         slong n = n_randint(state, 30);      /* real roots            */
         slong nc = 1 + n_randint(state, 30); /* complex roots */
         slong i;
@@ -231,6 +232,7 @@ int main(void)
         check_intervals(vec, n, exact_array, n_exact, c_array, k_array, n_interval);
 
         fmpz_poly_clear(p);
+        fmpz_poly_clear(q);
         for(i = 0; i < 30; ++i)
         {
             fmpq_clear(vec + i);

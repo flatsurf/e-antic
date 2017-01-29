@@ -80,12 +80,12 @@ slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong
 #endif
 
     }
-    arb_clear(a);
 
 #ifdef DEBUG
     printf("[renf_set_embeddings_fmpz_poly] cleaning...");
     fflush(stdout);
 #endif
+    arb_clear(a);
     fmpq_poly_clear(p2);
     _fmpz_vec_clear(c, n);
     flint_free(k);

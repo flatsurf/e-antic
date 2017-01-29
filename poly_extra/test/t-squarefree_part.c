@@ -55,6 +55,11 @@ int main()
             printf("q2 = "); fmpz_poly_print(q2); printf("\n");
             abort();
         }
+
+        fmpz_poly_clear(p);
+        fmpz_poly_clear(p2);
+        fmpz_poly_clear(q1);
+        fmpz_poly_clear(q2);
     }
 
 

@@ -12,7 +12,7 @@
 #include "renf.h"
 #include "poly_extra.h"
 
-void check_renf_real(renf_t nf)
+void check_renf(renf_t nf)
 {
     arb_ptr a;
     arb_t b;
@@ -42,47 +42,78 @@ void check_renf_real(renf_t nf)
 
 int main()
 {
-    fmpq_poly_t p;
-    arb_t emb;
-    renf_t nf;
-
-    fmpq_poly_init(p);
-    arb_init(emb);
 
     printf("init....");
 
     /* x^2 - 2 */
-    fmpq_poly_set_coeff_si(p, 0, -2);
-    fmpq_poly_set_coeff_si(p, 2, 1);
-    arb_set_d(emb, 1.414213562373095);
-    arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 64);
-    check_renf_real(nf);
-    renf_clear(nf);
+    {
+        fmpq_poly_t p;
+        arb_t emb;
+        renf_t nf;
+
+        fmpq_poly_init(p);
+        arb_init(emb);
+
+        fmpq_poly_set_coeff_si(p, 0, -2);
+        fmpq_poly_set_coeff_si(p, 2, 1);
+        arb_set_d(emb, 1.414213562373095);
+        arb_add_error_2exp_si(emb, -20);
+        renf_init(nf, p, emb, 64);
+        check_renf(nf);
+
+        renf_clear(nf);
+        fmpq_poly_clear(p);
+        arb_clear(emb);
+    }
 
     /* x^4 - 100*x^3 + 50*x^2 - 20*x + 1 */
-    fmpq_poly_zero(p);
-    fmpq_poly_set_coeff_si(p, 4, 1);
-    fmpq_poly_set_coeff_si(p, 3, -100);
-    fmpq_poly_set_coeff_si(p, 2, 50);
-    fmpq_poly_set_coeff_si(p, 1, -20);
-    fmpq_poly_set_coeff_si(p, 0, 1);
-    arb_set_d(emb, 99.4995040886108);
-    arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 64);
-    check_renf_real(nf);
-    renf_clear(nf);
+    {
+        fmpq_poly_t p;
+        arb_t emb;
+        renf_t nf;
+
+        fmpq_poly_init(p);
+        arb_init(emb);
+
+        fmpq_poly_zero(p);
+        fmpq_poly_set_coeff_si(p, 4, 1);
+        fmpq_poly_set_coeff_si(p, 3, -100);
+        fmpq_poly_set_coeff_si(p, 2, 50);
+        fmpq_poly_set_coeff_si(p, 1, -20);
+        fmpq_poly_set_coeff_si(p, 0, 1);
+        arb_set_d(emb, 99.4995040886108);
+        arb_add_error_2exp_si(emb, -20);
+        renf_init(nf, p, emb, 64);
+        check_renf(nf);
+
+        renf_clear(nf);
+        fmpq_poly_clear(p);
+        arb_clear(emb);
+
+    }
 
     /* p = x^30 - 3000*x - 1 */
-    fmpq_poly_zero(p);
-    fmpq_poly_set_coeff_si(p, 30, 1);
-    fmpq_poly_set_coeff_si(p, 1, -3000);
-    fmpq_poly_set_coeff_si(p, 0, -1);
-    arb_set_d(emb, 1.317966950615985);
-    arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 64);
-    check_renf_real(nf);
-    renf_clear(nf);
+    {
+        fmpq_poly_t p;
+        arb_t emb;
+        renf_t nf;
+
+        fmpq_poly_init(p);
+        arb_init(emb);
+
+        fmpq_poly_zero(p);
+        fmpq_poly_set_coeff_si(p, 30, 1);
+        fmpq_poly_set_coeff_si(p, 1, -3000);
+        fmpq_poly_set_coeff_si(p, 0, -1);
+        arb_set_d(emb, 1.317966950615985);
+        arb_add_error_2exp_si(emb, -20);
+        renf_init(nf, p, emb, 64);
+        check_renf(nf);
+
+        renf_clear(nf);
+        fmpq_poly_clear(p);
+        arb_clear(emb);
+    }
 
     printf("PASS\n");
 

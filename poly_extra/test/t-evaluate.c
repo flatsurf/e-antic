@@ -91,6 +91,12 @@ int main()
                 abort();
             }
         }
+
+        fmpq_poly_clear(p);
+        arb_clear(a);
+        arb_clear(b);
+        arf_clear(c);
+        arf_clear(d);
     }
 
     /* check evaluate_arb agains exact evaluate_fmpq */

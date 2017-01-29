@@ -25,6 +25,7 @@ int main()
         slong len = 2 + n_randint(state, 6);
         mp_bitcnt_t bits = 30 + n_randint(state, 100);
         renf_t nf;
+
         renf_randtest(nf, state, len, bits);
         renf_clear(nf);
     }

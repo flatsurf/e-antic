@@ -47,6 +47,7 @@ int main()
         renf_elem_clear(a, nf);
         renf_elem_clear(b, nf);
         renf_clear(nf);
+        fmpq_poly_clear(p);
     }
 
     FLINT_TEST_CLEANUP(state);

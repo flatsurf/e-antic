@@ -55,6 +55,8 @@ int main()
         }
 
         _fmpq_vec_clear(real_roots, n_real_roots);
+        fmpz_poly_clear(p);
+        fmpz_poly_clear(q);
     }
 
     FLINT_TEST_CLEANUP(state);

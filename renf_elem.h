@@ -206,8 +206,6 @@ void renf_elem_sub_fmpq(renf_elem_t a, const renf_elem_t b, fmpq_t c, const renf
     arb_sub_fmpq(a->emb, b->emb, c, nf->prec);
 }
 
-
-
 static __inline__ 
 void renf_elem_add(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf)
 {

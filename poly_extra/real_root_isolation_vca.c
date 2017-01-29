@@ -120,6 +120,7 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
                 if (k == i)
                 {
                     fmpz_clear(c);
+                    fmpz_clear(one);
                     _fmpz_vec_clear(p0, len0);
                     return;
                 }
@@ -313,6 +314,8 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     flint_printf("[fmpz_poly_isolate_real_roots] n_interval = %wd\n", *n_interval);
     fflush(stdout);
 #endif
+
+    _fmpz_vec_clear(p, len);
 }
 
 slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)

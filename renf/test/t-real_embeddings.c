@@ -24,6 +24,7 @@ int main()
 
     for (iter = 0; iter < 100; iter++)
     {
+        int i, n;
         fmpz_poly_t p;
         renf nfemb[MAX_DEGREE];
 
@@ -33,9 +34,10 @@ int main()
             fmpz_poly_randtest_irreducible(p, state, MAX_DEGREE + 1, 20);
         }while(fmpz_poly_degree(p) < 1);
 
-        renf_set_embeddings_fmpz_poly(nfemb, p, MAX_DEGREE, 64);
+        n  = renf_set_embeddings_fmpz_poly(nfemb, p, MAX_DEGREE, 64);
 
         fmpz_poly_clear(p);
+        for (i = 0; i < n; i++) renf_clear(nfemb + i);
     }
 
     FLINT_TEST_CLEANUP(state);

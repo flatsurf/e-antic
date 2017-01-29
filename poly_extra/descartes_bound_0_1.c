@@ -85,12 +85,15 @@ slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound)
 
     if (s == -fmpz_sgn(q))
     {
-        if (V == bound) return WORD_MAX;
+        if (V == bound)
+        {
+            _fmpz_vec_clear(q, len);
+            return WORD_MAX;
+        }
         V++;
     }
 
     _fmpz_vec_clear(q, len);
-
     return V;
 }
 
