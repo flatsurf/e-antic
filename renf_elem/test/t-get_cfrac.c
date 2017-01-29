@@ -100,6 +100,9 @@ int main()
     renf_init_nth_root_fmpq(nf, d, 3, 64);
     check_nf_cf(nf, state, 30, 100, 20);
 
+    renf_randtest(nf, state, 2 + n_randint(state, 10), 30);
+    check_nf_cf(nf, state, 30, 100, 20);
+
     renf_clear(nf);
 
     FLINT_TEST_CLEANUP(state);
