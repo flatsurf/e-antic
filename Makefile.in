@@ -58,7 +58,6 @@ libnfemb.a: $(LIB_SOURCES) $(HEADERS)
 	$(AT) $(foreach mod, $(BUILD_DIRS), $(AR) rcs libnfemb.a build/$(mod)/*.o || exit $$?;)
 
 $(NFEMB_LIB): $(LIB_SOURCES) $(HEADERS)
-	echo "HEY"
 
 shared: $(NFEMB_LIB)
 
