@@ -12,9 +12,18 @@
 #include "renf_elem.h"
 #include <string.h>
 
-void renf_elem_print_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)
+char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)
 {
-    char * res = renf_elem_get_str_pretty(a, var, nf, n);
-    fprintf(stdout, res);
-    flint_free(res);
+    char * x1 = nf_elem_get_str_pretty(a->elem, var, nf->nf);
+    char * x2 = arb_get_str(a->emb, n, 0);
+    char * res = flint_malloc(strlen(x1) + strlen(x2) + 10);
+
+    strcpy(res, x1);
+    strcat(res, " in ");
+    strcat(res, x2);
+
+    flint_free(x1);
+    flint_free(x2);
+
+    return res;
 }

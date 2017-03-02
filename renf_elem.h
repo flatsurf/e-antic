@@ -50,7 +50,8 @@ slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, ren
 
 void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec);
 
-void renf_elem_print_pretty(const renf_elem_t a, const renf_t nf, const char * var, slong prec);
+char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n);
+void renf_elem_print_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n);
 
 void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf);
 
@@ -73,6 +74,13 @@ int renf_elem_is_one(const renf_elem_t a, const renf_t nf)
 /* TODO: move to ANTIC */
 int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
 int _nf_elem_is_integer(const nf_elem_t a, const nf_t nf);
+
+static __inline__
+void renf_elem_neg(renf_elem_t a, const renf_elem_t b, const renf_t nf)
+{
+    nf_elem_neg(a->elem, b->elem, nf->nf);
+    arb_neg(a->emb, b->emb);
+}
 
 static __inline__
 int renf_elem_equal(const renf_elem_t a, const renf_elem_t b, const renf_t nf)
