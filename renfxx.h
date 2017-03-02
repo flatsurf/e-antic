@@ -49,6 +49,13 @@ public:
     bool operator<(renf_elem_class &);
     bool operator!=(renf_elem_class &);
 
+    bool operator>(slong);
+    bool operator>=(slong);
+    bool operator==(slong);
+    bool operator<=(slong);
+    bool operator<(slong);
+    bool operator!=(slong);
+
     bool is_zero() { return renf_elem_is_zero(this->a, this->nf); };
     bool is_one() { return renf_elem_is_one(this->a, this->nf); };
 
@@ -81,7 +88,7 @@ renf_elem_class::~renf_elem_class(void)
     renf_elem_clear(this->a, this->nf);
 }
 
-std::ostream& operator << (std::ostream & os, const renf_elem_class& a)
+std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 {
     char * res = renf_elem_get_str_pretty(a.a, "x", a.nf, 5);
     os << res;
@@ -135,33 +142,69 @@ bool renf_elem_class::operator==(renf_elem_class & other)
 {
     return renf_elem_equal(this->a, other.a, this->nf);
 }
+bool renf_elem_class::operator==(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return renf_elem_equal(this->a, other.a, this->nf);
+}
 
 bool renf_elem_class::operator!=(renf_elem_class & other)
 {
     return not renf_elem_equal(this->a, other.a, this->nf);
 }
+bool renf_elem_class::operator!=(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return not renf_elem_equal(this->a, other.a, this->nf);
+}
 
 bool renf_elem_class::operator>(renf_elem_class & other)
 {
-    if (this->nf != other.nf)
-    {
-        fprintf(stderr, "DIFFERENT FIELDS\n");
-        flint_abort();
-    }
     return renf_elem_cmp(this->a, other.a, this->nf) > 0;
 }
+bool renf_elem_class::operator>(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return renf_elem_cmp(this->a, other.a, this->nf) > 0;
+}
+
 bool renf_elem_class::operator>=(renf_elem_class & other)
 {
     return renf_elem_cmp(this->a, other.a, this->nf) >= 0;
 }
-bool renf_elem_class::operator<=(renf_elem_class & other)
+bool renf_elem_class::operator>=(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return renf_elem_cmp(this->a, other.a, this->nf) >= 0;
+}
+
+bool renf_elem_class::operator<=(renf_elem_class& other)
 {
     return renf_elem_cmp(this->a, other.a, this->nf) <= 0;
 }
-bool renf_elem_class::operator<(renf_elem_class & other)
+bool renf_elem_class::operator<=(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return renf_elem_cmp(this->a, other.a, this->nf) <= 0;
+}
+
+bool renf_elem_class::operator<(renf_elem_class& other)
 {
     return renf_elem_cmp(this->a, other.a, this->nf) < 0;
 }
+bool renf_elem_class::operator<(slong n)
+{
+    renf_elem_class other(this->nf);
+    renf_elem_set_si(other.a, n, this->nf);
+    return renf_elem_cmp(this->a, other.a, this->nf) < 0;
+}
+
+
 
 #endif
 
