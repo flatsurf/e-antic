@@ -10,19 +10,15 @@
 #LIBS2=-L$(CURDIR) -L/usr/local/lib -lflint -lgmp -lmpfr -lm
 #
 #CC=gcc
-#CXX=g++
 #AR=ar
 #LDCONFIG=/sbin/ldconfig
 #
 #CFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
-#CXXFLAGS=-ansi -pedantic -Wall -O2 -funroll-loops -g -mpopcnt  -Wno-unknown-pragmas
 #
 #DLPATH=LD_LIBRARY_PATH
 #DLPATH_ADD=$(CURDIR):/usr/local/lib:/usr/local/lib
-#EXTRA_BUILD_DIRS=
 
 QUIET_CC  = @echo '   ' CC  ' ' $@;
-QUIET_CXX = @echo '   ' CXX ' ' $@;
 QUIET_AR  = @echo '   ' AR  ' ' $@;
 
 AT=@
@@ -30,7 +26,6 @@ BUILD_DIRS = poly_extra renf renf_elem
 LIB_SOURCES = $(wildcard $(patsubst %, %/*.c, $(BUILD_DIRS)))
 HEADERS = $(patsubst %, %.h, $(BUILD_DIRS))
 LIB_OBJS = $(patsubst %, build/%/*.o, $(BUILD_DIRS))
-
 
 TEST_SOURCES = $(wildcard test/*.c)
 
