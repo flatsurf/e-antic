@@ -29,7 +29,7 @@ public:
 
     // construction as integers or rationals
     renf_elem_class(const int=0);
-    renf_elem_class(const unsigned int=0);
+    renf_elem_class(const unsigned int);
     renf_elem_class(const long);
     renf_elem_class(const unsigned long);
     renf_elem_class(const mpz_class &);
@@ -45,8 +45,8 @@ public:
     renf_elem_class& operator = (const renf_elem_class&);
 
     // unary operations
-    renf_elem_class operator-();
-    renf_elem_class operator+();
+    renf_elem_class operator-() const;
+    renf_elem_class operator+() const;
 
     // binary operations
     renf_elem_class operator + (const renf_elem_class&) const;
@@ -69,6 +69,7 @@ public:
 
     // input, output
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
+    friend std::istream& operator >> (std::istream &, renf_elem_class&);
     void print();
 
     // macro for declaration of
@@ -274,11 +275,17 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
     return os;
 }
 
-renf_elem_class renf_elem_class::operator-()
+std::istream& operator>>(std::istream & os, renf_elem_class& a)
+{
+  // FIXME
+}
+
+
+renf_elem_class renf_elem_class::operator-() const
 {
     return *this;
 }
-renf_elem_class renf_elem_class::operator+()
+renf_elem_class renf_elem_class::operator+() const
 {
     return *this;
 }
