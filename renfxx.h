@@ -221,6 +221,16 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
     return os;
 }
 
+renf_elem_class renf_elem_class::operator-()
+{
+    return *this;
+}
+renf_elem_class renf_elem_class::operator+()
+{
+    return *this;
+}
+
+
 #define __renf_elem_op(OP, INOP, FUN1, FUN2, FUN3) \
 renf_elem_class renf_elem_class::operator OP (const renf_elem_class & other) const \
 {                                         \
