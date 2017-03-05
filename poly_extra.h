@@ -23,8 +23,10 @@
 
 void arb_add_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_sub_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
+void arb_fmpq_sub(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
+void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 
 /* TODO: submit to FLINT */
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);

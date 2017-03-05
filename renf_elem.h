@@ -173,46 +173,82 @@ void renf_elem_div_si(renf_elem_t a, const renf_elem_t b, slong c, const renf_t 
 
 
 static __inline__
-void renf_elem_add_fmpz(renf_elem_t a, const renf_elem_t b, fmpz_t c, const renf_t nf)
+void renf_elem_add_fmpz(renf_elem_t a, const renf_elem_t b, const fmpz_t c, const renf_t nf)
 {
     nf_elem_add_fmpz(a->elem, b->elem, c, nf->nf);
     arb_add_fmpz(a->emb, b->emb, c, nf->prec);
 }
 
 static __inline__
-void renf_elem_sub_fmpz(renf_elem_t a, const renf_elem_t b, fmpz_t c, const renf_t nf)
+void renf_elem_sub_fmpz(renf_elem_t a, const renf_elem_t b, const fmpz_t c, const renf_t nf)
 {
     nf_elem_sub_fmpz(a->elem, b->elem, c, nf->nf);
     arb_sub_fmpz(a->emb, b->emb, c, nf->prec);
 }
 
 static __inline__
-void renf_elem_mul_fmpz(renf_elem_t a, const renf_elem_t b, fmpz_t c, const renf_t nf)
+void renf_elem_mul_fmpz(renf_elem_t a, const renf_elem_t b, const fmpz_t c, const renf_t nf)
 {
     nf_elem_scalar_mul_fmpz(a->elem, b->elem, c, nf->nf);
     arb_mul_fmpz(a->emb, b->emb, c, nf->prec);
 }
 
 static __inline__
-void renf_elem_div_fmpz(renf_elem_t a, const renf_elem_t b, fmpz_t c, const renf_t nf)
+void renf_elem_div_fmpz(renf_elem_t a, const renf_elem_t b, const fmpz_t c, const renf_t nf)
 {
     nf_elem_scalar_div_fmpz(a->elem, b->elem, c, nf->nf);
     arb_div_fmpz(a->emb, b->emb, c, nf->prec);
 }
 
 static __inline__
-void renf_elem_add_fmpq(renf_elem_t a, const renf_elem_t b, fmpq_t c, const renf_t nf)
+void renf_elem_add_fmpq(renf_elem_t a, const renf_elem_t b, const fmpq_t c, const renf_t nf)
 {
     nf_elem_add_fmpq(a->elem, b->elem, c, nf->nf);
     arb_add_fmpq(a->emb, b->emb, c, nf->prec);
 }
 
 static __inline__
-void renf_elem_sub_fmpq(renf_elem_t a, const renf_elem_t b, fmpq_t c, const renf_t nf)
+void renf_elem_sub_fmpq(renf_elem_t a, const renf_elem_t b, const fmpq_t c, const renf_t nf)
 {
     nf_elem_sub_fmpq(a->elem, b->elem, c, nf->nf);
     arb_sub_fmpq(a->emb, b->emb, c, nf->prec);
 }
+
+static __inline__
+void renf_elem_fmpq_sub(renf_elem_t a, const fmpq_t c, const renf_elem_t b, const renf_t nf)
+{
+    nf_elem_fmpq_sub(a->elem, c, b->elem, nf->nf);
+    arb_fmpq_sub(a->emb, c, b->emb, nf->prec);
+}
+
+static __inline__
+void renf_elem_mul_fmpq(renf_elem_t a, const renf_elem_t b, const fmpq_t c, const renf_t nf)
+{
+    nf_elem_scalar_mul_fmpq(a->elem, b->elem, c, nf->nf);
+    arb_mul_fmpq(a->emb, b->emb, c, nf->prec);
+}
+
+static __inline__
+void renf_elem_inv(renf_elem_t a, const renf_elem_t b, const renf_t nf)
+{
+    nf_elem_inv(a->elem, b->elem, nf->nf);
+    arb_inv(a->emb, b->emb, nf->prec);
+}
+
+static __inline__
+void renf_elem_div_fmpq(renf_elem_t a, const renf_elem_t b, const fmpq_t c, const renf_t nf)
+{
+    nf_elem_scalar_div_fmpq(a->elem, b->elem, c, nf->nf);
+    arb_div_fmpq(a->emb, b->emb, c, nf->prec);
+}
+
+static __inline__
+void renf_elem_fmpq_div(renf_elem_t a, const fmpq_t b, const renf_elem_t c, const renf_t nf)
+{
+    renf_elem_set(a, c, nf);
+    renf_elem_inv(a, a, nf);
+    renf_elem_mul_fmpq(a, c, b, nf);
+} 
 
 static __inline__ 
 void renf_elem_add(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf)
@@ -240,13 +276,6 @@ void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, cons
 {
     nf_elem_div(a->elem, b->elem, c->elem, nf->nf);
     arb_div(a->emb, b->emb, c->emb, nf->prec);
-}
-
-static __inline__
-void renf_elem_inv(renf_elem_t a, const renf_elem_t b, renf_t nf)
-{
-    nf_elem_inv(a->elem, b->elem, nf->nf);
-    arb_inv(a->emb, b->emb, nf->prec);
 }
 
 #ifdef __cplusplus
