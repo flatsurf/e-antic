@@ -331,6 +331,14 @@ renf_elem_class& renf_elem_class::operator INOP (const int other) \
 {                                         \
     return *this;                         \
 }                                         \
+renf_elem_class& renf_elem_class::operator INOP (const unsigned int other) \
+{                                         \
+    return *this;                         \
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const unsigned long other) \
+{                                         \
+    return *this;                         \
+}
 // TODO: implement inplace operators
 __renf_elem_op(+, +=, renf_elem_add, renf_elem_add_fmpq, fmpq_add);
 __renf_elem_op(*, *=, renf_elem_mul, renf_elem_mul_fmpq, fmpq_mul);
@@ -450,81 +458,37 @@ bool renf_elem_class::operator>(const renf_elem_class & other) const
 }
 bool renf_elem_class::operator>(long n) const
 {
-    if (this->nf != NULL)
-    {
-        renf_elem_class other(this->nf);
-        renf_elem_set_si(other.a, n, this->nf);
-        return renf_elem_cmp(this->a, other.a, this->nf) > 0;
-    }
-    else
-    {
-        fmpq_t other;
-        int ans;
-        fmpq_init(other);
-        fmpq_set_si(other, n, 1);
-        ans = fmpq_cmp(this->b, other) > 0;
-        flint_free(other);
-        return ans;
-    }
+    renf_elem_class other(n);
+    return *this > other;
+}
+bool renf_elem_class::operator>(unsigned long n) const
+{
+    renf_elem_class other(n);
+    return *this > other;
 }
 bool renf_elem_class::operator>(int n) const
 {
-    return (*this) == (long) n;
+    renf_elem_class other(n);
+    return *this > other;
+}
+bool renf_elem_class::operator>(unsigned int n) const
+{
+    renf_elem_class other(n);
+    return *this > other;
 }
 
-bool renf_elem_class::operator!=(const renf_elem_class& other) const
-{
-    return not (*this == other);
-}
-bool renf_elem_class::operator!=(long n) const
-{
-    return not (*this == n);
-}
-bool renf_elem_class::operator!=(int n) const
-{
-    return not (*this == n);
-}
+#define __other_ops(TYP) \
+  bool renf_elem_class::operator!=(const TYP other) const {return not (*this == other);} \
+  bool renf_elem_class::operator>=(const TYP other) const {return *this == other || *this > other;} \
+  bool renf_elem_class::operator<=(const TYP other) const {return not (*this > other);} \
+  bool renf_elem_class::operator< (const TYP other) const {return not (*this >= other);}
 
-bool renf_elem_class::operator>=(const renf_elem_class & other) const
-{
-    return *this == other || *this > other;
-}
-bool renf_elem_class::operator>=(long n) const
-{
-    return *this == n || *this > n;
-}
-bool renf_elem_class::operator>=(int n) const
-{
-    return *this == n || *this > n;
-}
-
-
-bool renf_elem_class::operator<=(const renf_elem_class& other) const
-{
-    return not (*this > other);
-}
-bool renf_elem_class::operator<=(long n) const
-{
-    return not (*this > n);
-}
-bool renf_elem_class::operator<=(int n) const
-{
-    return not (*this > n);
-}
-
-
-bool renf_elem_class::operator<(const renf_elem_class& other) const
-{
-    return not (*this >= other);
-}
-bool renf_elem_class::operator<(long n) const
-{
-    return not (*this >= 0);
-}
-bool renf_elem_class::operator<(int n) const
-{
-    return not (*this >= 0);
-}
+__other_ops(int);
+__other_ops(unsigned int);
+__other_ops(long);
+__other_ops(unsigned long);
+__other_ops(renf_elem_class&);
+#undef __other_ops
 
 #endif
 
