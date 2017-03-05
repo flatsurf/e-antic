@@ -1,3 +1,7 @@
+# for implicit linker, compiler rules
+LDLIBS=$(LIBS)
+CPPFLAGS=$(INCS)
+
 #NFEMB_STATIC=1
 #NFEMB_SHARED=0
 #
