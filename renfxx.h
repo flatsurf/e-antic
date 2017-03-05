@@ -55,12 +55,12 @@ public:
     renf_elem_class& operator -= (const renf_elem_class&);
     renf_elem_class& operator *= (const renf_elem_class&);
     renf_elem_class& operator /= (const renf_elem_class&);
-    bool operator == (const renf_elem_class&);
-    bool operator != (const renf_elem_class&);
-    bool operator >= (const renf_elem_class&);
-    bool operator <= (const renf_elem_class&);
-    bool operator > (const renf_elem_class&);
-    bool operator < (const renf_elem_class&);
+    bool operator == (const renf_elem_class&) const;
+    bool operator != (const renf_elem_class&) const;
+    bool operator >= (const renf_elem_class&) const;
+    bool operator <= (const renf_elem_class&) const;
+    bool operator > (const renf_elem_class&) const;
+    bool operator < (const renf_elem_class&) const;
 
     bool is_zero() { return renf_elem_is_zero(this->a, this->nf); };
     bool is_one() { return renf_elem_is_one(this->a, this->nf); };
@@ -87,12 +87,12 @@ public:
     renf_elem_class& operator -= (const TYP); \
     renf_elem_class& operator *= (const TYP); \
     renf_elem_class& operator /= (const TYP); \
-    bool operator == (const TYP); \
-    bool operator != (const TYP); \
-    bool operator >= (const TYP); \
-    bool operator <= (const TYP); \
-    bool operator > (const TYP); \
-    bool operator < (const TYP); \
+    bool operator == (const TYP) const; \
+    bool operator != (const TYP) const; \
+    bool operator >= (const TYP) const; \
+    bool operator <= (const TYP) const; \
+    bool operator > (const TYP) const; \
+    bool operator < (const TYP) const; \
     renf_elem_class& operator = (const TYP);
 
     __renf_ops(mpq_class&);
@@ -307,7 +307,7 @@ __renf_elem_op(long, /, /=);
 __renf_elem_op(int, /, /=);
 #undef __renf_elem_op
 
-bool renf_elem_class::operator==(const renf_elem_class& other)
+bool renf_elem_class::operator==(const renf_elem_class& other) const
 {
     if (this->nf != NULL)
     {
@@ -327,7 +327,7 @@ bool renf_elem_class::operator==(const renf_elem_class& other)
         return renf_elem_cmp_fmpq(other.a, this->b, other.nf) == 0;
     }
 }
-bool renf_elem_class::operator==(long n)
+bool renf_elem_class::operator==(long n) const
 {
     if (this->nf != NULL)
     {
@@ -346,13 +346,13 @@ bool renf_elem_class::operator==(long n)
         return ans;
     }
 }
-bool renf_elem_class::operator==(int n)
+bool renf_elem_class::operator==(int n) const
 {
     return (*this) == (long) n;
 }
 
 
-bool renf_elem_class::operator>(const renf_elem_class & other)
+bool renf_elem_class::operator>(const renf_elem_class & other) const
 {
     if (this->nf != NULL)
     {
@@ -372,7 +372,7 @@ bool renf_elem_class::operator>(const renf_elem_class & other)
         return renf_elem_cmp_fmpq(other.a, this->b, other.nf) < 0;
     }
 }
-bool renf_elem_class::operator>(long n)
+bool renf_elem_class::operator>(long n) const
 {
     if (this->nf != NULL)
     {
@@ -391,61 +391,61 @@ bool renf_elem_class::operator>(long n)
         return ans;
     }
 }
-bool renf_elem_class::operator>(int n)
+bool renf_elem_class::operator>(int n) const
 {
     return (*this) == (long) n;
 }
 
-bool renf_elem_class::operator!=(const renf_elem_class& other)
+bool renf_elem_class::operator!=(const renf_elem_class& other) const
 {
     return not (*this == other);
 }
-bool renf_elem_class::operator!=(long n)
+bool renf_elem_class::operator!=(long n) const
 {
     return not (*this == n);
 }
-bool renf_elem_class::operator!=(int n)
+bool renf_elem_class::operator!=(int n) const
 {
     return not (*this == n);
 }
 
-bool renf_elem_class::operator>=(const renf_elem_class & other)
+bool renf_elem_class::operator>=(const renf_elem_class & other) const
 {
     return *this == other || *this > other;
 }
-bool renf_elem_class::operator>=(long n)
+bool renf_elem_class::operator>=(long n) const
 {
     return *this == n || *this > n;
 }
-bool renf_elem_class::operator>=(int n)
+bool renf_elem_class::operator>=(int n) const
 {
     return *this == n || *this > n;
 }
 
 
-bool renf_elem_class::operator<=(const renf_elem_class& other)
+bool renf_elem_class::operator<=(const renf_elem_class& other) const
 {
     return not (*this > other);
 }
-bool renf_elem_class::operator<=(long n)
+bool renf_elem_class::operator<=(long n) const
 {
     return not (*this > n);
 }
-bool renf_elem_class::operator<=(int n)
+bool renf_elem_class::operator<=(int n) const
 {
     return not (*this > n);
 }
 
 
-bool renf_elem_class::operator<(const renf_elem_class& other)
+bool renf_elem_class::operator<(const renf_elem_class& other) const
 {
     return not (*this >= other);
 }
-bool renf_elem_class::operator<(long n)
+bool renf_elem_class::operator<(long n) const
 {
     return not (*this >= 0);
 }
-bool renf_elem_class::operator<(int n)
+bool renf_elem_class::operator<(int n) const
 {
     return not (*this >= 0);
 }
