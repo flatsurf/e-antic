@@ -40,20 +40,57 @@ public:
     renf_elem_class& operator=(slong n); 
     renf_elem_class& operator=(fmpz_t z);
     renf_elem_class& operator=(fmpq_t q);
-    renf_elem_class& operator=(fmpq_poly_t p);
     renf_elem_class& operator=(renf_elem_class a);
+    renf_elem_class& operator=(fmpq_poly_t p);
 
     // binary operations
     renf_elem_class operator+(const renf_elem_class &) const;
     renf_elem_class operator-(const renf_elem_class &) const;
     renf_elem_class operator*(const renf_elem_class &) const;
     renf_elem_class operator/(const renf_elem_class &) const;
+    renf_elem_class operator+(const mpq_class &) const;
+    renf_elem_class operator-(const mpq_class &) const;
+    renf_elem_class operator*(const mpq_class &) const;
+    renf_elem_class operator/(const mpq_class &) const;
+    renf_elem_class operator+(const mpz_class &) const;
+    renf_elem_class operator-(const mpz_class &) const;
+    renf_elem_class operator*(const mpz_class &) const;
+    renf_elem_class operator/(const mpz_class &) const;
+    renf_elem_class operator+(const slong) const;
+    renf_elem_class operator-(const slong) const;
+    renf_elem_class operator*(const slong) const;
+    renf_elem_class operator/(const slong) const;
+
+    friend renf_elem_class operator+(const mpq_class&, const renf_elem_class &);
+    friend renf_elem_class operator-(const mpq_class&, const renf_elem_class &);
+    friend renf_elem_class operator*(const mpq_class&, const renf_elem_class &);
+    friend renf_elem_class operator/(const mpq_class&, const renf_elem_class &);
+    friend renf_elem_class operator+(const mpz_class&, const renf_elem_class &);
+    friend renf_elem_class operator-(const mpz_class&, const renf_elem_class &);
+    friend renf_elem_class operator*(const mpz_class&, const renf_elem_class &);
+    friend renf_elem_class operator/(const mpz_class&, const renf_elem_class &);
+    friend renf_elem_class operator+(const slong, const renf_elem_class &);
+    friend renf_elem_class operator-(const slong, const renf_elem_class &);
+    friend renf_elem_class operator*(const slong, const renf_elem_class &);
+    friend renf_elem_class operator/(const slong, const renf_elem_class &);
 
     // inplace binary operations
     renf_elem_class& operator+=(const renf_elem_class &);
     renf_elem_class& operator-=(const renf_elem_class &);
     renf_elem_class& operator*=(const renf_elem_class &);
     renf_elem_class& operator/=(const renf_elem_class &);
+    renf_elem_class& operator+=(const mpq_class &);
+    renf_elem_class& operator-=(const mpq_class &);
+    renf_elem_class& operator*=(const mpq_class &);
+    renf_elem_class& operator/=(const mpq_class &);
+    renf_elem_class& operator+=(const mpz_class &);
+    renf_elem_class& operator-=(const mpz_class &);
+    renf_elem_class& operator*=(const mpz_class &);
+    renf_elem_class& operator/=(const mpz_class &);
+    renf_elem_class& operator+=(const slong);
+    renf_elem_class& operator-=(const slong);
+    renf_elem_class& operator*=(const slong);
+    renf_elem_class& operator/=(const slong);
 
     // unary operations
     renf_elem_class operator-();
@@ -167,8 +204,8 @@ renf_elem_class& renf_elem_class::operator=(renf_elem_class a)
 
 renf_elem_class::~renf_elem_class(void)
 {
-    if (nf == NULL) fmpq_clear(this->b);
-    else renf_elem_clear(this->a, this->nf);
+    if (nf == NULL) fmpq_clear(b);
+    else renf_elem_clear(a, nf);
 }
 
 std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
@@ -185,30 +222,30 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 
 #define __renf_elem_op(OP, INOP, FUN1, FUN2, FUN3) \
 renf_elem_class renf_elem_class::OP(const renf_elem_class & other) const \
-{                                                     \
-    if (this->nf != NULL)                             \
-    {                                                 \
-        renf_elem_class ans(this->nf);                \
-        if (this->nf == other.nf)                     \
-            FUN1(ans.a, this->a, other.a, this->nf);  \
-        else if (other.nf == NULL)                    \
-            FUN2(ans.a, this->a, other.b, this->nf);  \
-        else                                          \
-            flint_abort();                            \
-        return ans;                                   \
-    }                                                 \
-    else if (other.nf == NULL)                        \
-    {                                                 \
-        renf_elem_class ans(this->b);                 \
-        FUN3(ans.b, this->b, other.b);                \
-        return ans;                                   \
-    }                                                 \
-    else                                              \
-    {                                                 \
-        renf_elem_class ans(other.nf);                \
-        FUN2(ans.a, other.a, this->b, other.nf);      \
-        return ans;                                   \
-    }                                                 \
+{                                         \
+    if (nf != NULL)                       \
+    {                                     \
+        renf_elem_class ans(nf);          \
+        if (nf == other.nf)               \
+            FUN1(ans.a, a, other.a, nf);  \
+        else if (other.nf == NULL)        \
+            FUN2(ans.a, a, other.b, nf);  \
+        else                              \
+            flint_abort();                \
+        return ans;                       \
+    }                                     \
+    else if (other.nf == NULL)            \
+    {                                     \
+        renf_elem_class ans(b);           \
+        FUN3(ans.b, ans.b, other.b);      \
+        return ans;                       \
+    }                                     \
+    else                                  \
+    {                                     \
+        renf_elem_class ans(other.nf);    \
+        FUN2(ans.a, other.a, b, other.nf);\
+        return ans;                       \
+    }                                     \
 }
 // TODO: implement inplace operators
 __renf_elem_op(operator+, operator+=, renf_elem_add, renf_elem_add_fmpq, fmpq_add);
@@ -217,6 +254,26 @@ __renf_elem_op(operator-, operator-=, renf_elem_sub, renf_elem_sub_fmpq, fmpq_su
 __renf_elem_op(operator/, operator/=, renf_elem_div, renf_elem_div_fmpq, fmpq_div);
 #undef __renf_elem_op
 
+renf_elem_class renf_elem_class::operator+(const mpq_class& other) const
+{
+    renf_elem_class ans(other);
+    return (*this) + other;
+}
+renf_elem_class renf_elem_class::operator+(const slong other) const
+{
+    renf_elem_class ans(other);
+    return (*this) + other;
+}
+renf_elem_class operator+(const mpq_class& a, const renf_elem_class& b)
+{
+    renf_elem_class ans(b);
+    return b + a;
+}
+renf_elem_class operator+(const slong a, const renf_elem_class& b)
+{
+    renf_elem_class ans(b);
+    return b + a;
+}
 
 bool renf_elem_class::operator==(const renf_elem_class& other)
 {
