@@ -222,7 +222,7 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 }
 
 #define __renf_elem_op(OP, INOP, FUN1, FUN2, FUN3) \
-renf_elem_class renf_elem_class::OP(const renf_elem_class & other) const \
+renf_elem_class renf_elem_class::operator OP (const renf_elem_class & other) const \
 {                                         \
     if (nf != NULL)                       \
     {                                     \
@@ -247,34 +247,54 @@ renf_elem_class renf_elem_class::OP(const renf_elem_class & other) const \
         FUN2(ans.a, other.a, b, other.nf);\
         return ans;                       \
     }                                     \
-}
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & other) \
+{                                         \
+    return *this;                         \
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const mpq_class& other) \
+{                                         \
+    return *this;                         \
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const mpz_class& other) \
+{                                         \
+    return *this;                         \
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const slong other) \
+{                                         \
+    return *this;                         \
+}                                         \
 // TODO: implement inplace operators
-__renf_elem_op(operator+, operator+=, renf_elem_add, renf_elem_add_fmpq, fmpq_add);
-__renf_elem_op(operator*, operator*=, renf_elem_mul, renf_elem_mul_fmpq, fmpq_mul);
-__renf_elem_op(operator-, operator-=, renf_elem_sub, renf_elem_sub_fmpq, fmpq_sub);
-__renf_elem_op(operator/, operator/=, renf_elem_div, renf_elem_div_fmpq, fmpq_div);
+__renf_elem_op(+, +=, renf_elem_add, renf_elem_add_fmpq, fmpq_add);
+__renf_elem_op(*, *=, renf_elem_mul, renf_elem_mul_fmpq, fmpq_mul);
+__renf_elem_op(-, -=, renf_elem_sub, renf_elem_sub_fmpq, fmpq_sub);
+__renf_elem_op(/, /=, renf_elem_div, renf_elem_div_fmpq, fmpq_div);
 #undef __renf_elem_op
 
-renf_elem_class renf_elem_class::operator+(const mpq_class& other) const
-{
-    renf_elem_class ans(other);
-    return (*this) + other;
+#define __renf_elem_op(TYP, OP, INOP) \
+renf_elem_class renf_elem_class::operator OP(const TYP other) const \
+{                                                                   \
+    renf_elem_class ans(other);                                     \
+    return (*this) OP other;                                        \
+}                                                                   \
+renf_elem_class operator OP (const TYP a, const renf_elem_class& b) \
+{                                                                   \
+    renf_elem_class ans(b);                                         \
+    return b OP a;                                                  \
 }
-renf_elem_class renf_elem_class::operator+(const slong other) const
-{
-    renf_elem_class ans(other);
-    return (*this) + other;
-}
-renf_elem_class operator+(const mpq_class& a, const renf_elem_class& b)
-{
-    renf_elem_class ans(b);
-    return b + a;
-}
-renf_elem_class operator+(const slong a, const renf_elem_class& b)
-{
-    renf_elem_class ans(b);
-    return b + a;
-}
+__renf_elem_op(mpq_class&, +, +=);
+__renf_elem_op(mpz_class&, +, +=);
+__renf_elem_op(slong, +, +=);
+__renf_elem_op(mpq_class&, -, -=);
+__renf_elem_op(mpz_class&, -, -=);
+__renf_elem_op(slong, -, -=);
+__renf_elem_op(mpq_class&, *, *=);
+__renf_elem_op(mpz_class&, *, *=);
+__renf_elem_op(slong, *, *=);
+__renf_elem_op(mpq_class&, /, /=);
+__renf_elem_op(mpz_class&, /, /=);
+__renf_elem_op(slong, /, /=);
+#undef __renf_elem_op
 
 bool renf_elem_class::operator==(const renf_elem_class& other)
 {
