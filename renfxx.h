@@ -37,11 +37,14 @@ public:
     ~renf_elem_class();
 
     // assignment
-    renf_elem_class& operator=(slong n); 
-    renf_elem_class& operator=(fmpz_t z);
-    renf_elem_class& operator=(fmpq_t q);
-    renf_elem_class& operator=(const renf_elem_class &a);
-    renf_elem_class& operator=(fmpq_poly_t p);
+    renf_elem_class& operator=(int);
+    renf_elem_class& operator=(long);
+    renf_elem_class& operator=(fmpz_t);
+    renf_elem_class& operator=(fmpq_t);
+    renf_elem_class& operator=(mpz_class);
+    renf_elem_class& operator=(mpq_class);
+    renf_elem_class& operator=(fmpq_poly_t);
+    renf_elem_class& operator=(const renf_elem_class &);
 
     // binary operations
     renf_elem_class operator+(const renf_elem_class &) const;
@@ -56,10 +59,14 @@ public:
     renf_elem_class operator-(const mpz_class &) const;
     renf_elem_class operator*(const mpz_class &) const;
     renf_elem_class operator/(const mpz_class &) const;
-    renf_elem_class operator+(const slong) const;
-    renf_elem_class operator-(const slong) const;
-    renf_elem_class operator*(const slong) const;
-    renf_elem_class operator/(const slong) const;
+    renf_elem_class operator+(const long) const;
+    renf_elem_class operator-(const long) const;
+    renf_elem_class operator*(const long) const;
+    renf_elem_class operator/(const long) const;
+    renf_elem_class operator+(const int) const;
+    renf_elem_class operator-(const int) const;
+    renf_elem_class operator*(const int) const;
+    renf_elem_class operator/(const int) const;
 
     friend renf_elem_class operator+(const mpq_class&, const renf_elem_class &);
     friend renf_elem_class operator-(const mpq_class&, const renf_elem_class &);
@@ -69,10 +76,14 @@ public:
     friend renf_elem_class operator-(const mpz_class&, const renf_elem_class &);
     friend renf_elem_class operator*(const mpz_class&, const renf_elem_class &);
     friend renf_elem_class operator/(const mpz_class&, const renf_elem_class &);
-    friend renf_elem_class operator+(const slong, const renf_elem_class &);
-    friend renf_elem_class operator-(const slong, const renf_elem_class &);
-    friend renf_elem_class operator*(const slong, const renf_elem_class &);
-    friend renf_elem_class operator/(const slong, const renf_elem_class &);
+    friend renf_elem_class operator+(const long, const renf_elem_class &);
+    friend renf_elem_class operator-(const long, const renf_elem_class &);
+    friend renf_elem_class operator*(const long, const renf_elem_class &);
+    friend renf_elem_class operator/(const long, const renf_elem_class &);
+    friend renf_elem_class operator+(const int, const renf_elem_class&);
+    friend renf_elem_class operator-(const int, const renf_elem_class&);
+    friend renf_elem_class operator*(const int, const renf_elem_class&);
+    friend renf_elem_class operator/(const int, const renf_elem_class&);
 
     // inplace binary operations
     renf_elem_class& operator+=(const renf_elem_class &);
@@ -87,10 +98,14 @@ public:
     renf_elem_class& operator-=(const mpz_class &);
     renf_elem_class& operator*=(const mpz_class &);
     renf_elem_class& operator/=(const mpz_class &);
-    renf_elem_class& operator+=(const slong);
-    renf_elem_class& operator-=(const slong);
-    renf_elem_class& operator*=(const slong);
-    renf_elem_class& operator/=(const slong);
+    renf_elem_class& operator+=(const long);
+    renf_elem_class& operator-=(const long);
+    renf_elem_class& operator*=(const long);
+    renf_elem_class& operator/=(const long);
+    renf_elem_class& operator+=(const int);
+    renf_elem_class& operator-=(const int);
+    renf_elem_class& operator*=(const int);
+    renf_elem_class& operator/=(const int);
 
     // unary operations
     renf_elem_class operator-();
@@ -104,12 +119,18 @@ public:
     bool operator<(const renf_elem_class &);
     bool operator!=(const renf_elem_class &);
 
-    bool operator>(slong);
-    bool operator>=(slong);
-    bool operator==(slong);
-    bool operator<=(slong);
-    bool operator<(slong);
-    bool operator!=(slong);
+    bool operator >  (long);
+    bool operator >= (long);
+    bool operator == (long);
+    bool operator <= (long);
+    bool operator <  (long);
+    bool operator != (long);
+    bool operator >  (int);
+    bool operator >= (int);
+    bool operator == (int);
+    bool operator <= (int);
+    bool operator <  (int);
+    bool operator != (int);
 
     bool is_zero() { return renf_elem_is_zero(this->a, this->nf); };
     bool is_one() { return renf_elem_is_one(this->a, this->nf); };
@@ -166,11 +187,21 @@ renf_elem_class::renf_elem_class(long x)
 
 #define __renf_elem_set(TYP, FUN) \
     renf_elem_class& renf_elem_class::operator=(TYP n) { FUN(this->a, n, this->nf); return *this; }
-__renf_elem_set(slong, renf_elem_set_si);
+__renf_elem_set(int, renf_elem_set_si);
+__renf_elem_set(long, renf_elem_set_si);
 __renf_elem_set(fmpz_t, renf_elem_set_fmpz);
 __renf_elem_set(fmpq_t, renf_elem_set_fmpq);
 __renf_elem_set(fmpq_poly_t, renf_elem_set_fmpq_poly);
 #undef __renf_elem_set
+
+renf_elem_class& renf_elem_class::operator = (mpz_class z)
+{
+    return *this;
+}
+renf_elem_class& renf_elem_class::operator = (mpq_class q)
+{
+    return *this;
+}
 
 renf_elem_class& renf_elem_class::operator=(const renf_elem_class &a)
 {
@@ -270,7 +301,11 @@ renf_elem_class& renf_elem_class::operator INOP (const mpz_class& other) \
 {                                         \
     return *this;                         \
 }                                         \
-renf_elem_class& renf_elem_class::operator INOP (const slong other) \
+renf_elem_class& renf_elem_class::operator INOP (const long other) \
+{                                         \
+    return *this;                         \
+}                                         \
+renf_elem_class& renf_elem_class::operator INOP (const int other) \
 {                                         \
     return *this;                         \
 }                                         \
@@ -294,16 +329,20 @@ renf_elem_class operator OP (const TYP a, const renf_elem_class& b) \
 }
 __renf_elem_op(mpq_class&, +, +=);
 __renf_elem_op(mpz_class&, +, +=);
-__renf_elem_op(slong, +, +=);
+__renf_elem_op(long, +, +=);
+__renf_elem_op(int, +, +=);
 __renf_elem_op(mpq_class&, -, -=);
 __renf_elem_op(mpz_class&, -, -=);
-__renf_elem_op(slong, -, -=);
+__renf_elem_op(long, -, -=);
+__renf_elem_op(int, -, -=);
 __renf_elem_op(mpq_class&, *, *=);
 __renf_elem_op(mpz_class&, *, *=);
-__renf_elem_op(slong, *, *=);
+__renf_elem_op(long, *, *=);
+__renf_elem_op(int, *, *=);
 __renf_elem_op(mpq_class&, /, /=);
 __renf_elem_op(mpz_class&, /, /=);
-__renf_elem_op(slong, /, /=);
+__renf_elem_op(long, /, /=);
+__renf_elem_op(int, /, /=);
 #undef __renf_elem_op
 
 bool renf_elem_class::operator==(const renf_elem_class& other)
@@ -326,7 +365,7 @@ bool renf_elem_class::operator==(const renf_elem_class& other)
         return renf_elem_cmp_fmpq(other.a, this->b, other.nf) == 0;
     }
 }
-bool renf_elem_class::operator==(slong n)
+bool renf_elem_class::operator==(long n)
 {
     if (this->nf != NULL)
     {
@@ -345,6 +384,11 @@ bool renf_elem_class::operator==(slong n)
         return ans;
     }
 }
+bool renf_elem_class::operator==(int n)
+{
+    return (*this) == (long) n;
+}
+
 
 bool renf_elem_class::operator>(const renf_elem_class & other)
 {
@@ -366,7 +410,7 @@ bool renf_elem_class::operator>(const renf_elem_class & other)
         return renf_elem_cmp_fmpq(other.a, this->b, other.nf) < 0;
     }
 }
-bool renf_elem_class::operator>(slong n)
+bool renf_elem_class::operator>(long n)
 {
     if (this->nf != NULL)
     {
@@ -385,12 +429,20 @@ bool renf_elem_class::operator>(slong n)
         return ans;
     }
 }
+bool renf_elem_class::operator>(int n)
+{
+    return (*this) == (long) n;
+}
 
 bool renf_elem_class::operator!=(const renf_elem_class& other)
 {
     return not (*this == other);
 }
-bool renf_elem_class::operator!=(slong n)
+bool renf_elem_class::operator!=(long n)
+{
+    return not (*this == n);
+}
+bool renf_elem_class::operator!=(int n)
 {
     return not (*this == n);
 }
@@ -399,25 +451,39 @@ bool renf_elem_class::operator>=(const renf_elem_class & other)
 {
     return *this == other || *this > other;
 }
-bool renf_elem_class::operator>=(slong n)
+bool renf_elem_class::operator>=(long n)
 {
     return *this == n || *this > n;
 }
+bool renf_elem_class::operator>=(int n)
+{
+    return *this == n || *this > n;
+}
+
 
 bool renf_elem_class::operator<=(const renf_elem_class& other)
 {
     return not (*this > other);
 }
-bool renf_elem_class::operator<=(slong n)
+bool renf_elem_class::operator<=(long n)
 {
     return not (*this > n);
 }
+bool renf_elem_class::operator<=(int n)
+{
+    return not (*this > n);
+}
+
 
 bool renf_elem_class::operator<(const renf_elem_class& other)
 {
     return not (*this >= other);
 }
-bool renf_elem_class::operator<(slong n)
+bool renf_elem_class::operator<(long n)
+{
+    return not (*this >= 0);
+}
+bool renf_elem_class::operator<(int n)
 {
     return not (*this >= 0);
 }
