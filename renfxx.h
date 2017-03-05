@@ -28,10 +28,10 @@ public:
     renf_elem_class(renf_t nf);
 
     // construction as integers or rationals
-    renf_elem_class(int);
+    renf_elem_class(int=0);
     renf_elem_class(long);
-    renf_elem_class(const mpz_class);
-    renf_elem_class(const mpq_class);
+    renf_elem_class(const mpz_class &);
+    renf_elem_class(const mpq_class &);
     renf_elem_class(const fmpq_t);
 
     ~renf_elem_class();
@@ -40,7 +40,7 @@ public:
     renf_elem_class& operator=(slong n); 
     renf_elem_class& operator=(fmpz_t z);
     renf_elem_class& operator=(fmpq_t q);
-    renf_elem_class& operator=(renf_elem_class a);
+    renf_elem_class& operator=(const renf_elem_class &a);
     renf_elem_class& operator=(fmpq_poly_t p);
 
     // binary operations
@@ -126,7 +126,7 @@ renf_elem_class::renf_elem_class(renf_t nf)
     renf_elem_zero(this->a, nf);
 }
 
-renf_elem_class::renf_elem_class(const mpq_class x)
+renf_elem_class::renf_elem_class(const mpq_class &x)
 {
     this->nf = NULL;
     fmpq_init(this->b);
@@ -141,7 +141,7 @@ renf_elem_class::renf_elem_class(const fmpq_t x)
 }
 
 
-renf_elem_class::renf_elem_class(const mpz_class x)
+renf_elem_class::renf_elem_class(const mpz_class &x)
 {
     this->nf = NULL;
     fmpq_init(this->b);
@@ -165,14 +165,14 @@ renf_elem_class::renf_elem_class(long x)
 
 
 #define __renf_elem_set(TYP, FUN) \
-    renf_elem_class& renf_elem_class::operator=(TYP n) { FUN(this->a, n, this->nf); }
+    renf_elem_class& renf_elem_class::operator=(TYP n) { FUN(this->a, n, this->nf); return *this; }
 __renf_elem_set(slong, renf_elem_set_si);
 __renf_elem_set(fmpz_t, renf_elem_set_fmpz);
 __renf_elem_set(fmpq_t, renf_elem_set_fmpq);
 __renf_elem_set(fmpq_poly_t, renf_elem_set_fmpq_poly);
 #undef __renf_elem_set
 
-renf_elem_class& renf_elem_class::operator=(renf_elem_class a)
+renf_elem_class& renf_elem_class::operator=(const renf_elem_class &a)
 {
     if (a.nf == NULL)
     {
@@ -200,6 +200,7 @@ renf_elem_class& renf_elem_class::operator=(renf_elem_class a)
         }
         renf_elem_set(this->a, a.a, this->nf);
     }
+    return *this;
 }
 
 renf_elem_class::~renf_elem_class(void)
