@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "renf_elem.h"
+#include <e-antic/renf_elem.h>
 
 /* TODO: we might want to move this to ANTIC */
 int _nf_equal_fmpq(const nf_elem_t a, const fmpq_t b, const nf_t nf)

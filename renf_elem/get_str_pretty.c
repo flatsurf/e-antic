@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "renf_elem.h"
+#include <e-antic/renf_elem.h>
 #include <string.h>
 
 char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)

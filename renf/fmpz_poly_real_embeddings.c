@@ -9,8 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "renf.h"
-#include "poly_extra.h"
+#include <e-antic/renf.h>
+#include <e-antic/poly_extra.h>
 
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec)
 {

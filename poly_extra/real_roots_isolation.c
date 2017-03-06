@@ -9,5 +9,4 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "poly_extra.h"
-
+#include <e-antic/poly_extra.h>

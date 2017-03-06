@@ -14,7 +14,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "poly_extra.h"
+#include <e-antic/poly_extra.h>
 
 /* Note: in Elias code, the bound of differs by 1 (the code below is more efficient) */
 /* TODO: check about the root 2^k */

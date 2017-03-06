@@ -9,9 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "flint/fmpz_vec.h"
-#include "renf.h"
-#include "poly_extra.h"
+#include <flint/fmpz_vec.h>
+#include <e-antic/renf.h>
+#include <e-antic/poly_extra.h>
 
 void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
 {

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
+    Copyright (C) 2017 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -9,14 +9,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <e-antic/renfxx.h>
 
-#include <e-antic/renf_elem.h>
-#include <e-antic/poly_extra.h>
-
-void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf)
+int main(void)
 {
-    nf_elem_set_fmpq_poly(a->elem, pol, nf->nf);
-    fmpq_poly_evaluate_arb(a->emb, pol, nf->emb, nf->prec);
+    renf_elem_class f;
+    return 0;
 }
-
-

@@ -12,10 +12,10 @@
 #ifndef FMPQ_POLY_EXTRA_H
 #define FMPQ_POLY_EXTRA_H
 
-#include "flint/flint.h"
-#include "flint/arb.h"
-#include "flint/fmpz_poly.h"
-#include "flint/fmpq_poly.h"
+#include <flint/flint.h>
+#include <flint/arb.h>
+#include <flint/fmpz_poly.h>
+#include <flint/fmpq_poly.h>
 
 #ifdef __cplusplus
  extern "C" {

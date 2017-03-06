@@ -9,8 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "poly_extra.h"
-#include "flint/fmpq_vec.h"
+#include <e-antic/poly_extra.h>
+#include <flint/fmpq_vec.h>
 
 void _slong_vec_print(const slong * vec, slong len)
 {

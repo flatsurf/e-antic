@@ -25,7 +25,14 @@ Installation
 2) Compile reantic
 
     $ cd REANTIC_ROOT
-    $ ./configure
+    $ ./bootstrap.sh   # only if building from git
+    $ ./configure --with-flint=FLINT_PREFIX
     $ make
+    $ make check
+    $ sudo make install
+
+For developers:
+
+    $ make -j8 distcheck DISTCHECK_CONFIGURE_FLAGS="--with-flint=FLINT_PREFIX"
 
 Soon enough, it will be possible to build reantic as a flint extension as well.
