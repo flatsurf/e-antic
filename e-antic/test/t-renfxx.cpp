@@ -14,5 +14,6 @@
 int main(void)
 {
     renf_elem_class f;
+    std::cout << f << "\n";
     return 0;
 }

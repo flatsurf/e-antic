@@ -39,7 +39,7 @@ void check_nf_cf(renf_t nf, flint_rand_t state, mp_bitcnt_t bits, slong n, slong
         if (nn != n && ! renf_elem_is_rational(a, nf))
         {
             printf("FAIL:\n");
-            printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
             printf("do not get enough quotients nn = %ld but n = %ld^n", nn, n);
             flint_abort();
         }
@@ -55,9 +55,9 @@ void check_nf_cf(renf_t nf, flint_rand_t state, mp_bitcnt_t bits, slong n, slong
                 if (!renf_elem_is_zero(b, nf))
                 {
                     printf("FAIL:\n");
-                    printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+                    printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
                     printf("remainder should be zero but got b = ");
-                    renf_elem_print_pretty(b, nf, "x", 10); printf("\n");
+                    renf_elem_print_pretty(b, "x", nf, 10); printf("\n");
                     flint_abort();
                 }
 
@@ -66,7 +66,7 @@ void check_nf_cf(renf_t nf, flint_rand_t state, mp_bitcnt_t bits, slong n, slong
             if (ans != s)
             {
                 printf("FAIL:\n");
-                printf("a = "); renf_elem_print_pretty(a, nf, "x", 10); printf("\n");
+                printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
                 printf("i = %ld\n", i);
                 printf("c = "); fmpq_print(c1); printf("\n");
                 printf("got renf_elem_cmp = %d instead of the expected %d\n", ans, s);

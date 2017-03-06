@@ -27,7 +27,7 @@ void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
         printf("FAIL:\n");
         printf("nf = "); nf_print(nf->nf); printf("\n");
         printf("emb = "); arb_printd(nf->emb, 10); printf("\n");
-        printf("a = "); renf_elem_print_pretty(a, nf, s, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
         printf("got n = "); fmpz_print(n); printf(" but expected %d\n", ans);
         abort();
     }
