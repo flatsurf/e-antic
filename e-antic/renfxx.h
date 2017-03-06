@@ -12,6 +12,7 @@
 #ifndef NF_EMB_ELEMXX_H
 #define NF_EMB_ELEMXX_H
 
+#include <iostream>
 #include <gmpxx.h>
 
 #include "renf.h"

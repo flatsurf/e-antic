@@ -7,6 +7,7 @@ AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-s
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
+AC_PROG_CXX
 
 AC_ARG_WITH([flint],
    AS_HELP_STRING([--with-flint=DIR],
