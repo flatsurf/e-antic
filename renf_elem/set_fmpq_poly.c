@@ -10,8 +10,8 @@
 */
 
 
-#include "renf_elem.h"
-#include "poly_extra.h"
+#include <e-antic/renf_elem.h>
+#include <e-antic/poly_extra.h>
 
 void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf)
 {

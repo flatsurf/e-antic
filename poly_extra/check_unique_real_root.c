@@ -10,7 +10,7 @@
 */
 
 
-#include "poly_extra.h"
+#include <e-antic/poly_extra.h>
 
 static __inline__ int
 arb_sgn2(arb_t a)

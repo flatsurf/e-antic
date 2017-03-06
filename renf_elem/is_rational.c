@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "renf_elem.h"
+#include <e-antic/renf_elem.h>
 
 
 int _nf_elem_is_integer(const nf_elem_t a, const nf_t nf)

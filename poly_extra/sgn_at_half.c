@@ -16,7 +16,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "poly_extra.h"
+#include <e-antic/poly_extra.h>
 
 /* the function below returns the sign of pol(1/2) */
 /* TODO: avoid allocation of x and y               */

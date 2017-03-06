@@ -14,7 +14,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "poly_extra.h"
+#include <e-antic/poly_extra.h>
 
 slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound)
 {

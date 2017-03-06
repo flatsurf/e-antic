@@ -10,7 +10,7 @@
 */
 
 
-#include "renf.h"
+#include <e-antic/renf.h>
 
 void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec)
 {
