@@ -16,7 +16,7 @@ char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const ren
 {
     char * x1 = nf_elem_get_str_pretty(a->elem, var, nf->nf);
     char * x2 = arb_get_str(a->emb, n, 0);
-    char * res = flint_malloc(strlen(x1) + strlen(x2) + 10);
+    char * res = flint_malloc((strlen(x1) + strlen(x2) + 10) * sizeof(char));
 
     strcpy(res, x1);
     strcat(res, " in ");
