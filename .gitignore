@@ -1,5 +1,4 @@
 Makefile
-.gitignore
 build/
 *.a
 *.la
