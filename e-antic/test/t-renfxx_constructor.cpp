@@ -51,7 +51,12 @@ int main(void)
         std::cerr << "Problem with renf_elem_class constructor\n";
         throw 10;
     }
-    
+    if (not (renf_elem_is_zero(f.get_renf_elem(), nf) && renf_elem_is_zero(g.get_renf_elem(), nf)))
+    {
+        std::cerr << "Problem: elements initialized to nonzero values\n";
+        throw 10;
+    }
+
     renf_clear(nf);
 
     FLINT_TEST_CLEANUP(state);
