@@ -22,6 +22,8 @@ int main(void)
 
     FLINT_TEST_INIT(state);
 
+    std::cout << "c++ constructor....\n";
+
     if (not (a.is_fmpq() && b.is_fmpq() && c.is_fmpq() && d.is_fmpq() && e.is_fmpq()))
     {
         std::cerr << "Problem with integer constructors\n";
@@ -60,5 +62,6 @@ int main(void)
     renf_clear(nf);
 
     FLINT_TEST_CLEANUP(state);
+    std::cout << "PASS\n";
     return 0;
 }
