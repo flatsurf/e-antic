@@ -33,13 +33,14 @@ typedef struct
     arb_t emb;         /* the embedded real ball    */
 } renf_elem_struct;
 
-
+typedef renf_elem_struct * renf_elem_srcptr;
 typedef renf_elem_struct renf_elem_t[1];
 
 void renf_elem_init(renf_elem_t a, const renf_t nf);
 void renf_elem_clear(renf_elem_t a, const renf_t nf);
 
 void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf);
+void renf_elem_gen(renf_elem_t a, const renf_t nf);
 
 void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);

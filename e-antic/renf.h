@@ -33,6 +33,7 @@ typedef struct
   arb_t emb;        /* embedding of generator as a real ball    */
 } renf;
 
+typedef renf * renf_srcptr;
 typedef renf renf_t[1];
 
 void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
