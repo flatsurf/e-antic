@@ -1,4 +1,5 @@
-/*
+/*  This is a -*- C++ -*- header file.
+
     Copyright (C) 2016 Vincent Delecroix
 
     This file is part of e-antic
@@ -71,6 +72,9 @@ public:
     bool is_one() { return renf_elem_is_one(this->a, this->nf); };
 
     // input, output
+    // I/O manipulator that stores a renf in an input stream
+    // for use by operator >>.
+    friend std::ios_base& set_renf(std::ios_base &, renf_t);
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
     friend std::istream& operator >> (std::istream &, renf_elem_class&);
     void print();
@@ -291,6 +295,8 @@ renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
     return *this;
 }
 
+// I/O
+
 std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 {
     char * res;
@@ -303,10 +309,37 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
     return os;
 }
 
-std::istream& operator>>(std::istream & os, renf_elem_class& a)
+struct set_renf {
+    renf *_nf;
+    set_renf(renf_t nf) { _nf = nf; }
+    static int xalloc();
+};
+
+inline int set_renf::xalloc()
 {
-  // FIXME (?)
-  throw 42;
+    static int xa = std::ios_base::xalloc();
+    return xa;
+}
+
+std::istream& operator>>(std::istream & is, const set_renf &sr)
+{
+    is.iword(set_renf::xalloc()) = (long) sr._nf;
+    return is;
+}
+
+std::istream& operator>>(std::istream & is, renf_elem_class& a)
+{
+    renf *nf = (renf *) is.iword(set_renf::xalloc());
+    if (!nf) {
+        // If no number field has been set, use rational input.
+        mpq_class x;
+        is >> x;
+        a = x;
+    }
+    else {
+        // FIXME: Read element
+        throw 42;
+    }
 }
 
 
