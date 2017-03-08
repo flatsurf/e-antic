@@ -6,6 +6,7 @@ AM_CPPFLAGS = -I../..
 
 check_PROGRAMS =				\
 	t-renfxx				\
+	t-renfxx_constructor                    \
 	t-renfxx-io
 
 LDADD = ../../libnfemb.la

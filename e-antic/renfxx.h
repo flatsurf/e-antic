@@ -22,7 +22,7 @@
 class renf_elem_class
 {
 private:
-    mutable renf * nf;
+    mutable renf_srcptr nf;
     mutable renf_elem_t a;
     mutable fmpq_t b;
 public:
@@ -41,6 +41,11 @@ public:
     renf_elem_class(const renf_elem_class&);
 
     ~renf_elem_class();
+
+    // access to attribute
+    bool is_fmpq(void);
+    fmpq * get_fmpq(void);
+    renf_elem_srcptr get_renf_elem(void);
 
     // assignment
     renf_elem_class& operator = (const fmpz_t&);
@@ -192,6 +197,23 @@ renf_elem_class::~renf_elem_class(void)
 {
     if (nf == NULL) fmpq_clear(b);
     else renf_elem_clear(a, nf);
+}
+
+
+bool renf_elem_class::is_fmpq(void)
+{
+    return (nf == NULL);
+}
+
+fmpq * renf_elem_class::get_fmpq(void)
+{
+    if(not is_fmpq()) throw 42;
+    else return b;
+}
+renf_elem_srcptr renf_elem_class::get_renf_elem(void)
+{
+    if(is_fmpq()) throw 42;
+    else return a;
 }
 
 
