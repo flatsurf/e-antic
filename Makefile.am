@@ -1,3 +1,4 @@
+SUBDIRS = . e-antic/test
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 
@@ -94,13 +95,6 @@ check_PROGRAMS +=				\
 	renf_elem/test/t-floor			\
 	renf_elem/test/t-get_cfrac		\
 	renf_elem/test/t-is_rational
-
-# C++ tests
-
-check_PROGRAMS +=				\
-	e-antic/test/t-renfxx
-
-e_antic_test_t_renfxx_SOURCES = e-antic/test/t-renfxx.cpp
 
 # Run test suite
 TESTS = $(check_PROGRAMS)

@@ -4,7 +4,7 @@
 AC_INIT(e-antic, 0.1)
 AM_INIT_AUTOMAKE(foreign)
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile e-antic/test/Makefile])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
 AC_PROG_CXX

@@ -9,7 +9,7 @@ tmp/
 .deps
 .dirstamp
 .libs
-/Makefile.in
+Makefile.in
 /autom4te.cache
 /aclocal.m4
 /compile
@@ -17,6 +17,7 @@ tmp/
 /config.log
 /config.status
 /config.sub
+/configure
 /depcomp
 /install-sh
 /libtool
@@ -37,4 +38,3 @@ t-*
 !t-*.c*
 # Distributions
 /e-antic*.tar.gz
-/configure
