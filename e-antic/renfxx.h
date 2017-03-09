@@ -19,6 +19,16 @@
 #include "renf.h"
 #include "renf_elem.h"
 
+class renf_class
+{
+    renf_srcptr nf;
+public:
+    renf_class() : nf(0) {}
+    renf_class(renf_t nf) : nf(nf) {} // FIXME: object ownership =?
+    ~renf_class() {}
+    renf_srcptr get_renf() { return nf; }
+};
+
 class renf_elem_class
 {
 private:
@@ -119,65 +129,65 @@ public:
     #undef __renf_ops
 };
 
-renf_elem_class::renf_elem_class(renf_t k)
+inline renf_elem_class::renf_elem_class(renf_t k)
 {
     nf = k;
     renf_elem_init(a, nf);
     renf_elem_zero(a, nf);
 }
-renf_elem_class::renf_elem_class(int x)
+inline renf_elem_class::renf_elem_class(int x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
-renf_elem_class::renf_elem_class(unsigned int x)
+inline renf_elem_class::renf_elem_class(unsigned int x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-renf_elem_class::renf_elem_class(long x)
+inline renf_elem_class::renf_elem_class(long x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
-renf_elem_class::renf_elem_class(unsigned long x)
+inline renf_elem_class::renf_elem_class(unsigned long x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-renf_elem_class::renf_elem_class(const mpz_class &x)
+inline renf_elem_class::renf_elem_class(const mpz_class &x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set_mpz(fmpq_numref(b), x.__get_mp());
     fmpz_set_si(fmpq_denref(b), 1);
 }
-renf_elem_class::renf_elem_class(const mpq_class &x)
+inline renf_elem_class::renf_elem_class(const mpq_class &x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_mpq(b, x.__get_mp());
 }
-renf_elem_class::renf_elem_class(const fmpz_t& x)
+inline renf_elem_class::renf_elem_class(const fmpz_t& x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-renf_elem_class::renf_elem_class(const fmpq_t& x)
+inline renf_elem_class::renf_elem_class(const fmpq_t& x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set(b, x);
 }
-renf_elem_class::renf_elem_class(const renf_elem_class& x)
+inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
 {
     nf = x.nf;
     if (nf == NULL)
@@ -193,37 +203,37 @@ renf_elem_class::renf_elem_class(const renf_elem_class& x)
 }
 
 
-renf_elem_class::~renf_elem_class(void)
+inline renf_elem_class::~renf_elem_class(void)
 {
     if (nf == NULL) fmpq_clear(b);
     else renf_elem_clear(a, nf);
 }
 
 
-bool renf_elem_class::is_fmpq(void)
+inline bool renf_elem_class::is_fmpq(void)
 {
     return (nf == NULL);
 }
 
-fmpq * renf_elem_class::get_fmpq(void)
+inline fmpq * renf_elem_class::get_fmpq(void)
 {
     if(not is_fmpq()) throw 42;
     else return b;
 }
-renf_elem_srcptr renf_elem_class::get_renf_elem(void)
+inline renf_elem_srcptr renf_elem_class::get_renf_elem(void)
 {
     if(is_fmpq()) throw 42;
     else return a;
 }
 
 
-renf_elem_class& renf_elem_class::operator = (const int n)
+inline renf_elem_class& renf_elem_class::operator = (const int n)
 {
     if (nf == NULL) fmpq_set_si(b, n, 1);
     else renf_elem_set_si(a, n, nf);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const unsigned int n)
+inline renf_elem_class& renf_elem_class::operator = (const unsigned int n)
 {
     fmpz_t x;
     fmpz_init(x);
@@ -232,13 +242,13 @@ renf_elem_class& renf_elem_class::operator = (const unsigned int n)
     fmpz_clear(x);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const long n)
+inline renf_elem_class& renf_elem_class::operator = (const long n)
 {
     if (nf == NULL) fmpq_set_si(b, n, 1);
     else renf_elem_set_si(a, n, nf);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const unsigned long n)
+inline renf_elem_class& renf_elem_class::operator = (const unsigned long n)
 {
     fmpz_t x;
     fmpz_init(x);
@@ -247,7 +257,7 @@ renf_elem_class& renf_elem_class::operator = (const unsigned long n)
     fmpz_clear(x);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const fmpz_t& z)
+inline renf_elem_class& renf_elem_class::operator = (const fmpz_t& z)
 {
     if (nf == NULL)
     {
@@ -257,19 +267,19 @@ renf_elem_class& renf_elem_class::operator = (const fmpz_t& z)
     else renf_elem_set_fmpz(a, z, nf);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const fmpq_t& q)
+inline renf_elem_class& renf_elem_class::operator = (const fmpq_t& q)
 {
     if (nf == NULL) fmpq_set(b, q);
     else renf_elem_set_fmpq(a, q, nf);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const fmpq_poly_t& p)
+inline renf_elem_class& renf_elem_class::operator = (const fmpq_poly_t& p)
 {
     if (nf == NULL) throw 42;
     renf_elem_set_fmpq_poly(a, p, nf);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const mpz_class& z)
+inline renf_elem_class& renf_elem_class::operator = (const mpz_class& z)
 {
     fmpz_t x;
     fmpz_init(x);
@@ -278,7 +288,7 @@ renf_elem_class& renf_elem_class::operator = (const mpz_class& z)
     fmpz_clear(x);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator = (const mpq_class& q)
+inline renf_elem_class& renf_elem_class::operator = (const mpq_class& q)
 {
     fmpq_t x;
     fmpq_init(x);
@@ -287,7 +297,7 @@ renf_elem_class& renf_elem_class::operator = (const mpq_class& q)
     fmpq_clear(x);
     return *this;
 }
-renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
+inline renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
 {
     if (x.nf == NULL)
     {
@@ -319,7 +329,7 @@ renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
 
 // I/O
 
-std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
+inline std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 {
     char * res;
     if (a.nf == NULL)
@@ -332,8 +342,9 @@ std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
 }
 
 struct set_renf {
-    renf *_nf;
-    set_renf(renf_t nf) { _nf = nf; }
+    renf_class *_nf;
+    set_renf(renf_t nf) { _nf = new renf_class(nf); }
+    set_renf(renf_class &nf) { _nf = &nf; } // FIXME: Object ownership =?
     static int xalloc();
 };
 
@@ -343,13 +354,13 @@ inline int set_renf::xalloc()
     return xa;
 }
 
-std::istream& operator>>(std::istream & is, const set_renf &sr)
+inline std::istream& operator>>(std::istream & is, const set_renf &sr)
 {
     is.iword(set_renf::xalloc()) = (long) sr._nf;
     return is;
 }
 
-std::istream& operator>>(std::istream & is, renf_elem_class& a)
+inline std::istream& operator>>(std::istream & is, renf_elem_class& a)
 {
     renf *nf = (renf *) is.iword(set_renf::xalloc());
     if (!nf) {
@@ -365,23 +376,23 @@ std::istream& operator>>(std::istream & is, renf_elem_class& a)
 }
 
 
-renf_elem_class renf_elem_class::operator-() const
+inline renf_elem_class renf_elem_class::operator-() const
 {
     renf_elem_class ans(*this);
     if (nf == NULL) fmpq_neg(ans.b, ans.b);
     else renf_elem_neg(ans.a, ans.a, ans.nf);
 }
-renf_elem_class renf_elem_class::operator+() const
+inline renf_elem_class renf_elem_class::operator+() const
 {
     return *this;
 }
 
 
-static __inline__ void renf_elem_fmpq_add(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_add_fmpq(a, c, b, d);}
-static __inline__ void renf_elem_fmpq_mul(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_mul_fmpq(a, c, b, d);}
+static inline void renf_elem_fmpq_add(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_add_fmpq(a, c, b, d);}
+static inline void renf_elem_fmpq_mul(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_mul_fmpq(a, c, b, d);}
 
 #define __renf_elem_op(OP, INOP, FUN1, FUN2, FUN3, FUN4) \
-renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & other) \
+inline renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & other) \
 {                                         \
     if (nf != NULL)                       \
     {                                     \
@@ -408,7 +419,7 @@ renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & other) 
     }                                     \
     return *this;                         \
 }                                         \
-renf_elem_class renf_elem_class::operator OP (const renf_elem_class & other) const \
+inline renf_elem_class renf_elem_class::operator OP (const renf_elem_class & other) const \
 {                                         \
     renf_elem_class ans(*this);           \
     ans INOP other;                       \
@@ -422,19 +433,19 @@ __renf_elem_op(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmp
 
 
 #define __renf_elem_op(TYP, OP, INOP) \
-renf_elem_class& renf_elem_class::operator INOP (const TYP other) \
+inline renf_elem_class& renf_elem_class::operator INOP (const TYP other) \
 {                                         \
     renf_elem_class x(other);             \
     *this INOP x;                         \
     return *this;                         \
 }                                         \
-renf_elem_class renf_elem_class::operator OP (const TYP other) const \
+inline renf_elem_class renf_elem_class::operator OP (const TYP other) const \
 {                                         \
     renf_elem_class x(*this);             \
     x INOP other;                         \
     return x;                             \
 }                                         \
-renf_elem_class operator OP (const TYP a, const renf_elem_class& b) \
+inline renf_elem_class operator OP (const TYP a, const renf_elem_class& b) \
 {                                         \
     renf_elem_class x(a);                 \
     x INOP b;                             \
@@ -475,7 +486,7 @@ __renf_elem_op(mpq_class&, /, /=);
 
 
 
-bool renf_elem_class::operator==(const renf_elem_class& other) const
+inline bool renf_elem_class::operator==(const renf_elem_class& other) const
 {
     if (this->nf != NULL)
     {
@@ -496,7 +507,7 @@ bool renf_elem_class::operator==(const renf_elem_class& other) const
     }
 }
 
-bool renf_elem_class::operator>(const renf_elem_class & other) const
+inline bool renf_elem_class::operator>(const renf_elem_class & other) const
 {
     if (this->nf != NULL)
     {
@@ -518,12 +529,12 @@ bool renf_elem_class::operator>(const renf_elem_class & other) const
 }
 
 #define __other_ops(TYP) \
-bool renf_elem_class::operator == (const TYP other) const \
+inline bool renf_elem_class::operator == (const TYP other) const \
 {                               \
     renf_elem_class x(other);   \
     return (*this) == x;        \
 }                               \
-bool renf_elem_class::operator > (const TYP other) const \
+inline bool renf_elem_class::operator > (const TYP other) const \
 {                               \
     renf_elem_class x(other);   \
     return (*this) > x;         \
@@ -537,10 +548,10 @@ __other_ops(mpq_class&);
 #undef __other_ops
 
 #define __other_ops(TYP) \
-  bool renf_elem_class::operator!=(const TYP other) const {return not (*this == other);} \
-  bool renf_elem_class::operator>=(const TYP other) const {return *this == other || *this > other;} \
-  bool renf_elem_class::operator<=(const TYP other) const {return not (*this > other);} \
-  bool renf_elem_class::operator< (const TYP other) const {return not (*this >= other);}
+inline bool renf_elem_class::operator!=(const TYP other) const {return not (*this == other);} \
+inline bool renf_elem_class::operator>=(const TYP other) const {return *this == other || *this > other;} \
+inline bool renf_elem_class::operator<=(const TYP other) const {return not (*this > other);} \
+inline bool renf_elem_class::operator< (const TYP other) const {return not (*this >= other);}
 
 __other_ops(int);
 __other_ops(unsigned int);
@@ -552,4 +563,3 @@ __other_ops(mpq_class&);
 #undef __other_ops
 
 #endif
-
