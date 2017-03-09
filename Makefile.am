@@ -78,6 +78,7 @@ libnfemb_la_SOURCES +=						\
 	renf_elem/cmp.c						\
 	renf_elem/cmp_fmpq.c					\
 	renf_elem/floor.c					\
+	renf_elem/gen.c                                         \
 	renf_elem/get_cfrac.c					\
 	renf_elem/get_str_pretty.c				\
 	renf_elem/init.c					\
@@ -85,7 +86,8 @@ libnfemb_la_SOURCES +=						\
 	renf_elem/print_pretty.c				\
 	renf_elem/randtest.c					\
 	renf_elem/set_evaluation.c				\
-	renf_elem/set_fmpq_poly.c
+	renf_elem/set_fmpq_poly.c                               \
+	renf_elem/gen.c
 
 check_PROGRAMS +=				\
 	renf_elem/test/t-binop			\
@@ -93,6 +95,7 @@ check_PROGRAMS +=				\
 	renf_elem/test/t-cmp			\
 	renf_elem/test/t-cmp_fmpq		\
 	renf_elem/test/t-floor			\
+	renf_elem/test/t-gen                    \
 	renf_elem/test/t-get_cfrac		\
 	renf_elem/test/t-is_rational
 

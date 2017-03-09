@@ -24,8 +24,9 @@ void renf_elem_gen(renf_elem_t a, const renf_t nf)
         fmpq_poly_t p;
 
         fmpq_poly_init(p);
+        fmpq_poly_zero(p);
         fmpq_poly_set_coeff_si(p, 1, 1);
-        nf_elem_set_fmpq_poly(a, p, nf);
+        renf_elem_set_fmpq_poly(a, p, nf);
         fmpq_poly_clear(p);
     }
 }
