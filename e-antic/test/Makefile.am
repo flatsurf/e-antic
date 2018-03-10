@@ -8,6 +8,7 @@ check_PROGRAMS =				\
 	t-renfxx				\
 	t-renfxx_constructor                    \
 	t-renfxx_assignment                     \
+	t-renfxx_binop                          \
 	t-renfxx-io
 
 LDADD = ../../libnfemb.la

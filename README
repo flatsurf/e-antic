@@ -1,9 +1,9 @@
-RE-ANTIC -- (Real Embedded) Algebraic Number Theory In C
-=========================================================
+E-ANTIC -- (Real Embedded) Algebraic Number Theory In C
+=======================================================
 
-re-Antic is a C/C++ library to deal with real embedded number fields built on
+e-Antic is a C/C++ library to deal with real embedded number fields built on
 top of ANTIC (https://github.com/wbhart/antic). It allows to consider number
-fields as subfield of the real or complex numbers.  Operations such as
+fields as subfield of the real or complex numbers. Operations such as
 comparison, floor, ceil, abs, ... are available.
 
 The library is currently under active development.
@@ -13,26 +13,15 @@ The dependencies are:
  - arb (see http://arblib.org/)
  - antic (see https://github.com/wbhart/antic/)
 
-Installation
+To build E-ANTIC simply run
 
-1) Compile flint with arb and antic as extensions
-
-    $ cd FLINT_ROOT
-    $ ./configure --extensions="ARB_ROOT ANTIC_ROOT"
-    $ make
-    $ sudo make install
-
-2) Compile reantic
-
-    $ cd REANTIC_ROOT
+    $ cd E_ANTIC_ROOT
     $ ./bootstrap.sh   # only if building from git
-    $ ./configure --with-flint=FLINT_PREFIX
+    $ ./configure
     $ make
     $ make check
     $ sudo make install
 
 For developers:
 
-    $ make -j8 distcheck DISTCHECK_CONFIGURE_FLAGS="--with-flint=FLINT_PREFIX"
-
-Soon enough, it will be possible to build reantic as a flint extension as well.
+    $ make -j8 distcheck

@@ -14,6 +14,7 @@
 #define NF_EMB_ELEMXX_H
 
 #include <iostream>
+#include <string>
 #include <gmpxx.h>
 
 #include "renf.h"

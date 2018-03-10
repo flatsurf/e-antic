@@ -16,10 +16,10 @@
 #include <gmp.h>
 #include <flint/flint.h>
 #include <flint/fmpq_poly.h>
-#include <flint/nf.h>
-#include <flint/nf_elem.h>
-#include <flint/arb.h>
-#include <flint/arb_poly.h>
+#include <antic/nf.h>
+#include <antic/nf_elem.h>
+#include <arb.h>
+#include <arb_poly.h>
 
 #ifdef __cplusplus
  extern "C" {
@@ -38,6 +38,8 @@ typedef renf renf_t[1];
 
 void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
 void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
+
+void renf_init_set(renf_t dest, renf_t src);
 
 static __inline__
 void

@@ -6,7 +6,7 @@ ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = libnfemb.la
 
 # Linked-against libraries
-LIBS += -lflint -lgmp
+LIBS += -lantic -larb -lflint -lgmp
 
 # Installed headers
 nobase_include_HEADERS = e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h
