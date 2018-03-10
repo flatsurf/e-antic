@@ -86,8 +86,7 @@ libnfemb_la_SOURCES +=						\
 	renf_elem/print_pretty.c				\
 	renf_elem/randtest.c					\
 	renf_elem/set_evaluation.c				\
-	renf_elem/set_fmpq_poly.c                               \
-	renf_elem/gen.c
+	renf_elem/set_fmpq_poly.c
 
 check_PROGRAMS +=				\
 	renf_elem/test/t-binop			\
