@@ -24,7 +24,7 @@ install:
 # build e-antic
   - ./bootstrap.sh
   - ./configure
-  - make
+  - make V=1
 
 script:
   make check
