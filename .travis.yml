@@ -17,6 +17,7 @@ install:
   - cd ..
 # build antic
   - git clone https://github.com/videlec/antic.git
+  - cd antic
   - git checkout build_system
   - ./configure --prefix=/usr && make && sudo make install
   - cd ..
