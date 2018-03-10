@@ -27,4 +27,4 @@ install:
   - make V=1
 
 script:
-  make check
+  make check V=1
