@@ -5,18 +5,22 @@ compiler:
 
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
+# build flint
   - git clone https://github.com/wbhart/flint2.git
   - cd flint2
-  - ./configure --prefix=/usr
-  - make
-  - sudo make install
+  - ./configure --prefix=/usr && make && sudo make install
   - cd ..
+# build arb
   - git clone https://github.com/fredrik-johansson/arb.git
   - cd arb
-  - ./configure --prefix=/usr
-  - make
-  - sudo make install
+  - ./configure --prefix=/usr && make && sudo make install
   - cd ..
+# build antic
+  - git clone https://github.com/videlec/antic.git
+  - git checkout build_system
+  - ./configure --prefix=/usr && make && sudo make install
+  - cd ..
+# build e-antic
   - ./bootstrap.sh
   - ./configure
   - make
