@@ -1,0 +1,24 @@
+language: c
+compiler:
+  - gcc
+  - clang
+
+install:
+  sudo apt-get install libgmp-dev libmpfr-dev
+  git clone https://github.com/wbhart/flint2.git
+  cd flint2
+  ./configure --prefix=/usr
+  make
+  sudo make install
+  cd ..
+  git clone https://github.com/fredrik-johansson/arb.git
+  cd arb
+  ./configure --prefix=/usr
+  make
+  sudo make install
+  cd ..
+  ./configure
+  make
+
+script:
+  make check
