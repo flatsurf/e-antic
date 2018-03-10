@@ -17,6 +17,7 @@ install:
   - make
   - sudo make install
   - cd ..
+  - ./bootstrap.sh
   - ./configure
   - make
 
