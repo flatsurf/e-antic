@@ -71,7 +71,7 @@ int main()
 
         bound = fmpz_poly_positive_root_upper_bound_2exp(p);
 
-        if ((bound == WORD_MIN))
+        if (bound == WORD_MIN)
         {
            if (fmpz_cmp_si(max_root, 0) > 0)
             {
