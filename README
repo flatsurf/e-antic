@@ -28,4 +28,10 @@ worked, you just have to do
     $ make check
     $ make install
 
+If you happen to have flint, arb and antic installed in a non
+standard directory you will have to specify it to the configure
+script
+
+    $ ./configure --with-flint=path/to/flint
+
 For more detailed instructions read the INSTALL file.
