@@ -2,7 +2,8 @@ language: c
 compiler:
   - gcc
   - clang
-
+env:
+  - MAKE="make -j2"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
 # build flint
@@ -27,4 +28,4 @@ install:
   - make V=1
 
 script:
-  make check V=1
+  - make check V=1
