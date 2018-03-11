@@ -11,23 +11,22 @@ install:
   # build flint
   - git clone https://github.com/wbhart/flint2.git
   - cd flint2
-  - ./configure --prefix=../local & make install
+  - ./configure --prefix=../local && make install
   - cd ..
   # build arb
   - git clone https://github.com/fredrik-johansson/arb.git
   - cd arb
-  - ./configure --prefix=../local --with-flint=../local & make install
+  - ./configure --prefix=../local --with-flint=../local && make install
   - cd ..
   # build antic
   - git clone https://github.com/wbhart/antic.git
   - cd antic
-  - git checkout build_system
-  - ./configure --prefix=../local --with-arb=../local --with-flint=../local & make install
+  - ./configure --prefix=../local --with-flint=../local && make install
   - cd ..
   # check linking of installation
   - ldd local/lib/libflint.so
-  - ldd local/lib/libfarb.so
-  - ldd local/antic/lbantic.so
+  - ldd local/lib/libarb.so
+  - ldd local/lib/libantic.so
   # build e-antic
   - ./bootstrap.sh
   - ./configure --with-flint=local
