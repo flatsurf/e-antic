@@ -1,4 +1,5 @@
 language: c
+cache: ccache
 compiler:
   - gcc
   - clang
@@ -6,25 +7,30 @@ env:
   - MAKE="make -j2"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
-# build flint
+  - mkdir local
+  # build flint
   - git clone https://github.com/wbhart/flint2.git
   - cd flint2
-  - ./configure --prefix=/usr && make && sudo make install
+  - ./configure --prefix=../local & make install
   - cd ..
-# build arb
+  # build arb
   - git clone https://github.com/fredrik-johansson/arb.git
   - cd arb
-  - ./configure --prefix=/usr && make && sudo make install
+  - ./configure --prefix=../local --with-flint=../local & make install
   - cd ..
-# build antic
-  - git clone https://github.com/videlec/antic.git
+  # build antic
+  - git clone https://github.com/wbhart/antic.git
   - cd antic
   - git checkout build_system
-  - ./configure --prefix=/usr && make && sudo make install
+  - ./configure --prefix=../local --with-arb=../local --with-flint=../local & make install
   - cd ..
-# build e-antic
+  # check linking of installation
+  - ldd local/lib/libflint.so
+  - ldd local/lib/libfarb.so
+  - ldd local/antic/lbantic.so
+  # build e-antic
   - ./bootstrap.sh
-  - ./configure
+  - ./configure --with-flint=local
   - make V=1
 
 script:
