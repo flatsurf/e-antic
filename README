@@ -13,13 +13,15 @@ The dependencies are:
  - arb (see http://arblib.org/)
  - antic (see https://github.com/wbhart/antic/)
 
+For now, we rely on the development version of the above libraries.
+
 If you have cloned the source directory you will need to setup the
 configure script and Makefile using autotools. That is
 
     $ autoreconf --install
 
 If you obtained a tarball of the sources or if the preceding step
-worked, you just need to do
+worked, you just have to do
 
     $ ./configure
     $ make
