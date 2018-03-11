@@ -2,7 +2,7 @@
 
 AM_DEFAULT_SOURCE_EXT = .cpp
 
-AM_CPPFLAGS = -I../..
+AM_CPPFLAGS = -I$(top_srcdir)
 
 check_PROGRAMS =				\
 	t-renfxx				\
@@ -11,7 +11,7 @@ check_PROGRAMS =				\
 	t-renfxx_binop                          \
 	t-renfxx-io
 
-LDADD = ../../libeantic.la
+LDADD = $(top_builddir)/libeantic.la
 LIBS = -lgmpxx -lgmp
 
 TESTS = $(check_PROGRAMS)

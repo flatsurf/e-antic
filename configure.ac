@@ -15,7 +15,7 @@ AC_ARG_WITH([flint],
    AS_HELP_STRING([--with-flint=DIR],
       [provide location of FLINT (with arb, antic) installation prefix]),
    [ LDFLAGS="-L$with_flint/lib $LDFLAGS"
-     CPPFLAGS="-I $with_flint/include $CPPFLAGS"
+     CPPFLAGS="-I$with_flint/include $CPPFLAGS -Wl,-rpath,$with_flint/lib"
    ])
 
 AC_OUTPUT

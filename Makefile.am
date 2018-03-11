@@ -8,9 +8,9 @@ lib_LTLIBRARIES = libeantic.la
 # Linked-against libraries
 LIBS += -lantic -larb -lflint -lgmp
 
+
 # Installed headers
 nobase_include_HEADERS = e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h
-nobase_include_HEADERS += e-antic/renfxx.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
