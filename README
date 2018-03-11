@@ -13,15 +13,17 @@ The dependencies are:
  - arb (see http://arblib.org/)
  - antic (see https://github.com/wbhart/antic/)
 
-To build E-ANTIC simply run
+If you have cloned the source directory you will need to setup the
+configure script and Makefile using autotools. That is
 
-    $ cd E_ANTIC_ROOT
-    $ ./bootstrap.sh   # only if building from git
+    $ autoreconf --install
+
+If you obtained a tarball of the sources or if the preceding step
+worked, you just need to do
+
     $ ./configure
     $ make
     $ make check
-    $ sudo make install
+    $ make install
 
-For developers:
-
-    $ make distcheck
+For more detailed instructions read the INSTALL file.

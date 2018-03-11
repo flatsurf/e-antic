@@ -1,9 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT(e-antic, 0.1)
-AM_INIT_AUTOMAKE(foreign)
+AC_INIT([e-antic], [0.1], [vincent.delecroix@math.cnrs.fr])
+AM_INIT_AUTOMAKE([-Wall -Werror])
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
+AM_PROG_AR
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile e-antic/test/Makefile])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL

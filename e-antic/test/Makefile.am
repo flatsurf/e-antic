@@ -11,7 +11,7 @@ check_PROGRAMS =				\
 	t-renfxx_binop                          \
 	t-renfxx-io
 
-LDADD = ../../libnfemb.la
+LDADD = ../../libeantic.la
 LIBS = -lgmpxx -lgmp
 
 TESTS = $(check_PROGRAMS)
