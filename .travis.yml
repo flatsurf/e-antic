@@ -5,9 +5,9 @@ compiler:
   - clang
 env:
   MAKE="make -j2"
-  CFLAGS="-I/$(realpath local/include)"
-  CPPFLAGS="-I$(realpath local/include)"
-  LDFLAGS="-L/$(realpath local/lib)"
+  CFLAGS="-I/$(readlink -f local/include)"
+  CPPFLAGS="-I$(readlink -f local/include)"
+  LDFLAGS="-L/$(readlink -f local/lib)"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
   - mkdir local
