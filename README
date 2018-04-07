@@ -29,9 +29,9 @@ worked, you just have to do
     $ make install
 
 If you happen to have flint, arb and antic installed in a non
-standard directory you will have to specify it to the configure
-script
+standard directory you will have to specify the `CFLAGS`, `CPPFLAGS`
+and `LDFLAGS` variables in the configure script
 
-    $ ./configure --with-flint=path/to/flint
+    $ ./configure CFLAGS=-I/my/path/include CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
 
 For more detailed instructions read the INSTALL file.
