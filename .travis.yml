@@ -5,26 +5,26 @@ compiler:
   - clang
 env:
   MAKE="make -j2"
-  CFLAGS="-I/$(readlink -f local/include)"
-  CPPFLAGS="-I$(readlink -f local/include)"
-  LDFLAGS="-L/$(readlink -f local/lib)"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
+  # set local directory and check name resolution
   - mkdir local
+  - export LOCAL="$(readlink -f local)"
+  - echo ${LOCAL}
   # build flint
   - git clone https://github.com/wbhart/flint2.git
   - cd flint2
-  - ./configure --prefix=../local && make install
+  - ./configure --prefix=${LOCAL} && make install
   - cd ..
   # build arb
   - git clone https://github.com/fredrik-johansson/arb.git
   - cd arb
-  - ./configure --prefix=../local --with-flint=../local && make install
+  - ./configure --prefix=${LOCAL} --with-flint=${LOCAL} && make install
   - cd ..
   # build antic
   - git clone https://github.com/wbhart/antic.git
   - cd antic
-  - ./configure --prefix=../local --with-flint=../local && make install
+  - ./configure --prefix=${LOCAL} --with-flint=${LOCAL} && make install
   - cd ..
   # check linking of installation
   - ldd local/lib/libflint.so
@@ -32,7 +32,7 @@ install:
   - ldd local/lib/libantic.so
   # build e-antic
   - ./bootstrap.sh
-  - ./configure
+  - ./configure CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib"
 
 script:
-  - V=1 make distcheck
+  - V=1 CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib" make distcheck
