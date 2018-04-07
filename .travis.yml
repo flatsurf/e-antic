@@ -4,10 +4,10 @@ compiler:
   - gcc
   - clang
 env:
-  - MAKE="make -j2"
-  - CFLAGS="-I/$(realpath local/include)"
-  - CPPFLAGS="-I$(realpath local/include)"
-  - LDFLAGS="-L/$(realpath local/lib)"
+  MAKE="make -j2"
+  CFLAGS="-I/$(realpath local/include)"
+  CPPFLAGS="-I$(realpath local/include)"
+  LDFLAGS="-L/$(realpath local/lib)"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev
   - mkdir local
