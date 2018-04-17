@@ -9,7 +9,9 @@ check_PROGRAMS =				\
 	t-renfxx_constructor                    \
 	t-renfxx_assignment                     \
 	t-renfxx_binop                          \
-	t-renfxx-io
+	t-renfxx-io                             \
+	t-renfxx_floor                          \
+	t-renfxx_ceil
 
 LDADD = $(top_builddir)/libeantic.la
 LIBS = -lgmpxx -lgmp

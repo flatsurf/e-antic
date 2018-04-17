@@ -128,6 +128,10 @@ public:
     __renf_ops(unsigned int);
     __renf_ops(int);
     #undef __renf_ops
+
+    // floor, ceil, round
+    mpz_class floor();
+    mpz_class ceil();
 };
 
 inline renf_elem_class::renf_elem_class(renf_t k)
@@ -562,5 +566,41 @@ __other_ops(renf_elem_class&);
 __other_ops(mpz_class&);
 __other_ops(mpq_class&);
 #undef __other_ops
+
+
+// floor, ceil, round
+inline mpz_class renf_elem_class::floor()
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+
+    if (nf == NULL) fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
+    else renf_elem_floor(tmp, a, nf);
+
+    mpz_class z;
+    fmpz_get_mpz(z.get_mpz_t(), tmp);
+    fmpz_clear(tmp);
+    return z;
+}
+
+inline mpz_class renf_elem_class::ceil()
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+
+    if (nf == NULL)
+    {
+        fmpz_add(tmp, fmpq_numref(b), fmpq_denref(b));
+        fmpz_sub_ui(tmp, tmp, 1);
+        fmpz_fdiv_q(tmp, tmp, fmpq_denref(b));
+    }
+    else renf_elem_ceil(tmp, a, nf);
+
+    mpz_class z;
+    fmpz_get_mpz(z.get_mpz_t(), tmp);
+    fmpz_clear(tmp);
+    return z;
+}
+
 
 #endif
