@@ -35,4 +35,5 @@ install:
   - ./configure CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib"
 
 script:
+  - export LD_LIBRARY_PATH=${LOCAL}/lib"  # something badly broken!!
   - V=1 CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib" make distcheck
