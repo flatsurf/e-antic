@@ -119,14 +119,20 @@ public:
     bool operator <= (const TYP) const; \
     bool operator > (const TYP) const; \
     bool operator < (const TYP) const; \
+    friend bool operator == (const TYP, const renf_elem_class &); \
+    friend bool operator != (const TYP, const renf_elem_class &); \
+    friend bool operator >= (const TYP, const renf_elem_class &); \
+    friend bool operator <= (const TYP, const renf_elem_class &); \
+    friend bool operator > (const TYP, const renf_elem_class &); \
+    friend bool operator < (const TYP, const renf_elem_class &); \
     renf_elem_class& operator = (const TYP);
 
+    __renf_ops(int);
+    __renf_ops(unsigned int);
+    __renf_ops(long);
+    __renf_ops(unsigned long);
     __renf_ops(mpq_class&);
     __renf_ops(mpz_class&);
-    __renf_ops(unsigned long);
-    __renf_ops(long);
-    __renf_ops(unsigned int);
-    __renf_ops(int);
     #undef __renf_ops
 
     // floor, ceil, round
@@ -533,38 +539,80 @@ inline bool renf_elem_class::operator>(const renf_elem_class & other) const
     }
 }
 
-#define __other_ops(TYP) \
-inline bool renf_elem_class::operator == (const TYP other) const \
-{                               \
-    renf_elem_class x(other);   \
-    return (*this) == x;        \
-}                               \
-inline bool renf_elem_class::operator > (const TYP other) const \
-{                               \
-    renf_elem_class x(other);   \
-    return (*this) > x;         \
+inline bool renf_elem_class::operator!=(const renf_elem_class & other) const
+{
+    return not (*this == other);
 }
-__other_ops(int);
-__other_ops(unsigned int);
-__other_ops(long);
-__other_ops(unsigned long);
-__other_ops(mpz_class&);
-__other_ops(mpq_class&);
-#undef __other_ops
+inline bool renf_elem_class::operator>=(const renf_elem_class & other) const
+{
+    return (*this > other) || (*this == other);
+}
+inline bool renf_elem_class::operator<(const renf_elem_class & other) const
+{
+    return not (*this >= other);
+}
+inline bool renf_elem_class::operator<=(const renf_elem_class & other) const
+{
+    return not (* this > other);
+}
 
-#define __other_ops(TYP) \
-inline bool renf_elem_class::operator!=(const TYP other) const {return not (*this == other);} \
-inline bool renf_elem_class::operator>=(const TYP other) const {return *this == other || *this > other;} \
-inline bool renf_elem_class::operator<=(const TYP other) const {return not (*this > other);} \
-inline bool renf_elem_class::operator< (const TYP other) const {return not (*this >= other);}
+/* TODO: the code below would result in something rather slow as each operation */
+/* involves creating a renf_elem_class (that can easily be avoided)             */
 
-__other_ops(int);
-__other_ops(unsigned int);
-__other_ops(long);
-__other_ops(unsigned long);
-__other_ops(renf_elem_class&);
-__other_ops(mpz_class&);
-__other_ops(mpq_class&);
+#define __other_ops(TYP, OP) \
+inline bool renf_elem_class::operator OP (const TYP other) const \
+{                               \
+    renf_elem_class x(other);   \
+    return (*this) OP x;        \
+}                               \
+inline bool operator OP (const TYP left, const renf_elem_class& other) \
+{                               \
+    renf_elem_class x(left);    \
+    return x OP other;          \
+}
+
+__other_ops(int, ==);
+__other_ops(int, !=);
+__other_ops(int, >);
+__other_ops(int, <);
+__other_ops(int, >=);
+__other_ops(int, <=);
+
+__other_ops(unsigned int, ==);
+__other_ops(unsigned int, !=);
+__other_ops(unsigned int, >);
+__other_ops(unsigned int, <);
+__other_ops(unsigned int, >=);
+__other_ops(unsigned int, <=);
+
+__other_ops(long, ==);
+__other_ops(long, !=);
+__other_ops(long, >);
+__other_ops(long, <);
+__other_ops(long, >=);
+__other_ops(long, <=);
+
+__other_ops(unsigned long, ==);
+__other_ops(unsigned long, !=);
+__other_ops(unsigned long, >);
+__other_ops(unsigned long, <);
+__other_ops(unsigned long, >=);
+__other_ops(unsigned long, <=);
+
+__other_ops(mpz_class&, ==);
+__other_ops(mpz_class&, !=);
+__other_ops(mpz_class&, >);
+__other_ops(mpz_class&, <);
+__other_ops(mpz_class&, >=);
+__other_ops(mpz_class&, <=);
+
+__other_ops(mpq_class&, ==);
+__other_ops(mpq_class&, !=);
+__other_ops(mpq_class&, >);
+__other_ops(mpq_class&, <);
+__other_ops(mpq_class&, >=);
+__other_ops(mpq_class&, <=);
+
 #undef __other_ops
 
 
