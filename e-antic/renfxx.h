@@ -177,7 +177,7 @@ inline renf_elem_class::renf_elem_class(const mpz_class &x)
     nf = NULL;
     fmpq_init(b);
     fmpz_set_mpz(fmpq_numref(b), x.__get_mp());
-    fmpz_set_si(fmpq_denref(b), 1);
+    fmpz_one(fmpq_denref(b));
 }
 inline renf_elem_class::renf_elem_class(const mpq_class &x)
 {
