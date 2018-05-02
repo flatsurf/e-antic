@@ -136,8 +136,8 @@ public:
     #undef __renf_ops
 
     // floor, ceil, round
-    mpz_class floor();
-    mpz_class ceil();
+    mpz_class floor() const;
+    mpz_class ceil() const;
 };
 
 inline renf_elem_class::renf_elem_class(renf_t k)
@@ -617,7 +617,7 @@ __other_ops(mpq_class&, <=);
 
 
 // floor, ceil, round
-inline mpz_class renf_elem_class::floor()
+inline mpz_class renf_elem_class::floor() const
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -631,7 +631,7 @@ inline mpz_class renf_elem_class::floor()
     return z;
 }
 
-inline mpz_class renf_elem_class::ceil()
+inline mpz_class renf_elem_class::ceil() const
 {
     fmpz_t tmp;
     fmpz_init(tmp);
