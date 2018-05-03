@@ -10,7 +10,7 @@ check_PROGRAMS =				\
 	t-renfxx_assignment                     \
 	t-renfxx_cmp                            \
 	t-renfxx_binop                          \
-	t-renfxx-io                             \
+	t-renfxx_is_integer_rational            \
 	t-renfxx_floor                          \
 	t-renfxx_ceil
 

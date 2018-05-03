@@ -90,6 +90,12 @@ int renf_elem_equal(const renf_elem_t a, const renf_elem_t b, const renf_t nf)
 }
 
 static __inline__
+int renf_elem_is_integer(const renf_elem_t a, const renf_t nf)
+{
+    return _nf_elem_is_integer(a->elem, nf->nf);
+}
+
+static __inline__
 int renf_elem_is_rational(const renf_elem_t a, const renf_t nf)
 {
     return _nf_elem_is_rational(a->elem, nf->nf);

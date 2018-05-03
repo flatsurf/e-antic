@@ -84,8 +84,11 @@ public:
     bool operator > (const renf_elem_class&) const;
     bool operator < (const renf_elem_class&) const;
 
+    // testing
     bool is_zero() { return renf_elem_is_zero(this->a, this->nf); };
     bool is_one() { return renf_elem_is_one(this->a, this->nf); };
+    bool is_integer();
+    bool is_rational();
 
     // input, output
     // I/O manipulator that stores a renf in an input stream
@@ -616,7 +619,22 @@ __other_ops(mpq_class&, <=);
 #undef __other_ops
 
 
-// floor, ceil, round
+inline bool renf_elem_class::is_rational()
+{
+    if (nf == NULL)
+        return true;
+    else
+        return renf_elem_is_rational(a, nf);
+}
+
+inline bool renf_elem_class::is_integer()
+{
+    if (nf == NULL)
+        return fmpz_is_one(fmpq_denref(b));
+    else
+        return renf_elem_is_integer(a, nf);
+}
+
 inline mpz_class renf_elem_class::floor() const
 {
     fmpz_t tmp;
