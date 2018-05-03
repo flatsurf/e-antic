@@ -12,8 +12,26 @@
 #include "e-antic/renfxx.h"
 
 template<typename T>
-void check_cmp(T t, renf_elem_class& a)
+void check_eq(T t, renf_t nf)
 {
+    renf_elem_class a(t);
+
+    if (t != a || a != t || not (a == t) || not (t == a))
+        throw 10;
+
+    renf_elem_class b(nf);
+    b = t;
+
+    if (t != b || b != t || not (b == t) || not (t == b))
+        throw 10;
+}
+
+template<typename T>
+void check_cmp(T t, renf_t nf)
+{
+    renf_elem_class a(nf);
+    renf_elem_gen(a.get_renf_elem(), nf);
+
     if (a == t || t == a ||
         not (a != t) || not (t != a) ||
         (a < t) != (t > a) ||
@@ -22,10 +40,7 @@ void check_cmp(T t, renf_elem_class& a)
         (a >= t) != (t <= a) ||
         (a < t) != not (a >= t) ||
         (a > t) != not (a <= t))
-    {
-        std::cerr << "contradictions in comparisons";
-        exit(EXIT_FAILURE);
-    }
+        throw 10;
 }
 
 
@@ -40,36 +55,28 @@ int main(void)
     int iter;
     FLINT_TEST_INIT(state);
 
-    std::cout << "test1\n";
-    std::cout.flush();
-
-
-    if (c1 != renf_elem_class(c1) || renf_elem_class(c1) != c1 ||
-        c2 != renf_elem_class(c2) || renf_elem_class(c2) != c2 ||
-        c3 != renf_elem_class(c3) || renf_elem_class(c3) != c3 ||
-        c4 != renf_elem_class(c4) || renf_elem_class(c4) != c4 ||
-        c5 != renf_elem_class(c5) || renf_elem_class(c5) != c5 ||
-        c6 != renf_elem_class(c6) || renf_elem_class(c6) != c6)
-    {
-        std::cerr << "pb with elementary comparisons\n";
-        exit(EXIT_FAILURE);
-    }
-
     for (iter = 0; iter < 10; iter++)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 10);
-        renf_print(nf);
 
-        renf_elem_class a(nf);
-        renf_elem_gen(a.get_renf_elem(), nf);
+        check_eq(c1, nf);
+        check_cmp(c1, nf);
 
-        check_cmp(c1, a);
-        check_cmp(c2, a);
-        check_cmp(c3, a);
-        check_cmp(c4, a);
-        check_cmp(c5, a);
-        check_cmp(c6, a);
+        check_eq(c2, nf);
+        check_cmp(c2, nf);
+
+        check_eq(c3, nf);
+        check_cmp(c3, nf);
+
+        check_eq(c4, nf);
+        check_cmp(c4, nf);
+
+        check_eq(c5, nf);
+        check_cmp(c5, nf);
+
+        check_eq(c6, nf);
+        check_cmp(c6, nf);
 
         renf_clear(nf);
     }
@@ -77,4 +84,3 @@ int main(void)
     FLINT_TEST_CLEANUP(state);
     return 0;
 }
-
