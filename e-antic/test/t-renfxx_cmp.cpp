@@ -15,7 +15,7 @@ template<typename T>
 void check_cmp(T t, renf_elem_class& a)
 {
     if (a == t || t == a ||
-        not (a != t) || not (t != a) ||    
+        not (a != t) || not (t != a) ||
         (a < t) != (t > a) ||
         (a <= t) != (t >= a) ||
         (a > t) != (t < a) ||
