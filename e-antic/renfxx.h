@@ -65,8 +65,8 @@ public:
     renf_elem_class& operator = (const renf_elem_class&);
 
     // unary operations
-    renf_elem_class operator-() const;
-    renf_elem_class operator+() const;
+    renf_elem_class operator - () const;
+    renf_elem_class operator + () const;
 
     // binary operations
     renf_elem_class operator + (const renf_elem_class&) const;
@@ -85,8 +85,8 @@ public:
     bool operator < (const renf_elem_class&) const;
 
     // testing
-    bool is_zero() { return renf_elem_is_zero(this->a, this->nf); };
-    bool is_one() { return renf_elem_is_one(this->a, this->nf); };
+    bool is_zero();
+    bool is_one();
     bool is_integer();
     bool is_rational();
 
@@ -134,8 +134,8 @@ public:
     __renf_ops(unsigned int);
     __renf_ops(long);
     __renf_ops(unsigned long);
-    __renf_ops(mpq_class&);
     __renf_ops(mpz_class&);
+    __renf_ops(mpq_class&);
     #undef __renf_ops
 
     // floor, ceil, round
@@ -311,7 +311,7 @@ inline renf_elem_class& renf_elem_class::operator = (const mpq_class& q)
     fmpq_clear(x);
     return *this;
 }
-inline renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
+inline renf_elem_class& renf_elem_class::operator = (const renf_elem_class &x)
 {
     if (x.nf == NULL)
     {
@@ -343,7 +343,7 @@ inline renf_elem_class& renf_elem_class::operator=(const renf_elem_class &x)
 
 // I/O
 
-inline std::ostream& operator<<(std::ostream & os, const renf_elem_class& a)
+inline std::ostream& operator << (std::ostream & os, const renf_elem_class& a)
 {
     char * res;
     if (a.nf == NULL)
@@ -368,13 +368,13 @@ inline int set_renf::xalloc()
     return xa;
 }
 
-inline std::istream& operator>>(std::istream & is, const set_renf &sr)
+inline std::istream& operator >> (std::istream & is, const set_renf &sr)
 {
     is.iword(set_renf::xalloc()) = (long) sr._nf;
     return is;
 }
 
-inline std::istream& operator>>(std::istream & is, renf_elem_class& a)
+inline std::istream& operator >> (std::istream & is, renf_elem_class& a)
 {
     renf *nf = (renf *) is.iword(set_renf::xalloc());
     if (!nf) {
@@ -390,13 +390,13 @@ inline std::istream& operator>>(std::istream & is, renf_elem_class& a)
 }
 
 
-inline renf_elem_class renf_elem_class::operator-() const
+inline renf_elem_class renf_elem_class::operator - () const
 {
     renf_elem_class ans(*this);
     if (nf == NULL) fmpq_neg(ans.b, ans.b);
     else renf_elem_neg(ans.a, ans.a, ans.nf);
 }
-inline renf_elem_class renf_elem_class::operator+() const
+inline renf_elem_class renf_elem_class::operator + () const
 {
     return *this;
 }
@@ -440,7 +440,7 @@ inline renf_elem_class renf_elem_class::operator OP (const renf_elem_class & oth
     return ans;                           \
 }
 __renf_elem_op(+, +=, renf_elem_add, renf_elem_add_fmpq, renf_elem_fmpq_add, fmpq_add);
-__renf_elem_op(*, *=, renf_elem_mul, renf_elem_mul_fmpq, renf_elem_fmpq_add, fmpq_mul);
+__renf_elem_op(*, *=, renf_elem_mul, renf_elem_mul_fmpq, renf_elem_fmpq_mul, fmpq_mul);
 __renf_elem_op(-, -=, renf_elem_sub, renf_elem_sub_fmpq, renf_elem_fmpq_sub, fmpq_sub);
 __renf_elem_op(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmpq_div);
 #undef __renf_elem_op
@@ -475,9 +475,11 @@ __renf_elem_op(mpq_class&, +, +=);
 
 
 __renf_elem_op(int, -, -=);
-__renf_elem_op(unsigned int, -, -=);
+// not seriously defined
+// __renf_elem_op(unsigned int, -, -=);
 __renf_elem_op(long, -, -=);
-__renf_elem_op(unsigned long, -, -=);
+// not seriously defined
+//__renf_elem_op(unsigned long, -, -=);
 __renf_elem_op(mpz_class&, -, -=);
 __renf_elem_op(mpq_class&, -, -=);
 
@@ -498,9 +500,7 @@ __renf_elem_op(mpq_class&, /, /=);
 #undef __renf_elem_op
 
 
-
-
-inline bool renf_elem_class::operator==(const renf_elem_class& other) const
+inline bool renf_elem_class::operator == (const renf_elem_class& other) const
 {
     if (this->nf != NULL)
     {
@@ -521,7 +521,7 @@ inline bool renf_elem_class::operator==(const renf_elem_class& other) const
     }
 }
 
-inline bool renf_elem_class::operator>(const renf_elem_class & other) const
+inline bool renf_elem_class::operator > (const renf_elem_class & other) const
 {
     if (this->nf != NULL)
     {
@@ -542,19 +542,19 @@ inline bool renf_elem_class::operator>(const renf_elem_class & other) const
     }
 }
 
-inline bool renf_elem_class::operator!=(const renf_elem_class & other) const
+inline bool renf_elem_class::operator != (const renf_elem_class & other) const
 {
     return not (*this == other);
 }
-inline bool renf_elem_class::operator>=(const renf_elem_class & other) const
+inline bool renf_elem_class::operator >= (const renf_elem_class & other) const
 {
     return (*this > other) || (*this == other);
 }
-inline bool renf_elem_class::operator<(const renf_elem_class & other) const
+inline bool renf_elem_class::operator < (const renf_elem_class & other) const
 {
     return not (*this >= other);
 }
-inline bool renf_elem_class::operator<=(const renf_elem_class & other) const
+inline bool renf_elem_class::operator <= (const renf_elem_class & other) const
 {
     return not (* this > other);
 }
@@ -618,6 +618,21 @@ __other_ops(mpq_class&, <=);
 
 #undef __other_ops
 
+inline bool renf_elem_class::is_zero()
+{
+    if (nf == NULL)
+        return fmpq_is_zero(b);
+    else
+        return renf_elem_is_zero(a, nf);
+}
+
+inline bool renf_elem_class::is_one()
+{
+    if (nf == NULL)
+        return fmpq_is_one(b);
+    else
+        return renf_elem_is_one(a, nf);
+}
 
 inline bool renf_elem_class::is_rational()
 {
