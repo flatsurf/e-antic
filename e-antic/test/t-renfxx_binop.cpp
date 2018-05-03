@@ -11,100 +11,115 @@
 
 #include "e-antic/renfxx.h"
 
+#define CHECK_OP(a, b, nf, T, OP)  \
+{                                  \
+    T res = a OP b;                \
+{                                  \
+    renf_elem_class ca(a);         \
+    renf_elem_class cb(b);         \
+    if (ca OP cb != res ||         \
+        ca OP b != res  ||         \
+        a OP cb != res)            \
+        throw 10;                  \
+}                                  \
+{                                  \
+    renf_elem_class ca(nf);        \
+    ca = a;                        \
+    renf_elem_class cb(nf);        \
+    cb = b;                        \
+    if (ca OP cb != res ||         \
+        ca OP b != res ||          \
+        a OP cb != res)            \
+        throw 10;                  \
+}                                  \
+}
+
+#define CHECK_DIV(a, b, nf, T)     \
+{                                  \
+{                                  \
+    renf_elem_class ca(a);         \
+    renf_elem_class cb(b);         \
+    if (b * (ca / cb) != a ||      \
+        b * (ca / b) != a  ||      \
+        b * (a / cb) != a)         \
+        throw 10;                  \
+}                                  \
+{                                  \
+    renf_elem_class ca(nf);        \
+    ca = a;                        \
+    renf_elem_class cb(nf);        \
+    cb = b;                        \
+    if (b * (ca / cb) != a ||      \
+        b * (ca / b) != a ||       \
+        b * (a / cb) != a)         \
+        throw 10;                  \
+}                                  \
+}
+
+template <typename T>
+typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_t nf)
+{
+    CHECK_OP(a, b, nf, T, +);
+    CHECK_OP(a, b, nf, T, *);
+
+    if (b != 0) CHECK_DIV(a, b, nf, T);
+}
+
+template <typename T>
+typename std::enable_if<!std::is_unsigned<T>::value, bool>::type check_binop(T a, T b, renf_t nf)
+{
+    CHECK_OP(a, b, nf, T, +);
+    CHECK_OP(a, b, nf, T, -);
+    CHECK_OP(a, b, nf, T, *);
+
+    if (b != 0) CHECK_DIV(a, b, nf, T);
+}
+
+
 int main(void)
 {
-    int c1 = -1123;
-    unsigned int c2 = 2223;
-    long c3 = 134;
-    unsigned long c4 = 513;
-    mpz_class c5(232);
-    mpq_class c6(211561);
     int iter;
     FLINT_TEST_INIT(state);
+
 
     for (iter=0; iter<100; iter++)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 50);
 
-        renf_elem_class a(nf);
-        renf_elem_class aa(nf);
-        renf_elem_gen(a.get_renf_elem(), nf);
-        renf_elem_gen(aa.get_renf_elem(), nf);
 
-        renf_elem_class b(1);
-        renf_elem_class bb(1);
-
-        std::cout << " a + aa : " << (a + aa) << "\n";
-        std::cout << " a - aa : " << (a - aa) << "\n";
-        std::cout << " a * aa : " << (a * aa) << "\n";
-        std::cout << " a / aa : " << (a / aa) << "\n";
-        std::cout << " a + b : " << (a + b) << "\n";
-        std::cout << " a - b : " << (a - b) << "\n";
-        std::cout << " a * b : " << (a * b) << "\n";
-        std::cout << " a / b : " << (a / b) << "\n";
-        std::cout << " b + a : " << (b + a) << "\n";
-        std::cout << " b - a : " << (b - a) << "\n";
-        std::cout << " b * a : " << (b * a) << "\n";
-        std::cout << " b / a : " << (b / a) << "\n";
-        std::cout << " b + bb : " << (b + bb) << "\n";
-        std::cout << " b - bb : " << (b - bb) << "\n";
-        std::cout << " b * bb : " << (b * bb) << "\n";
-        std::cout << " b / bb : " << (b / bb) << "\n";
-
-        std::cout << " a + int(2) : " << (a + c1) << "\n";
-        std::cout << " int(2) + a : " << (c1 + a) << "\n";
-        std::cout << " a - int(2) : " << (a - c1) << "\n";
-        std::cout << " int(2) - a : " << (c1 - a) << "\n";
-        std::cout << " a * int(2) : " << (a * c1) << "\n";
-        std::cout << " int(2) * a : " << (c1 * a) << "\n";
-        std::cout << " a / int(2) : " << (a / c1) << "\n";
-        std::cout << " int(2) / a : " << (c1 / a) << "\n";
-
-        std::cout << " a + uint(2) : " << (a + c2) << "\n";
-        std::cout << " uint(2) + a : " << (c2 + a) << "\n";
-        std::cout << " a - uint(2) : " << (a - c2) << "\n";
-        std::cout << " uint(2) - a : " << (c2 - a) << "\n";
-        std::cout << " a * uint(2) : " << (a * c2) << "\n";
-        std::cout << " uint(2) * a : " << (c2 * a) << "\n";
-        std::cout << " a / uint(2) : " << (a / c2) << "\n";
-        std::cout << " uint(2) / a : " << (c2 / a) << "\n";
-
-        std::cout << " a + long(2) : " << (a + c3) << "\n";
-        std::cout << " long(2) + a : " << (c3 + a) << "\n";
-        std::cout << " a - long(2) : " << (a - c3) << "\n";
-        std::cout << " long(2) - a : " << (c3 - a) << "\n";
-        std::cout << " a * long(2) : " << (a * c3) << "\n";
-        std::cout << " long(2) * a : " << (c3 * a) << "\n";
-        std::cout << " a / long(2) : " << (a / c3) << "\n";
-        std::cout << " long(2) / a : " << (c3 / a) << "\n";
-
-        std::cout << " a + ulong(2) : " << (a + c4) << "\n";
-        std::cout << " ulong(2) + a : " << (c4 + a) << "\n";
-        std::cout << " a - ulong(2) : " << (a - c4) << "\n";
-        std::cout << " ulong(2) - a : " << (c4 - a) << "\n";
-        std::cout << " a * ulong(2) : " << (a * c4) << "\n";
-        std::cout << " ulong(2) * a : " << (c4 * a) << "\n";
-        std::cout << " a / ulong(2) : " << (a / c4) << "\n";
-        std::cout << " ulong(2) / a : " << (c4 / a) << "\n";
-
-        std::cout << " a + mpz(2) : " << (a + c5) << "\n";
-        std::cout << " mpz(2) + a : " << (c5 + a) << "\n";
-        std::cout << " a - mpz(1) : " << (a - c5) << "\n";
-        std::cout << " mpz(2) - a : " << (c5 - a) << "\n";
-        std::cout << " a * mpz(2) : " << (a * c5) << "\n";
-        std::cout << " mpz(2) * a : " << (c5 * a) << "\n";
-        std::cout << " a / mpz(2) : " << (a / c5) << "\n";
-        std::cout << " mpz(2) / a : " << (c5 / a) << "\n";
-
-        std::cout << " a + mpq(2) : " << (a + c6) << "\n";
-        std::cout << " mpq(2) + a : " << (c6 + a) << "\n";
-        std::cout << " a - mpq(1) : " << (a - c6) << "\n";
-        std::cout << " mpq(2) - a : " << (c6 - a) << "\n";
-        std::cout << " a * mpq(2) : " << (a * c6) << "\n";
-        std::cout << " mpq(2) * a : " << (c6 * a) << "\n";
-        std::cout << " a / mpq(2) : " << (a / c6) << "\n";
-        std::cout << " mpq(2) / a : " << (c6 / a) << "\n";
+        {
+            int c1 = -1123, c2 = 142;
+            std::cout << "int\n";
+            check_binop(c1, c2, nf);
+        }
+        {
+            unsigned int c1 = 2223, c2 = 123;
+            std::cout << "unsigned int\n";
+            check_binop(c1, c2, nf);
+        }
+        {
+            long c1 = 134, c2 = -1111;
+            std::cout << "long\n";
+            check_binop(c1, c2, nf);
+        }
+        {
+            unsigned long c1 = 513, c2 = 3;
+            std::cout << "unsigned long\n";
+            check_binop(c2, c2, nf);
+        }
+        {
+            mpz_class c1(232);
+            mpz_class c2(12);
+            std::cout << "mpz_class\n";
+            check_binop(c1, c2, nf);
+        }
+        {
+            mpq_class c1(211561);
+            mpq_class c2(13);
+            std::cout << "mpq_class\n";
+            check_binop(c1, c2, nf);
+        }
 
         renf_clear(nf);
     }
@@ -113,5 +128,4 @@ int main(void)
     std::cout << "PASS\n";
     return 0;
 }
-
 
