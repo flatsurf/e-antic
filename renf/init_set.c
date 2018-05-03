@@ -17,7 +17,7 @@ void renf_init_set(renf_t dest, const renf_t src)
     arb_init(dest->emb);
     arb_set(dest->emb, src->emb);
 
-    nf_init(dest->nf, src->pol);
+    nf_init(dest->nf, src->nf->pol);
 
     fmpz_poly_init(dest->der);
     fmpz_poly_set(dest->der, src->der);

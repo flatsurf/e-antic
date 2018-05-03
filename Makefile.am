@@ -59,6 +59,7 @@ dist_doc_DATA +=				\
 libeantic_la_SOURCES +=						\
 	renf/fmpz_poly_real_embeddings.c			\
 	renf/init.c						\
+	renf/init_set.c						\
 	renf/init_nth_root.c					\
 	renf/print.c						\
 	renf/randtest.c						\
