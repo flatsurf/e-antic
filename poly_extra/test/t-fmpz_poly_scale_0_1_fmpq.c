@@ -16,7 +16,6 @@ int main()
 {
     int iter;
     FLINT_TEST_INIT(state);
-    printf("fmpz_poly_scale_0_1_fmpq....");
 
     for (iter = 0; iter < 1000; iter++)
     {
@@ -46,16 +45,21 @@ int main()
         fmpz_poly_set(p2, p1);
 
         _fmpz_poly_scale_0_1_fmpq(p2->coeffs, p2->length, a, b);
-        fmpq_sub(c, b, a);
-        for (i = 0; i < n; i++)
+
+        if (fmpz_poly_length(p1) != fmpz_poly_length(p2))
         {
-            fmpq_sub(v2 + i, v1 + i, a);
-            fmpq_div(v2 + i, v2 + i, c);
+            printf("ERROR:\n");
+            printf(" p1 = "); fmpz_poly_print(p1); printf("\n");
+            printf(" p2 = "); fmpz_poly_print(p2); printf("\n");
+            flint_abort();
         }
+        fmpq_sub(c, b, a);
         for (i = 0; i < n; i++)
         {
             fmpq_t r;
             fmpq_init(r);
+            fmpq_sub(v2 + i, v1 + i, a);
+            fmpq_div(v2 + i, v2 + i, c);
             fmpz_poly_evaluate_fmpq(r, p2, v2 + i);
             if (!fmpq_is_zero(r))
             {
@@ -83,6 +87,5 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }
