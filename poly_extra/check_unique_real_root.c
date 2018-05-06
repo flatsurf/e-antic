@@ -22,71 +22,85 @@ arb_sgn2(arb_t a)
 
 int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec)
 {
-    arb_t b, c;
-    arf_t l, r;
-    fmpq_t ql, qr;
-    fmpz * der;
-    int lsign, rsign;
-    fmpz_poly_t pol2;
-    slong n;
-
-    if(pol->length < 2)
+    if (pol->length < 2)
         return 0;
-
-    /* 1 - cheap test:                    */
-    /*   - sign(left) * sign(right) = -1  */
-    /*   - no zero of the derivative      */
-    arb_init(b);
-    arb_init(c);
-    arf_init(l);
-    arf_init(r);
-    arb_get_interval_arf(l, r, a, prec);
-    arb_set_arf(b, l);
-    _fmpz_poly_evaluate_arb(c, pol->coeffs, pol->length, b, 2*prec);
-    lsign = arb_sgn2(c);
-
-    arb_set_arf(b, r);
-    _fmpz_poly_evaluate_arb(c, pol->coeffs, pol->length, b, 2*prec);
-    rsign = arb_sgn2(c);
-
-    arb_clear(c);
-    if (lsign * rsign == -1)
+    else if (pol->length == 2)
     {
-        der = _fmpz_vec_init(pol->length - 1);
-        _fmpz_poly_derivative(der, pol->coeffs, pol->length);
-        _fmpz_poly_evaluate_arb(b, der, pol->length - 1, a, prec);
-        _fmpz_vec_clear(der, pol->length - 1);
+        /* linear polynomial */
+        fmpq_t root;
+        int ans;
 
-        if (!arb_contains_zero(b))
-        {
-            arf_clear(l);
-            arf_clear(r);
-            arb_clear(b);
-            return 1;
-        }
+        fmpq_init(root);
+        fmpq_set_fmpz_frac(root, fmpq_poly_numref(pol), fmpq_poly_numref(pol) + 1);
+        fmpq_neg(root, root);
+        ans = arb_contains_fmpq(a, root);
+        fmpq_clear(root);
+        return ans;
     }
+    else
+    {
+        arb_t b, c;
+        arf_t l, r;
 
-    /* 2 - expensive test                                          */
-    /* enclose a in an interval of the form [c / 2^k, (c + 1)/2^k] */
-    /* then call the algorithm to find roots in [0, 1]             */
-    arb_clear(b);
+        fmpz * der;
+        int lsign, rsign;
+        fmpz_poly_t pol2;
+        slong n;
 
-    fmpq_init(ql);
-    fmpq_init(qr);
-    arf_get_fmpq(ql, l);
-    arf_get_fmpq(qr, r);
+        /* 1 - cheap test:                    */
+        /*   - sign(left) * sign(right) = -1  */
+        /*   - no zero of the derivative      */
+        arb_init(b);
+        arb_init(c);
+        arf_init(l);
+        arf_init(r);
+        arb_get_interval_arf(l, r, a, prec);
+        arb_set_arf(b, l);
+        _fmpz_poly_evaluate_arb(c, pol->coeffs, pol->length, b, 2*prec);
+        lsign = arb_sgn2(c);
 
-    fmpz_poly_init(pol2);
-    fmpz_poly_fit_length(pol2, pol->length);
-    _fmpz_vec_set(pol2->coeffs, pol->coeffs, pol->length);
-    pol2->length = pol->length;
-    _fmpz_poly_scale_0_1_fmpq(pol2->coeffs, pol2->length, ql, qr);
+        arb_set_arf(b, r);
+        _fmpz_poly_evaluate_arb(c, pol->coeffs, pol->length, b, 2*prec);
+        rsign = arb_sgn2(c);
 
-    n = fmpz_poly_num_real_roots_0_1(pol2);
-    fmpz_poly_clear(pol2);
+        arb_clear(c);
+        if (lsign * rsign == -1)
+        {
+            der = _fmpz_vec_init(pol->length - 1);
+            _fmpz_poly_derivative(der, pol->coeffs, pol->length);
+            _fmpz_poly_evaluate_arb(b, der, pol->length - 1, a, prec);
+            _fmpz_vec_clear(der, pol->length - 1);
 
-    fmpq_clear(ql);
-    fmpq_clear(ql);
+            if (!arb_contains_zero(b))
+            {
+                arf_clear(l);
+                arf_clear(r);
+                arb_clear(b);
+                return 1;
+            }
+        }
+        arb_clear(b);
 
-    return (n == 1);
+        /* 2 - expensive testing                                        */
+        fmpq_t ql, qr;
+
+        fmpq_init(ql);
+        fmpq_init(qr);
+        arf_get_fmpq(ql, l);
+        arf_get_fmpq(qr, r);
+
+        fmpz_poly_init(pol2);
+        fmpz_poly_fit_length(pol2, pol->length);
+        _fmpz_vec_set(pol2->coeffs, pol->coeffs, pol->length);
+        pol2->length = pol->length;
+        _fmpz_poly_scale_0_1_fmpq(pol2->coeffs, pol2->length, ql, qr);
+
+        n = fmpz_poly_num_real_roots_0_1(pol2);
+
+        fmpz_poly_clear(pol2);
+        fmpq_clear(ql);
+        fmpq_clear(qr);
+
+        return (n == 1);
+    }
 }
