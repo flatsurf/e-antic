@@ -16,8 +16,6 @@ int main(void)
     FLINT_TEST_INIT(state);
     int iter;
 
-    std::cout << "c++ floor...\n";
-
     {
         fmpq_t x;
 
@@ -89,7 +87,6 @@ int main(void)
     }
 
     FLINT_TEST_CLEANUP(state);
-    std::cout << "PASS\n";
     return 0;
 }
 

@@ -1,6 +1,6 @@
 /*  This is a -*- C++ -*- header file.
 
-    Copyright (C) 2016 Vincent Delecroix
+    Copyright (C) 2016-2018 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -14,41 +14,262 @@
 #define NF_EMB_ELEMXX_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <gmpxx.h>
 
 #include "renf.h"
 #include "renf_elem.h"
 
+/*********/
+/* utils */
+/*********/
+
+/* read a number field from a string */
+/* formatting "minpoly LEN coeff0 coeff1 ... coeffl embedding [mid +/- rad]" */
+inline std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istream& in)
+{
+    char c;
+    int err;
+    std::string s;
+    std::string t;
+
+    in >> s;
+    if (s != "minpoly")
+        throw std::ios_base::failure("Error in reading number field: expected keyword minpoly");
+
+    /* go to the next non-space character */
+    c = in.peek();
+    while (c == ' ')
+    {
+        in.get(c);
+        c = in.peek();
+    }
+
+    /* read the polynomial */
+    while(true)
+    {
+        c = in.peek();
+        if (c == 'e')
+            break;
+        in.get(c);
+        t += c;
+    }
+    err = fmpq_poly_set_str_magic(minpoly, t.c_str());
+    if (err)
+        throw std::ios_base::failure("Error in reading minimal polynomial");
+
+    in >> s;
+    if (s != "embedding")
+        throw std::ios_base::failure("Error in reading number field: expected keyword embedding");
+
+    /* ignore spaces */
+    c = in.peek();
+    while (c == ' ')
+    {
+        in.get(c);
+        c = in.peek();
+    }
+
+    t.clear();
+    c = in.peek();
+    if (c == '[')
+    {
+        while(c != ']' and c != '\0')
+        {
+            in.get(c);
+            t += c;
+            if (c == ']')
+                break;
+        }
+    }
+    else
+    {
+        in >> t;
+    }
+
+    arb_init(emb);
+    int error = arb_set_str(emb, t.c_str(), 10);
+    if (error)
+        throw std::ios_base::failure("Error in reading number field: bad formatting of embedding " + t);
+
+    return in;
+}
+
+/*******************************/
+/* parent class (number field) */
+/*******************************/
+
+
+
 class renf_class
 {
-    renf_srcptr nf;
+    renf_t nf;
+    size_t numref;
 public:
-    renf_class() : nf(0) {}
-    renf_class(renf_t nf) : nf(nf) {} // FIXME: object ownership =?
-    ~renf_class() {}
-    renf_srcptr get_renf() { return nf; }
+    renf_class();
+    renf_class(const renf_class&);
+    renf_class(const std::string, const slong prec=64);
+    renf_class(const std::string, const std::string, const slong prec=64);
+
+    ~renf_class();
+
+    renf_class& operator = (const renf_class&);
+    renf_class& operator = (const renf_t nf);
+
+    const renf_srcptr get_renf() { return nf; }
+
+    friend std::ostream& operator << (std::ostream &, const renf_class&);
+    friend std::istream& operator >> (std::istream &, renf_class&);
 };
+
+inline renf_class::renf_class()
+{
+    fmpq_poly_t minpoly;
+    arb_t emb;
+
+    fmpq_poly_init(minpoly);
+    fmpq_poly_set_coeff_si(minpoly, 0, -1);
+    fmpq_poly_set_coeff_si(minpoly, 1, 1);
+
+    arb_init(emb);
+    arb_set_si(emb, 1);
+
+    renf_init(nf, minpoly, emb, 64);
+
+    fmpq_poly_clear(minpoly);
+    arb_clear(emb);
+}
+
+inline renf_class::renf_class(const renf_class& other)
+{
+    renf_init_set(nf, other.nf);
+}
+
+inline renf_class::renf_class(const std::string str, const slong prec)
+{
+    fmpq_poly_t minpoly;
+    arb_t emb;
+    std::istringstream in;
+
+    in.str(str);
+
+    fmpq_poly_init(minpoly);
+    arb_init(emb);
+
+    parse_nf_stream(minpoly, emb, in);
+    renf_init(nf, minpoly, emb, prec);
+
+    fmpq_poly_clear(minpoly);
+    arb_clear(emb);
+}
+
+inline renf_class::renf_class(const std::string poly_str, const std::string emb_str, const slong prec)
+{
+    fmpq_poly_t minpoly;
+    arb_t emb;
+    int err;
+
+    fmpq_poly_init(minpoly);
+    err = fmpq_poly_set_str(minpoly, poly_str.c_str());
+    if (err)
+    {
+        fmpq_poly_clear(minpoly);
+        throw std::ios_base::failure("Error in reading minimal polynomial");
+    }
+
+    arb_init(emb);
+    int error = arb_set_str(emb, emb_str.c_str(), 10);
+    if (error)
+    {
+        fmpq_poly_clear(minpoly);
+        arb_clear(emb);
+        throw std::ios_base::failure("Error in reading number field: bad formatting of embedding");
+    }
+
+    renf_init(nf, minpoly, emb, prec);
+
+    fmpq_poly_clear(minpoly);
+    arb_clear(emb);
+}
+
+inline renf_class::~renf_class()
+{
+    renf_clear(nf);
+}
+
+renf_class& renf_class::operator = (const renf_class& other)
+{
+    renf_clear(nf);
+    renf_init_set(nf, other.nf);
+}
+
+renf_class& renf_class::operator = (const renf_t nf)
+{
+    renf_clear(this->nf);
+    renf_init_set(this->nf, nf);
+}
+
+inline std::ostream& operator << (std::ostream & os, const renf_class& nf)
+{
+    char *res, *res1;
+    res = fmpq_poly_get_str(nf.nf->nf->pol);
+    res1 = arb_get_str(nf.nf->emb, 64, 0);
+    os << "minpoly "<< res << " embedding " << res1 << std::endl;
+    flint_free(res);
+    flint_free(res1);
+    return os;
+}
+
+inline std::istream& operator >> (std::istream & is, renf_class& a)
+{
+    fmpq_poly_t minpoly;
+    arb_t emb;
+
+    fmpq_poly_init(minpoly);
+    arb_init(emb);
+
+    parse_nf_stream(minpoly, emb, is);
+    renf_clear(a.nf);
+    renf_init(a.nf, minpoly, emb, 64);
+
+    fmpq_poly_clear(minpoly);
+    arb_clear(emb);
+
+    return is;
+}
+
+/****************************************/
+/* element class (number field element) */
+/****************************************/
 
 class renf_elem_class
 {
 private:
-    mutable renf_srcptr nf;
-    mutable renf_elem_t a;
-    mutable fmpq_t b;
+    mutable renf_srcptr nf;  /* WARNING: this is not owned */
+    mutable renf_elem_t a;   /* the actual element */
+    mutable fmpq_t b;        /* rational value when nf == NULL... should we keep it!? */
 public:
-    // construction as zero in a given number field
-    renf_elem_class(renf_t nf);
-
-    // construction as integers or rationals
+    // construction from rational elements
+    // (results will be rationals)
     renf_elem_class(const int=0);
     renf_elem_class(const unsigned int);
     renf_elem_class(const long);
     renf_elem_class(const unsigned long);
     renf_elem_class(const mpz_class&);
     renf_elem_class(const mpq_class&);
-    renf_elem_class(const fmpz_t&);
-    renf_elem_class(const fmpq_t&);
+    renf_elem_class(const fmpz_t);
+    renf_elem_class(const fmpq_t);
+
+    // construction with given number field
+    // (the element will be set to be zero in this number field)
+    renf_elem_class(renf_t);
+
+    renf_elem_class(renf_class&, const int=0);
+    renf_elem_class(renf_class&, const std::string);
+    renf_elem_class(renf_class&, const fmpq_poly_t);
+
+    // construction from another element
     renf_elem_class(const renf_elem_class&);
 
     ~renf_elem_class();
@@ -59,10 +280,11 @@ public:
     renf_elem_srcptr get_renf_elem(void);
 
     // assignment
-    renf_elem_class& operator = (const fmpz_t&);
-    renf_elem_class& operator = (const fmpq_t&);
+    renf_elem_class& operator = (const fmpz_t);
+    renf_elem_class& operator = (const fmpq_t);
     renf_elem_class& operator = (const fmpq_poly_t&);
     renf_elem_class& operator = (const renf_elem_class&);
+    renf_elem_class& operator = (const std::string);
 
     // unary operations
     renf_elem_class operator - () const;
@@ -93,7 +315,6 @@ public:
     // input, output
     // I/O manipulator that stores a renf in an input stream
     // for use by operator >>.
-    friend std::ios_base& set_renf(std::ios_base &, renf_t);
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
     friend std::istream& operator >> (std::istream &, renf_elem_class&);
     void print();
@@ -145,16 +366,40 @@ public:
 
 inline renf_elem_class::renf_elem_class(renf_t k)
 {
-    nf = k;
+    nf = (renf_srcptr) k;
     renf_elem_init(a, nf);
     renf_elem_zero(a, nf);
 }
+
+inline renf_elem_class::renf_elem_class(renf_class& k, const fmpq_poly_t p)
+{
+    nf = (renf_srcptr) k.get_renf();
+    renf_elem_init(a, nf);
+    renf_elem_set_fmpq_poly(a, p, nf);
+}
+
+inline renf_elem_class::renf_elem_class(renf_class& k, const std::string s)
+{
+    nf = (renf_srcptr) k.get_renf();
+    renf_elem_init(a, nf);
+    renf_elem_zero(a, nf);
+    std::istringstream(s) >> *this;
+}
+
 inline renf_elem_class::renf_elem_class(int x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
+inline renf_elem_class::renf_elem_class(renf_class& K, int x)
+{
+    nf = (renf_srcptr) K.get_renf();
+    renf_elem_init(a, nf);
+    renf_elem_set_si(a, x, nf);
+}
+
+
 inline renf_elem_class::renf_elem_class(unsigned int x)
 {
     nf = NULL;
@@ -162,12 +407,14 @@ inline renf_elem_class::renf_elem_class(unsigned int x)
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
+
 inline renf_elem_class::renf_elem_class(long x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
+
 inline renf_elem_class::renf_elem_class(unsigned long x)
 {
     nf = NULL;
@@ -175,6 +422,7 @@ inline renf_elem_class::renf_elem_class(unsigned long x)
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
+
 inline renf_elem_class::renf_elem_class(const mpz_class &x)
 {
     nf = NULL;
@@ -182,25 +430,29 @@ inline renf_elem_class::renf_elem_class(const mpz_class &x)
     fmpz_set_mpz(fmpq_numref(b), x.__get_mp());
     fmpz_one(fmpq_denref(b));
 }
+
 inline renf_elem_class::renf_elem_class(const mpq_class &x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_mpq(b, x.__get_mp());
 }
-inline renf_elem_class::renf_elem_class(const fmpz_t& x)
+
+inline renf_elem_class::renf_elem_class(const fmpz_t x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-inline renf_elem_class::renf_elem_class(const fmpq_t& x)
+
+inline renf_elem_class::renf_elem_class(const fmpq_t x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set(b, x);
 }
+
 inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
 {
     nf = x.nf;
@@ -216,13 +468,11 @@ inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
     }
 }
 
-
 inline renf_elem_class::~renf_elem_class(void)
 {
     if (nf == NULL) fmpq_clear(b);
     else renf_elem_clear(a, nf);
 }
-
 
 inline bool renf_elem_class::is_fmpq(void)
 {
@@ -231,12 +481,12 @@ inline bool renf_elem_class::is_fmpq(void)
 
 inline fmpq * renf_elem_class::get_fmpq(void)
 {
-    if(not is_fmpq()) throw 42;
+    if (not is_fmpq()) throw 42;
     else return b;
 }
 inline renf_elem_srcptr renf_elem_class::get_renf_elem(void)
 {
-    if(is_fmpq()) throw 42;
+    if (is_fmpq()) throw 42;
     else return a;
 }
 
@@ -271,7 +521,7 @@ inline renf_elem_class& renf_elem_class::operator = (const unsigned long n)
     fmpz_clear(x);
     return *this;
 }
-inline renf_elem_class& renf_elem_class::operator = (const fmpz_t& z)
+inline renf_elem_class& renf_elem_class::operator = (const fmpz_t z)
 {
     if (nf == NULL)
     {
@@ -281,7 +531,7 @@ inline renf_elem_class& renf_elem_class::operator = (const fmpz_t& z)
     else renf_elem_set_fmpz(a, z, nf);
     return *this;
 }
-inline renf_elem_class& renf_elem_class::operator = (const fmpq_t& q)
+inline renf_elem_class& renf_elem_class::operator = (const fmpq_t q)
 {
     if (nf == NULL) fmpq_set(b, q);
     else renf_elem_set_fmpq(a, q, nf);
@@ -340,6 +590,23 @@ inline renf_elem_class& renf_elem_class::operator = (const renf_elem_class &x)
 
     return *this;
 }
+inline renf_elem_class& renf_elem_class::operator = (const std::string s)
+{
+    if (nf == NULL)
+    {
+        fmpq_set_str(b, s.c_str(), 10);
+    }
+    else
+    {
+        fmpq_poly_t p;
+        int err;
+
+        err = fmpq_poly_set_str_magic(p, s.c_str());
+        if (err) throw 10;
+        renf_elem_set_fmpq_poly(a, p, nf);
+        fmpq_poly_clear(p);
+    }
+}
 
 // I/O
 
@@ -349,46 +616,53 @@ inline std::ostream& operator << (std::ostream & os, const renf_elem_class& a)
     if (a.nf == NULL)
         res = fmpq_get_str(NULL, 10, a.b);
     else
-        res = renf_elem_get_str_pretty(a.a, "x", a.nf, 5);
+    {
+        // TODO: make a recursive evaluation so that we have at least
+        // a certain amount of significant digits
+        renf_elem_set_evaluation(a.a, a.nf, 64);
+        res = renf_elem_get_str_pretty(a.a, "a", a.nf, 5);
+    }
     os << res;
     flint_free(res);
     return os;
 }
 
-struct set_renf {
-    renf_class *_nf;
-    set_renf(renf_t nf) { _nf = new renf_class(nf); }
-    set_renf(renf_class &nf) { _nf = &nf; } // FIXME: Object ownership =?
-    static int xalloc();
-};
-
-inline int set_renf::xalloc()
-{
-    static int xa = std::ios_base::xalloc();
-    return xa;
-}
-
-inline std::istream& operator >> (std::istream & is, const set_renf &sr)
-{
-    is.iword(set_renf::xalloc()) = (long) sr._nf;
-    return is;
-}
-
 inline std::istream& operator >> (std::istream & is, renf_elem_class& a)
 {
-    renf *nf = (renf *) is.iword(set_renf::xalloc());
-    if (!nf) {
-        // If no number field has been set, use rational input.
-        mpq_class x;
-        is >> x;
-        a = x;
+    std::string t;
+
+    if (a.nf == NULL)
+    {
+        /* read a rational */
+        is >> t;
+        mpq_class b(t);
+        a = b;
     }
-    else {
-        // FIXME: Read element
-        throw 42;
+    else
+    {
+        /* read a number field element (given as a list of rationals) */
+        fmpq_poly_t p;
+        mpq_class b;
+        size_t i;
+
+        fmpq_poly_init(p);
+        for (i = 0; i < fmpq_poly_length(a.nf->nf->pol) - 1; i++)
+        {
+            is >> t;
+            b = t;
+            fmpq_poly_set_coeff_mpq(p, i, b.get_mpq_t());
+            t.clear();
+
+            if (is.eof())
+                break;
+        }
+
+        a = p;
+        fmpq_poly_clear(p);
     }
 }
 
+// Arithmetic
 
 inline renf_elem_class renf_elem_class::operator - () const
 {
@@ -400,7 +674,6 @@ inline renf_elem_class renf_elem_class::operator + () const
 {
     return *this;
 }
-
 
 static inline void renf_elem_fmpq_add(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_add_fmpq(a, c, b, d);}
 static inline void renf_elem_fmpq_mul(renf_elem_t a, fmpq_t b, renf_elem_t c, renf_t d) {renf_elem_mul_fmpq(a, c, b, d);}

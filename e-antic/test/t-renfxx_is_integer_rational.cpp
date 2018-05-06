@@ -42,7 +42,7 @@ int main(void)
 
         if (a.is_integer() || a.is_rational())
             throw 10;
-        
+
         if (not (a-a+1).is_integer() || not (a-a+1).is_rational())
             throw 10;
 
