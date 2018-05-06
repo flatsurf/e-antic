@@ -29,9 +29,15 @@ void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 
 /* TODO: submit to FLINT */
+int fmpq_set_str(fmpq_t x, const char *str, int base);
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
 
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+
+int fmpq_poly_set_str_magic(fmpq_poly_t p, const char * s);
+
+/* sets (coeff, pow) to what it should be from the string in w */
+int monomial_set_str(fmpq_t coeff, slong * pow, char * w);
 
 /* polynomial evaluation */
 
@@ -50,6 +56,14 @@ void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t
 void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong prec);
 
 void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
+
+
+/* parse several kind of strings:     */
+/* integers :  23 or -2               */
+/* rationals:  123/45 or -2/5         */
+/* fmpq polynomials: 2  -3 5/2        */
+/* plain polynomial: 2*a^5 + 5/3*a - 2 */
+int fmpq_poly_magic_parse(fmpq_poly_t p, char * s);
 
 void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, slong len, const arf_t a, slong prec);
 
