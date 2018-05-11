@@ -9,9 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <sstream>
+#include <string>
 #include <cstdlib>
 #include <exception>
+
 #include "e-antic/renfxx.h"
 
 void check_invalid_renf(const std::string& s)
@@ -29,6 +32,19 @@ void check_invalid_renf(const std::string& s)
     }
 
     throw 10;
+}
+
+void check_reconstruction(renf_class& k)
+{
+    renf_class k2;
+    std::ostringstream os;
+
+    os << k;
+    std::istringstream is(os.str());
+    is >> k2;
+
+    if (!renf_equal(k.get_renf(), k2.get_renf()))
+        throw 10;
 }
 
 void check_invalid_renf_elem(renf_class& k, const std::string& s)
@@ -77,6 +93,8 @@ int main(void)
             std::cerr << "FAIL: C++ read nf element" << std::endl;
             throw 10;
         }
+
+        check_reconstruction(k);
     }
 
     return 0;
