@@ -20,12 +20,14 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 50);
+        renf_class K(nf);
+        renf_clear(nf);
 
         std::cout << "c++ assignment...\n";
 
         {
             int c = 2;
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -38,7 +40,7 @@ int main(void)
 
         {
             unsigned int c = 2;
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -51,7 +53,7 @@ int main(void)
 
         {
             long c = 2;
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -63,8 +65,8 @@ int main(void)
         }
 
         {
-            unsigned long c= 2;
-            renf_elem_class a(nf);
+            unsigned long c = 2;
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -80,7 +82,7 @@ int main(void)
             std::cout << " fmpz_t\n";
             fmpz_init(c);
             fmpz_set_si(c, 2);
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -99,7 +101,7 @@ int main(void)
             fmpq_init(c);
 
             fmpq_set_si(c, 2, 1);
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -114,7 +116,7 @@ int main(void)
         {
             mpz_class c(2);
 
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -128,7 +130,7 @@ int main(void)
         {
             mpq_class c(2);
 
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -140,7 +142,7 @@ int main(void)
         }
 
         {
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(2);
             a = b;
             if (a != 2)
@@ -151,7 +153,7 @@ int main(void)
         }
 
         {
-            renf_elem_class a(nf);
+            renf_elem_class a(K);
             renf_elem_class b(2);
             b = a;
             if (b != 0)
@@ -160,8 +162,6 @@ int main(void)
                 throw 10;
             }
         }
-
-        renf_clear(nf);
     }
 
     FLINT_TEST_CLEANUP(state);

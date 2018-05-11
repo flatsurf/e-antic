@@ -11,36 +11,72 @@
 
 #include <sstream>
 #include <cstdlib>
+#include <exception>
 #include "e-antic/renfxx.h"
 
-using namespace std;
+void check_invalid_renf(const std::string& s)
+{
+    std::istringstream is(s);
+    renf_class f;
+
+    try
+    {
+        is >> f;
+    }
+    catch (std::exception &e)
+    {
+        return;
+    }
+
+    throw 10;
+}
+
+void check_invalid_renf_elem(renf_class& k, const std::string& s)
+{
+    std::istringstream is(s);
+    renf_elem_class a(k);
+
+    try
+    {
+        is >> a;
+    }
+    catch (std::exception &e)
+    {
+        return;
+    }
+
+    throw 10;
+}
 
 int main(void)
 {
     {
-        renf_elem_class f;
+        renf_elem_class a;
 
-        // By default, read QQ encapsulated in renf_elem_class
-        istringstream is("42");
-        is >> f;
-        if (f != 42) {
-            cerr << "FAIL: C++ read rational" << endl;
+        std::istringstream is("42");
+        is >> a;
+        if (a != 42)
+        {
+            std::cerr << "FAIL: C++ read rational" << std::endl;
             throw 10;
         }
     }
 
     {
-        renf_class nf;
+        renf_class k;
 
-        /* former test */
-        istringstream is("minpoly 3  -2 0 1 embedding [1.41 +/- 0.3]");
-        is >> nf;
-        cout << "field is: " << nf;
+        std::istringstream is("minpoly 3  -2 0 1 embedding [1.41 +/- 0.3]");
+        is >> k;
 
-        renf_elem_class a(nf);
-//        istringstream is2("32 5/7");
-//        is2 >> a;
-//        cout << "element is: " << a;
+        renf_elem_class a(k);
+        std::istringstream is2("32 5/7");
+        is2 >> a;
+
+        if (a != (5 * k.gen()) / 7 + 32)
+        {
+            std::cerr << "FAIL: C++ read nf element" << std::endl;
+            throw 10;
+        }
     }
 
     return 0;

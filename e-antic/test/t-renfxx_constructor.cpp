@@ -16,11 +16,22 @@ void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
     if (a != b)
     {
-        std::cout << "a = " << a << "\n";
-        std::cout << "b = " << b << "\n";
+        std::cout << "a = " << a << std::endl;
+        std::cout << "b = " << b << std::endl;
         throw 10;
     }
 }
+
+void check_equal(renf_elem_class& a, slong b)
+{
+    if (a != b)
+    {
+        std::cout << "a = " << a << std::endl;
+        std::cout << "b = " << b << std::endl;
+        throw 10;
+    }
+}
+
 
 int main(void)
 {
@@ -45,37 +56,34 @@ int main(void)
             throw 10;
         }
 
-        if (fmpq_cmp_ui(a.get_fmpq(), 0) || fmpq_cmp_ui(b.get_fmpq(), 1) || fmpq_cmp_ui(c.get_fmpq(), 2) ||
-            fmpq_cmp_ui(d.get_fmpq(), 3) || fmpq_cmp_ui(e.get_fmpq(), 4) || fmpq_cmp_ui(f.get_fmpq(), 5) ||
-            fmpq_cmp_ui(g.get_fmpq(), 6))
-        {
-            std::cerr << "renf_elem_class gets constructed with wrong values\n";
-            std::cerr << "a = " << a << "\n";
-            std::cerr << "b = " << b << "\n";
-            std::cerr << "c = " << c << "\n";
-            std::cerr << "d = " << d << "\n";
-            std::cerr << "e = " << e << "\n";
-            std::cerr << "f = " << e << "\n";
-            std::cerr << "g = " << e << "\n";
-            throw 10;
-        }
+        check_equal(a, 0);
+        check_equal(b, 1);
+        check_equal(c, 2);
+        check_equal(d, 3);
+        check_equal(e, 4);
+        check_equal(f, 5);
+        check_equal(g, 6);
     }
 
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 50);
+        renf_class K(nf);
 
-        renf_elem_class a(nf);
+        renf_elem_class a(K);
         renf_elem_class b(a);
+        renf_elem_class c = K.zero();
 
-        if (a.is_fmpq() || b.is_fmpq())
+        if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq())
         {
-            std::cerr << "Problem with renf_elem_class constructor\n";
+            std::cerr << "Problem with renf_elem_class constructor" << std::endl;
             throw 10;
         }
-        if (not (renf_elem_is_zero(a.get_renf_elem(), nf) && renf_elem_is_zero(b.get_renf_elem(), nf)))
+        if (not (renf_elem_is_zero(a.get_renf_elem(), nf) &&
+                 renf_elem_is_zero(b.get_renf_elem(), nf) &&
+                 renf_elem_is_zero(c.get_renf_elem(), nf)))
         {
-            std::cerr << "Problem: elements initialized to nonzero values\n";
+            std::cerr << "Problem: elements initialized to nonzero values" << std::endl;
             throw 10;
         }
 
@@ -88,8 +96,9 @@ int main(void)
         renf_elem_class b(K, 0);
         renf_elem_class c(K, "0");
         renf_elem_class d(K, "0 0");
+        renf_elem_class e = K.zero();
 
-        if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq() || d.is_fmpq())
+        if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq() || d.is_fmpq() || e.is_fmpq())
         {
             std::cerr << "Problem with renf_elem_class constructor\n";
             throw 10;
@@ -98,18 +107,24 @@ int main(void)
         check_equal(a, b);
         check_equal(a, c);
         check_equal(a, d);
+        check_equal(a, e);
     }
 
     {
+        // QQ
         renf_class K;
         renf_elem_class a(K);
         renf_elem_class b(K, 0);
         renf_elem_class c(K, "0");
+        renf_elem_class d = K.zero();
+
         check_equal(a, b);
         check_equal(a, c);
+        check_equal(a, d);
     }
 
     {
+        // QQ[sqrt(2)]
         renf_class K("minpoly a^2 - 2 embedding [1.4142 +/- 0.5]", 128);
 
         fmpq_poly_t p;
@@ -119,7 +134,11 @@ int main(void)
         fmpq_poly_clear(p);
 
         renf_elem_class b(K, "-7/3 3/5");
+
+        renf_elem_class c = 3 * K.gen() / 5 - 7 * K.one() / 3;
+
         check_equal(a, b);
+        check_equal(a, c);
     }
 
     FLINT_TEST_CLEANUP(state);

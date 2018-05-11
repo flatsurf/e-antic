@@ -33,12 +33,14 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 20);
+        renf_class K(nf);
+        renf_clear(nf);
 
         if (fmpq_poly_length(nf->nf->pol) <= 1)
             continue;
 
-        renf_elem_class a(nf);
-        renf_elem_gen(a.get_renf_elem(), nf);
+        renf_elem_class a(K);
+        renf_elem_gen(a.get_renf_elem(), K.get_renf());
 
         if (a.is_integer() || a.is_rational())
             throw 10;
@@ -48,8 +50,6 @@ int main(void)
 
         if (((a-a+1)/2).is_integer() || not ((a-a+1)/2).is_rational())
             throw 10;
-
-        renf_clear(nf);
     }
 
     FLINT_TEST_CLEANUP(state);

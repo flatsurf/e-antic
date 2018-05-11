@@ -12,25 +12,37 @@
 #include "e-antic/renfxx.h"
 
 template<typename T>
-void check_eq(T t, renf_t nf)
+void check_eq(T t, renf_class& K)
 {
-    renf_elem_class a(t);
+    renf_elem_class a;
+    a = t;
 
-    if (t != a || a != t || not (a == t) || not (t == a))
-        throw 10;
+    renf_elem_class b(t);
 
-    renf_elem_class b(nf);
-    b = t;
+    renf_elem_class c(K);
+    c = t;
 
-    if (t != b || b != t || not (b == t) || not (t == b))
-        throw 10;
+    renf_elem_class d(K, t);
+
+    #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
+    if (test_neq(t, a)) throw 10;
+    if (test_neq(t, b)) throw 10;
+    if (test_neq(t, c)) throw 10;
+    if (test_neq(t, d)) throw 10;
+    if (test_neq(a, b)) throw 10;
+    if (test_neq(a, c)) throw 10;
+    if (test_neq(a, d)) throw 10;
+    if (test_neq(b, c)) throw 10;
+    if (test_neq(b, d)) throw 10;
+    if (test_neq(c, d)) throw 10;
+    #undef test_neq
 }
 
 template<typename T>
-void check_cmp(T t, renf_t nf)
+void check_not_gen(T t, renf_class& K)
 {
-    renf_elem_class a(nf);
-    renf_elem_gen(a.get_renf_elem(), nf);
+    renf_elem_class a(K);
+    renf_elem_gen(a.get_renf_elem(), K.get_renf());
 
     if (a == t || t == a ||
         not (a != t) || not (t != a) ||
@@ -59,26 +71,26 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 10);
-
-        check_eq(c1, nf);
-        check_cmp(c1, nf);
-
-        check_eq(c2, nf);
-        check_cmp(c2, nf);
-
-        check_eq(c3, nf);
-        check_cmp(c3, nf);
-
-        check_eq(c4, nf);
-        check_cmp(c4, nf);
-
-        check_eq(c5, nf);
-        check_cmp(c5, nf);
-
-        check_eq(c6, nf);
-        check_cmp(c6, nf);
-
+        renf_class K(nf);
         renf_clear(nf);
+
+        check_eq(c1, K);
+        check_not_gen(c1, K);
+
+        check_eq(c2, K);
+        check_not_gen(c2, K);
+
+        check_eq(c3, K);
+        check_not_gen(c3, K);
+
+        check_eq(c4, K);
+        check_not_gen(c4, K);
+
+        check_eq(c5, K);
+        check_not_gen(c5, K);
+
+        check_eq(c6, K);
+        check_not_gen(c6, K);
     }
 
     FLINT_TEST_CLEANUP(state);

@@ -64,8 +64,11 @@ int main(void)
         renf_init(nf, p, emb, 20 + n_randint(state, 100));
         arb_clear(emb);
 
+        renf_class K(nf);
+        renf_clear(nf);
+
         /* (1+sqrt(5))/2 vs Fibonacci */
-        renf_elem_class a(nf);
+        renf_elem_class a(K);
         fmpq_poly_zero(p);
         fmpq_poly_set_coeff_si(p, 1, -1);
         for (iter = 1; iter < 2000; iter++)
@@ -83,7 +86,6 @@ int main(void)
         }
 
         fmpq_clear(k);
-        renf_clear(nf);
     }
 
     FLINT_TEST_CLEANUP(state);
