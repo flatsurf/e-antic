@@ -12,7 +12,7 @@
 #include <e-antic/renf_elem.h>
 
 
-int _nf_elem_is_integer(const nf_elem_t a, const nf_t nf)
+int nf_elem_is_integer(const nf_elem_t a, const nf_t nf)
 {
     if (nf->flag & NF_LINEAR)
         return fmpz_is_one(LNF_ELEM_DENREF(a));
@@ -23,7 +23,7 @@ int _nf_elem_is_integer(const nf_elem_t a, const nf_t nf)
         return NF_ELEM(a)->length <= 1 && fmpz_is_one(NF_ELEM_DENREF(a));
 }
 
-int _nf_elem_is_rational(const nf_elem_t a, const nf_t nf)
+int nf_elem_is_rational(const nf_elem_t a, const nf_t nf)
 {
     if (nf->flag & NF_LINEAR) return 1;
     else if (nf->flag & NF_QUADRATIC)

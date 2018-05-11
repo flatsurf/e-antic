@@ -17,7 +17,7 @@ void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf)
     arf_t cl, cr;
     slong prec;
 
-    if (_nf_elem_is_integer(b->elem, nf->nf))
+    if (nf_elem_is_integer(b->elem, nf->nf))
     {
         if (nf_elem_is_zero(b->elem, nf->nf))
             fmpz_zero(a);
