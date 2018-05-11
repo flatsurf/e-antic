@@ -9,7 +9,6 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef NF_EMB_H
 #define NF_EMB_H
 
@@ -52,6 +51,19 @@ renf_clear(renf_t nf)
 void renf_refine_embedding(renf_t nf, slong prec);
 
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
+
+
+static __inline__
+int nf_equal(const nf_t nf1, const nf_t nf2)
+{
+    return fmpq_poly_equal(nf1->pol, nf2->pol);
+}
+
+static __inline__
+int renf_equal(const renf_t nf1, const renf_t nf2)
+{
+    return nf_equal(nf1->nf, nf2->nf) && arb_overlaps(nf1->emb, nf2->emb);
+}
 
 /* Randomisation */
 
