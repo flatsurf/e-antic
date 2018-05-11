@@ -87,6 +87,7 @@ public:
     // - binary operations
     // - inplace binary operations
     // - comparisons
+    // for int, uint, long, ulong, mpz_class, mpq_class
     #define __renf_ops(TYP) \
     renf_elem_class(const TYP); \
     renf_elem_class(renf_class&, const TYP); \
@@ -133,7 +134,6 @@ public:
     // input, output
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
     friend std::istream& operator >> (std::istream &, renf_elem_class&);
-    void print();
 
     // floor, ceil, round
     mpz_class floor() const;
@@ -215,6 +215,7 @@ inline std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istrea
         c = in.peek();
     }
 
+    /* read embedding */
     t.clear();
     c = in.peek();
     if (c == '[')
