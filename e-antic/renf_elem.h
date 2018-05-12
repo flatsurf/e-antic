@@ -72,10 +72,6 @@ int renf_elem_is_one(const renf_elem_t a, const renf_t nf)
     return nf_elem_is_one(a->elem, nf->nf);
 }
 
-/* TODO: move to ANTIC */
-int nf_elem_is_rational(const nf_elem_t a, const nf_t nf);
-int nf_elem_is_integer(const nf_elem_t a, const nf_t nf);
-
 static __inline__
 void renf_elem_neg(renf_elem_t a, const renf_elem_t b, const renf_t nf)
 {
@@ -101,97 +97,16 @@ int renf_elem_is_rational(const renf_elem_t a, const renf_t nf)
     return nf_elem_is_rational(a->elem, nf->nf);
 }
 
-/* TODO: move to ANTIC */
-static __inline__
-int nf_elem_equal_si(const nf_elem_t a, const slong b, const nf_t nf)
-{
-    if (nf->flag & NF_LINEAR)
-        return fmpz_is_one(LNF_ELEM_DENREF(a)) &&
-               fmpz_equal_si(LNF_ELEM_NUMREF(a), b);
-    else if (nf->flag & NF_QUADRATIC)
-        return fmpz_is_zero(QNF_ELEM_NUMREF(a) + 1) &&
-               fmpz_is_one(QNF_ELEM_DENREF(a)) &&
-               fmpz_equal_si(QNF_ELEM_NUMREF(a), b);
-    else
-        return NF_ELEM(a)->length <= 1 &&
-               fmpz_is_one(NF_ELEM_DENREF(a)) &&
-               fmpz_equal_si(NF_ELEM_NUMREF(a), b);
-}
-
 static __inline__
 int renf_elem_equal_si(const renf_elem_t a, const slong b, const renf_t nf)
 {
     return nf_elem_equal_si(a->elem, b, nf->nf);
 }
 
-/* TODO: move to ANTIC */
-static __inline__
-int nf_elem_equal_ui(const nf_elem_t a, const ulong b, const nf_t nf)
-{
-    if (nf->flag & NF_LINEAR)
-        return fmpz_is_one(LNF_ELEM_DENREF(a)) &&
-               fmpz_equal_ui(LNF_ELEM_NUMREF(a), b);
-    else if (nf->flag & NF_QUADRATIC)
-        return fmpz_is_zero(QNF_ELEM_NUMREF(a) + 1) &&
-               fmpz_is_one(QNF_ELEM_DENREF(a)) &&
-               fmpz_equal_ui(QNF_ELEM_NUMREF(a), b);
-    else
-        return NF_ELEM(a)->length <= 1 &&
-               fmpz_is_one(NF_ELEM_DENREF(a)) &&
-               fmpz_equal_ui(NF_ELEM_NUMREF(a), b);
-}
-
-
-/* TODO: move to ANTIC */
-static __inline__
-int nf_elem_equal_fmpz(const nf_elem_t a, const fmpz_t b, const nf_t nf)
-{
-    if (nf->flag & NF_LINEAR)
-        return fmpz_is_one(LNF_ELEM_DENREF(a)) && fmpz_equal(LNF_ELEM_NUMREF(a), b);
-    else if (nf->flag & NF_QUADRATIC)
-        return fmpz_is_zero(QNF_ELEM_NUMREF(a) + 1) &&
-               fmpz_is_one(QNF_ELEM_DENREF(a)) &&
-               fmpz_equal(QNF_ELEM_NUMREF(a), b);
-    else
-    {
-        if (NF_ELEM(a)->length == 0)
-            return fmpz_is_zero(b);
-        else if (NF_ELEM(a)->length == 1)
-            return fmpz_is_one(NF_ELEM_DENREF(a)) &&
-                   fmpz_equal(NF_ELEM_NUMREF(a), b);
-        else
-            return 0;
-    }
-}
-
 static __inline__
 int renf_elem_equal_fmpz(const renf_elem_t a, const fmpz_t b, const renf_t nf)
 {
     return nf_elem_equal_fmpz(a->elem, b, nf->nf);
-}
-
-/* TODO: move to ANTIC */
-static __inline__
-int nf_elem_equal_fmpq(const nf_elem_t a, const fmpq_t b, const nf_t nf)
-{
-    printf("%d %d\n",nf->flag & NF_LINEAR, nf->flag & NF_QUADRATIC);
-    if (nf->flag & NF_LINEAR)
-        return fmpz_equal(LNF_ELEM_NUMREF(a), fmpq_numref(b)) &&
-               fmpz_equal(LNF_ELEM_DENREF(a), fmpq_denref(b));
-    else if (nf->flag & NF_QUADRATIC)
-        return fmpz_is_zero(QNF_ELEM_NUMREF(a) + 1) &&
-               fmpz_equal(QNF_ELEM_NUMREF(a), fmpq_numref(b)) &&
-               fmpz_equal(QNF_ELEM_DENREF(a), fmpq_denref(b)) ;
-    else
-    {
-        if (NF_ELEM(a)->length == 0)
-            return fmpq_is_zero(b);
-        else if (NF_ELEM(a)->length == 1)
-            return fmpz_equal(NF_ELEM_NUMREF(a), fmpq_numref(b)) &&
-                   fmpz_equal(NF_ELEM_DENREF(a), fmpq_denref(b));
-        else
-            return 0;
-    }
 }
 
 static __inline__
@@ -219,25 +134,6 @@ void renf_elem_set_si(renf_elem_t a, slong n, const renf_t nf)
 {
     nf_elem_set_si(a->elem, n, nf->nf);
     arb_set_si(a->emb, n);
-}
-
-/* TODO: move to antic */
-static __inline__
-void nf_elem_set_ui(nf_elem_t a, ulong c, const nf_t nf)
-{
-   if (nf->flag & NF_LINEAR)
-   {
-      fmpz_set_ui(LNF_ELEM_NUMREF(a), c);
-      fmpz_one(LNF_ELEM_DENREF(a));
-   } else if (nf->flag & NF_QUADRATIC)
-   {
-      fmpz * const anum = QNF_ELEM_NUMREF(a);
-
-      fmpz_set_ui(anum, c);
-      fmpz_zero(anum + 1);
-      fmpz_one(QNF_ELEM_DENREF(a));
-   } else
-      fmpq_poly_set_ui(NF_ELEM(a), c);
 }
 
 static __inline__

@@ -88,7 +88,6 @@ libeantic_la_SOURCES +=						\
 	renf_elem/get_cfrac.c					\
 	renf_elem/get_str_pretty.c				\
 	renf_elem/init.c					\
-	renf_elem/is_rational.c					\
 	renf_elem/print_pretty.c				\
 	renf_elem/randtest.c					\
 	renf_elem/set_evaluation.c				\
