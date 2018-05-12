@@ -169,6 +169,13 @@ public:
     renf_elem_class gen();
 };
 
+/**/
+/**/
+
+inline mpz_class floor(renf_elem_class x) { return x.floor(); }
+inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
+
+
 /*********/
 /* utils */
 /*********/
