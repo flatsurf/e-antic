@@ -16,6 +16,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
+
 #include <gmpxx.h>
 
 #include "renf.h"
@@ -49,17 +51,34 @@ public:
     // the underlying number field
     renf_class& parent(void);
 
-    // access to attribute
-    bool is_fmpq(void);
-    fmpq * get_fmpq(void);
-    renf_elem_srcptr get_renf_elem(void);
-
     // assignment
     renf_elem_class& operator = (const fmpz_t);
     renf_elem_class& operator = (const fmpq_t);
     renf_elem_class& operator = (const fmpq_poly_t&);
     renf_elem_class& operator = (const renf_elem_class&);
     renf_elem_class& operator = (const std::string);
+
+    // testing
+    bool is_fmpq(void);
+    bool is_zero();
+    bool is_one();
+    bool is_integer();
+    bool is_rational();
+
+    // data access
+    fmpq * get_fmpq(void);
+    renf_elem_srcptr get_renf_elem(void);
+    mpz_class get_den(void);
+    mpz_class get_num(void);
+    std::vector<mpz_class> get_num_vector(void);
+
+    // floor, ceil, round
+    mpz_class floor() const;
+    mpz_class ceil() const;
+
+    // input, output
+    friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
+    friend std::istream& operator >> (std::istream &, renf_elem_class&);
 
     // unary operations
     renf_elem_class operator - () const;
@@ -124,20 +143,6 @@ public:
     __renf_ops(mpz_class&);
     __renf_ops(mpq_class&);
     #undef __renf_ops
-
-    // testing
-    bool is_zero();
-    bool is_one();
-    bool is_integer();
-    bool is_rational();
-
-    // input, output
-    friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
-    friend std::istream& operator >> (std::istream &, renf_elem_class&);
-
-    // floor, ceil, round
-    mpz_class floor() const;
-    mpz_class ceil() const;
 };
 
 
@@ -299,7 +304,7 @@ inline renf_class::renf_class(const std::string poly_str, const std::string emb_
     int err;
 
     fmpq_poly_init(minpoly);
-    err = fmpq_poly_set_str(minpoly, poly_str.c_str());
+    err = fmpq_poly_set_str_magic(minpoly, poly_str.c_str());
     if (err)
     {
         fmpq_poly_clear(minpoly);
@@ -373,19 +378,9 @@ inline renf_elem_class renf_class::one()
 
 renf_elem_class renf_class::gen()
 {
-  if (nf->nf->flag & NF_LINEAR)
-  {
-      throw 10;
-  }
-  else
-  {
-      fmpq_poly_t p;
-      fmpq_poly_init(p);
-      fmpq_poly_set_coeff_si(p, 1, 1);
-      renf_elem_class a(*this, p);
-      fmpq_poly_clear(p);
-      return a;
-  }
+    renf_elem_class a(*this);
+    renf_elem_gen(a.get_renf_elem(), this->get_renf());
+    return a;
 }
 
 /**********************************/
@@ -557,10 +552,86 @@ inline fmpq * renf_elem_class::get_fmpq(void)
     if (not is_fmpq()) throw 42;
     else return b;
 }
+
 inline renf_elem_srcptr renf_elem_class::get_renf_elem(void)
 {
     if (is_fmpq()) throw 42;
     else return a;
+}
+
+inline mpz_class renf_elem_class::get_den()
+{
+    mpz_class res;
+
+    if (nf == NULL)
+        fmpz_get_mpz(res.__get_mp(), fmpq_denref(b));
+    else
+    {
+        fmpz_t z;
+        fmpz_init(z);
+        nf_elem_get_den(z, a->elem, nf->get_renf()->nf);
+        fmpz_get_mpz(res.__get_mp(), z);
+        fmpz_clear(z);
+    }
+
+    return res;
+}
+
+inline mpz_class renf_elem_class::get_num(void)
+{
+    mpz_class x;
+
+    if (nf == NULL)
+    {
+        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
+        return x;
+    }
+    else if (nf->get_renf()->nf->flag & NF_LINEAR)
+        fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
+    else if (nf->get_renf()->nf->flag & NF_QUADRATIC)
+    {
+        if (! fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1))
+            throw 42;
+        fmpz_get_mpz(x.__get_mp(), QNF_ELEM_NUMREF(a->elem));
+    }
+    else
+    {
+        if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
+            mpz_set_si(x.__get_mp(), 0);
+        else if (fmpq_poly_length(NF_ELEM(a->elem)) == 1)
+            fmpz_get_mpz(x.__get_mp(), NF_ELEM_NUMREF(a->elem));
+        else
+            throw 42;
+    }
+}
+
+inline std::vector<mpz_class> renf_elem_class::get_num_vector(void)
+{
+    mpz_class x;
+    std::vector<mpz_class> res;
+
+    if (nf == NULL)
+    {
+        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
+        res.push_back(x);
+    }
+    else
+    {
+        fmpq_poly_t f;
+        fmpq_poly_init(f);
+        nf_elem_get_fmpq_poly(f, a->elem, nf->get_renf()->nf);
+        for (size_t i = 0; i < fmpq_poly_length(f); i++)
+        {
+            fmpz_get_mpz(x.__get_mp(), fmpq_poly_numref(f) + i);
+            res.push_back(x);
+        }
+        size_t deg = fmpq_poly_length(nf->get_renf()->nf->pol);
+        for (size_t i = fmpq_poly_length(f); i < deg; i++)
+            res.push_back(mpz_class(0));
+        fmpq_poly_clear(f);
+    }
+
+    return res;
 }
 
 inline renf_elem_class& renf_elem_class::operator = (const int n)

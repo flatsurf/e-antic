@@ -9,6 +9,7 @@ check_PROGRAMS =				\
 	t-renfxx_constructor                    \
 	t-renfxx_io                             \
 	t-renfxx_assignment                     \
+	t-renfxx_get_num_den                    \
 	t-renfxx_cmp                            \
 	t-renfxx_binop                          \
 	t-renfxx_is_integer_rational            \

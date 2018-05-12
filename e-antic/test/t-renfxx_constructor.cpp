@@ -125,7 +125,7 @@ int main(void)
 
     {
         // QQ[sqrt(2)]
-        renf_class K("minpoly a^2 - 2 embedding [1.4142 +/- 0.5]", 128);
+        renf_class K("minpoly a^2 - 2 embedding [1.41 +/- 0.1]", 128);
 
         fmpq_poly_t p;
         fmpq_poly_init(p);
@@ -139,6 +139,16 @@ int main(void)
 
         check_equal(a, b);
         check_equal(a, c);
+    }
+
+    {
+        // QQ[cbrt(2)]
+        renf_class K("a^3 - 2", "1.26 +/- 0.1");
+
+        renf_elem_class a(K, "2/5 -3/2 7/4");
+        renf_elem_class b = mpq_class(2, 5) - mpq_class(3, 2) * K.gen() + mpq_class(7, 4) * K.gen() * K.gen();
+
+        check_equal(a, b);
     }
 
     FLINT_TEST_CLEANUP(state);
