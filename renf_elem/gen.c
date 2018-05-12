@@ -17,8 +17,17 @@ void renf_elem_gen(renf_elem_t a, const renf_t nf)
 {
     if (nf->nf->flag & NF_LINEAR)
     {
-        renf_elem_one(a, nf);
+        fmpz_set(LNF_ELEM_NUMREF(a->elem), nf->nf->pol->coeffs + 1);
+        fmpz_set(LNF_ELEM_DENREF(a->elem), nf->nf->pol->coeffs);
+
+        fmpz_neg(LNF_ELEM_NUMREF(a->elem), LNF_ELEM_NUMREF(a->elem));
+
+        _fmpq_canonicalise(LNF_ELEM_NUMREF(a->elem), LNF_ELEM_DENREF(a->elem));
+
+        arb_fmpz_div_fmpz(a->emb, LNF_ELEM_NUMREF(a->elem),
+                          LNF_ELEM_DENREF(a->elem), nf->prec);
     }
+
     else
     {
         fmpq_poly_t p;
@@ -30,4 +39,3 @@ void renf_elem_gen(renf_elem_t a, const renf_t nf)
         fmpq_poly_clear(p);
     }
 }
-
