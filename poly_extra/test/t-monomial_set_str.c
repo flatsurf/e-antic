@@ -28,14 +28,14 @@ void check_valid(char * w, char * scoeff, slong pow)
     if (ans1 || ans2 || !fmpq_equal(coeff, coeff2) || pow != pow2)
     {
         printf("input: %s\n", w);
-        printf("expected coeff %s and expected pow %d\n", scoeff, pow);
+        printf("expected coeff %s and expected pow %ld\n", scoeff, pow);
         printf(" (coeff = "); fmpq_print(coeff); printf(")\n");
         printf("ans1  : %d\n", ans1);
         printf("ans2  : %d\n", ans1);
         if (ans2 == 0)
         {
             printf("got coeff = "); fmpq_print(coeff2); printf("\n");
-            printf("got pow   = %d\n", pow2);
+            printf("got pow   = %ld\n", pow2);
         }
         abort();
     }
@@ -58,7 +58,7 @@ void check_invalid(char *w)
     {
         printf("got ans = 0 for the invalid string %s\n", w);
         printf("coeff = "); fmpq_print(coeff); printf("\n");
-        printf("pow   = %d\n", pow);
+        printf("pow   = %ld\n", pow);
         abort();
     }
     fmpq_clear(coeff);

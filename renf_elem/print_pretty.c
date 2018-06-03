@@ -15,6 +15,6 @@
 void renf_elem_print_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)
 {
     char * res = renf_elem_get_str_pretty(a, var, nf, n);
-    fprintf(stdout, res);
+    fputs(res, stdout);
     flint_free(res);
 }

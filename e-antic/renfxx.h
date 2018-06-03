@@ -610,6 +610,8 @@ inline mpz_class renf_elem_class::get_num(void)
         else
             throw 42;
     }
+
+    return x;
 }
 
 inline std::vector<mpz_class> renf_elem_class::get_num_vector(void)
@@ -810,6 +812,8 @@ inline std::istream& operator >> (std::istream & is, renf_elem_class& a)
         a = p;
         fmpq_poly_clear(p);
     }
+
+    return is;
 }
 
 // Arithmetic
@@ -819,6 +823,7 @@ inline renf_elem_class renf_elem_class::operator - () const
     renf_elem_class ans(*this);
     if (nf == NULL) fmpq_neg(ans.b, ans.b);
     else renf_elem_neg(ans.a, ans.a, ans.nf->get_renf());
+    return ans;
 }
 inline renf_elem_class renf_elem_class::operator + () const
 {

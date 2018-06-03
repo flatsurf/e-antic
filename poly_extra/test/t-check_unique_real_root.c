@@ -28,13 +28,10 @@ int main(void)
     arb_set_si(emb, a);
     arb_div_si(emb, emb, b, 64);
 
-    fmpq_poly_print(p); printf("\n");
-    arb_print(emb); printf("\n");
-
     ans = fmpq_poly_check_unique_real_root(p, emb, 64);
     if (ans != 1)
     {
-        fprintf(stderr, "error with poly check unique real root (got %d instead of 1)\n", ans);
+        fprintf(stderr, "error with poly check unique real root (got %ld instead of 1)\n", ans);
         flint_abort();
     }
 
@@ -42,7 +39,7 @@ int main(void)
     ans = fmpq_poly_check_unique_real_root(p, emb, 64);
     if (ans != 0)
     {
-        fprintf(stderr, "error with poly check unique real root (got %d instead of 0)\n");
+        fprintf(stderr, "error with poly check unique real root (got %ld instead of 0)\n");
         flint_abort();
     }
 

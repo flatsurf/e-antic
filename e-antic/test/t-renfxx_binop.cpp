@@ -66,7 +66,7 @@ typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a,
 }
 
 template <typename T>
-typename std::enable_if<!std::is_unsigned<T>::value, bool>::type check_binop(T a, T b, renf_class& K)
+typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_class& K)
 {
     CHECK_OP(a, b, K, T, +);
     CHECK_OP(a, b, K, T, -);
