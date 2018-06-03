@@ -33,6 +33,10 @@ install:
   # build e-antic
   - ./bootstrap.sh
   - ./configure CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib"
+  - make
 
 script:
+  - V=1 make check
+  - cat test-suite.log  
+  - cat e-antic/test/test-suite.log
   - V=1 make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=\"-I${LOCAL}/include\" CPPFLAGS=\"-I${LOCAL}/include\" LDFLAGS=\"-L${LOCAL}/lib\""
