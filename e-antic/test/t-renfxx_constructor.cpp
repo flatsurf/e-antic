@@ -15,21 +15,13 @@
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
     if (a != b)
-    {
-        std::cout << "a = " << a << std::endl;
-        std::cout << "b = " << b << std::endl;
-        throw 10;
-    }
+        throw std::runtime_error("wrong comparison");
 }
 
 void check_equal(renf_elem_class& a, slong b)
 {
     if (a != b)
-    {
-        std::cout << "a = " << a << std::endl;
-        std::cout << "b = " << b << std::endl;
-        throw 10;
-    }
+        throw std::runtime_error("wrong comparison");
 }
 
 
@@ -46,15 +38,10 @@ int main(void)
         renf_elem_class f(mpz_class(5));
         renf_elem_class g(mpq_class(6));
 
-        std::cout << "c++ constructor....\n";
-
         if (not (a.is_fmpq() && b.is_fmpq() && c.is_fmpq() &&
                  d.is_fmpq() && e.is_fmpq() && f.is_fmpq() &&
                  g.is_fmpq()))
-        {
-            std::cerr << "Problem with integer constructors\n";
-            throw 10;
-        }
+            throw std::runtime_error("problem with integer constructors");
 
         check_equal(a, 0);
         check_equal(b, 1);
@@ -75,17 +62,12 @@ int main(void)
         renf_elem_class c = K.zero();
 
         if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq())
-        {
-            std::cerr << "Problem with renf_elem_class constructor" << std::endl;
-            throw 10;
-        }
+            throw std::runtime_error("problem with renf_elem_class constructor");
+
         if (not (renf_elem_is_zero(a.get_renf_elem(), nf) &&
                  renf_elem_is_zero(b.get_renf_elem(), nf) &&
                  renf_elem_is_zero(c.get_renf_elem(), nf)))
-        {
-            std::cerr << "Problem: elements initialized to nonzero values" << std::endl;
-            throw 10;
-        }
+            throw std::runtime_error("problem: elements initialized to nonzero values");
 
         renf_clear(nf);
     }
@@ -99,10 +81,7 @@ int main(void)
         renf_elem_class e = K.zero();
 
         if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq() || d.is_fmpq() || e.is_fmpq())
-        {
-            std::cerr << "Problem with renf_elem_class constructor\n";
-            throw 10;
-        }
+            throw std::runtime_error("problem with renf_elem_class constructor");
 
         check_equal(a, b);
         check_equal(a, c);

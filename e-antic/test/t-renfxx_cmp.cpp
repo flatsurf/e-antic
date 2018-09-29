@@ -25,16 +25,10 @@ void check_eq(T t, renf_class& K)
     renf_elem_class d(K, t);
 
     #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
-    if (test_neq(t, a)) throw 10;
-    if (test_neq(t, b)) throw 10;
-    if (test_neq(t, c)) throw 10;
-    if (test_neq(t, d)) throw 10;
-    if (test_neq(a, b)) throw 10;
-    if (test_neq(a, c)) throw 10;
-    if (test_neq(a, d)) throw 10;
-    if (test_neq(b, c)) throw 10;
-    if (test_neq(b, d)) throw 10;
-    if (test_neq(c, d)) throw 10;
+    if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) ||
+        test_neq(a, b) || test_neq(a, c) || test_neq(a, d) || test_neq(b, c) ||
+        test_neq(b, d) || test_neq(c, d))
+        throw std::runtime_error("== and != not coherent on renf_elem_class");
     #undef test_neq
 }
 
@@ -52,7 +46,7 @@ void check_not_gen(T t, renf_class& K)
         (a >= t) != (t <= a) ||
         (a < t) != not (a >= t) ||
         (a > t) != not (a <= t))
-        throw 10;
+        throw std::runtime_error("comparison problem");
 }
 
 

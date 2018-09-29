@@ -20,7 +20,7 @@
     if (ca OP cb != res ||        \
         ca OP b != res  ||        \
         a OP cb != res)           \
-        throw 10;                 \
+        throw std::runtime_error("wrong result in binary operation"); \
 }                                 \
 {                                 \
     renf_elem_class ca(K);        \
@@ -30,7 +30,7 @@
     if (ca OP cb != res ||        \
         ca OP b != res ||         \
         a OP cb != res)           \
-        throw 10;                 \
+        throw std::runtime_error("wrong result in binary operation"); \
 }                                 \
 }
 
@@ -42,7 +42,7 @@
     if (b * (ca / cb) != a ||     \
         b * (ca / b) != a  ||     \
         b * (a / cb) != a)        \
-        throw 10;                 \
+        throw std::runtime_error("wrong result in binary operation"); \
 }                                 \
 {                                 \
     renf_elem_class ca(K);        \
@@ -52,7 +52,7 @@
     if (b * (ca / cb) != a ||     \
         b * (ca / b) != a ||      \
         b * (a / cb) != a)        \
-        throw 10;                 \
+        throw std::runtime_error("wrong result in binary operation"); \
 }                                 \
 }
 
@@ -123,8 +123,51 @@ int main(void)
         }
     }
 
+    {
+        renf_class K1("x^2 - 2", "1.41 +/- 0.01");
+        renf_class K2("x^2 - 3", "1.73 +/- 0.01");
+
+        renf_elem_class a1(K1);
+        renf_elem_class a2(K2);
+
+        try
+        {
+            a1 + a2;
+            throw std::runtime_error("a1 + a2 did not raise an error");
+        }
+        catch (std::domain_error)
+        {
+        }
+
+        try
+        {
+            a1 - a2;
+            throw std::runtime_error("a1 - a2 did not raise an error");
+        }
+        catch (std::domain_error)
+        {
+        }
+
+        try
+        {
+            a1 * a2;
+            throw std::runtime_error("a1 * a2 did not raise an error");
+        }
+        catch (std::domain_error)
+        {
+        }
+
+        try
+        {
+            a1 / a2;
+            throw std::runtime_error("a1 / a2 did not raise an error");
+        }
+        catch (std::domain_error)
+        {
+        }
+    }
+
     FLINT_TEST_CLEANUP(state);
-    std::cout << "PASS\n";
     return 0;
 }
 

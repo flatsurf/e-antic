@@ -11,6 +11,9 @@
 
 #include "e-antic/renfxx.h"
 
+#include <limits.h>
+#include <stdexcept>
+
 int main(void)
 {
     FLINT_TEST_INIT(state);
@@ -23,8 +26,6 @@ int main(void)
         renf_class K(nf);
         renf_clear(nf);
 
-        std::cout << "c++ assignment...\n";
-
         {
             int c = 2;
             renf_elem_class a(K);
@@ -32,10 +33,12 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with int";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from int is wrong");
+
+            renf_elem_class d((int) INT_MIN);
+            renf_elem_class e((int) INT_MAX);
+            if (d != (int) INT_MIN || e != (int) INT_MAX)
+                throw std::runtime_error("constructor from INT_MIN/INT_MAX is wrong");
         }
 
         {
@@ -45,10 +48,11 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with uint\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from unsigned int is wrong");
+
+            renf_elem_class d((unsigned int) UINT_MAX);
+            if (d != (unsigned int) UINT_MAX)
+                throw std::runtime_error("constructor from UINT_MAX is wrong");
         }
 
         {
@@ -58,10 +62,12 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with long\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from long is wrong");
+
+            renf_elem_class d((long) LONG_MIN);
+            renf_elem_class e((long) LONG_MAX);
+            if (d != (long) LONG_MIN || e != (long) LONG_MAX)
+                throw std::runtime_error("constructor from LONG_MIN/LONG_MAX is wrong");
         }
 
         {
@@ -71,15 +77,15 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with ulong\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from unsigned long is wrong");
+
+            renf_elem_class d((unsigned long) ULONG_MAX);
+            if (d != (unsigned long) ULONG_MAX)
+                throw std::runtime_error("constructor from ULONG_MAX is wrong");
         }
 
         {
             fmpz_t c;
-            std::cout << " fmpz_t\n";
             fmpz_init(c);
             fmpz_set_si(c, 2);
             renf_elem_class a(K);
@@ -87,17 +93,13 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with fmpz_t\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from fmpz is wrong");
             fmpz_clear(c);
         }
 
         {
             fmpq_t c;
 
-            std::cout << " fmpq_t\n";
             fmpq_init(c);
 
             fmpq_set_si(c, 2, 1);
@@ -106,10 +108,7 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with fmpq_t\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from fmpq is wrong");
             fmpq_clear(c);
         }
 
@@ -121,10 +120,7 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with mpz_class\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from mpz_class is wrong");
         }
 
         {
@@ -135,10 +131,7 @@ int main(void)
             a = c;
             b = c;
             if (a != 2 || b != 2)
-            {
-                std::cerr << "pb with mpq_class\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from mpq_class is wrong");
         }
 
         {
@@ -146,10 +139,7 @@ int main(void)
             renf_elem_class b(2);
             a = b;
             if (a != 2)
-            {
-                std::cerr << "pb with renf_elem\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from another renf_elem_class is wrong");
         }
 
         {
@@ -157,15 +147,11 @@ int main(void)
             renf_elem_class b(2);
             b = a;
             if (b != 0)
-            {
-                std::cerr << "pb with renf_elem\n";
-                throw 10;
-            }
+                throw std::runtime_error("constructor from another renf_elem_class is wrong");
         }
     }
 
     FLINT_TEST_CLEANUP(state);
-    std::cout << "PASS\n";
     return 0;
 }
 

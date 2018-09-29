@@ -17,6 +17,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 #include <gmpxx.h>
 
@@ -169,12 +170,12 @@ public:
     renf_elem_class gen();
 };
 
-/**/
-/**/
+/*********************/
+/* function overload */
+/*********************/
 
 inline mpz_class floor(renf_elem_class x) { return x.floor(); }
 inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
-
 
 /*********/
 /* utils */
@@ -556,13 +557,15 @@ inline bool renf_elem_class::is_fmpq(void)
 
 inline fmpq * renf_elem_class::get_fmpq(void)
 {
-    if (not is_fmpq()) throw 42;
+    if (not is_fmpq())
+        throw std::invalid_argument("renf_elem_class not a fmpq");
     else return b;
 }
 
 inline renf_elem_srcptr renf_elem_class::get_renf_elem(void)
 {
-    if (is_fmpq()) throw 42;
+    if (is_fmpq())
+        throw std::invalid_argument("renf_elem_class is a fmpq");
     else return a;
 }
 
@@ -598,7 +601,7 @@ inline mpz_class renf_elem_class::get_num(void)
     else if (nf->get_renf()->nf->flag & NF_QUADRATIC)
     {
         if (! fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1))
-            throw 42;
+            throw std::invalid_argument("renf_elem_class not a rational");
         fmpz_get_mpz(x.__get_mp(), QNF_ELEM_NUMREF(a->elem));
     }
     else
@@ -608,7 +611,7 @@ inline mpz_class renf_elem_class::get_num(void)
         else if (fmpq_poly_length(NF_ELEM(a->elem)) == 1)
             fmpz_get_mpz(x.__get_mp(), NF_ELEM_NUMREF(a->elem));
         else
-            throw 42;
+            throw std::invalid_argument("renf_elem_class not a rational");
     }
 
     return x;
@@ -693,7 +696,8 @@ inline renf_elem_class& renf_elem_class::operator = (const fmpq_t q)
 }
 inline renf_elem_class& renf_elem_class::operator = (const fmpq_poly_t& p)
 {
-    if (nf == NULL) throw 42;
+    if (nf == NULL)
+        throw std::invalid_argument("can not assign renf_elem_class from polynomial if the number field is not set");
     renf_elem_set_fmpq_poly(a, p, nf->get_renf());
     return *this;
 }
@@ -754,7 +758,8 @@ inline renf_elem_class& renf_elem_class::operator = (const std::string s)
         int err;
 
         err = fmpq_poly_set_str_magic(p, s.c_str());
-        if (err) throw 10;
+        if (err)
+            throw std::ios_base::failure("error in reading number field");
         renf_elem_set_fmpq_poly(a, p, nf->get_renf());
         fmpq_poly_clear(p);
     }
@@ -843,7 +848,7 @@ inline renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & 
         else if (other.nf == NULL)                \
             FUN2(a, a, other.b, nf->get_renf());  \
         else                                      \
-            throw 42;                             \
+            throw std::domain_error("arithmetic invalid on renf_elem_classes with different fields"); \
     }                                             \
     else if (other.nf != NULL)                    \
     {                                             \
@@ -937,7 +942,7 @@ inline bool renf_elem_class::operator == (const renf_elem_class& other) const
         else if (other.nf == NULL)
             return renf_elem_equal_fmpq(a, other.b, nf->get_renf());
         else
-            throw 42;
+            throw std::domain_error("can not compare renf_elem_class on different number fields");
     }
     else if (other.nf == NULL)
         return fmpq_equal(b, other.b);
@@ -954,7 +959,7 @@ inline bool renf_elem_class::operator > (const renf_elem_class & other) const
         else if (other.nf == NULL)
             return renf_elem_cmp_fmpq(a, other.b, nf->get_renf()) > 0;
         else
-            throw 42;
+            throw std::domain_error("can not compare renf_elem_class on different number fields");
     }
     else if (other.nf == NULL)
         return fmpq_cmp(b, other.b) > 0;

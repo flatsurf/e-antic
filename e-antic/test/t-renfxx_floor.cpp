@@ -16,8 +16,6 @@ int main(void)
     FLINT_TEST_INIT(state);
     int iter;
 
-    std::cout << "c++ floor...\n";
-
     {
         fmpq_t x;
 
@@ -28,10 +26,7 @@ int main(void)
         renf_elem_class a(x);
 
         if (a.floor() != 1)
-        {
-            std::cerr << "pb with floor\n";
-            throw 10;
-        }
+            throw std::runtime_error("pb with floor");
 
         fmpz_set_si(fmpq_numref(x), -3);
         fmpz_set_si(fmpq_denref(x), 2);
@@ -39,16 +34,12 @@ int main(void)
         a = x;
 
         if (a.floor() != -2)
-        {
-            std::cerr << "pb with floor\n";
-            throw 10;
-        }
+            throw std::runtime_error("pb with floor");
 
         fmpq_clear(x);
     }
 
     FLINT_TEST_CLEANUP(state);
-    std::cout << "PASS\n";
     return 0;
 }
 

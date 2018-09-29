@@ -7,6 +7,7 @@ AM_CPPFLAGS = -I$(top_srcdir)
 check_PROGRAMS =				\
 	t-renfxx				\
 	t-renfxx_constructor                    \
+	t-renfxx_get                            \
 	t-renfxx_io                             \
 	t-renfxx_assignment                     \
 	t-renfxx_get_num_den                    \

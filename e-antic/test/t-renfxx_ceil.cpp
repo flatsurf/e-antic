@@ -26,10 +26,7 @@ int main(void)
         renf_elem_class a(x);
 
         if (a.ceil() != 2)
-        {
-            std::cerr << "pb with ceil\n";
-            throw 10;
-        }
+            throw std::runtime_error("pb with ceil");
 
         fmpz_set_si(fmpq_numref(x), -3);
         fmpz_set_si(fmpq_denref(x), 2);
@@ -37,10 +34,7 @@ int main(void)
         a = x;
 
         if (a.ceil() != -1)
-        {
-            std::cerr << "pb with ceil\n";
-            throw 10;
-        }
+            throw std::runtime_error("pb with ceil");
 
         fmpq_clear(x);
     }
@@ -79,10 +73,7 @@ int main(void)
             renf_elem_set_fmpq_poly(a.get_renf_elem(), p, nf);
 
             if (a.ceil() != 1 - iter % 2)
-            {
-                std::cerr << "pb with Fibonacci ceil at iter=" << iter << "\n";
-                throw 10;
-            }
+                throw std::runtime_error("pb with Fibonacci ceil");
         }
 
         fmpq_clear(k);
