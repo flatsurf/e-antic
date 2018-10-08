@@ -181,78 +181,7 @@ inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 /* utils */
 /*********/
 
-/* read a number field from a string */
-/* formatting "minpoly LEN coeff0 coeff1 ... coeffl embedding [mid +/- rad]" */
-inline std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istream& in)
-{
-    char c;
-    int err;
-    std::string s;
-    std::string t;
-
-    in >> s;
-    if (s != "minpoly")
-        throw std::ios_base::failure("Error in reading number field: expected keyword minpoly");
-
-    /* go to the next non-space character */
-    c = in.peek();
-    while (c == ' ')
-    {
-        in.get(c);
-        c = in.peek();
-    }
-
-    /* read the polynomial */
-    while(true)
-    {
-        c = in.peek();
-        if (c == 'e')
-            break;
-        in.get(c);
-        t += c;
-    }
-    while (t.back() == ' ') t.pop_back();
-    err = fmpq_poly_set_str_magic(minpoly, t.c_str());
-    if (err)
-        throw std::ios_base::failure("Error in reading minimal polynomial");
-
-    in >> s;
-    if (s != "embedding")
-        throw std::ios_base::failure("Error in reading number field: expected keyword embedding");
-
-    /* ignore spaces */
-    c = in.peek();
-    while (c == ' ')
-    {
-        in.get(c);
-        c = in.peek();
-    }
-
-    /* read embedding */
-    t.clear();
-    c = in.peek();
-    if (c == '[')
-    {
-        while(c != ']' and c != '\0')
-        {
-            in.get(c);
-            t += c;
-            if (c == ']')
-                break;
-        }
-    }
-    else
-    {
-        in >> t;
-    }
-
-    int error = arb_set_str(emb, t.c_str(), 10);
-    if (error)
-        throw std::ios_base::failure("Error in reading number field: bad formatting of embedding " + t);
-
-    return in;
-}
-
+std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istream& in);
 
 /*****************************/
 /* renf_class implementation */
@@ -383,7 +312,7 @@ inline renf_elem_class renf_class::one()
     return a;
 }
 
-renf_elem_class renf_class::gen()
+inline renf_elem_class renf_class::gen()
 {
     renf_elem_class a(*this);
     renf_elem_gen(a.get_renf_elem(), this->get_renf());
@@ -614,35 +543,6 @@ inline mpz_class renf_elem_class::get_num(void) const
     }
 
     return x;
-}
-
-inline std::vector<mpz_class> renf_elem_class::get_num_vector(void) const
-{
-    mpz_class x;
-    std::vector<mpz_class> res;
-
-    if (nf == NULL)
-    {
-        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
-        res.push_back(x);
-    }
-    else
-    {
-        fmpq_poly_t f;
-        fmpq_poly_init(f);
-        nf_elem_get_fmpq_poly(f, a->elem, nf->get_renf()->nf);
-        for (size_t i = 0; i < fmpq_poly_length(f); i++)
-        {
-            fmpz_get_mpz(x.__get_mp(), fmpq_poly_numref(f) + i);
-            res.push_back(x);
-        }
-        size_t deg = fmpq_poly_length(nf->get_renf()->nf->pol);
-        for (size_t i = fmpq_poly_length(f); i < deg; i++)
-            res.push_back(mpz_class(0));
-        fmpq_poly_clear(f);
-    }
-
-    return res;
 }
 
 inline renf_elem_class& renf_elem_class::operator = (const int n)
