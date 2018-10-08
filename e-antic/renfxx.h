@@ -407,54 +407,54 @@ inline renf_elem_class::renf_elem_class(renf_class& k)
     renf_elem_zero(a, nf->get_renf());
 }
 
-inline renf_elem_class::renf_elem_class(int x)
+inline renf_elem_class::renf_elem_class(const int x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
-inline renf_elem_class::renf_elem_class(renf_class& k, int x)
+inline renf_elem_class::renf_elem_class(renf_class& k, const int x)
 {
     nf = &k;
     renf_elem_init(a, nf->get_renf());
     renf_elem_set_si(a, x, nf->get_renf());
 }
 
-inline renf_elem_class::renf_elem_class(unsigned int x)
+inline renf_elem_class::renf_elem_class(const unsigned int x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-inline renf_elem_class::renf_elem_class(renf_class& k, unsigned int x)
+inline renf_elem_class::renf_elem_class(renf_class& k, const unsigned int x)
 {
     nf = &k;
     renf_elem_init(a, nf->get_renf());
     renf_elem_set_ui(a, x, nf->get_renf());
 }
 
-inline renf_elem_class::renf_elem_class(long x)
+inline renf_elem_class::renf_elem_class(const long x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpq_set_si(b, x, 1);
 }
-inline renf_elem_class::renf_elem_class(renf_class& k, long x)
+inline renf_elem_class::renf_elem_class(renf_class& k, const long x)
 {
     nf = &k;
     renf_elem_init(a, nf->get_renf());
     renf_elem_set_si(a, x, nf->get_renf());
 }
 
-inline renf_elem_class::renf_elem_class(unsigned long x)
+inline renf_elem_class::renf_elem_class(const unsigned long x)
 {
     nf = NULL;
     fmpq_init(b);
     fmpz_set_ui(fmpq_numref(b), x);
     fmpz_one(fmpq_denref(b));
 }
-inline renf_elem_class::renf_elem_class(renf_class& k, unsigned long x)
+inline renf_elem_class::renf_elem_class(renf_class& k, const unsigned long x)
 {
     nf = &k;
     renf_elem_init(a, nf->get_renf());
