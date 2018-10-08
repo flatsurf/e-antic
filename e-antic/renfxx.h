@@ -60,18 +60,18 @@ public:
     renf_elem_class& operator = (const std::string);
 
     // testing
-    bool is_fmpq(void);
-    bool is_zero();
-    bool is_one();
-    bool is_integer();
-    bool is_rational();
+    bool is_fmpq(void) const;
+    bool is_zero() const;
+    bool is_one() const;
+    bool is_integer() const;
+    bool is_rational() const;
 
     // data access
-    fmpq * get_fmpq(void);
-    renf_elem_srcptr get_renf_elem(void);
-    mpz_class get_den(void);
-    mpz_class get_num(void);
-    std::vector<mpz_class> get_num_vector(void);
+    fmpq * get_fmpq(void) const;
+    renf_elem_srcptr get_renf_elem(void) const;
+    mpz_class get_den(void) const;
+    mpz_class get_num(void) const;
+    std::vector<mpz_class> get_num_vector(void) const;
 
     // floor, ceil, round
     mpz_class floor() const;
@@ -246,7 +246,6 @@ inline std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istrea
         in >> t;
     }
 
-    arb_init(emb);
     int error = arb_set_str(emb, t.c_str(), 10);
     if (error)
         throw std::ios_base::failure("Error in reading number field: bad formatting of embedding " + t);
@@ -550,26 +549,26 @@ inline renf_elem_class::~renf_elem_class(void)
     else renf_elem_clear(a, nf->get_renf());
 }
 
-inline bool renf_elem_class::is_fmpq(void)
+inline bool renf_elem_class::is_fmpq(void) const
 {
     return (nf == NULL);
 }
 
-inline fmpq * renf_elem_class::get_fmpq(void)
+inline fmpq * renf_elem_class::get_fmpq(void) const
 {
     if (not is_fmpq())
         throw std::invalid_argument("renf_elem_class not a fmpq");
     else return b;
 }
 
-inline renf_elem_srcptr renf_elem_class::get_renf_elem(void)
+inline renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
 {
     if (is_fmpq())
         throw std::invalid_argument("renf_elem_class is a fmpq");
     else return a;
 }
 
-inline mpz_class renf_elem_class::get_den()
+inline mpz_class renf_elem_class::get_den() const
 {
     mpz_class res;
 
@@ -587,7 +586,7 @@ inline mpz_class renf_elem_class::get_den()
     return res;
 }
 
-inline mpz_class renf_elem_class::get_num(void)
+inline mpz_class renf_elem_class::get_num(void) const
 {
     mpz_class x;
 
@@ -617,7 +616,7 @@ inline mpz_class renf_elem_class::get_num(void)
     return x;
 }
 
-inline std::vector<mpz_class> renf_elem_class::get_num_vector(void)
+inline std::vector<mpz_class> renf_elem_class::get_num_vector(void) const
 {
     mpz_class x;
     std::vector<mpz_class> res;
@@ -1016,7 +1015,7 @@ __all_other_ops(mpq_class&)
 #undef __other_ops
 #undef __all_other_ops
 
-inline bool renf_elem_class::is_zero()
+inline bool renf_elem_class::is_zero() const
 {
     if (nf == NULL)
         return fmpq_is_zero(b);
@@ -1024,7 +1023,7 @@ inline bool renf_elem_class::is_zero()
         return renf_elem_is_zero(a, nf->get_renf());
 }
 
-inline bool renf_elem_class::is_one()
+inline bool renf_elem_class::is_one() const
 {
     if (nf == NULL)
         return fmpq_is_one(b);
@@ -1032,7 +1031,7 @@ inline bool renf_elem_class::is_one()
         return renf_elem_is_one(a, nf->get_renf());
 }
 
-inline bool renf_elem_class::is_rational()
+inline bool renf_elem_class::is_rational() const
 {
     if (nf == NULL)
         return true;
@@ -1040,7 +1039,7 @@ inline bool renf_elem_class::is_rational()
         return renf_elem_is_rational(a, nf->get_renf());
 }
 
-inline bool renf_elem_class::is_integer()
+inline bool renf_elem_class::is_integer() const
 {
     if (nf == NULL)
         return fmpz_is_one(fmpq_denref(b));
