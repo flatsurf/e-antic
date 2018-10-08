@@ -32,7 +32,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from int is wrong");
 
             renf_elem_class d((int) INT_MIN);
@@ -47,7 +47,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from unsigned int is wrong");
 
             renf_elem_class d((unsigned int) UINT_MAX);
@@ -61,7 +61,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from long is wrong");
 
             renf_elem_class d((long) LONG_MIN);
@@ -76,7 +76,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from unsigned long is wrong");
 
             renf_elem_class d((unsigned long) ULONG_MAX);
@@ -92,7 +92,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from fmpz is wrong");
             fmpz_clear(c);
         }
@@ -107,7 +107,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from fmpq is wrong");
             fmpq_clear(c);
         }
@@ -119,7 +119,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from mpz_class is wrong");
         }
 
@@ -130,7 +130,7 @@ int main(void)
             renf_elem_class b(0);
             a = c;
             b = c;
-            if (a != 2 || b != 2)
+            if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from mpq_class is wrong");
         }
 
@@ -138,7 +138,7 @@ int main(void)
             renf_elem_class a(K);
             renf_elem_class b(2);
             a = b;
-            if (a != 2)
+            if (a != 2 || 2 != a)
                 throw std::runtime_error("constructor from another renf_elem_class is wrong");
         }
 
@@ -146,7 +146,7 @@ int main(void)
             renf_elem_class a(K);
             renf_elem_class b(2);
             b = a;
-            if (b != 0)
+            if (b != 0 || 0 != b)
                 throw std::runtime_error("constructor from another renf_elem_class is wrong");
         }
     }
