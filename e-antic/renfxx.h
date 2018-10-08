@@ -50,7 +50,7 @@ public:
     ~renf_elem_class();
 
     // the underlying number field
-    renf_class& parent(void);
+    renf_class& parent(void) { return *nf; };
 
     // assignment
     renf_elem_class& operator = (const fmpz_t);
@@ -58,6 +58,7 @@ public:
     renf_elem_class& operator = (const fmpq_poly_t&);
     renf_elem_class& operator = (const renf_elem_class&);
     renf_elem_class& operator = (const std::string);
+
 
     // testing
     bool is_fmpq(void) const;
@@ -80,6 +81,7 @@ public:
     // input, output
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
     friend std::istream& operator >> (std::istream &, renf_elem_class&);
+    friend std::ios_base& set_renf(std::ios_base &, renf_t);
 
     // unary operations
     renf_elem_class operator - () const;
@@ -168,6 +170,16 @@ public:
     renf_elem_class zero();
     renf_elem_class one();
     renf_elem_class gen();
+
+    bool operator == (const renf_class&) const;
+    bool operator != (const renf_class&) const;
+};
+
+struct set_renf {
+    /* (not owned) reference to a field */
+    const renf_class * nf;
+    set_renf(const renf_class &NF) { nf = &NF; }
+    static int xalloc();
 };
 
 /*********************/
@@ -182,6 +194,13 @@ inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 /*********/
 
 std::istream& parse_nf_stream(fmpq_poly_t minpoly, arb_t emb, std::istream& in);
+
+inline std::istream& operator>>(std::istream & is, const set_renf &sr)
+{
+    is.pword(set_renf::xalloc()) = (renf_class *) sr.nf;
+    return is;
+}
+
 
 /*****************************/
 /* renf_class implementation */
@@ -267,6 +286,16 @@ inline renf_class::~renf_class()
     if (nf != NULL) renf_clear(nf);
 }
 
+inline bool renf_class::operator == (const renf_class& other) const
+{
+    return renf_equal(this->nf, other.nf);
+}
+
+inline bool renf_class::operator != (const renf_class& other) const
+{
+    return not renf_equal(this->nf, other.nf);
+}
+
 inline std::ostream& operator << (std::ostream & os, const renf_class& nf)
 {
     char *res;
@@ -318,6 +347,7 @@ inline renf_elem_class renf_class::gen()
     renf_elem_gen(a.get_renf_elem(), this->get_renf());
     return a;
 }
+
 
 /**********************************/
 /* renf_elem_class implementation */
@@ -685,21 +715,40 @@ inline std::ostream& operator << (std::ostream & os, const renf_elem_class& a)
 
 inline std::istream& operator >> (std::istream & is, renf_elem_class& a)
 {
-    std::string t;
+    /* here we consider 3 possibilities */
+    /* 1) either nf is stored in the stream "is" in which case we use it */
+    /* 2) or nf is null in which case we assume we will read a rational */
+    /* 3) or we assume that the nf attribute has already been properly set */
+
+    renf_class * nf = (renf_class *) is.pword(set_renf::xalloc());
+
+    if (nf)
+    {
+        /* clear the element and reset the nf attribute */
+        if (a.nf)
+            renf_elem_clear(a.a, nf->get_renf());
+        else
+            fmpq_clear(a.b);
+        a.nf = nf;
+        renf_elem_init(a.a, nf->get_renf());
+    }
 
     if (a.nf == NULL)
     {
         /* read a rational */
+        std::string t;
         is >> t;
         mpq_class b(t);
         a = b;
     }
+
     else
     {
         /* read a number field element (given as a list of rationals) */
         fmpq_poly_t p;
         mpq_class b;
         size_t i;
+        std::string t;
 
         fmpq_poly_init(p);
         for (i = 0; i < fmpq_poly_length(a.nf->get_renf()->nf->pol) - 1; i++)

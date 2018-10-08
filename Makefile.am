@@ -110,7 +110,8 @@ check_PROGRAMS +=				\
 
 libeanticxx_la_SOURCES =            \
 	renfxx/get_num_vector.cpp   \
-	renfxx/parse_nf_stream.cpp
+	renfxx/parse_nf_stream.cpp  \
+	renfxx/set_renf_xalloc.cpp
 
 check_PROGRAMS += \
     renfxx/test/t-renfxx \

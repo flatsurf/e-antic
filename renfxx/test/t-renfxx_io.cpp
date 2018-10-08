@@ -79,22 +79,38 @@ int main(void)
     }
 
     {
-        renf_class k;
+        renf_class k1, k2;
 
-        std::istringstream is("minpoly 3  -2 0 1 embedding [1.41 +/- 0.3]");
-        is >> k;
+        // read number field
+        std::istringstream is1("minpoly 3  -2 0 1 embedding [1.41 +/- 0.3]");
+        is1 >> k1;
+        std::istringstream is2("minpoly 3  -3 0 1 embedding [1.73 +/- 0.3]");
+        is2 >> k2;
 
-        renf_elem_class a(k);
-        std::istringstream is2("32 5/7");
-        is2 >> a;
+        check_reconstruction(k1);
+        check_reconstruction(k2);
 
-        if (a != (5 * k.gen()) / 7 + 32)
+        // read number field element
+        renf_elem_class a(k1);
+        std::istringstream is3("32 5/7");
+        is3 >> a;
+
+        if (a.parent() != k1 || a != (5 * k1.gen()) / 7 + 32)
         {
             std::cerr << "FAIL: C++ read nf element" << std::endl;
             throw 10;
         }
 
-        check_reconstruction(k);
+        // read number field element passing by the number field in the stream
+        std::istringstream is4("1 1");
+        is4 >> set_renf(k2) >> a;
+
+        if (a.parent() != k2 || a != (k2.gen() + 1))
+        {
+            std::cerr << "FAIL: C++ read nf element" << std::endl;
+            throw 10;
+        }
+
     }
 
     return 0;
