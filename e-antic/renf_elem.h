@@ -42,10 +42,12 @@ void renf_elem_clear(renf_elem_t a, const renf_t nf);
 void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf);
 void renf_elem_gen(renf_elem_t a, const renf_t nf);
 
+int renf_elem_sgn(renf_elem_t a, renf_t nf);
 void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);
 int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf);
+double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
 slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, renf_t nf);
 
