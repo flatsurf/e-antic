@@ -74,9 +74,11 @@ public:
     mpz_class get_num(void) const;
     std::vector<mpz_class> get_num_vector(void) const;
 
-    // floor, ceil, round
+    // floor, ceil, round, approximation
     mpz_class floor() const;
     mpz_class ceil() const;
+    int sgn() const;
+    double get_d() const;
 
     // input, output
     friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
@@ -1027,6 +1029,29 @@ inline mpz_class renf_elem_class::ceil() const
     fmpz_get_mpz(z.get_mpz_t(), tmp);
     fmpz_clear(tmp);
     return z;
+}
+
+inline int renf_elem_class::sgn() const
+{
+    if (nf == NULL)
+        return fmpq_sgn(b);
+    else
+        return renf_elem_sgn(a, nf->get_renf());
+}
+
+inline double renf_elem_class::get_d() const
+{
+    if (nf == NULL)
+    {
+        arb_t s;
+        arb_init(s);
+        arb_set_fmpq(s, b, 128);
+        double ans = arf_get_d(arb_midref(s), ARF_RND_NEAR);
+        arb_clear(s);
+        return ans;
+    }
+    else
+        return renf_elem_get_d(a, nf->get_renf(), ARF_RND_NEAR);
 }
 
 #endif
