@@ -34,13 +34,11 @@ void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
 
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
-int fmpq_poly_set_str_magic(fmpq_poly_t p, const char * s);
-
-/* sets (coeff, pow) to what it should be from the string in w */
-int monomial_set_str(fmpq_t coeff, slong * pow, char * w);
+/* sets a polynomial from a string and a variable name */
+/* (converse to fmpq_poly_get_str_pretty) */
+int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
 /* polynomial evaluation */
-
 static __inline__
 void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
 {

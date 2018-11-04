@@ -31,8 +31,7 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpz_poly_randtest_irreducible.c \
     poly_extra/fmpz_poly_scale_0_1_fmpq.c       \
     poly_extra/fmpz_poly_squarefree_part.c      \
-    poly_extra/monomial_set_str.c               \
-    poly_extra/fmpq_poly_set_str_magic.c        \
+    poly_extra/fmpq_poly_set_str_pretty.c       \
     poly_extra/has_real_root.c                  \
     poly_extra/newton_step_arb.c                \
     poly_extra/num_real_roots_0_1.c             \
@@ -56,8 +55,7 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-real_root_isolation            \
     poly_extra/test/t-squarefree_part                \
     poly_extra/test/t-check_unique_real_root         \
-    poly_extra/test/t-monomial_set_str               \
-    poly_extra/test/t-fmpq_poly_set_str_magic
+    poly_extra/test/t-fmpq_poly_set_str_pretty
 
 dist_doc_DATA +=                   \
     README                         \
