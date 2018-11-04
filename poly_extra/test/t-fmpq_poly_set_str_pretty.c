@@ -37,13 +37,13 @@ void check_valid(char * s, char * var, char * ans)
             printf("Got p2="); fmpq_poly_print(p2); printf("\n");
         }
 
-        flint_abort();
+        exit(EXIT_FAILURE);
     }
     if (!fmpq_poly_equal(p1, p2))
     {
         printf("Got p1="); fmpq_poly_print(p1); printf("\n");
         printf("Got p2="); fmpq_poly_print(p2); printf("\n");
-        flint_abort();
+        exit(EXIT_FAILURE);
     }
 
     fmpq_poly_clear(p1);
@@ -61,7 +61,7 @@ void check_invalid(char *w, char * var)
     {
         printf("got ans = 0 for the invalid string %s\n", w);
         printf("coeff = "); fmpq_poly_print(p); printf("\n");
-        abort();
+        exit(EXIT_FAILURE);
     }
     fmpq_poly_clear(p);
 }
@@ -110,4 +110,41 @@ int main(void)
     check_invalid(" a", " a");
     check_invalid("1 + 3a", "x");
     check_invalid("1 + 3aa", "a");
+
+    /* random testing from fmpq_poly_get_str_pretty */
+    {
+        size_t i,j;
+        char * varname[3] = {"a", "aa", "A_5b"};
+        FLINT_TEST_INIT(state);
+        for (i = 0; i < 1000; i++)
+        {
+            fmpq_poly_t a,b;
+            char * s;
+
+            fmpq_poly_init(a);
+            fmpq_poly_init(b);
+
+            fmpq_poly_randtest(a, state, n_randint(state, 100), 200);
+            for (j = 0; j < 3; j++)
+            {
+                s = fmpq_poly_get_str_pretty(a, varname[j]);
+                fmpq_poly_set_str_pretty(b, s, varname[j]);
+                if (!fmpq_poly_equal(a, b))
+                {
+                    flint_free(s);
+                    fmpq_poly_clear(a);
+                    fmpq_poly_clear(b);
+                    return 1;
+                }
+            }
+
+            flint_free(s);
+            fmpq_poly_clear(a);
+            fmpq_poly_clear(b);
+
+        }
+        FLINT_TEST_CLEANUP(state);
+    }
+
+    return 0;
 }
