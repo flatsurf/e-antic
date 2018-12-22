@@ -19,11 +19,12 @@ int main(void)
     FLINT_TEST_INIT(state);
     int iter;
 
-    for (iter = 0; iter < 100; iter++)
+    for (iter = 0; iter < 10; iter++)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 50);
         renf_class K(nf);
+
         renf_clear(nf);
 
         {
@@ -42,20 +43,6 @@ int main(void)
         }
 
         {
-            unsigned int c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from unsigned int is wrong");
-
-            renf_elem_class d((unsigned int) UINT_MAX);
-            if (d != (unsigned int) UINT_MAX)
-                throw std::runtime_error("constructor from UINT_MAX is wrong");
-        }
-
-        {
             long c = 2;
             renf_elem_class a(K);
             renf_elem_class b(0);
@@ -68,20 +55,6 @@ int main(void)
             renf_elem_class e((long) LONG_MAX);
             if (d != (long) LONG_MIN || e != (long) LONG_MAX)
                 throw std::runtime_error("constructor from LONG_MIN/LONG_MAX is wrong");
-        }
-
-        {
-            unsigned long c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from unsigned long is wrong");
-
-            renf_elem_class d((unsigned long) ULONG_MAX);
-            if (d != (unsigned long) ULONG_MAX)
-                throw std::runtime_error("constructor from ULONG_MAX is wrong");
         }
 
         {
@@ -144,8 +117,9 @@ int main(void)
 
         {
             renf_elem_class a(K);
-            renf_elem_class b(2);
+            renf_elem_class b(K);
             b = a;
+
             if (b != 0 || 0 != b)
                 throw std::runtime_error("constructor from another renf_elem_class is wrong");
         }

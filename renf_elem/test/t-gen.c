@@ -44,8 +44,8 @@ int main(void)
             {
                 printf("FAIL:\n");
                 printf("d = "); fmpq_print(d); printf("\n");
-                printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
-                printf("b = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
+                printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+                printf("b = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
                 flint_abort();
             }
 

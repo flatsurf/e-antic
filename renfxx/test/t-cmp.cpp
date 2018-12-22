@@ -12,7 +12,7 @@
 #include "e-antic/renfxx.h"
 
 template<typename T>
-void check_eq(T t, renf_class& K)
+void check_eq_ne(T t, renf_class& K)
 {
     renf_elem_class a;
     a = t;
@@ -28,8 +28,19 @@ void check_eq(T t, renf_class& K)
     if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) ||
         test_neq(a, b) || test_neq(a, c) || test_neq(a, d) || test_neq(b, c) ||
         test_neq(b, d) || test_neq(c, d))
-        throw std::runtime_error("== and != not coherent on renf_elem_class");
+        throw std::runtime_error("== and != not coherent on renf_elem_class (1)");
     #undef test_neq
+
+    a += 1;
+    b += 2;
+    c += 3;
+    d += 4;
+    #define test_eq(x,y) (x == y) || (y == x) || not (x != y) || not (y != x)
+    if (test_eq(t, a) || test_eq(t, b) || test_eq(t, c) || test_eq(t, d) ||
+        test_eq(a, b) || test_eq(a, c) || test_eq(a, d) || test_eq(b, c) ||
+        test_eq(b, d) || test_eq(c, d))
+        throw std::runtime_error("== and != not coherent on renf_elem_class (2)");
+    #undef test_eq
 }
 
 template<typename T>
@@ -53,11 +64,9 @@ void check_not_gen(T t, renf_class& K)
 int main(void)
 {
     int c1 = -1123;
-    unsigned int c2 = 2223;
-    long c3 = 134;
-    unsigned long c4 = 513;
-    mpz_class c5(232);
-    mpq_class c6(211561);
+    long c2 = 134;
+    mpz_class c3(232);
+    mpq_class c4(211561);
     int iter;
     FLINT_TEST_INIT(state);
 
@@ -68,23 +77,18 @@ int main(void)
         renf_class K(nf);
         renf_clear(nf);
 
-        check_eq(c1, K);
+        check_eq_ne(c1, K);
         check_not_gen(c1, K);
 
-        check_eq(c2, K);
+        check_eq_ne(c2, K);
         check_not_gen(c2, K);
 
-        check_eq(c3, K);
+        check_eq_ne(c3, K);
         check_not_gen(c3, K);
 
-        check_eq(c4, K);
+        check_eq_ne(c4, K);
         check_not_gen(c4, K);
 
-        check_eq(c5, K);
-        check_not_gen(c5, K);
-
-        check_eq(c6, K);
-        check_not_gen(c6, K);
     }
 
     FLINT_TEST_CLEANUP(state);

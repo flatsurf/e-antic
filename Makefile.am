@@ -99,45 +99,46 @@ libeantic_la_SOURCES +=            \
 check_PROGRAMS +=                \
     renf_elem/test/t-binop       \
     renf_elem/test/t-ceil        \
+    renf_elem/test/t-equal_fmpq  \
     renf_elem/test/t-cmp         \
     renf_elem/test/t-cmp_fmpq    \
     renf_elem/test/t-floor       \
     renf_elem/test/t-gen         \
     renf_elem/test/t-get_cfrac   \
     renf_elem/test/t-is_rational \
-    renf_elem/test/t-get_d
+    renf_elem/test/t-get_d       \
+    renf_elem/test/t-get_str_pretty
 
 # C++
 
 libeanticxx_la_SOURCES =        \
-    renfxx/get_num_vector.cpp   \
-    renfxx/parse_nf_stream.cpp  \
-    renfxx/set_renf_xalloc.cpp
+    renfxx/get_num_vector.cpp
 
-check_PROGRAMS +=                            \
-    renfxx/test/t-renfxx                     \
-    renfxx/test/t-renfxx_constructor         \
-    renfxx/test/t-renfxx_get                 \
-    renfxx/test/t-renfxx_io                  \
-    renfxx/test/t-renfxx_assignment          \
-    renfxx/test/t-renfxx_get_num_den         \
-    renfxx/test/t-renfxx_cmp                 \
-    renfxx/test/t-renfxx_binop               \
-    renfxx/test/t-renfxx_is_integer_rational \
-    renfxx/test/t-renfxx_floor               \
-    renfxx/test/t-renfxx_ceil
+check_PROGRAMS +=                     \
+    renfxx/test/t-constructor         \
+    renfxx/test/t-get_str             \
+    renfxx/test/t-get                 \
+    renfxx/test/t-assignment          \
+    renfxx/test/t-get_num_den         \
+    renfxx/test/t-cmp                 \
+    renfxx/test/t-binop               \
+    renfxx/test/t-is_integer_rational \
+    renfxx/test/t-floor               \
+    renfxx/test/t-ceil
 
-renfxx_test_t_renfxx_SOURCES = renfxx/test/t-renfxx.cpp
-renfxx_test_t_renfxx_constructor_SOURCES = renfxx/test/t-renfxx_constructor.cpp
-renfxx_test_t_renfxx_get_SOURCES = renfxx/test/t-renfxx_get.cpp
-renfxx_test_t_renfxx_io_SOURCES = renfxx/test/t-renfxx_io.cpp
-renfxx_test_t_renfxx_assignment_SOURCES = renfxx/test/t-renfxx_assignment.cpp
-renfxx_test_t_renfxx_get_num_den_SOURCES = renfxx/test/t-renfxx_get_num_den.cpp
-renfxx_test_t_renfxx_cmp_SOURCES = renfxx/test/t-renfxx_cmp.cpp
-renfxx_test_t_renfxx_binop_SOURCES = renfxx/test/t-renfxx_binop.cpp
-renfxx_test_t_renfxx_is_integer_rational_SOURCES = renfxx/test/t-renfxx_is_integer_rational.cpp
-renfxx_test_t_renfxx_floor_SOURCES = renfxx/test/t-renfxx_floor.cpp
-renfxx_test_t_renfxx_ceil_SOURCES = renfxx/test/t-renfxx_ceil.cpp
+# NOTE: ideally we should not provide explicit source for the
+# check programs. However, automake seems confused with the
+# mix of C and C++ files.
+renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
+renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
+renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
+renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
+renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
+renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
+renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
+renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
+renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
+renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp 
 
 # test suite
 TESTS = $(check_PROGRAMS)

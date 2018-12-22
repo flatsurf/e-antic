@@ -38,6 +38,66 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
 /* (converse to fmpq_poly_get_str_pretty) */
 int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
+static __inline__
+void fmpq_add_ui(fmpq_t a, fmpq_t b, ulong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    fmpq_add_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void fmpq_sub_ui(fmpq_t a, fmpq_t b, ulong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    fmpq_sub_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void fmpq_mul_si(fmpq_t a, fmpq_t b, slong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_si(tmp, c);
+    fmpq_mul_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void fmpq_mul_ui(fmpq_t a, fmpq_t b, ulong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    fmpq_mul_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void fmpq_div_si(fmpq_t a, fmpq_t b, slong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_si(tmp, c);
+    fmpq_div_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void fmpq_div_ui(fmpq_t a, fmpq_t b, ulong c)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    fmpq_div_fmpz(a, b, tmp);
+    fmpz_clear(tmp);
+}
+
 /* polynomial evaluation */
 static __inline__
 void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)

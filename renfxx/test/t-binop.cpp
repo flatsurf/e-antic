@@ -124,8 +124,8 @@ int main(void)
     }
 
     {
-        renf_class K1("x^2 - 2", "1.41 +/- 0.01");
-        renf_class K2("x^2 - 3", "1.73 +/- 0.01");
+        renf_class K1("x^2 - 2", "x", "1.41 +/- 0.01");
+        renf_class K2("x^2 - 3", "x", "1.73 +/- 0.01");
 
         renf_elem_class a1(K1);
         renf_elem_class a2(K2);

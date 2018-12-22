@@ -12,18 +12,49 @@
 #include <e-antic/renf_elem.h>
 #include <string.h>
 
-char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)
+char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {
-    char * x1 = nf_elem_get_str_pretty(a->elem, var, nf->nf);
-    char * x2 = arb_get_str(a->emb, n, 0);
-    char * res = flint_malloc((strlen(x1) + strlen(x2) + 10) * sizeof(char));
+    char *s, *t;
 
-    strcpy(res, x1);
-    strcat(res, " in ");
-    strcat(res, x2);
+    s = NULL;
+    t = flint_malloc(1 * sizeof(char));
+    t[0] = '\0';
 
-    flint_free(x1);
-    flint_free(x2);
+    if (flag & EANTIC_STR_ALG)
+    {
+        // polynomial expression
+        char * s = nf_elem_get_str_pretty(a->elem, var, nf->nf);
 
-    return res;
+        if ((flag & EANTIC_STR_D) || (flag & EANTIC_STR_ARB))
+        {
+            t = flint_realloc(t, strlen(t) + strlen(s) + 3);
+            strcat(t, s);
+            strcat(t, " ~ ");
+        }
+        else
+        {
+            t = flint_realloc(t, strlen(t) + strlen(s));
+            strcat(t, s);
+        }
+        flint_free(s);
+    }
+
+    if (flag & EANTIC_STR_D)
+    {
+        // output of get_d
+        s = flint_malloc(20 * sizeof(char));
+        sprintf(s, "%lf", renf_elem_get_d(a, nf, ARF_RND_NEAR));
+        strcat(t, s);
+        flint_free(s);
+    }
+
+    if (flag & EANTIC_STR_ARB)
+    {
+        char * s = arb_get_str(a->emb, n, 0);
+        t = flint_realloc(t, strlen(t) + strlen(s));
+        strcat(t, s);
+        flint_free(s);
+    }
+
+    return t;
 }

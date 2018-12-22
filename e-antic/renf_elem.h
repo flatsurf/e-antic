@@ -27,6 +27,10 @@
  extern "C" {
 #endif
 
+#define EANTIC_STR_ALG 1
+#define EANTIC_STR_D   2
+#define EANTIC_STR_ARB 4
+
 typedef struct
 {
     nf_elem_t elem;    /* ANTIC number field element */
@@ -45,16 +49,20 @@ void renf_elem_gen(renf_elem_t a, const renf_t nf);
 int renf_elem_sgn(renf_elem_t a, renf_t nf);
 void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);
+
 int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf);
+/* int renf_elem_cmp_si(renf_elem_t a, const slong b, renf_t nf);    */
+/* int renf_elem_cmp_fmpz(renf_elem_t a, const fmpz_t b, renf_t nf); */
+
 double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
 slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, renf_t nf);
 
 void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec);
 
-char * renf_elem_get_str_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n);
-void renf_elem_print_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n);
+char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag);
+void renf_elem_print_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag);
 
 void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf);
 
@@ -139,11 +147,12 @@ void renf_elem_set_si(renf_elem_t a, slong n, const renf_t nf)
 }
 
 static __inline__
-void renf_elem_set_ui(renf_elem_t a, ulong c, const renf_t nf)
+void renf_elem_set_ui(renf_elem_t a, ulong n, const renf_t nf)
 {
-    nf_elem_set_ui(a->elem, c, nf->nf);
-    arb_set_ui(a->emb, c);
+    nf_elem_set_ui(a->elem, n, nf->nf);
+    arb_set_ui(a->emb, n);
 }
+
 static __inline__
 void renf_elem_set_nf_elem(renf_elem_t a, const nf_elem_t b, renf_t nf, slong prec)
 {
@@ -166,10 +175,30 @@ void renf_elem_set_fmpz(renf_elem_t a, const fmpz_t c, const renf_t nf)
 }
 
 static __inline__
+void renf_elem_set_mpz(renf_elem_t a, const mpz_t c, const renf_t nf)
+{
+    fmpz_t x;
+    fmpz_init(x);
+    fmpz_set_mpz(x, c);
+    renf_elem_set_fmpz(a, x, nf);
+    fmpz_clear(x);
+}
+
+static __inline__
 void renf_elem_set_fmpq(renf_elem_t a, const fmpq_t c, const renf_t nf)
 {
     nf_elem_set_fmpq(a->elem, c, nf->nf);
     arb_set_fmpq(a->emb, c, nf->prec);
+}
+
+static __inline__
+void renf_elem_set_mpq(renf_elem_t a, const mpq_t c, const renf_t nf)
+{
+    fmpq_t x;
+    fmpq_init(x);
+    fmpq_set_mpq(x, c);
+    renf_elem_set_fmpq(a, x, nf);
+    fmpq_clear(x);
 }
 
 static __inline__
@@ -200,6 +229,49 @@ void renf_elem_div_si(renf_elem_t a, const renf_elem_t b, slong c, const renf_t 
     arb_div_si(a->emb, b->emb, c, nf->prec);
 }
 
+static __inline__
+void renf_elem_add_ui(renf_elem_t a, const renf_elem_t b, ulong c, const renf_t nf)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    nf_elem_add_fmpz(a->elem, b->elem, tmp, nf->nf);
+    arb_add_fmpz(a->emb, b->emb, tmp, nf->prec);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void renf_elem_sub_ui(renf_elem_t a, const renf_elem_t b, ulong c, const renf_t nf)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    nf_elem_sub_fmpz(a->elem, b->elem, tmp, nf->nf);
+    arb_sub_fmpz(a->emb, b->emb, tmp, nf->prec);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void renf_elem_mul_ui(renf_elem_t a, const renf_elem_t b, ulong c, const renf_t nf)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    nf_elem_scalar_mul_fmpz(a->elem, b->elem, tmp, nf->nf);
+    arb_mul_fmpz(a->emb, b->emb, tmp, nf->prec);
+    fmpz_clear(tmp);
+}
+
+static __inline__
+void renf_elem_div_ui(renf_elem_t a, const renf_elem_t b, ulong c, const renf_t nf)
+{
+    fmpz_t tmp;
+    fmpz_init(tmp);
+    fmpz_set_ui(tmp, c);
+    nf_elem_scalar_div_fmpz(a->elem, b->elem, tmp, nf->nf);
+    arb_div_fmpz(a->emb, b->emb, tmp, nf->prec);
+    fmpz_clear(tmp);
+}
 
 static __inline__
 void renf_elem_add_fmpz(renf_elem_t a, const renf_elem_t b, const fmpz_t c, const renf_t nf)

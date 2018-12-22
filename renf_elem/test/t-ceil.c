@@ -25,7 +25,7 @@ int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
     if (test)
     {
         printf("FAIL:\n");
-        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
         printf("got n = "); fmpz_print(n); printf(" but expected %d\n", ans);
         abort();
     }

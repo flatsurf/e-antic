@@ -33,17 +33,17 @@ void check_reconstruct(renf_class& K, renf_elem_class& a)
     b /= a.get_den();
 
     if (a != b)
-        throw 10;
+        throw std::runtime_error("a != b");
 
     if (a.is_rational() && a.get_den() * a != a.get_num())
-        throw 10;
+        throw std::runtime_error("rationallity failed");
 }
 
 int main(void)
 {
     {
         // linear
-        renf_class K("x - 2/3", "0.66 +/- 0.1");
+        renf_class K("x - 2/3", "x", "0.66 +/- 0.1");
 
         renf_elem_class a(K, 0);
         check_reconstruct(K, a);
@@ -54,7 +54,7 @@ int main(void)
 
     {
         // quadratic
-        renf_class K("x^2 - 2", "1.41 +/- 0.1");
+        renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
 
         renf_elem_class a(K, 0);
         check_reconstruct(K, a);
@@ -62,13 +62,13 @@ int main(void)
         renf_elem_class b(K, "1/2");
         check_reconstruct(K, b);
 
-        renf_elem_class c(K, "-3/7 2/155");
+        renf_elem_class c(K, "-3/7");
         check_reconstruct(K, c);
     }
 
     {
         // cubic
-        renf_class K("x^3 - 2/5", "0.74 +/- 0.1");
+        renf_class K("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
         renf_elem_class a(K, 0);
         check_reconstruct(K, a);
@@ -76,10 +76,10 @@ int main(void)
         renf_elem_class b(K, "53/22");
         check_reconstruct(K, b);
 
-        renf_elem_class c(K, "222/317 -75/22");
+        renf_elem_class c(K, "222/317 -75/22*ZT");
         check_reconstruct(K, c);
 
-        renf_elem_class d(K, "-23/5 17/32 255/37 18/7");
+        renf_elem_class d(K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
         check_reconstruct(K, d);
     }
 

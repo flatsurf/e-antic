@@ -12,9 +12,9 @@
 #include <e-antic/renf_elem.h>
 #include <string.h>
 
-void renf_elem_print_pretty(const renf_elem_t a, const char * var, const renf_t nf, slong n)
+void renf_elem_print_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {
-    char * res = renf_elem_get_str_pretty(a, var, nf, n);
+    char * res = renf_elem_get_str_pretty(a, var, nf, n, flag);
     fputs(res, stdout);
     flint_free(res);
 }

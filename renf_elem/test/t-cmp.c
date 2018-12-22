@@ -19,8 +19,8 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, const char * s, int ans)
     if ((test = renf_elem_cmp(a, a, nf)))
     {
         printf("FAIL:\n");
-        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
-        printf("b = "); renf_elem_print_pretty(b, s, nf, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); renf_elem_print_pretty(b, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
         printf("got cmp(a,a) = %d but expected 0", test);
         abort();
     }
@@ -28,8 +28,8 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, const char * s, int ans)
     if ((test = renf_elem_cmp(b, b, nf)))
     {
         printf("FAIL:\n");
-        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
-        printf("b = "); renf_elem_print_pretty(b, s, nf, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); renf_elem_print_pretty(b, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
         printf("got cmp(b,b) = %d but expected 0", test);
         abort();
     }
@@ -38,8 +38,8 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, const char * s, int ans)
     if ((test = renf_elem_cmp(a, b, nf)) != ans)
     {
         printf("FAIL:\n");
-        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
-        printf("b = "); renf_elem_print_pretty(b, s, nf, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); renf_elem_print_pretty(b, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
         printf("got cmp(a,b) = %d but expected %d", test, ans);
         abort();
     }
@@ -47,8 +47,8 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, const char * s, int ans)
     if ((test = renf_elem_cmp(b, a, nf)) != -ans)
     {
         printf("FAIL:\n");
-        printf("a = "); renf_elem_print_pretty(a, s, nf, 10); printf("\n");
-        printf("b = "); renf_elem_print_pretty(b, s, nf, 10); printf("\n");
+        printf("a = "); renf_elem_print_pretty(a, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); renf_elem_print_pretty(b, s, nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
         printf("got cmp(b,a) = %d but expected %d", test, -ans);
         abort();
     }
@@ -222,7 +222,7 @@ int main()
         if (renf_elem_cmp(a, a, nf) != 0)
         {
             printf("FAIL:\n");
-            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
+            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
             abort();
         }
 
@@ -231,8 +231,8 @@ int main()
         if (renf_elem_cmp(a, b, nf) != -1 || renf_elem_cmp(b, a, nf) != 1)
         {
             printf("FAIL:\n");
-            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
-            printf("b = "); renf_elem_print_pretty(b, "x", nf, 10); printf("\n");
+            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+            printf("b = "); renf_elem_print_pretty(b, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
             abort();
         }
 
@@ -243,8 +243,8 @@ int main()
         if (renf_elem_cmp(a, b, nf) != -1 || renf_elem_cmp(b, a, nf) != 1)
         {
             printf("FAIL:\n");
-            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
-            printf("b = "); renf_elem_print_pretty(b, "x", nf, 10); printf("\n");
+            printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+            printf("b = "); renf_elem_print_pretty(b, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
             abort();
         }
 

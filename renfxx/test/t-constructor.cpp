@@ -15,13 +15,25 @@
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
     if (a != b)
-        throw std::runtime_error("wrong comparison");
+    {
+        std::cerr << "a = " << a.get_str(EANTIC_STR_ALG | EANTIC_STR_D) << "\n";
+        std::cerr << "b = " << b.get_str(EANTIC_STR_ALG | EANTIC_STR_D) << "\n";
+        std::cerr.flush();
+
+        throw std::runtime_error("wrong comparison with other renf_elem");
+    }
 }
 
 void check_equal(renf_elem_class& a, slong b)
 {
     if (a != b)
-        throw std::runtime_error("wrong comparison");
+    {
+        std::cerr << "a = " << a.get_str(EANTIC_STR_ALG | EANTIC_STR_D) << "\n";
+        std::cerr << "b = " << b << "\n";
+        std::cerr.flush();
+
+        throw std::runtime_error("wrong comparison with slong");
+    }
 }
 
 
@@ -32,24 +44,17 @@ int main(void)
     {
         renf_elem_class a;
         renf_elem_class b((int) 1);
-        renf_elem_class c((unsigned int) 2);
-        renf_elem_class d((long) 3);
-        renf_elem_class e((unsigned long) 4);
-        renf_elem_class f(mpz_class(5));
-        renf_elem_class g(mpq_class(6));
+        renf_elem_class c(mpz_class(2));
+        renf_elem_class d(mpq_class(3));
 
         if (not (a.is_fmpq() && b.is_fmpq() && c.is_fmpq() &&
-                 d.is_fmpq() && e.is_fmpq() && f.is_fmpq() &&
-                 g.is_fmpq()))
+                 d.is_fmpq()))
             throw std::runtime_error("problem with integer constructors");
 
         check_equal(a, 0);
         check_equal(b, 1);
         check_equal(c, 2);
         check_equal(d, 3);
-        check_equal(e, 4);
-        check_equal(f, 5);
-        check_equal(g, 6);
     }
 
     {
@@ -73,11 +78,11 @@ int main(void)
     }
 
     {
-        renf_class K("3  -2 0 1", "1.4142 +/- 0.5", 128);
+        renf_class K("a^2 - 2", "a", "1.4142 +/- 0.5", 128);
         renf_elem_class a(K);
         renf_elem_class b(K, 0);
         renf_elem_class c(K, "0");
-        renf_elem_class d(K, "0 0");
+        renf_elem_class d(K, "0*a^2 + 0");
         renf_elem_class e = K.zero();
 
         if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq() || d.is_fmpq() || e.is_fmpq())
@@ -104,7 +109,7 @@ int main(void)
 
     {
         // QQ[sqrt(2)]
-        renf_class K("minpoly a^2 - 2 embedding [1.41 +/- 0.1]", 128);
+        renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 128);
 
         fmpq_poly_t p;
         fmpq_poly_init(p);
@@ -112,7 +117,7 @@ int main(void)
         renf_elem_class a(K, p);
         fmpq_poly_clear(p);
 
-        renf_elem_class b(K, "-7/3 3/5");
+        renf_elem_class b(K, "-7/3 + 3/5*a");
 
         renf_elem_class c = 3 * K.gen() / 5 - 7 * K.one() / 3;
 
@@ -122,9 +127,9 @@ int main(void)
 
     {
         // QQ[cbrt(2)]
-        renf_class K("a^3 - 2", "1.26 +/- 0.1");
+        renf_class K("A^3 - 2", "A", "1.26 +/- 0.1");
 
-        renf_elem_class a(K, "2/5 -3/2 7/4");
+        renf_elem_class a(K, "2/5 - 3/2 * A + 7/4 * A^2");
         renf_elem_class b = mpq_class(2, 5) - mpq_class(3, 2) * K.gen() + mpq_class(7, 4) * K.gen() * K.gen();
 
         check_equal(a, b);

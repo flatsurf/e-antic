@@ -45,7 +45,7 @@ int main()
             if (renf_elem_cmp_fmpq(a, q1, nf) != 0 || renf_elem_cmp_fmpq(a, q2, nf) != fmpq_cmp(q1, q2))
             {
                 printf("FAIL:\n");
-                printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
+                printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
                 printf("q1 = "); fmpq_print(q1); printf("\n");
                 printf("q2 = "); fmpq_print(q2); printf("\n");
                 abort();
@@ -74,7 +74,7 @@ int main()
                 if (!renf_elem_cmp_fmpq(a, q, nf))
                 {
                     printf("FAIL:\n");
-                    printf("a = "); renf_elem_print_pretty(a, "x", nf, 10); printf("\n");
+                    printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
                     printf("q = "); fmpq_print(q); printf("\n");
                     abort();
                 }
