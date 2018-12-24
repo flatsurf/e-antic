@@ -34,6 +34,7 @@ install:
   - ./bootstrap.sh
   - ./configure CFLAGS="-I${LOCAL}/include" CPPFLAGS="-I${LOCAL}/include" LDFLAGS="-L${LOCAL}/lib"
   - make
+  - ldd .libs/libeantic.so
 
 script:
   - V=1 make check

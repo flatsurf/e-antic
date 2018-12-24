@@ -17,9 +17,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("randtest....");
-    fflush(stdout);
-
     for (iter = 0; iter < 50; iter++)
     {
         slong len = 2 + n_randint(state, 6);
@@ -31,6 +28,5 @@ int main()
     }
 
     FLINT_TEST_CLEANUP(state);
-    printf("PASS\n");
     return 0;
 }

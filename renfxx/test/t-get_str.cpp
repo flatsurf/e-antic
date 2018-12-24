@@ -20,13 +20,17 @@ int main(void)
 
     renf_class K("x^3 - 2/3", "x", "0.87 +/- 0.1");
 
-    renf_elem_class a(K, 0);
     std::string ca = "0 ~ 0.000000";
+    renf_elem_class a(K, ca);
     if (ca != a.get_str())
         throw std::runtime_error("error for 0");
 
-    renf_elem_class b(K, "x");
     std::string cb = "x ~ 0.873580";
+    renf_elem_class b(K, cb);
     if (cb != b.get_str())
         throw std::runtime_error("error for x");
+
+    std::string cc = "3/7*x-2/11 ~ 0.192573";
+    renf_elem_class c(K, cc);
+    std::cout << c.get_str();
 }

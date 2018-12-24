@@ -11,7 +11,7 @@
 
 #include <e-antic/renf_elem.h>
 
-void check_nf_cf(renf_t nf, flint_rand_t state, mp_bitcnt_t bits, slong n, slong num)
+void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const slong n, const slong num)
 {
     slong iter;
 
@@ -89,23 +89,23 @@ int main()
     fmpq_t d;
     FLINT_TEST_INIT(state);
 
-    printf("get_cfrac....");
-
     fmpq_init(d);
     fmpq_set_si(d, 2, 1);
 
     renf_init_nth_root_fmpq(nf, d, 2, 64);
     check_nf_cf(nf, state, 30, 100, 20);
+    renf_clear(nf);
 
     renf_init_nth_root_fmpq(nf, d, 3, 64);
     check_nf_cf(nf, state, 30, 100, 20);
+    renf_clear(nf);
 
     renf_randtest(nf, state, 2 + n_randint(state, 10), 30);
     check_nf_cf(nf, state, 30, 100, 20);
-
     renf_clear(nf);
 
+    fmpq_clear(d);
+    
     FLINT_TEST_CLEANUP(state);
-    printf("PASS\n");
     return 0;
 }

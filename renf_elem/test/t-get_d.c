@@ -73,22 +73,26 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    fmpq_t k;
-    fmpq_poly_t p;
-    arb_t emb;
-
     renf_t nf;
-    fmpq_poly_init(p);
 
-    fmpq_poly_set_coeff_si(p, 2, 1);
-    fmpq_poly_set_coeff_si(p, 1, -1);
-    fmpq_poly_set_coeff_si(p, 0, -1);
+    /* initialize nf Q[(1+sqrt(5)/2] */
+    {
+        fmpq_poly_t p;
+        arb_t emb;
 
-    arb_init(emb);
-    arb_set_d(emb, 1.61803398874989);
-    arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 20 + n_randint(state, 100));
-    arb_clear(emb);
+        fmpq_poly_init(p);
+
+        fmpq_poly_set_coeff_si(p, 2, 1);
+        fmpq_poly_set_coeff_si(p, 1, -1);
+        fmpq_poly_set_coeff_si(p, 0, -1);
+
+        arb_init(emb);
+        arb_set_d(emb, 1.61803398874989);
+        arb_add_error_2exp_si(emb, -20);
+        renf_init(nf, p, emb, 20 + n_randint(state, 100));
+        fmpq_poly_clear(p);
+        arb_clear(emb);
+    }
 
     /* zero test */
     {
@@ -150,6 +154,8 @@ int main()
 
         renf_elem_clear(a, nf);
     }
+
+    renf_clear(nf);
 
     FLINT_TEST_CLEANUP(state);
     return 0;

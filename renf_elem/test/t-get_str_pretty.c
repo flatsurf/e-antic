@@ -11,12 +11,13 @@
 
 #include <e-antic/renf_elem.h>
 #include <stdio.h>
+#include <string.h>
 
-void main(void)
+int main(void)
 {
     fmpq_t k;
     renf_t nf;
-    renf_elem_t a,b;
+    renf_elem_t a;
     fmpq_poly_t pol;
     char * s;
     size_t i;
@@ -26,6 +27,12 @@ void main(void)
         EANTIC_STR_ARB,
         EANTIC_STR_ALG | EANTIC_STR_D,
         EANTIC_STR_ALG | EANTIC_STR_ARB};
+    char * output[5] = {
+        "-2/3*x+1/2",
+        "-0.990712",
+        "[-0.9907119850 +/- 1.43e-13]",
+        "-2/3*x+1/2 ~ -0.990712",
+        "-2/3*x+1/2 ~ [-0.9907119850 +/- 1.43e-13]"};
 
     FLINT_TEST_INIT(state);
 
@@ -41,18 +48,26 @@ void main(void)
     fmpq_poly_set_coeff_fmpq(pol, 1, k);
 
     renf_elem_set_fmpq_poly(a, pol, nf);
+    
+    fmpq_clear(k);
+    fmpq_poly_clear(pol);
 
     /* flags are EANTIC_STR_ALG, EANTIC_STR_D and EANTIC_STR_ARB */
     for (i = 0; i < 5; i++)
     {
         s = renf_elem_get_str_pretty(a, "x", nf, 10, flags[i]);
-        printf("%d: ", flags[i]);
-        printf(s);
-        printf("\n");
-        fflush(stdout);
+        if (strcmp(s, output[i]))
+        {
+            fprintf(stderr, "wrong output %d\n", i);
+            return 1;
+        }
         flint_free(s);
     }
 
+    renf_elem_clear(a, nf);
+    renf_clear(nf);
+
     FLINT_TEST_CLEANUP(state);
+    return 0;
 }
 

@@ -88,7 +88,6 @@ int main(void)
 
         check_eq_ne(c4, K);
         check_not_gen(c4, K);
-
     }
 
     FLINT_TEST_CLEANUP(state);

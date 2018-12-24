@@ -76,6 +76,8 @@ void test_field1(flint_rand_t state)
         renf_elem_set_fmpq_poly(a, p, nf);
         check_ceil(a, nf, 1 - iter % 2, "sqrt(5)");
     }
+
+    TEST_CEIL_CLEANUP;
 }
 
 
@@ -171,9 +173,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("ceil....");
-    fflush(stdout);
-
     test_field1(state);
     test_field2(state);
 
@@ -213,7 +212,6 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }
 

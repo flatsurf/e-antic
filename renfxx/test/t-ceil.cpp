@@ -77,6 +77,7 @@ int main(void)
         }
 
         fmpq_clear(k);
+        fmpq_poly_clear(p);
     }
 
     FLINT_TEST_CLEANUP(state);

@@ -96,6 +96,7 @@ void test_field1(flint_rand_t state)
         check_cmp(a,b,nf,"sqrt(5)", -1 + 2 * (iter % 2));
     }
 
+    TEST_CMP_CLEANUP;
 }
 
 void test_field2(flint_rand_t state)
@@ -192,6 +193,7 @@ void test_field2(flint_rand_t state)
 
     check_cmp(a, b, nf, "a1", 1);
 
+    TEST_CMP_CLEANUP;
 }
 
 int main()

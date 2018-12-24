@@ -1,7 +1,7 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
 
-    This file is part of e-antic
+    This fire is part of e-antic
 
     e-antic is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
@@ -151,22 +151,7 @@ int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
         return -1;
 
     size_t n = strlen(var);
-    char * z;
-
-    /* Find maximal gap between spaces and allocate z */
-    {
-        const char * k = s;
-        slong max;
-        for (max = 0; *k != '\0';)
-        {
-            slong cur;
-            for (k++, cur = 1; *k != '+' && *k != '-' && *k != '\0'; k++, cur++) ;
-            if (max < cur)
-                max = cur;
-        }
-
-        z = (char *) flint_malloc((max + 1) * sizeof(char));
-    }
+    char * z = (char *) flint_malloc((strlen(s) + 1) * sizeof(char));
 
     fmpq_t coeff;
     slong pow;
@@ -179,8 +164,10 @@ int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
 
     while (*start != '\0')
     {
+        while (*start == ' ') start++;
+
         int ans;
-        const char *end = start;
+        const char * end = start;
 
         /* jump over sign */
         while (*end == '+' || *end == ' ' || *end == '-') end++;

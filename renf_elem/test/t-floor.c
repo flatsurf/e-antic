@@ -174,9 +174,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("floor....");
-    fflush(stdout);
-
     test_field1(state);
     test_field2(state);
 
@@ -215,7 +212,6 @@ int main()
     }
 
 
-    printf("PASS\n");
     FLINT_TEST_CLEANUP(state);
     return 0;
 }

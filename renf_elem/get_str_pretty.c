@@ -27,13 +27,13 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
 
         if ((flag & EANTIC_STR_D) || (flag & EANTIC_STR_ARB))
         {
-            t = flint_realloc(t, strlen(t) + strlen(s) + 3);
+            t = flint_realloc(t, strlen(t) + strlen(s) + 4);
             strcat(t, s);
             strcat(t, " ~ ");
         }
         else
         {
-            t = flint_realloc(t, strlen(t) + strlen(s));
+            t = flint_realloc(t, strlen(t) + strlen(s) + 1);
             strcat(t, s);
         }
         flint_free(s);
@@ -44,6 +44,7 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
         // output of get_d
         s = flint_malloc(20 * sizeof(char));
         sprintf(s, "%lf", renf_elem_get_d(a, nf, ARF_RND_NEAR));
+        t = flint_realloc(t, strlen(t) + strlen(s) + 1);
         strcat(t, s);
         flint_free(s);
     }
@@ -51,7 +52,7 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
     if (flag & EANTIC_STR_ARB)
     {
         char * s = arb_get_str(a->emb, n, 0);
-        t = flint_realloc(t, strlen(t) + strlen(s));
+        t = flint_realloc(t, strlen(t) + strlen(s) + 1);
         strcat(t, s);
         flint_free(s);
     }

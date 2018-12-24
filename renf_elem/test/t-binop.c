@@ -16,8 +16,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("binop....");
-
     for (iter = 0; iter < 100; iter++)
     {
         renf_t nf;
@@ -54,7 +52,6 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }
 

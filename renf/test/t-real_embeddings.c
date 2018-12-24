@@ -19,9 +19,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("real_embeddings....");
-    fflush(stdout);
-
     for (iter = 0; iter < 100; iter++)
     {
         int i, n;
@@ -42,6 +39,5 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }

@@ -91,34 +91,28 @@ int main(void)
 
         {
             int c1 = -1123, c2 = 142;
-            std::cout << "int\n";
             check_binop(c1, c2, K);
         }
         {
             unsigned int c1 = 2223, c2 = 123;
-            std::cout << "unsigned int\n";
             check_binop(c1, c2, K);
         }
         {
             long c1 = 134, c2 = -1111;
-            std::cout << "long\n";
             check_binop(c1, c2, K);
         }
         {
             unsigned long c1 = 513, c2 = 3;
-            std::cout << "unsigned long\n";
             check_binop(c2, c2, K);
         }
         {
             mpz_class c1(232);
             mpz_class c2(12);
-            std::cout << "mpz_class\n";
             check_binop(c1, c2, K);
         }
         {
             mpq_class c1(211561);
             mpq_class c2(13);
-            std::cout << "mpq_class\n";
             check_binop(c1, c2, K);
         }
     }

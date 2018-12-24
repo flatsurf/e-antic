@@ -17,7 +17,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("is_rational....");
     fflush(stdout);
 
     for (iter = 0; iter < 50; iter++)
@@ -63,10 +62,11 @@ int main()
             fmpq_poly_clear(p);
             renf_elem_clear(a, nf);
         }
+
+        renf_clear(nf);
     }
 
     FLINT_TEST_CLEANUP(state);
-    printf("PASS\n");
     return 0;
 }
 
