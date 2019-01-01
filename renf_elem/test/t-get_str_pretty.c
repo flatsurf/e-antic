@@ -58,7 +58,7 @@ int main(void)
         s = renf_elem_get_str_pretty(a, "x", nf, 10, flags[i]);
         if (strcmp(s, output[i]))
         {
-            fprintf(stderr, "wrong output %d\n", i);
+            fprintf(stderr, "wrong output %zu\n", i);
             return 1;
         }
         flint_free(s);

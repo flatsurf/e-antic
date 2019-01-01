@@ -31,7 +31,7 @@ int main(void)
     ans = fmpq_poly_check_unique_real_root(p, emb, 64);
     if (ans != 1)
     {
-        fprintf(stderr, "error with poly check unique real root (got %ld instead of 1)\n", ans);
+        fprintf(stderr, "error with poly check unique real root (got %d instead of 1)\n", ans);
         abort();
     }
 
@@ -39,7 +39,7 @@ int main(void)
     ans = fmpq_poly_check_unique_real_root(p, emb, 64);
     if (ans != 0)
     {
-        fprintf(stderr, "error with poly check unique real root (got %ld instead of 0)\n");
+        fprintf(stderr, "error with poly check unique real root (got %d instead of 0)\n", ans);
         abort();
     }
 
