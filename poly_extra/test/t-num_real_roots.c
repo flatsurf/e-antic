@@ -18,18 +18,16 @@ int main()
 
     FLINT_TEST_INIT(state);
 
-    printf("num_real_roots....");
-    fflush(stdout);
-
     /* check with rational roots */
-    for (iter = 0; iter < 1000; iter++)
+    for (iter = 0; iter < 200; iter++)
     {
         slong k1, k2, k3;
         fmpz_poly_t p;
 
         fmpz_poly_init(p);
+
         do{
-            fmpz_poly_randtest_not_zero(p, state, 1 + n_randint(state, 20), 10 + n_randint(state, 400));
+            fmpz_poly_randtest_not_zero(p, state, 10 + n_randint(state, 50), 10 + n_randint(state, 100));
         } while (!fmpz_poly_is_squarefree(p));
 
         k1 = fmpz_poly_num_real_roots_sturm(p);
@@ -38,7 +36,7 @@ int main()
         if ((k1 != k2) || (k1 != k3))
         {
             printf("ERROR:\n");
-            flint_printf("found k1=%wd, k2=%wd and k3=%wdd\n", k1, k2, k3);
+            flint_printf("found k1=%wd, k2=%wd and k3=%wd\n", k1, k2, k3);
             printf("p = "); fmpz_poly_print(p); printf("\n");
             abort();
         }
@@ -48,6 +46,5 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }

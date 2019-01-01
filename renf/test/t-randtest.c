@@ -20,7 +20,7 @@ int main()
     for (iter = 0; iter < 50; iter++)
     {
         slong len = 2 + n_randint(state, 6);
-        mp_bitcnt_t bits = 30 + n_randint(state, 100);
+        mp_bitcnt_t bits = 30 + n_randint(state, 30);
         renf_t nf;
 
         renf_randtest(nf, state, len, bits);

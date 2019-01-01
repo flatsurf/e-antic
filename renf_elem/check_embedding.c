@@ -38,7 +38,7 @@ void renf_elem_check_embedding(const renf_elem_t a, const renf_t nf, slong prec)
         fprintf(stderr, "embedding set to "); arb_fprint(stderr, a->emb);
         fprintf(stderr, " but got "); arb_fprint(stderr, emb); fprintf(stderr, "\n");
         arb_clear(emb);
-        flint_abort();
+        abort();
     }
 
     arb_clear(emb);

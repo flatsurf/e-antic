@@ -38,6 +38,7 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
 /* (converse to fmpq_poly_get_str_pretty) */
 int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
+
 static __inline__
 void fmpq_add_ui(fmpq_t a, fmpq_t b, ulong c)
 {
@@ -160,10 +161,9 @@ int fmpz_poly_has_real_root(fmpz_poly_t pol)
 
 
 /* TODO: submit to FLINT */
-slong fmpz_poly_positive_root_upper_bound_2exp(fmpz_poly_t pol);
-
-/* TODO: submit to FLINT */
-slong _fmpz_poly_positive_root_upper_bound_2exp(fmpz * pol, slong len);
+slong fmpz_poly_positive_root_upper_bound_2exp(const fmpz_poly_t pol);
+slong _fmpz_poly_positive_root_upper_bound_2exp(const fmpz * pol, slong len);
+slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len);
 
 /* TODO: submit to FLINT */
 slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
@@ -194,8 +194,40 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
 /* slong fmpz_poly_num_real_roots_interval_fmpq(fmpz_poly_t p, fmpq_t a, fmpq_t b); */
 
 
-
 /* OLD ****************************************************************/
+
+/* Backports from flint development version */
+void fmpz_nextprime(fmpz_t res, const fmpz_t n, int proved);
+void fmpz_randprime(fmpz_t f, flint_rand_t state, mp_bitcnt_t bits, int proved);
+void _fmpq_poly_resultant_div(fmpz_t rnum, fmpz_t rden, 
+                          const fmpz *poly1, const fmpz_t den1, slong len1, 
+                          const fmpz *poly2, const fmpz_t den2, slong len2,
+                          const fmpz_t divisor, slong nbits);
+void fmpq_poly_resultant_div(fmpq_t r, const fmpq_poly_t f, const fmpq_poly_t g, const fmpz_t divisor, slong nbits);
+void fmpq_poly_get_coeff_fmpz(fmpz_t x, const fmpq_poly_t poly, slong n);
+slong _fmpz_poly_num_real_roots(const fmpz * pol, slong len);
+slong fmpz_poly_num_real_roots(const fmpz_poly_t pol);
+void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
+slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol);
+void _fmpz_poly_resultant_modular_div(fmpz_t res, 
+        const fmpz * poly1, slong len1, 
+        const fmpz * poly2, slong len2, const fmpz_t divisor, slong nbits);
+void
+fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
+              const fmpz_poly_t poly2, const fmpz_t divisor, slong nbits);
+slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
+void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
+int fmpq_set_str(fmpq_t x, const char *str, int base);
+int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);
+
+static __inline__
+int _fmpq_vec_print(const fmpq * vec, slong len)
+{
+    return _fmpq_vec_fprint(stdout, vec, len);
+}
+
+void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
+void _fmpq_vec_sort(fmpq * vec, slong len);
 
 /* submitted to FLINT (#308) */
 /* slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len); */
@@ -204,14 +236,15 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
 /* merged in FLINT (#282) */
 /* void _fmpq_vec_sort(fmpq * vec, slong len); */
 /* void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits); */
-/* void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits); */
+FLINT_DLL void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state,
+                                                slong len, mp_bitcnt_t bits);
 /* void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len); */
 /* slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t poly); */
 /* slong _fmpz_poly_num_real_roots(const fmpz * pol, slong len); */
 /* slong fmpz_poly_num_real_roots(const fmpz_poly_t poly); */
 
 /* merged in FLINT (#279 and #295) */
-/*void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t pol, fmpq * vec, slong len);*/
+void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n);
 
 /* merged in FLINT (#278) */
 /*int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);*/

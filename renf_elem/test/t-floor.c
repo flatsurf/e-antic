@@ -196,13 +196,13 @@ int main()
         if (arb_is_negative(e))
         {
             printf("FAIL:\n");
-            flint_abort();
+            abort();
         }
         arb_sub_ui(e, e, 1, 1024);
         if (arb_is_positive(e))
         {
             printf("FAIL:\n");
-            flint_abort();
+            abort();
         }
 
         renf_elem_clear(a, nf);

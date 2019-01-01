@@ -16,16 +16,13 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("cmp_fmpq....");
-    fflush(stdout);
-
-    for (iter = 0; iter < 20; iter++)
+    for (iter = 0; iter < 200; iter++)
     {
         int iter2;
         renf_t nf;
 
         slong len = 2 + n_randint(state, 10);
-        mp_bitcnt_t bits = 30 + n_randint(state, 100);
+        mp_bitcnt_t bits = 30 + n_randint(state, 30);
         renf_randtest(nf, state, len, bits);
 
         for (iter2 = 0; iter2 < 100; iter2++)
@@ -89,6 +86,5 @@ int main()
     }
 
     FLINT_TEST_CLEANUP(state);
-    printf("PASS\n");
     return 0;
 }

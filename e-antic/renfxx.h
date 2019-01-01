@@ -24,6 +24,8 @@
 #include "renf.h"
 #include "renf_elem.h"
 
+/* TODO: make an (optional) pool of elements in the renf_elem_class */
+
 class renf_elem_class; /* forward declaration */
 
 class renf_class

@@ -36,7 +36,7 @@ int main()
         if (!renf_elem_is_rational(a, nf))
         {
             printf("FAIL:\n");
-            flint_abort();
+            abort();
         }
 
         fmpq_clear(x);
@@ -56,7 +56,7 @@ int main()
             if (renf_elem_is_rational(a, nf))
             {
                 printf("FAIL:\n");
-                flint_abort();
+                abort();
             }
 
             fmpq_poly_clear(p);

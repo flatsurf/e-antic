@@ -41,7 +41,7 @@ void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const sl
             printf("FAIL:\n");
             printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
             printf("do not get enough quotients nn = %ld but n = %ld^n", nn, n);
-            flint_abort();
+            abort();
         }
 
         for (i = 0; i < nn; i++)
@@ -58,7 +58,7 @@ void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const sl
                     printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
                     printf("remainder should be zero but got b = ");
                     renf_elem_print_pretty(b, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
-                    flint_abort();
+                    abort();
                 }
 
                 s = 0;
@@ -70,7 +70,7 @@ void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const sl
                 printf("i = %ld\n", i);
                 printf("c = "); fmpq_print(c1); printf("\n");
                 printf("got renf_elem_cmp = %d instead of the expected %d\n", ans, s);
-                flint_abort();
+                abort();
             }
             s *= -1;
         }

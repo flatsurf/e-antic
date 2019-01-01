@@ -5,11 +5,11 @@ ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
 # Linked-against libraries
-libeantic_la_LIBADD = -lantic -larb -lflint -lgmp
-libeanticxx_la_LIBADD = libeantic.la -lantic -larb -lflint -lgmpxx -lgmp
+libeantic_la_LIBADD = -larb -lflint -lgmp
+libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
 
 # Installed headers
-nobase_include_HEADERS = e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h
+nobase_include_HEADERS = e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -18,7 +18,7 @@ check_PROGRAMS =
 dist_doc_DATA =
 
 # TODO: we currently build all tests with linked c++ libraries
-LDADD = libeanticxx.la libeantic.la -lantic -larb -lflint -lgmpxx -lgmp
+LDADD = libeanticxx.la libeantic.la -larb -lflint -lgmpxx -lgmp
 
 # poly_extra
 libeantic_la_SOURCES +=                         \
@@ -36,30 +36,133 @@ libeantic_la_SOURCES +=                         \
     poly_extra/newton_step_arb.c                \
     poly_extra/num_real_roots_0_1.c             \
     poly_extra/num_real_roots_0_1_sturm.c       \
-    poly_extra/positive_root_upper_bound_2exp.c \
+    poly_extra/fmpz_poly_positive_root_upper_bound_2exp.c \
     poly_extra/real_root_isolation_vca.c        \
     poly_extra/real_roots_isolation.c           \
-    poly_extra/sgn_at_half.c
+    poly_extra/sgn_at_half.c                    \
+    poly_extra/fmpz_poly_product_roots_fmpq_vec.c \
+    poly_extra/fmpz_poly_randtest_no_real_root.c  \
+    poly_extra/fmpz_nextprime.c                   \
+    poly_extra/fmpz_randprime.c                   \
+    poly_extra/fmpq_poly_resultant_modular_div.c  \
+    poly_extra/fmpq_poly_inlines.c                \
+    poly_extra/fmpz_poly_num_real_roots.c         \
+    poly_extra/fmpz_poly_num_real_roots_sturm.c   \
+    poly_extra/fmpz_poly_resultant_modular_div.c  \
+    poly_extra/fmpz_poly_scale_2exp.c             \
+    poly_extra/fmpq_set_str.c                     \
+    poly_extra/fmpq_vec_fprint.c                  \
+    poly_extra/fmpq_vec_randtest_uniq_sorted.c    \
+    poly_extra/fmpq_vec_sort.c                    \
+    poly_extra/fmpz_poly_remove_content_2exp.c
+
 
 noinst_HEADERS +=                    \
     poly_extra/poly_evaluate_template.h
 
 check_PROGRAMS +=                                    \
-    poly_extra/test/t-descartes_bound                \
     poly_extra/test/t-evaluate                       \
     poly_extra/test/t-fmpz_poly_scale_0_1_fmpq       \
+    poly_extra/test/t-descartes_bound                \
+    poly_extra/test/t-fmpz_poly_positive_root_upper_bound_2exp \
     poly_extra/test/t-has_real_root                  \
     poly_extra/test/t-num_real_roots                 \
+    poly_extra/test/t-num_real_roots_sturm           \
+    poly_extra/test/t-num_real_roots_vca             \
     poly_extra/test/t-num_real_roots_0_1             \
-    poly_extra/test/t-positive_root_upper_bound_2exp \
     poly_extra/test/t-real_root_isolation            \
     poly_extra/test/t-squarefree_part                \
     poly_extra/test/t-check_unique_real_root         \
-    poly_extra/test/t-fmpq_poly_set_str_pretty
+    poly_extra/test/t-fmpq_poly_set_str_pretty       \
+    poly_extra/test/t-nextprime                      \
+    poly_extra/test/t-randprime                      \
+    poly_extra/test/t-fmpq_poly_resultant_div        \
+    poly_extra/test/t-fmpz_poly_resultant_modular_div \
+    poly_extra/test/t-fmpz_poly_scale_2exp           \
+    poly_extra/test/t-fmpq_get_set_str               \
+    poly_extra/test/t-fmpq_vec_randtest_uniq_sorted
+
+
 
 dist_doc_DATA +=                   \
     README                         \
     poly_extra/doc/poly_extra.txt
+
+# nf
+libeantic_la_SOURCES +=               \
+    nf/init.c                         \
+    nf/clear.c                        \
+    nf/print.c
+
+check_PROGRAMS +=                     \
+    nf/test/t-init_clear
+
+# nf_elem
+libeantic_la_SOURCES +=               \
+    nf_elem/add.c                     \
+    nf_elem/add_fmpq.c                \
+    nf_elem/add_fmpz.c                \
+    nf_elem/add_si.c                  \
+    nf_elem/clear.c                   \
+    nf_elem/div.c                     \
+    nf_elem/equal.c                   \
+    nf_elem/fmpq_sub.c                \
+    nf_elem/fmpz_sub.c                \
+    nf_elem/get_fmpz_mat_row.c        \
+    nf_elem/get_fmpz_mod_poly.c       \
+    nf_elem/get_nmod_poly.c           \
+    nf_elem/init.c                    \
+    nf_elem/inlines.c                 \
+    nf_elem/inv.c                     \
+    nf_elem/invertible_check.c        \
+    nf_elem/mod_fmpz.c                \
+    nf_elem/mul.c                     \
+    nf_elem/norm.c                    \
+    nf_elem/norm_div.c                \
+    nf_elem/pow.c                     \
+    nf_elem/print_pretty.c            \
+    nf_elem/randtest.c                \
+    nf_elem/reduce.c                  \
+    nf_elem/rep_mat.c                 \
+    nf_elem/rep_mat_fmpz_mat_den.c    \
+    nf_elem/scalar_div_fmpq.c         \
+    nf_elem/scalar_div_fmpz.c         \
+    nf_elem/scalar_div_si.c           \
+    nf_elem/scalar_mul_fmpq.c         \
+    nf_elem/scalar_mul_fmpz.c         \
+    nf_elem/scalar_mul_si.c           \
+    nf_elem/set_fmpz_mat_row.c        \
+    nf_elem/si_sub.c                  \
+    nf_elem/sub.c                     \
+    nf_elem/sub_fmpq.c                \
+    nf_elem/sub_fmpz.c                \
+    nf_elem/sub_si.c                  \
+    nf_elem/trace.c
+
+check_PROGRAMS +=                          \
+    nf_elem/test/t-add_sub                 \
+    nf_elem/test/t-div                     \
+    nf_elem/test/t-equal_fmpz_fmpq         \
+    nf_elem/test/t-get_fmpz_mod_poly       \
+    nf_elem/test/t-get_nmod_poly           \
+    nf_elem/test/t-get_set_den             \
+    nf_elem/test/t-get_set_fmpq_poly       \
+    nf_elem/test/t-get_set_fmpz_mat_row    \
+    nf_elem/test/t-init_clear              \
+    nf_elem/test/t-inv                     \
+    nf_elem/test/t-is_rational_integer     \
+    nf_elem/test/t-mod_fmpz                \
+    nf_elem/test/t-mul                     \
+    nf_elem/test/t-mul_gen                 \
+    nf_elem/test/t-norm                    \
+    nf_elem/test/t-norm_div                \
+    nf_elem/test/t-pow                     \
+    nf_elem/test/t-rep_mat                 \
+    nf_elem/test/t-rep_mat_fmpz_mat_den    \
+    nf_elem/test/t-set_coeff_num_fmpz      \
+    nf_elem/test/t-set_equal               \
+    nf_elem/test/t-set_equal_si_ui         \
+    nf_elem/test/t-trace
 
 # renf
 libeantic_la_SOURCES +=               \
@@ -138,7 +241,7 @@ renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
 renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
-renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp 
+renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 
 # test suite
 TESTS = $(check_PROGRAMS)

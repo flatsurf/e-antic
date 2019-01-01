@@ -36,7 +36,7 @@ int main(void)
             printf("vca and Sturm disagree\n");
             printf("p = "); fmpz_poly_print(p); printf("\n");
             flint_printf("(vca) k1 = %wd  (Sturm) k2 = %wd\n", k1, k2);
-            flint_abort();
+            abort();
         }
 
         fmpz_poly_clear(p);

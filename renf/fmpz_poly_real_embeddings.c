@@ -29,7 +29,7 @@ slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong
     if (n_exact)
     {
         fprintf(stderr, "ERROR (fmpz_poly_real_embeddings): rational roots\n");
-        flint_abort();
+        abort();
     }
 
     arb_init(a);

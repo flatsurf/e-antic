@@ -51,7 +51,7 @@ int main()
             printf("ERROR:\n");
             printf(" p1 = "); fmpz_poly_print(p1); printf("\n");
             printf(" p2 = "); fmpz_poly_print(p2); printf("\n");
-            flint_abort();
+            abort();
         }
         fmpq_sub(c, b, a);
         for (i = 0; i < n; i++)
@@ -71,7 +71,7 @@ int main()
                 printf("a = "); fmpq_print(a); printf("\n");
                 printf("b = "); fmpq_print(b); printf("\n");
                 printf("r = "); fmpq_print(r); printf("\n");
-                flint_abort();
+                abort();
             }
             fmpq_clear(r);
         }

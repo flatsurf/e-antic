@@ -111,7 +111,6 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     n_neg = n_zeros = n_neg_exact = *n_exact = *n_interval = 0;
     len = pol->length;
 
-
     if (fmpz_poly_is_zero(pol))
     {
         fprintf(stderr, "ERROR (fmpz_poly_isolate_real_roots): zero polynomial\n");
@@ -125,10 +124,10 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     p = _fmpz_vec_init(len);
     _fmpz_vec_set(p, pol->coeffs + n_zeros, len);
 
-
     /* negative roots (use P(-x)) */
     for (i = 1; i < len; i += 2) fmpz_neg(p + i, p + i);
     k = _fmpz_poly_positive_root_upper_bound_2exp(p, len);
+
     if (k != WORD_MIN)
     {
         _fmpz_poly_scale_2exp(p, len, k);
@@ -213,6 +212,7 @@ slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)
 {
     slong n_exact, n_interval;
     n_exact = n_interval = 0;
+
     fmpz_poly_isolate_real_roots(NULL, &n_exact, NULL, NULL, &n_interval, pol);
     return n_exact + n_interval;
 }

@@ -20,7 +20,7 @@ void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec)
     if (!fmpq_poly_check_unique_real_root(pol, emb, prec))
     {
         printf("ERROR (renf_init): the given polynomial does not define a unique root\n");
-        flint_abort();
+        abort();
     }
 
     arb_init(nf->emb);

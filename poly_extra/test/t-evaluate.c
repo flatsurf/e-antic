@@ -17,9 +17,6 @@ int main()
 
     FLINT_TEST_INIT(state);
 
-    printf("evaluate....");
-    fflush(stdout);
-
     {
         ulong k;
 
@@ -37,7 +34,7 @@ int main()
         fmpq_poly_init(p);
         fmpq_poly_set_coeff_si(p, 0, 1);
         fmpq_poly_set_coeff_si(p, 1, 1);
-        for (iter = 0; iter < 1000; iter++)
+        for (iter = 0; iter < 5000; iter++)
         {
             k = n_randint(state, 10000);
             arb_set_si(a, k);
@@ -202,6 +199,5 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }

@@ -20,9 +20,6 @@ AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
 AC_CHECK_LIB(arb, arb_init, [], [AC_MSG_ERROR([libarb not found])])
 
-AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic header not found])])
-AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
-
 AC_LANG_PUSH([C++])
 AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (gmp needs to be compiled with c++ support (--enable-cxx))])])
 AC_LANG_POP([C++])

@@ -35,7 +35,7 @@ int main()
             printf("FAIL:\n");
             printf("polynomial with no real root p = ");
             fmpz_poly_print(p); printf("\n");
-            flint_abort();
+            abort();
         }
 
         fmpz_poly_clear(p);

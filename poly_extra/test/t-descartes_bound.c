@@ -17,9 +17,6 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    printf("descartes_upper_bound....");
-    fflush(stdout);
-
     /* test polynomials with random rational roots */
     for( iter = 0; iter <= 1000; iter++ )
     {
@@ -61,6 +58,5 @@ int main()
 
     FLINT_TEST_CLEANUP(state);
 
-    printf("PASS\n");
     return 0;
 }

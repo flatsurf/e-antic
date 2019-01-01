@@ -32,7 +32,7 @@ int main(void)
     if (ans != 1)
     {
         fprintf(stderr, "error with poly check unique real root (got %ld instead of 1)\n", ans);
-        flint_abort();
+        abort();
     }
 
     arb_set_si(emb, 0);
@@ -40,7 +40,7 @@ int main(void)
     if (ans != 0)
     {
         fprintf(stderr, "error with poly check unique real root (got %ld instead of 0)\n");
-        flint_abort();
+        abort();
     }
 
     fmpq_poly_clear(p);

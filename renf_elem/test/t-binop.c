@@ -21,7 +21,7 @@ int main()
         renf_t nf;
         renf_elem_t a,b,c;
         slong len = 2 + n_randint(state, 10);
-        mp_bitcnt_t bits = 30 + n_randint(state, 100);
+        mp_bitcnt_t bits = 10 + n_randint(state, 30);
 
         renf_randtest(nf, state, len, bits);
 
@@ -29,8 +29,8 @@ int main()
         renf_elem_init(b, nf);
         renf_elem_init(c, nf);
 
-        renf_elem_randtest(a, state, 10 + n_randint(state, 50), nf);
-        renf_elem_randtest(b, state, 10 + n_randint(state, 50), nf);
+        renf_elem_randtest(a, state, 10 + n_randint(state, 30), nf);
+        renf_elem_randtest(b, state, 10 + n_randint(state, 30), nf);
 
         renf_elem_add(c, a, b, nf);
         renf_elem_check_embedding(c, nf, 1024);

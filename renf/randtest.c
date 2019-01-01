@@ -21,7 +21,7 @@ void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
     if (prec <= 0 || prec < fmpz_bits(c) + 2)
     {
         fprintf(stderr, "negative precision");
-        flint_abort();
+        abort();
     }
 
     arb_set_fmpz(x, c);
@@ -46,7 +46,7 @@ void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits)
     if (len <= 1)
     {
         fprintf(stderr, "ERROR (renf_randtest): got length < 2\n");
-        flint_abort();
+        abort();
     }
 
     fmpz_poly_init(p);
@@ -65,7 +65,7 @@ void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits)
     if (n_interval == 0)
     {
         fprintf(stderr, "Runtime error\n");
-        flint_abort();
+        abort();
     }
 
     i = n_randint(state, n_interval);

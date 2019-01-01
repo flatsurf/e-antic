@@ -22,7 +22,7 @@ slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol)
     if (fmpz_poly_is_zero(pol))
     {
         fprintf(stderr, "ERROR (fmpz_poly_num_real_roots_sturm): zero polynomial\n");
-        flint_abort();
+        abort();
     }
 
     fmpz_init(c);
