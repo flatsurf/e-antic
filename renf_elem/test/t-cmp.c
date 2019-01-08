@@ -77,7 +77,7 @@ void test_field1(flint_rand_t state)
 
     fmpq_init(k);
     fmpq_set_si(k, 5, 1);
-    renf_init_nth_root_fmpq(nf, k, 2, 20 + n_randint(state, 100));
+    renf_init_nth_root_fmpq(nf, k, 2, 20 + n_randint(state, 10));
     renf_elem_init(a, nf);
     renf_elem_init(b, nf);
 
@@ -138,7 +138,7 @@ void test_field2(flint_rand_t state)
     arb_init(emb);
     arb_set_d(emb, 0.02406681384217074);
     arb_add_error_2exp_si(emb, -30);
-    renf_init(nf, pol, emb, 20 + n_randint(state, 100));
+    renf_init(nf, pol, emb, 20 + n_randint(state, 10));
 
     renf_elem_init(a, nf);
     renf_elem_init(b, nf);
@@ -212,7 +212,7 @@ int main()
         renf_elem_t a, b;
         fmpq_t x;
 
-        renf_randtest(nf, state, 2 + n_randint(state, 20), 20 + n_randint(state, 20));
+        renf_randtest(nf, state, 2 + n_randint(state, 20), 20 + n_randint(state, 10));
         renf_elem_init(a, nf);
         renf_elem_init(b, nf);
         fmpq_init(x);
