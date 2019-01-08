@@ -13,6 +13,7 @@
 #ifndef NF_EMB_ELEMXX_H
 #define NF_EMB_ELEMXX_H
 
+#include <cctype>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -43,7 +44,7 @@ public:
 
     ~renf_class();
 
-    const renf_srcptr get_renf() { return nf; }
+    renf * get_renf() { return nf; }
 
     // standard elements
     renf_elem_class zero();
@@ -52,8 +53,11 @@ public:
 
     bool operator == (const renf_class&) const;
     bool operator != (const renf_class&) const;
-};
 
+    // I/O
+    static int xalloc();
+    std::istream& set_istream(std::istream&);
+};
 
 class renf_elem_class
 {
@@ -61,6 +65,8 @@ private:
     mutable renf_class * nf;  /* not owned reference to a number field */
     mutable renf_elem_t a;    /* the element */
     mutable fmpq_t b;         /* rational value when nf == NULL */
+
+    void reset_parent(renf_class * p);
 
     void assign(const int);
     void assign(const unsigned int);
@@ -79,6 +85,7 @@ private:
 
     void assign(const char *);
     void assign(const std::string);
+    void assign(std::istream& is);
 
     void assign(const renf_elem_class&);
 
@@ -212,8 +219,38 @@ public:
     __renf_ops(mpz_class&);
     __renf_ops(mpq_class&);
     #undef __renf_ops
+
+    friend std::ostream& operator << (std::ostream &, renf_elem_class&);
+    friend std::istream& operator >> (std::istream &, renf_elem_class&);
 };
 
+/*****************/
+/* I/O operators */
+/*****************/
+
+inline std::istream& renf_class::set_istream(std::istream& is)
+{
+    is.pword(renf_class::xalloc()) = this;
+    return is;
+}
+
+inline std::ostream& operator << (std::ostream& os, renf_elem_class& a)
+{
+    os << a.get_str();
+    return os;
+}
+
+inline std::istream& operator >> (std::istream& is, renf_elem_class& a)
+{
+    renf_class * nf = (renf_class *) is.pword(renf_class::xalloc());
+
+    if (nf != NULL)
+        // reset the number field from the stream
+        a.reset_parent(nf);
+
+    a.assign(is);
+    return is;
+}
 
 /*********************/
 /* function overload */
@@ -418,6 +455,59 @@ inline void renf_elem_class::assign(const fmpq_poly_t p)
     renf_elem_set_fmpq_poly(a, p, nf->get_renf());
 }
 
+inline void renf_elem_class::assign(std::istream& is)
+{
+    std::string s;          /* part of the stream to use */
+    char c;                 /* current character in the stream */
+
+    std::string g;
+    if (nf == NULL)
+        g = "";
+    else
+        g = parent().gen_name;
+    bool after_g = false; /* whether we just read a variable name */
+    while (!is.eof())
+    {
+        c = is.peek();
+
+        if (isdigit(c) || c == '+' || c == '-' || c == '*' || c == '^' || c == ' ' || c == '/')
+        {
+            if (after_g && c != ' ' && c != '^' && c != '-' && c != '+') // not allowed carachter after variable
+                throw std::invalid_argument("wrong character after generator");
+            s += c;
+            is.get();
+            after_g = false;
+        }
+
+        else if (nf != NULL && c == g[0])
+        {
+            if (after_g)
+                throw -3;
+
+            std::string::iterator j = g.begin();
+            while (!is.eof() && j != g.end() && *j == c)
+            {
+                j++;
+                is.get();
+                c = is.peek();
+            }
+
+            if (j != g.end()) // not full variable name
+                throw std::invalid_argument("variable not read in full");
+
+            s += g;
+            after_g = true;
+        }
+
+        else
+            break;
+    }
+
+    // TODO: possibly read ~ double or ~ [arb]
+    // the separator is considered to be ' ~ ' (exactly one space)
+    assign(s);
+}
+
 inline void renf_elem_class::assign(const char * s)
 {
     int err;
@@ -460,9 +550,9 @@ inline void renf_elem_class::assign(const char * s)
     flint_free(t);
 }
 
-void renf_elem_class::assign(const renf_elem_class& x)
+inline void renf_elem_class::reset_parent(renf_class * p)
 {
-    if (x.nf == NULL)
+    if (p == NULL)
     {
         if (nf != NULL)
         {
@@ -470,23 +560,31 @@ void renf_elem_class::assign(const renf_elem_class& x)
             nf = NULL;
             fmpq_init(b);
         }
-        fmpq_set(b, x.b);
     }
     else
     {
         if (nf == NULL)
         {
             fmpq_clear(b);
-            renf_elem_init(a, x.nf->get_renf());
+            renf_elem_init(a, p->get_renf());
+            nf = p;
         }
-        else if (nf != x.nf)
+        else if (p != nf)
         {
             renf_elem_clear(a, nf->get_renf());
-            renf_elem_init(a, x.nf->get_renf());
+            renf_elem_init(a, p->get_renf());
+            nf = p;
         }
-        nf = x.nf;
-        renf_elem_set(a, x.a, nf->get_renf());
     }
+}
+
+inline void renf_elem_class::assign(const renf_elem_class& x)
+{
+    reset_parent(x.nf);
+    if (x.nf == NULL)
+        fmpq_set(b, x.b);
+    else
+        renf_elem_set(a, x.a, nf->get_renf());
 }
 
 inline void renf_elem_class::assign(const std::string s)
@@ -595,7 +693,7 @@ inline mpz_class renf_elem_class::get_num(void) const
     return x;
 }
 
-std::string renf_elem_class::get_str(int flag)
+inline std::string renf_elem_class::get_str(int flag)
 {
     std::string s;
 

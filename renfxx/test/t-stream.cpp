@@ -1,0 +1,78 @@
+/*
+    Copyright (C) 2018 Vincent Delecroix
+
+    This file is part of e-antic
+
+    e-antic is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 3.0 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
+
+#include "e-antic/renfxx.h"
+
+#include <iostream>
+#include <sstream>
+
+int main(void)
+{
+    renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");
+    renf_class K2("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+    const renf_elem_class g1 = K1.gen();
+    const renf_elem_class g2 = K2.gen();
+
+    {
+        std::stringstream s;
+        renf_elem_class a = K1.gen();
+        s << a;
+        if (s.str() != "A ~ 1.259921")
+            throw std::runtime_error("wrong string");
+    }
+
+    {
+        // initialization of nf in constructor
+        renf_elem_class a(K1);
+
+        std::stringstream sin1("3/5*A+2");
+        sin1 >> a;
+        if (a != 3*g1/5 + 2)
+            throw std::runtime_error("wrong nf initialization");
+
+        std::stringstream sin2("A-1");
+        sin2 >> a;
+        if (a != g1 - 1)
+            throw std::runtime_error("wrong nf reinitialization");
+    }
+
+    {
+        // initializing as a rational number
+        renf_elem_class a;
+        std::stringstream sin("3/5");
+        sin >> a;
+
+        if (5*a != 3)
+            throw("bad rational initialization");
+    }
+
+    {
+        // initialization via istream_set_renf
+        renf_elem_class a;
+
+        std::stringstream sin1("3*A^2-7");
+        K1.set_istream(sin1) >> a;
+        if (a != 3*g1*g1-7)
+            throw("bad stream_set_renf initialization");
+
+        std::stringstream sin2("A+1");
+        K1.set_istream(sin2) >> a;
+        if (a != g1+1)
+            throw("bad stream_set_renf reinitialization 1");
+
+        std::stringstream sin3("abc^2-1");
+        K2.set_istream(sin3) >> a;
+        if (a != g2*g2 - 1)
+            throw("bad stream_set_renf reinitialization 2");
+    }
+
+    return 0;
+}

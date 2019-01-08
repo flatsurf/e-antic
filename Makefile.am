@@ -215,7 +215,8 @@ check_PROGRAMS +=                \
 # C++
 
 libeanticxx_la_SOURCES =        \
-    renfxx/get_num_vector.cpp
+    renfxx/get_num_vector.cpp   \
+    renfxx/set_renf_xalloc.cpp
 
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
@@ -227,7 +228,8 @@ check_PROGRAMS +=                     \
     renfxx/test/t-binop               \
     renfxx/test/t-is_integer_rational \
     renfxx/test/t-floor               \
-    renfxx/test/t-ceil
+    renfxx/test/t-ceil                \
+    renfxx/test/t-stream
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -242,6 +244,7 @@ renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cp
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
 renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
 renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
+renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
 
 # test suite
 TESTS = $(check_PROGRAMS)

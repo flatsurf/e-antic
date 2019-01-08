@@ -32,7 +32,8 @@ typedef struct
   arb_t emb;        /* embedding of generator as a real ball    */
 } renf;
 
-typedef renf * renf_srcptr;
+typedef renf * renf_ptr;
+typedef const renf * renf_srcptr;
 typedef renf renf_t[1];
 
 void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
@@ -41,8 +42,7 @@ void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
 void renf_init_set(renf_t dest, const renf_t src);
 
 static __inline__
-void
-renf_clear(renf_t nf)
+void renf_clear(renf_t nf)
 {
     nf_clear(nf->nf);
     fmpz_poly_clear(nf->der);
