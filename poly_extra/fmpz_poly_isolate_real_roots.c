@@ -208,11 +208,4 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     _fmpz_vec_clear(p, len);
 }
 
-slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)
-{
-    slong n_exact, n_interval;
-    n_exact = n_interval = 0;
 
-    fmpz_poly_isolate_real_roots(NULL, &n_exact, NULL, NULL, &n_interval, pol);
-    return n_exact + n_interval;
-}

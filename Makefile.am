@@ -37,9 +37,8 @@ libeantic_la_SOURCES +=                         \
     poly_extra/num_real_roots_0_1.c             \
     poly_extra/num_real_roots_0_1_sturm.c       \
     poly_extra/fmpz_poly_positive_root_upper_bound_2exp.c \
-    poly_extra/real_root_isolation_vca.c        \
-    poly_extra/real_roots_isolation.c           \
-    poly_extra/sgn_at_half.c                    \
+    poly_extra/fmpz_poly_isolate_real_roots.c     \
+    poly_extra/sgn_at_half.c                      \
     poly_extra/fmpz_poly_product_roots_fmpq_vec.c \
     poly_extra/fmpz_poly_randtest_no_real_root.c  \
     poly_extra/fmpz_nextprime.c                   \
