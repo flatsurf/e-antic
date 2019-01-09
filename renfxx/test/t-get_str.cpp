@@ -23,14 +23,15 @@ int main(void)
     std::string ca = "0 ~ 0.000000";
     renf_elem_class a(K, ca);
     if (ca != a.get_str())
-        throw std::runtime_error("error for 0");
+        throw std::runtime_error("error for a=0");
 
     std::string cb = "x ~ 0.873580";
     renf_elem_class b(K, cb);
     if (cb != b.get_str())
-        throw std::runtime_error("error for x");
+        throw std::runtime_error("error for b=x");
 
     std::string cc = "3/7*x-2/11 ~ 0.192573";
     renf_elem_class c(K, cc);
-    std::cout << c.get_str();
+    if (cc != c.get_str())
+        throw std::runtime_error("error for c=3/7*x-2/11");
 }

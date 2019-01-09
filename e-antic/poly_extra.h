@@ -12,7 +12,8 @@
 #ifndef FMPQ_POLY_EXTRA_H
 #define FMPQ_POLY_EXTRA_H
 
-#include <flint/flint.h>
+#include <e-antic/e-antic.h>
+
 #include <flint/fmpz_poly.h>
 #include <flint/fmpq_poly.h>
 #include <arb.h>

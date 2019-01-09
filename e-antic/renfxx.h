@@ -22,8 +22,8 @@
 
 #include <gmpxx.h>
 
-#include "renf.h"
-#include "renf_elem.h"
+#include <e-antic/renf.h>
+#include <e-antic/renf_elem.h>
 
 /* TODO: make an (optional) pool of elements in the renf_elem_class */
 
@@ -114,7 +114,7 @@ public:
     };
 
     // underlying number field
-    renf_class& parent(void) { return *nf; };
+    renf_class& parent(void) const { return *nf; };
 
     // assignment
     #define __eq(TYP) \
@@ -157,7 +157,7 @@ public:
     renf_elem_class operator + () const;
 
     // string output
-    std::string get_str(int flag=EANTIC_STR_ALG|EANTIC_STR_D);
+    std::string get_str(int flag=EANTIC_STR_ALG|EANTIC_STR_D) const;
 
     // binary operations
     renf_elem_class operator + (const renf_elem_class&) const;
@@ -220,7 +220,8 @@ public:
     __renf_ops(mpq_class&);
     #undef __renf_ops
 
-    friend std::ostream& operator << (std::ostream &, renf_elem_class&);
+    /* I/O */
+    friend std::ostream& operator << (std::ostream &, const renf_elem_class&);
     friend std::istream& operator >> (std::istream &, renf_elem_class&);
 };
 
@@ -234,7 +235,7 @@ inline std::istream& renf_class::set_istream(std::istream& is)
     return is;
 }
 
-inline std::ostream& operator << (std::ostream& os, renf_elem_class& a)
+inline std::ostream& operator << (std::ostream& os, const renf_elem_class& a)
 {
     os << a.get_str();
     return os;
@@ -245,7 +246,7 @@ inline std::istream& operator >> (std::istream& is, renf_elem_class& a)
     renf_class * nf = (renf_class *) is.pword(renf_class::xalloc());
 
     if (nf != NULL)
-        // reset the number field from the stream
+        // reset the number field with the one from the stream
         a.reset_parent(nf);
 
     a.assign(is);
@@ -693,7 +694,7 @@ inline mpz_class renf_elem_class::get_num(void) const
     return x;
 }
 
-inline std::string renf_elem_class::get_str(int flag)
+inline std::string renf_elem_class::get_str(int flag) const
 {
     std::string s;
 

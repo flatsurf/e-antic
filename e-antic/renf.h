@@ -12,9 +12,8 @@
 #ifndef NF_EMB_H
 #define NF_EMB_H
 
-#include <gmp.h>
-#include <flint/flint.h>
 #include <flint/fmpq_poly.h>
+#include <e-antic/e-antic.h>
 #include <e-antic/nf.h>
 #include <e-antic/nf_elem.h>
 #include <arb.h>
