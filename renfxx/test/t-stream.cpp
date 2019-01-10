@@ -74,5 +74,18 @@ int main(void)
             throw("bad stream_set_renf reinitialization 2");
     }
 
+    {
+        // use the result of writing in a stream <<
+        renf_elem_class a(K1, "3*A^2-1");
+        renf_elem_class b(K1);
+        std::stringstream s;
+
+        s << a;
+        s >> b;
+
+        if (a != b)
+            throw("not able to reconstruct input from output");
+    }
+
     return 0;
 }
