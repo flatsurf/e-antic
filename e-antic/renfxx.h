@@ -25,8 +25,6 @@
 #include <e-antic/renf.h>
 #include <e-antic/renf_elem.h>
 
-/* TODO: make an (optional) pool of elements in the renf_elem_class */
-
 class renf_elem_class; /* forward declaration */
 
 class renf_class
@@ -62,8 +60,8 @@ public:
 class renf_elem_class
 {
 private:
-    mutable renf_class * nf;  /* not owned reference to a number field */
-    mutable renf_elem_t a;    /* the element */
+    mutable renf_class * nf;  /* not owned reference to a number field or NULL */
+    mutable renf_elem_t a;    /* the element when nf != NULL */
     mutable fmpq_t b;         /* rational value when nf == NULL */
 
     void reset_parent(renf_class * p);
@@ -97,21 +95,32 @@ public:
     renf_elem_class(const renf_elem_class& x);
 
     // passed by values
-    template<typename T>
-    inline renf_elem_class(const T z)
-    {
-        nf = NULL;
-        fmpq_init(this->b);
-        this->assign(z);
+    #define __constructor(TYP)           \
+    inline renf_elem_class(const TYP z)  \
+    {                                    \
+        nf = NULL;                       \
+        fmpq_init(b);                    \
+        assign(z);                       \
+    }                                    \
+    inline renf_elem_class(renf_class &k, const TYP z) \
+    {                                      \
+        nf = &k;                           \
+        renf_elem_init(a, nf->get_renf()); \
+        assign(z);                         \
     };
-
-    template<typename T>
-    inline renf_elem_class(renf_class &k, const T z)
-    {
-        nf = &k;
-        renf_elem_init(a, nf->get_renf());
-        assign(z);
-    };
+    __constructor(int);
+    __constructor(unsigned int);
+    __constructor(slong);
+    __constructor(ulong);
+    __constructor(mpz_t);
+    __constructor(mpq_t);
+    __constructor(mpz_class&);
+    __constructor(mpq_class&);
+    __constructor(fmpz_t);
+    __constructor(fmpq_t);
+    __constructor(fmpq_poly_t);
+    __constructor(std::string);
+    #undef __constructor
 
     // underlying number field
     renf_class& parent(void) const { return *nf; };
