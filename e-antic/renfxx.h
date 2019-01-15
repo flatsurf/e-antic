@@ -42,6 +42,13 @@ public:
 
     ~renf_class();
 
+    inline renf_class& operator = (const renf_class& k)
+    {
+        renf_clear(nf);
+        renf_init_set(nf, k.nf);
+        return *this;
+    }
+
     renf * get_renf() { return nf; }
 
     // standard elements
