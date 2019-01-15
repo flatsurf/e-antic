@@ -100,6 +100,11 @@ int main(void)
     check_valid("3/5*a - 7/3", "a", "2  -7/3 3/5");
     check_valid("1/3 + 3/5 * a^3 - 7/3", "a", "4  -2 0 0 3/5");
 
+    /* zero higher terms */
+    check_valid("0*a^3", "a", "0");
+    check_valid("a+1-a", "a", "1  1");
+    check_valid("0*a^3-a", "a", "2  0 -1");
+
     /* invalid */
     check_invalid("3x3x", "x");
     check_invalid("x2x", "x");
