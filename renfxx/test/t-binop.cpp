@@ -23,6 +23,14 @@
         throw std::runtime_error("wrong result in binary operation"); \
 }                                 \
 {                                 \
+    renf_elem_class ca(K, a);     \
+    renf_elem_class cb(b);        \
+    if (ca OP cb != res ||        \
+        ca OP b != res  ||        \
+        a OP cb != res)           \
+        throw std::runtime_error("wrong result in binary operation"); \
+}                                 \
+{                                 \
     renf_elem_class ca(K);        \
     ca = a;                       \
     renf_elem_class cb(K);        \
