@@ -543,6 +543,33 @@ void nf_elem_get_fmpq_poly(fmpq_poly_t pol, const nf_elem_t a, const nf_t nf)
     }
 }
 
+NF_ELEM_INLINE
+void nf_elem_get_fmpq(fmpq_t z, const nf_elem_t a, const nf_t nf)
+{
+    if (nf->flag & NF_LINEAR)
+    {
+        fmpz_set(fmpq_numref(z), LNF_ELEM_NUMREF(a));
+        fmpz_set(fmpq_denref(z), LNF_ELEM_DENREF(a));
+    }
+    else if (nf->flag & NF_QUADRATIC)
+    {
+        fmpz_set(fmpq_numref(z), QNF_ELEM_NUMREF(a));
+        fmpz_set(fmpq_denref(z), QNF_ELEM_DENREF(a));
+        fmpq_canonicalise(z);
+    }
+    else
+    {
+        if (fmpq_poly_length(NF_ELEM(a)) == 0)
+            fmpq_zero(z);
+        else
+        {
+            fmpz_set(fmpq_numref(z), NF_ELEM(a)->coeffs);
+            fmpz_set(fmpq_denref(z), NF_ELEM(a)->den);
+            fmpq_canonicalise(z);
+        }
+    }
+}
+
 FLINT_DLL
 void _nf_elem_get_nmod_poly(nmod_poly_t pol, const nf_elem_t a, const nf_t nf);
 

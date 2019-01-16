@@ -173,6 +173,22 @@ void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
     return _fmpz_vec_sum(res, p, len);
 }
 
+static __inline__
+double fmpq_get_d(fmpq_t q)
+{
+    arb_t z;
+    double d;
+
+    arb_init(z);
+    arb_set_fmpq(z, q, 64);
+
+    d = arf_get_d(arb_midref(z), ARF_RND_NEAR);
+
+    arb_clear(z);
+
+    return d;
+}
+
 /**********************************************************************/
 /* Backports from flint 2.5.3                                         */
 

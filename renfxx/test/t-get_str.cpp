@@ -14,24 +14,88 @@
 #include <stdexcept>
 #include <string>
 
+void check_string(const renf_elem_class& a,
+        const std::string& s_ALG_D,
+        const std::string& s_ALG,
+        const std::string& s_D)
+{
+    {
+        std::string t = a.get_str(EANTIC_STR_ALG | EANTIC_STR_D);
+        if (t != s_ALG_D)
+            throw std::runtime_error("error with ALG | D, expected " + s_ALG_D + " got " + t);
+    }
+    {
+        std::string t = a.get_str(EANTIC_STR_ALG);
+        if (t != s_ALG)
+            throw std::runtime_error("error with ALG, expected " + s_ALG + " got " + t);
+    }
+    {
+        std::string t = a.get_str(EANTIC_STR_D);
+        if (t != s_D)
+            throw std::runtime_error("error with D, expected " + s_D + " got " + t);
+    }
+}
+
 int main(void)
 {
-    renf_t nf;
+    {
+        // fmpq elements (nf reference is NULL)
+        {
+            renf_elem_class a("1/2");
+            check_string(a, "(1/2 ~ 0.500000)", "1/2", "0.500000");
+        }
+    }
 
-    renf_class K("x^3 - 2/3", "x", "0.87 +/- 0.1");
+    {
+        // quadratic example
+        renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
 
-    std::string ca = "0 ~ 0.000000";
-    renf_elem_class a(K, ca);
-    if (ca != a.get_str())
-        throw std::runtime_error("error for a=0");
+        {
+            renf_elem_class a(K, "0");
+            check_string(a, "(0 ~ 0.000000)", "0", "0.000000");
+        }
 
-    std::string cb = "x ~ 0.873580";
-    renf_elem_class b(K, cb);
-    if (cb != b.get_str())
-        throw std::runtime_error("error for b=x");
+        {
+            std::string alg = "2/3";
+            std::string d = "2/3";
+            renf_elem_class a(K, alg);
+            check_string(a, "(2/3 ~ 0.666667)", "2/3", "0.666667");
+        }
 
-    std::string cc = "3/7*x-2/11 ~ 0.192573";
-    renf_elem_class c(K, cc);
-    if (cc != c.get_str())
-        throw std::runtime_error("error for c=3/7*x-2/11");
+        {
+            std::string alg = "x";
+            std::string d = "1.414214";
+            renf_elem_class a(K, alg);
+            check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
+        }
+    }
+
+    {
+        // cubic example
+        renf_class K("x^3 - 2/3", "x", "0.87 +/- 0.1");
+
+        {
+            renf_elem_class a(K, "0");
+            check_string(a, "(0 ~ 0.000000)", "0", "0.000000");
+        }
+
+        {
+            renf_elem_class a(K, "2/3");
+            check_string(a, "(2/3 ~ 0.666667)", "2/3", "0.666667");
+        }
+
+        {
+            std::string alg = "x";
+            std::string d = "0.873580";
+            renf_elem_class a(K, alg);
+            check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
+        }
+
+        {
+            std::string alg = "3/7*x-2/11";
+            std::string d = "0.192573";
+            renf_elem_class a(K, alg);
+            check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
+        }
+    }
 }

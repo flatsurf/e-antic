@@ -23,10 +23,26 @@ int main(void)
 
     {
         std::stringstream s;
+        renf_elem_class a("0");
+        s << a;
+        if (s.str() != "0")
+            throw std::runtime_error("wrong 0 string, got " + s.str());
+    }
+
+    {
+        std::stringstream s;
+        renf_elem_class a("2/3");
+        s << a;
+        if (s.str() != "(2/3 ~ 0.666667)")
+            throw std::runtime_error("wrong 0 string, got " + s.str());
+    }
+
+    {
+        std::stringstream s;
         renf_elem_class a = K1.gen();
         s << a;
-        if (s.str() != "A ~ 1.259921")
-            throw std::runtime_error("wrong string");
+        if (s.str() != "(A ~ 1.259921)")
+            throw std::runtime_error("wrong string, got " + s.str());
     }
 
     {
@@ -51,7 +67,7 @@ int main(void)
         sin >> a;
 
         if (5*a != 3)
-            throw("bad rational initialization");
+            throw std::runtime_error("bad rational initialization");
     }
 
     {
@@ -61,17 +77,17 @@ int main(void)
         std::stringstream sin1("3*A^2-7");
         K1.set_istream(sin1) >> a;
         if (a != 3*g1*g1-7)
-            throw("bad stream_set_renf initialization");
+            throw std::runtime_error("bad stream_set_renf initialization");
 
         std::stringstream sin2("A+1");
         K1.set_istream(sin2) >> a;
         if (a != g1+1)
-            throw("bad stream_set_renf reinitialization 1");
+            throw std::runtime_error("bad stream_set_renf reinitialization 1");
 
         std::stringstream sin3("abc^2-1");
         K2.set_istream(sin3) >> a;
         if (a != g2*g2 - 1)
-            throw("bad stream_set_renf reinitialization 2");
+            throw std::runtime_error("bad stream_set_renf reinitialization 2");
     }
 
     {
@@ -84,7 +100,7 @@ int main(void)
         s >> b;
 
         if (a != b)
-            throw("not able to reconstruct input from output");
+            throw std::runtime_error("not able to reconstruct input from output");
     }
 
     return 0;

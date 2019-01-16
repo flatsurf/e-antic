@@ -158,8 +158,11 @@ public:
     // data access
     fmpq * get_fmpq(void) const;
     renf_elem_srcptr get_renf_elem(void) const;
+
+    // data conversion
     mpz_class get_den(void) const;
     mpz_class get_num(void) const;
+    mpq_class get_rational(void) const;
     std::vector<mpz_class> get_num_vector(void) const;
 
     // floor, ceil, round, approximation
@@ -253,7 +256,10 @@ inline std::istream& renf_class::set_istream(std::istream& is)
 
 inline std::ostream& operator << (std::ostream& os, const renf_elem_class& a)
 {
-    os << a.get_str();
+    if (a.is_integer())
+        os << a.get_str(EANTIC_STR_ALG);
+    else
+        os << a.get_str(EANTIC_STR_ALG | EANTIC_STR_D);
     return os;
 }
 
@@ -477,51 +483,35 @@ inline void renf_elem_class::assign(std::istream& is)
     std::string s;          /* part of the stream to use */
     char c;                 /* current character in the stream */
 
+    if (is.eof())
+        throw std::invalid_argument("empty stream");
+
     std::string g;
     if (nf == NULL)
         g = "";
     else
         g = parent().gen_name;
+
     bool after_g = false; /* whether we just read a variable name */
-    while (!is.eof())
+
+    c = is.peek();
+    if (c == '(')
     {
-        c = is.peek();
-
-        if (isdigit(c) || c == '+' || c == '-' || c == '*' || c == '^' || c == ' ' || c == '/')
-        {
-            if (after_g && c != ' ' && c != '^' && c != '-' && c != '+') // not allowed carachter after variable
-                throw std::invalid_argument("wrong character after generator");
-            s += c;
-            is.get();
-            after_g = false;
-        }
-
-        else if (nf != NULL && c == g[0])
-        {
-            if (after_g)
-                throw -3;
-
-            std::string::iterator j = g.begin();
-            while (!is.eof() && j != g.end() && *j == c)
-            {
-                j++;
-                is.get();
-                c = is.peek();
-            }
-
-            if (j != g.end()) // not full variable name
-                throw std::invalid_argument("variable not read in full");
-
-            s += g;
-            after_g = true;
-        }
-
-        else
-            break;
+        // read until ")"
+        is.get();
+        while (!is.eof() && is.peek() != ')' && is.peek() != EOF)
+            s += is.get();
+        if (is.eof())
+            throw std::invalid_argument("invalid stream");
+        is.get();  // remove ) from the stream
+    }
+    else
+    {
+        // read until space or EOF
+        while (!is.eof() && !isspace(is.peek()) && is.peek() != EOF)
+            s += is.get();
     }
 
-    // TODO: possibly read ~ double or ~ [arb]
-    // the separator is considered to be ' ~ ' (exactly one space)
     assign(s);
 }
 
@@ -710,29 +700,84 @@ inline mpz_class renf_elem_class::get_num(void) const
     return x;
 }
 
+inline mpq_class renf_elem_class::get_rational(void) const
+{
+    mpq_class z;
+
+    if (nf == NULL)
+        fmpq_get_mpq(z.__get_mp(), b);
+    else if(is_rational())
+    {
+        fmpq_t q;
+        fmpq_init(q);
+        nf_elem_get_fmpq(q, a->elem, parent().get_renf()->nf);
+        fmpq_get_mpq(z.__get_mp(), q);
+        fmpq_clear(q);
+    }
+    else
+    {
+    }
+
+    return z;
+}
+
 inline std::string renf_elem_class::get_str(int flag) const
 {
     std::string s;
 
+    if ((flag & EANTIC_STR_D) && (flag & EANTIC_STR_ARB))
+    {
+        throw std::invalid_argument("invalid flag");
+    }
+
     // call to renf_elem_get_str_pretty
     if (nf == NULL)
     {
-        char * t = fmpq_get_str(NULL, 10, b);
-        s += t;
-        flint_free(t);
+        if (flag & EANTIC_STR_ALG)
+        {
+            char * u = fmpq_get_str(NULL, 10, b);
+            s += u;
+            flint_free(u);
+
+            if (flag & (EANTIC_STR_D | EANTIC_STR_ARB))
+                s += " ~ ";
+        }
+        if (flag & EANTIC_STR_D)
+        {
+            char * u = (char *) flint_malloc(20 * sizeof(char));
+            sprintf(u, "%lf", fmpq_get_d(b));
+            s += u;
+            flint_free(u);
+        }
+        if (flag & EANTIC_STR_ARB)
+        {
+            char *u;
+            arb_t x;
+            arb_init(x);
+            arb_set_fmpq(x, b, 128);
+            u = arb_get_str(x, 64, 0);
+            s += u;
+            arb_clear(x);
+            flint_free(u);
+        }
     }
     else
     {
-        char * t = renf_elem_get_str_pretty(get_renf_elem(),
+        char * u = renf_elem_get_str_pretty(get_renf_elem(),
                 parent().gen_name.c_str(),
                 parent().get_renf(),
                 10,
                 flag);
-        s += t;
-        flint_free(t);
+        s += u;
+        flint_free(u);
     }
 
-    return s;
+    if (flag != EANTIC_STR_ALG &&
+        flag != EANTIC_STR_D &&
+        flag != EANTIC_STR_ARB)
+        return "(" + s + ")";
+    else
+        return s;
 }
 
 

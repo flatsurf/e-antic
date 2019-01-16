@@ -58,6 +58,16 @@ int main(void)
     }
 
     {
+        // operator = for renf_class
+        renf_class K1("a^2 - 2", "a", "1.41 +/- 0.1", 128);
+        renf_class K2;
+        K2 = K1;
+
+        renf_elem_class a(K1, "a + 1");
+        renf_elem_class b(K2, "a + 1");
+    }
+
+    {
         renf_t nf;
         renf_randtest(nf, state, 10, 50);
         renf_class K(nf);
