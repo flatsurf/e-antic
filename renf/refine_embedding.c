@@ -16,22 +16,25 @@
 
 void renf_refine_embedding(renf_t nf, slong prec)
 {
-    arb_t tmp;
-    arb_init(tmp);
-
-    if(!_fmpz_poly_newton_step_arb(tmp,
-            fmpq_poly_numref(nf->nf->pol),
-            nf->der->coeffs,
-            fmpq_poly_length(nf->nf->pol),
-            nf->emb,
-            prec))
+    #pragma omp critical(RENF_REFINE)
     {
-        _fmpz_poly_bisection_step_arb(tmp,
+        arb_t tmp;
+        arb_init(tmp);
+
+        if(!_fmpz_poly_newton_step_arb(tmp,
                 fmpq_poly_numref(nf->nf->pol),
+                nf->der->coeffs,
                 fmpq_poly_length(nf->nf->pol),
                 nf->emb,
-                prec);
-    }
-    arb_swap(tmp, nf->emb);
-    arb_clear(tmp);
+                prec))
+        {
+            _fmpz_poly_bisection_step_arb(tmp,
+                    fmpq_poly_numref(nf->nf->pol),
+                    fmpq_poly_length(nf->nf->pol),
+                    nf->emb,
+                    prec);
+        }
+        arb_swap(tmp, nf->emb);
+        arb_clear(tmp);
+    } // #pragma
 }

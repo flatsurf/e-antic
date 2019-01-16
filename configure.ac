@@ -11,6 +11,26 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 
+## Test for OpenMP parallelization.
+AC_ARG_ENABLE([openmp],
+    [AS_HELP_STRING([--enable-openmp@<:@=ARG@:>@],
+      [enable parallelization with OpenMP @<:@default=check@:>@])],
+    [:],
+    [enable_openmp=check])
+AS_IF([test "x$enable_openmp" != xno],
+  [AX_OPENMP([have_openmp=yes],
+            [have_openmp=no])])
+AS_IF([test x$have_openmp = xyes],
+  [enable_openmp=yes],
+  [AS_IF([test "x$enable_openmp" = xyes],
+    [AC_MSG_ERROR([openmp not available])],
+    [AS_IF([test "x$enable_openmp" != xno],
+        [AC_MSG_NOTICE([Parallelization with OpenMP will not be available because no suitable compiler was found])])
+     enable_openmp=no])])
+AC_SUBST(OPENMP_CFLAGS)
+AM_CONDITIONAL(ENABLE_OPENMP, [test x$enable_openmp = xyes])
+
+## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
