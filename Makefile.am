@@ -20,6 +20,8 @@ dist_doc_DATA =
 # TODO: we currently build all tests with linked c++ libraries
 LDADD = libeanticxx.la libeantic.la -larb -lflint -lgmpxx -lgmp
 
+@VALGRIND_CHECK_RULES@
+
 # poly_extra
 libeantic_la_SOURCES +=                         \
     poly_extra/arb_add_fmpq.c                   \

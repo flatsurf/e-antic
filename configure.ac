@@ -30,6 +30,10 @@ AS_IF([test x$have_openmp = xyes],
 AC_SUBST(OPENMP_CFLAGS)
 AM_CONDITIONAL(ENABLE_OPENMP, [test x$enable_openmp = xyes])
 
+## Test for valgrind test suite
+AX_VALGRIND_DFLT([sgcheck], [off])
+AX_VALGRIND_CHECK
+
 ## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
