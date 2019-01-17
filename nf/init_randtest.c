@@ -1,6 +1,6 @@
 /*=============================================================================
 
-    This file is part of FLINT.
+    This file is part of ANTIC.
 
     FLINT is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,41 +19,36 @@
 =============================================================================*/
 /******************************************************************************
 
-    Copyright (C) 2013 William Hart
+    Copyright (C) 2019 Vincent Delecroix
 
 ******************************************************************************/
 
-#include <stdio.h>
 #include "e-antic/nf.h"
-#include "e-antic/nf_elem.h"
 
-int
-main(void)
+void nf_init_randtest(nf_t nf, flint_rand_t state,
+        slong len,
+        mp_bitcnt_t bits_in)
 {
-    int i;
-    flint_rand_t state;
+    fmpq_poly_t pol;
 
-    flint_printf("init/clear....");
-    fflush(stdout);
-
-    flint_randinit(state);
-
-    for (i = 0; i < 100; i++)
+    if (len < 2 || bits_in < 1)
     {
-        nf_t nf;
-        nf_elem_t a;
-
-        nf_init_randtest(nf, state, 40, 200); 
-
-        nf_elem_init(a, nf);
-        nf_elem_randtest(a, state, 200, nf);
-        nf_elem_clear(a, nf);
-        
-        nf_clear(nf);
+        fprintf(stderr, "[nf_init_randtest] len must be >= 2 and bits_in >= 1\n");
+        abort();
     }
 
-    flint_randclear(state);
-    flint_cleanup();
-    flint_printf("PASS\n");
-    return 0;
+    fmpq_poly_init(pol);
+    do {
+       fmpq_poly_randtest_not_zero(pol, state, 2 + n_randint(state, len-1), 1 + n_randint(state, bits_in));
+    } while (fmpq_poly_degree(pol) < 1);
+
+    if (n_randint(state, 10) < 3)
+    {
+        /* make it monic */
+        fmpz_one(pol->coeffs + pol->length - 1);
+        fmpz_one(pol->den);
+    }
+
+    nf_init(nf, pol);
+    fmpq_poly_clear(pol);
 }

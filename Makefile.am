@@ -93,7 +93,8 @@ dist_doc_DATA +=                   \
 libeantic_la_SOURCES +=               \
     nf/init.c                         \
     nf/clear.c                        \
-    nf/print.c
+    nf/print.c                        \
+    nf/init_randtest.c
 
 check_PROGRAMS +=                     \
     nf/test/t-init_clear

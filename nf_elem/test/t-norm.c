@@ -41,17 +41,11 @@ main(void)
     /* test norm(a*b) = norm(a)*norm(b) */
     for (i = 0; i < 10; i++)
     {
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a, b, c;
         fmpq_t anorm, bnorm, cnorm, cnorm2;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 25, 200);
-        } while (fmpq_poly_degree(pol) < 1);
-        
-        nf_init(nf, pol);
+        nf_init_randtest(nf, state, 25, 200);
         
         nf_elem_init(a, nf);
         nf_elem_init(b, nf);
@@ -96,8 +90,6 @@ main(void)
         nf_elem_clear(c, nf);
          
         nf_clear(nf);
-
-        fmpq_poly_clear(pol);
     }
     
     flint_randclear(state);

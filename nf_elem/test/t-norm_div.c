@@ -54,8 +54,8 @@ main(void)
 
         do {
             fmpz_poly_randtest_not_zero(pol2, state, 25, 200);
-            fmpz_one(fmpz_poly_lead(pol2));
         } while (fmpz_poly_degree(pol2) < 1);
+        fmpz_one(fmpz_poly_lead(pol2));
 
         fmpq_poly_set_fmpz_poly(pol, pol2);
         nf_init(nf, pol);

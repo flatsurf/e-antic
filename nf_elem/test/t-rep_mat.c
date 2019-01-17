@@ -42,21 +42,15 @@ main(void)
     /* test mul_gen(b) = a * b, where a is the generator */
     for (i = 0; i < 100; i++)
     {
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a, b, p1, p2, t;
         slong d;
         slong j, k;
         fmpq_mat_t R;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 20, 100);
-        } while (fmpq_poly_degree(pol) < 1);
+        nf_init_randtest(nf, state, 20, 100);
 
-        nf_init(nf, pol);
-
-        d = fmpq_poly_degree(pol);
+        d = nf_degree(nf);
 
         fmpq_mat_init(R, d, d);
 
@@ -106,8 +100,6 @@ main(void)
         fmpq_mat_clear(R);
 
         nf_clear(nf);
-
-        fmpq_poly_clear(pol);
     }
 
     flint_randclear(state);

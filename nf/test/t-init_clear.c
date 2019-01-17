@@ -37,20 +37,48 @@ main(void)
 
     flint_randinit(state);
 
-    for (i = 0; i < 1000; i++)
+    /* not necessarily monic */
+    for (i = 0; i < 500; i++)
+    {
+        nf_t nf;
+        fmpq_poly_t pol;
+
+        fmpq_poly_init(pol);
+        do {
+           fmpq_poly_randtest_not_zero(pol, state,
+                   2 + n_randint(state, 40),
+                   10 + n_randint(state, 200));
+        } while (fmpq_poly_degree(pol) < 1);
+
+        nf_init(nf, pol);
+        nf_clear(nf);
+
+        nf_init(nf, pol);
+        fmpq_poly_clear(pol);
+        nf_clear(nf);
+    }
+
+    /* monic */
+    for (i = 0; i < 500; i++)
     {
         fmpq_poly_t pol;
         nf_t nf;
 
         fmpq_poly_init(pol);
         do {
-           fmpq_poly_randtest_not_zero(pol, state, 40, 200);
+           fmpq_poly_randtest_not_zero(pol, state,
+                   2 + n_randint(state, 40),
+                   10 + n_randint(state, 200));
         } while (fmpq_poly_degree(pol) < 1);
+        fmpz_one(fmpq_poly_denref(pol));
+        fmpz_one(pol->coeffs + fmpq_poly_degree(pol));
 
         nf_init(nf, pol);
         nf_clear(nf);
 
+        nf_init(nf, pol);
         fmpq_poly_clear(pol);
+        nf_clear(nf);
     }
 
     flint_randclear(state);

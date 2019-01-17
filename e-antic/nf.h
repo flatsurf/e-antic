@@ -26,6 +26,12 @@
 #ifndef NF_H
 #define NF_H
 
+#ifdef NF_INLINES_C
+#define NF_INLINE FLINT_DLL
+#else
+#define NF_INLINE static __inline__
+#endif
+
 #include "gmp.h"
 #include "flint/flint.h"
 #include "flint/fmpz.h"
@@ -69,9 +75,17 @@ typedef nf_struct nf_t[1];
 
 FLINT_DLL void nf_init(nf_t nf, const fmpq_poly_t pol);
 
+FLINT_DLL void nf_init_randtest(nf_t nf, flint_rand_t state, slong len,  mp_bitcnt_t bits_in);
+
 FLINT_DLL void nf_clear(nf_t nf);
 
 FLINT_DLL void nf_print(const nf_t nf);
+
+NF_INLINE
+slong nf_degree(const nf_t nf)
+{
+    return fmpq_poly_degree(nf->pol);
+}
 
 #ifdef __cplusplus
 }

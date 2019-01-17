@@ -40,30 +40,25 @@ main(void)
 
     for (i = 0; i < 1000; i++)
     {
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a, b;
         fmpz_t d, d2;
         slong coeff;
         fmpq_t newcoeff, tempcoeff;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 40, 200);
-        } while (fmpq_poly_degree(pol) < 1);
+        nf_init_randtest(nf, state, 40, 200);
 
         fmpz_init(d);
         fmpz_init(d2);
         fmpq_init(tempcoeff);
         fmpq_init(newcoeff);
-        nf_init(nf, pol);
 
         nf_elem_init(a, nf);
         nf_elem_init(b, nf);
         nf_elem_randtest(a, state, 200, nf);
         nf_elem_set(b, a, nf);
 
-        coeff = (slong) n_randint(state, fmpq_poly_length(pol));
+        coeff = (slong) n_randint(state, nf_degree(nf) + 1);
         
         fmpz_randtest(d, state, 200);
 
@@ -83,7 +78,7 @@ main(void)
             flint_printf("coeff = %u\n", coeff);
             flint_printf("d = "); fmpz_print(d); printf("\n");
             flint_printf("newcoeff = "); fmpq_print(newcoeff); printf("\n");
-            flint_printf("pol = "); fmpq_poly_print_pretty(pol, "x"); printf("\n");
+            flint_printf("pol = "); fmpq_poly_print_pretty(nf->pol, "x"); printf("\n");
             abort();
         }
 
@@ -97,8 +92,6 @@ main(void)
 
         fmpq_clear(tempcoeff);
         fmpq_clear(newcoeff);
-
-        fmpq_poly_clear(pol);
     }
 
     flint_randclear(state);

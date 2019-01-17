@@ -37,16 +37,10 @@ main(void)
     for (i = 0; i < 100; i++)
     {
         char * s;
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 1 + n_randint(state, 10), 200);
-        } while (fmpq_poly_degree(pol) < 1);
-
-        nf_init(nf, pol);
+        nf_init_randtest(nf, state, 10, 200);
         nf_elem_init(a, nf);
         nf_elem_randtest(a, state, 200, nf);
 
@@ -55,7 +49,6 @@ main(void)
         s = nf_elem_get_str_pretty(a, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", nf);
         flint_free(s);
 
-        fmpq_poly_clear(pol);
         nf_elem_clear(a, nf);
         nf_clear(nf);
     }

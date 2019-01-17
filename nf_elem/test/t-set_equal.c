@@ -41,16 +41,10 @@ main(void)
     /* set a = b, check a == b */
     for (i = 0; i < 100; i++)
     {
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a, b;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 40, 200);
-        } while (fmpq_poly_degree(pol) < 1);
-
-        nf_init(nf, pol);
+        nf_init_randtest(nf, state, 40, 200);
 
         nf_elem_init(a, nf);
         nf_elem_init(b, nf);
@@ -72,23 +66,15 @@ main(void)
         nf_elem_clear(b, nf);
          
         nf_clear(nf);
-
-        fmpq_poly_clear(pol);
     }
 
     /* test aliasing a and b */
     for (i = 0; i < 100; i++)
     {
-        fmpq_poly_t pol;
         nf_t nf;
         nf_elem_t a;
 
-        fmpq_poly_init(pol);
-        do {
-           fmpq_poly_randtest_not_zero(pol, state, 40, 200);
-        } while (fmpq_poly_degree(pol) < 1);
-
-        nf_init(nf, pol);
+        nf_init_randtest(nf, state, 40, 200);
 
         nf_elem_init(a, nf);
         
@@ -107,8 +93,6 @@ main(void)
         nf_elem_clear(a, nf);
          
         nf_clear(nf);
-
-        fmpq_poly_clear(pol);
     }
 
     flint_randclear(state);
