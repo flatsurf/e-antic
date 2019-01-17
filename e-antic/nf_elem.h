@@ -315,21 +315,21 @@ char * nf_elem_get_str_pretty(const nf_elem_t a,
       const fmpz * const num = LNF_ELEM_NUMREF(a);
       slong len = 1 - fmpz_is_zero(num);
 
-      return _fmpq_poly_get_str_pretty(num, den, len, var);
+      return _EANTIC_FIXED_fmpq_poly_get_str_pretty(num, den, len, var);
    }
    else if (nf->flag & NF_QUADRATIC)
    {
       const fmpz * const den = QNF_ELEM_DENREF(a);
       const fmpz * const num = QNF_ELEM_NUMREF(a);
-      slong len = 3;
+      slong len = 2;
 
       while (len != 0 && fmpz_is_zero(num + len - 1))
          len--;
 
-      return _fmpq_poly_get_str_pretty(num, den, len, var);
+      return _EANTIC_FIXED_fmpq_poly_get_str_pretty(num, den, len, var);
    } else
    {
-      return fmpq_poly_get_str_pretty(NF_ELEM(a), var);
+      return EANTIC_FIXED_fmpq_poly_get_str_pretty(NF_ELEM(a), var);
    }
 }
 

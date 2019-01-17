@@ -53,8 +53,8 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpq_vec_fprint.c                  \
     poly_extra/fmpq_vec_randtest_uniq_sorted.c    \
     poly_extra/fmpq_vec_sort.c                    \
-    poly_extra/fmpz_poly_remove_content_2exp.c
-
+    poly_extra/fmpz_poly_remove_content_2exp.c    \
+    poly_extra/fmpq_poly_get_str_pretty.c
 
 noinst_HEADERS +=                    \
     poly_extra/poly_evaluate_template.h
@@ -147,6 +147,7 @@ check_PROGRAMS +=                          \
     nf_elem/test/t-get_set_den             \
     nf_elem/test/t-get_set_fmpq_poly       \
     nf_elem/test/t-get_set_fmpz_mat_row    \
+    nf_elem/test/t-get_str_pretty          \
     nf_elem/test/t-init_clear              \
     nf_elem/test/t-inv                     \
     nf_elem/test/t-is_rational_integer     \

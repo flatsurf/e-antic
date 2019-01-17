@@ -68,6 +68,11 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
     return fmpz_poly_num_real_roots_0_1_vca(pol);
 }
 
+
+char * _EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
+                                 const char *var);
+char * EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpq_poly_t poly, const char * var);
+
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
 
@@ -195,8 +200,8 @@ double fmpq_get_d(fmpq_t q)
 int fmpq_set_str(fmpq_t x, const char *str, int base);
 void fmpz_nextprime(fmpz_t res, const fmpz_t n, int proved);
 void fmpz_randprime(fmpz_t f, flint_rand_t state, mp_bitcnt_t bits, int proved);
-void _fmpq_poly_resultant_div(fmpz_t rnum, fmpz_t rden, 
-                          const fmpz *poly1, const fmpz_t den1, slong len1, 
+void _fmpq_poly_resultant_div(fmpz_t rnum, fmpz_t rden,
+                          const fmpz *poly1, const fmpz_t den1, slong len1,
                           const fmpz *poly2, const fmpz_t den2, slong len2,
                           const fmpz_t divisor, slong nbits);
 void fmpq_poly_resultant_div(fmpq_t r, const fmpq_poly_t f, const fmpq_poly_t g, const fmpz_t divisor, slong nbits);
@@ -205,8 +210,8 @@ slong _fmpz_poly_num_real_roots(const fmpz * pol, slong len);
 slong fmpz_poly_num_real_roots(const fmpz_poly_t pol);
 void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
 slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol);
-void _fmpz_poly_resultant_modular_div(fmpz_t res, 
-        const fmpz * poly1, slong len1, 
+void _fmpz_poly_resultant_modular_div(fmpz_t res,
+        const fmpz * poly1, slong len1,
         const fmpz * poly2, slong len2, const fmpz_t divisor, slong nbits);
 void
 fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
