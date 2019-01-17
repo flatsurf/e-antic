@@ -121,10 +121,10 @@ int main(void)
         size_t i,j;
         char * varname[3] = {"a", "aa", "A_5b"};
         FLINT_TEST_INIT(state);
+
         for (i = 0; i < 1000; i++)
         {
             fmpq_poly_t a,b;
-            char * s;
 
             fmpq_poly_init(a);
             fmpq_poly_init(b);
@@ -132,22 +132,18 @@ int main(void)
             fmpq_poly_randtest(a, state, n_randint(state, 100), 200);
             for (j = 0; j < 3; j++)
             {
-                s = fmpq_poly_get_str_pretty(a, varname[j]);
+                char * s = EANTIC_FIXED_fmpq_poly_get_str_pretty(a, varname[j]);
                 fmpq_poly_set_str_pretty(b, s, varname[j]);
                 if (!fmpq_poly_equal(a, b))
-                {
-                    flint_free(s);
-                    fmpq_poly_clear(a);
-                    fmpq_poly_clear(b);
                     return 1;
-                }
+                flint_free(s);
             }
 
-            flint_free(s);
             fmpq_poly_clear(a);
             fmpq_poly_clear(b);
 
         }
+
         FLINT_TEST_CLEANUP(state);
     }
 
