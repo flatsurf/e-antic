@@ -6,7 +6,7 @@ compiler:
 env:
   MAKE="make -j2"
 install:
-  - sudo apt-get install libgmp-dev libmpfr-dev
+  - sudo apt-get install libgmp-dev libmpfr-dev valgrind
   # set local directory and check name resolution
   - mkdir local
   - export PREFIX="/usr/local"
@@ -34,4 +34,5 @@ install:
 
 script:
   - V=1 make check
+  - V=1 make check-valgrind
   - V=1 make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=\"-I${PREFIX}/include\" CPPFLAGS=\"-I${PREFIX}/include\" LDFLAGS=\"-L${PREFIX}/lib\""
