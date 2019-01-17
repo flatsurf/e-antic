@@ -35,4 +35,8 @@ and `LDFLAGS` variables in the configure script
 
     $ ./configure CFLAGS=-I/my/path/include CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
 
+To compile with the flint development version (currently 2.5.3) you need to
+specify the configure option --enable-flint-devel.
+
 For more detailed instructions read the INSTALL file.
+

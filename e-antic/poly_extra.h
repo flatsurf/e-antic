@@ -69,10 +69,6 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
 }
 
 
-char * _EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
-                                 const char *var);
-char * EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpq_poly_t poly, const char * var);
-
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
 
@@ -197,6 +193,13 @@ double fmpq_get_d(fmpq_t q)
 /**********************************************************************/
 /* Backports from flint 2.5.3                                         */
 
+#if __FLINT_RELEASE == 20502
+
+char * _EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
+                                 const char *var);
+char * EANTIC_FIXED_fmpq_poly_get_str_pretty(const fmpq_poly_t poly, const char * var);
+
+
 int fmpq_set_str(fmpq_t x, const char *str, int base);
 void fmpz_nextprime(fmpz_t res, const fmpz_t n, int proved);
 void fmpz_randprime(fmpz_t f, flint_rand_t state, mp_bitcnt_t bits, int proved);
@@ -236,6 +239,13 @@ void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state,
  void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
 
 void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n);
+
+#elif __FLINT_RELEASE == 20503
+
+#define _EANTIC_FIXED_fmpq_poly_get_str_pretty _fmpq_poly_get_str_pretty
+#define EANTIC_FIXED_fmpq_poly_get_str_pretty fmpq_poly_get_str_pretty
+
+#endif
 
 #ifdef __cplusplus
  }

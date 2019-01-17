@@ -34,6 +34,16 @@ AM_CONDITIONAL(ENABLE_OPENMP, [test x$enable_openmp = xyes])
 AX_VALGRIND_DFLT([sgcheck], [off])
 AX_VALGRIND_CHECK
 
+## Flint development
+AC_ARG_ENABLE([flint-devel],
+[  --enable-flint-devel    Compile with flint development version],
+[case "${enableval}" in
+  yes) flint-devel=true ;;
+  no)  flint-devel=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-flint-devel]) ;;
+esac],[flint-devel=false])
+AM_CONDITIONAL([FLINT252], [test x$flint-devel = xfalse])
+
 ## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])

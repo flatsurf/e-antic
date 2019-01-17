@@ -20,8 +20,8 @@ extern "C" {
 
 /* check flint version */
 
-#if __FLINT_RELEASE != 20502
-#error FLINT 2.5.2 required
+#if __FLINT_RELEASE != 20502 && __FLINT_RELEASE != 20503
+#error FLINT 2.5.2 or 2.5.3 required
 #endif
 
 #ifdef __cplusplus
