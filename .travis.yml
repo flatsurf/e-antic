@@ -28,7 +28,7 @@ install:
   - ldd ${PREFIX}/lib/libarb.so
   # build e-antic
   - ./bootstrap.sh
-  - ./configure CFLAGS="-I${PREFIX}/include" CPPFLAGS="-I${PREFIX}/include" LDFLAGS="-L${PREFIX}/lib"
+  - ./configure CFLAGS="-I${PREFIX}/include" CPPFLAGS="-I${PREFIX}/include" LDFLAGS="-L${PREFIX}/lib" --enable-valgrind
   - make
   - ldd .libs/libeantic.so
 
