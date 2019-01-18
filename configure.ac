@@ -38,11 +38,11 @@ AX_VALGRIND_CHECK
 AC_ARG_ENABLE([flint-devel],
 [  --enable-flint-devel    Compile with flint development version],
 [case "${enableval}" in
-  yes) flint-devel=true ;;
-  no)  flint-devel=false ;;
+  yes) flintdevel=true ;;
+  no)  flintdevel=false ;;
   *) AC_MSG_ERROR([bad value ${enableval} for --enable-flint-devel]) ;;
-esac],[flint-devel=false])
-AM_CONDITIONAL([FLINT252], [test x$flint-devel = xfalse])
+esac],[flintdevel=false])
+AM_CONDITIONAL([FLINT252], [test x$flintdevel = xfalse])
 
 ## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])

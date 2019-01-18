@@ -44,7 +44,7 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpz_poly_isolate_real_roots.c     \
     poly_extra/sgn_at_half.c
 if FLINT252
-libeantic_la_SOURCES +=
+libeantic_la_SOURCES +=                           \
     poly_extra/fmpz_poly_product_roots_fmpq_vec.c \
     poly_extra/fmpz_poly_randtest_no_real_root.c  \
     poly_extra/fmpz_nextprime.c                   \
@@ -81,7 +81,7 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-check_unique_real_root         \
     poly_extra/test/t-fmpq_poly_set_str_pretty
 if FLINT252
-check_PROGRAMS +=
+check_PROGRAMS +=                                    \
     poly_extra/test/t-nextprime                      \
     poly_extra/test/t-randprime                      \
     poly_extra/test/t-fmpq_poly_resultant_div        \
