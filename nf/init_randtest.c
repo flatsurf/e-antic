@@ -23,6 +23,7 @@
 
 ******************************************************************************/
 
+#include "e-antic/poly_extra.h"
 #include "e-antic/nf.h"
 
 void nf_init_randtest(nf_t nf, flint_rand_t state,
@@ -30,6 +31,7 @@ void nf_init_randtest(nf_t nf, flint_rand_t state,
         mp_bitcnt_t bits_in)
 {
     fmpq_poly_t pol;
+    fmpz_poly_t q;
 
     if (len < 2 || bits_in < 1)
     {
@@ -37,18 +39,31 @@ void nf_init_randtest(nf_t nf, flint_rand_t state,
         abort();
     }
 
-    fmpq_poly_init(pol);
-    do {
-       fmpq_poly_randtest_not_zero(pol, state, 2 + n_randint(state, len-1), 1 + n_randint(state, bits_in));
-    } while (fmpq_poly_degree(pol) < 1);
+    if (len <= 2 || n_randint(state, 30) == 0)
+        len = 2; /* linear */
+    else if (len <= 3 || n_randint(state, 30) == 0)
+        len = 3; /* quadratic */
+    else
+        len = 3 + n_randint(state, len-2);
 
-    if (n_randint(state, 10) < 3)
-    {
-        /* make it monic */
-        fmpz_one(pol->coeffs + pol->length - 1);
-        fmpz_one(pol->den);
-    }
+    fmpz_poly_init(q);
+    do {
+        fmpz_poly_randtest(q,
+                state,
+                len,
+                1 + n_randint(state, bits_in));
+    } while (fmpz_poly_degree(q) < 1 || fmpz_is_zero(q->coeffs));
+
+    fmpq_poly_init(pol);
+    fmpq_poly_set_fmpz_poly(pol, q);
+
+    if (n_randint(state, 5) == 0)
+        fmpz_one(pol->coeffs + pol->length - 1); /* monic */
+    else
+        fmpz_randtest_not_zero(fmpq_poly_denref(pol), state, bits_in);
+    fmpq_poly_canonicalise(pol);
 
     nf_init(nf, pol);
     fmpq_poly_clear(pol);
+    fmpz_poly_clear(q);
 }

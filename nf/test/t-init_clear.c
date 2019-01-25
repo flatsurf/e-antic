@@ -81,6 +81,15 @@ main(void)
         nf_clear(nf);
     }
 
+    /* random */
+    for (i = 0; i < 500; i++)
+    {
+        nf_t nf;
+
+        nf_init_randtest(nf, state, 40, 200);
+        nf_clear(nf);
+    }
+
     flint_randclear(state);
     flint_cleanup();
     flint_printf("PASS\n");
