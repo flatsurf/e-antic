@@ -80,7 +80,8 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-squarefree_part                \
     poly_extra/test/t-check_unique_real_root         \
     poly_extra/test/t-fmpq_poly_set_str_pretty       \
-    poly_extra/test/t-fmpz_poly_randtest_irreducible
+    poly_extra/test/t-fmpz_poly_randtest_irreducible \
+    poly_extra/test/t-fmpz_poly_isolate_real_roots
 if FLINT252
 check_PROGRAMS +=                                    \
     poly_extra/test/t-nextprime                      \

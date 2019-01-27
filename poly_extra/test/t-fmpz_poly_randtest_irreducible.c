@@ -13,18 +13,39 @@
 
 int main(void)
 {
-    slong i;
+    slong len;
+    mp_bitcnt_t maxbits;
     FLINT_TEST_INIT(state);
 
-    for (i = 1; i < 10; i++)
+    for (len = 1; len < 20; len++)
     {
         fmpz_poly_t p;
         fmpz_poly_init(p);
-        fmpz_poly_randtest_irreducible(p, state, i, 40);
-        fmpz_poly_print_pretty(p, "x");
-        printf("\n");
+        maxbits = 2 + n_randint(state, 100);
+        fmpz_poly_randtest_irreducible(p, state, len, maxbits);
+        if (fmpz_poly_length(p) > len)
+        {
+            fprintf(stderr, "ERROR: too long %u instead of len=%u",
+                    fmpz_poly_length(p),
+                    len);
+            fmpz_poly_fprint_pretty(stderr, p, "x");
+            fprintf(stderr, "\n");
+            return 1;
+        }
+
+        if (EANTIC_FIXED_fmpz_poly_max_bits(p) > maxbits)
+        {
+            fprintf(stderr, "ERROR: too many bits %u instead of maxbits=%u\n",
+                    EANTIC_FIXED_fmpz_poly_max_bits(p),
+                    maxbits);
+            fmpz_poly_fprint_pretty(stderr, p, "x");
+            fprintf(stderr, "\n");
+            return 1;
+        }
+
         fmpz_poly_clear(p);
     }
 
     FLINT_TEST_CLEANUP(state);
+    return 0;
 }

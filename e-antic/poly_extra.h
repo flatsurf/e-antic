@@ -190,6 +190,23 @@ double fmpq_get_d(fmpq_t q)
     return d;
 }
 
+static __inline__
+slong EANTIC_FIXED_fmpz_vec_max_bits(const fmpz * vec, slong len)
+{
+    slong n = 0;
+    slong i = 0;
+
+    for (i = 0; i < len; i++)
+        n = FLINT_MAX(n, fmpz_bits(vec + i));
+    return n;
+}
+
+static __inline__
+slong EANTIC_FIXED_fmpz_poly_max_bits(const fmpz_poly_t p)
+{
+    return EANTIC_FIXED_fmpz_vec_max_bits(p->coeffs, p->length);
+}
+
 /**********************************************************************/
 /* Backports from flint 2.5.3                                         */
 
