@@ -145,6 +145,68 @@ int str_is_varname(const char* var)
     return 1;
 }
 
+int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var)
+{
+    if (!str_is_varname(var))
+        return -1;
+
+    size_t n = strlen(var);
+    char * z = (char *) flint_malloc((strlen(s) + 1) * sizeof(char));
+
+    fmpq_t coeff;
+    slong pow;
+    fmpz_poly_t mon;
+
+    fmpz_poly_init(mon);
+    fmpq_init(coeff);
+    const char * start = s;
+
+    fmpz_poly_zero(p);
+
+    while (*start != '\0')
+    {
+        while (*start == ' ') start++;
+
+        int ans;
+        const char * end = start;
+
+        /* jump over sign */
+        while (*end == '+' || *end == ' ' || *end == '-') end++;
+
+        /* jump over non sign */
+        while (*end != '\0' && *end != '+' && *end != '-') end++;
+
+        strncpy(z, start, end - start);
+        z[end - start] = '\0';
+
+        ans = _monomial_set_str(coeff, &pow, var, z);
+        if (ans)
+        {
+            flint_free(z);
+            fmpq_clear(coeff);
+            fmpz_poly_clear(mon);
+            return -1;
+        }
+        else if (!fmpz_is_one(fmpq_denref(coeff)))
+        {
+            flint_free(z);
+            fmpq_clear(coeff);
+            fmpz_poly_clear(mon);
+            return -2;
+        }
+        fmpz_poly_zero(mon);
+        fmpz_poly_set_coeff_fmpz(mon, pow, fmpq_numref(coeff));
+        fmpz_poly_add(p, p, mon);
+
+        start = end;
+    }
+
+    flint_free(z);
+    fmpq_clear(coeff);
+    fmpz_poly_clear(mon);
+    return 0;
+}
+
 int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
 {
     if (!str_is_varname(var))
