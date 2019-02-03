@@ -14,7 +14,7 @@
 /* isolate the real roots of pol contained in [0,1] */
 /* using VCA (Vincent-Collins-Akritas) method       */
 /* the output are arrays of fmpz c and integers k so that the roots belong to */
-/* [c/2^k, (c+1)/2^k[ */
+/* [c*2^k, (c+1)*2^k[ */
 /* if exact_roots is NULL only n_exact is updated */
 /* similarly if c_array/k_array is NULL only n_intervals is updated (useful to */
 /* count the roots) */
