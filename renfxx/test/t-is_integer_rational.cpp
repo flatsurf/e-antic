@@ -32,7 +32,7 @@ int main(void)
     for (iter = 0; iter < 10; iter++)
     {
         renf_t nf;
-        renf_randtest(nf, state, 5, 20);
+        renf_randtest(nf, state, 5, 32, 20);
         renf_class K(nf);
         renf_clear(nf);
 

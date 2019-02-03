@@ -17,13 +17,32 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    for (iter = 0; iter < 50; iter++)
+    for (iter = 0; iter < 200; iter++)
     {
-        slong len = 2 + n_randint(state, 6);
-        mp_bitcnt_t bits = 30 + n_randint(state, 30);
+        slong len = 2 + n_randint(state, 30);
+        slong prec = 8 + n_randint(state, 2048);
+        mp_bitcnt_t bits = 10 + n_randint(state, 30);
+
+        slong test;
         renf_t nf;
 
-        renf_randtest(nf, state, len, bits);
+        renf_randtest(nf, state, len, prec, bits);
+        test = EANTIC_FIXED_fmpz_vec_max_bits(nf->nf->pol->coeffs,
+                nf->nf->pol->length);
+        if (test > bits)
+        {
+            printf("ERROR: too many bits in numerator, got %u instead of %u",
+                    test, bits);
+            return 1;
+        }
+        test = fmpz_bits(nf->nf->pol->den);
+        if (test > bits)
+        {
+            printf("ERROR: too many bits in denominator, got %u instead of %u",
+                    test, bits);
+            return 1;
+        }
+
         renf_clear(nf);
     }
 

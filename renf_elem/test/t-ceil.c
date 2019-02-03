@@ -32,11 +32,6 @@ int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
     return 0;
 }
 
-#define TEST_CEIL_CLEANUP \
-    renf_elem_clear(a, nf); \
-    renf_clear(nf); \
-    fmpq_clear(k); \
-    fmpq_poly_clear(p);
  
  
 void test_field1(flint_rand_t state)
@@ -50,9 +45,7 @@ void test_field1(flint_rand_t state)
     renf_t nf;
     renf_elem_t a;
 
-    fmpq_init(k);
     fmpq_poly_init(p);
-
     fmpq_poly_set_coeff_si(p, 2, 1);
     fmpq_poly_set_coeff_si(p, 1, -1);
     fmpq_poly_set_coeff_si(p, 0, -1);
@@ -64,20 +57,28 @@ void test_field1(flint_rand_t state)
     arb_clear(emb);
 
     renf_elem_init(a, nf);
+    fmpq_init(k);
 
     /* (1+sqrt(5))/2 vs Fibonacci */
     fmpq_poly_zero(p);
     fmpq_poly_set_coeff_si(p, 1, -1);
-    for (iter = 1; iter < 2000; iter++)
+    for (iter = 1; iter < 50; iter++)
     {
+        fprintf(stderr, "start iter = %d\n", iter);
+        fflush(stderr);
         fmpz_fib_ui(fmpq_numref(k), iter+1);
         fmpz_fib_ui(fmpq_denref(k), iter);
         fmpq_poly_set_coeff_fmpq(p, 0, k);
         renf_elem_set_fmpq_poly(a, p, nf);
         check_ceil(a, nf, 1 - iter % 2, "sqrt(5)");
+        fprintf(stderr, "end\n");
+        fflush(stderr);
     }
 
-    TEST_CEIL_CLEANUP;
+    renf_elem_clear(a, nf);
+    renf_clear(nf);
+    fmpq_clear(k);
+    fmpq_poly_clear(p);
 }
 
 
@@ -165,7 +166,10 @@ void test_field2(flint_rand_t state)
 
     check_ceil(a, nf, 231, "3^(1/4)");
 
-    TEST_CEIL_CLEANUP;
+    renf_elem_clear(a, nf);
+    renf_clear(nf);
+    fmpq_clear(k);
+    fmpq_poly_clear(p);
 }
 
 int main()
@@ -185,7 +189,11 @@ int main()
 
         fmpz_init(f);
         arb_init(e);
-        renf_randtest(nf, state, 2 + n_randint(state, 20), 10 + n_randint(state, 10));
+        renf_randtest(nf, state,
+                          2 + n_randint(state, 20),   /* length */
+                          8 + n_randint(state, 2408), /* prec   */
+                          10 + n_randint(state, 10)   /* bits   */
+                          );
         renf_elem_init(a, nf);
         renf_elem_randtest(a, state, 30 + n_randint(state, 10), nf);
 

@@ -21,9 +21,10 @@ int main()
         /* operations on two renf elements */
         renf_t nf;
         slong len = 2 + n_randint(state, 10);
+        slong prec = 8 + n_randint(state, 2048);
         mp_bitcnt_t bits = 10 + n_randint(state, 30);
 
-        renf_randtest(nf, state, len, bits);
+        renf_randtest(nf, state, len, prec, bits);
 
         {
             /* renf renf operations */

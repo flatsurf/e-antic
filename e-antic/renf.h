@@ -26,9 +26,9 @@
 typedef struct
 {
   nf_t nf;
-  fmpz_poly_t der;  /* derivative (without denominator)         */
-  slong prec;       /* default precision for arb computations   */
-  arb_t emb;        /* embedding of generator as a real ball    */
+  fmpz_poly_t der;   /* derivative (without denominator)                   */
+  slong prec;        /* precision used for binary operations on enclosures */
+  arb_t emb;         /* embedding of generator as a real ball              */
 } renf;
 
 typedef renf * renf_ptr;
@@ -66,7 +66,7 @@ int renf_equal(const renf_t nf1, const renf_t nf2)
 
 /* Randomisation */
 
-void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits);
+void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
 void renf_print(const renf_t nf);
 

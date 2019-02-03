@@ -22,8 +22,9 @@ int main()
         renf_t nf;
 
         slong len = 2 + n_randint(state, 10);
+        slong prec = 8 + n_randint(state, 1024);
         mp_bitcnt_t bits = 30 + n_randint(state, 30);
-        renf_randtest(nf, state, len, bits);
+        renf_randtest(nf, state, len, prec, bits);
 
         for (iter2 = 0; iter2 < 100; iter2++)
         {

@@ -25,7 +25,7 @@ int main()
         fmpq_t x;
         renf_elem_t a;
 
-        renf_randtest(nf, state, 2 + n_randint(state, 20), 20 + n_randint(state, 30));
+        renf_randtest(nf, state, 2 + n_randint(state, 20), 16, 20 + n_randint(state, 30));
 
         fmpq_init(x);
         fmpq_randtest(x, state, 10 + n_randint(state, 30));

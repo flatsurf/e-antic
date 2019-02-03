@@ -41,7 +41,7 @@ int main(void)
         renf_elem_srcptr r;
 
         renf_t nf;
-        renf_randtest(nf, state, 5, 50);
+        renf_randtest(nf, state, 5, 64, 50);
         renf_class K(nf);
         renf_clear(nf);
 

@@ -20,7 +20,7 @@ void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
     /*  radius: 2^(k-1)        */
     if (prec <= 0 || prec < fmpz_bits(c) + 2)
     {
-        fprintf(stderr, "negative precision");
+        fprintf(stderr, "not enough precision");
         abort();
     }
 
@@ -31,14 +31,13 @@ void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
     arb_add_error_2exp_si(x, k-1);
 }
 
-void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits)
+void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits)
 {
     fmpz_poly_t p;
     fmpq_poly_t p2;
     fmpz * c_array;
     slong * k_array;
     slong n_interval, n_exact;
-    slong prec;
     ulong i;
     arb_t emb;
 
@@ -71,15 +70,13 @@ void renf_randtest(renf_t nf, flint_rand_t state, slong len, mp_bitcnt_t bits)
     i = n_randint(state, n_interval);
 
     /* construct the associated number field */
-    prec = fmpz_bits(c_array+i) + 2 + n_randint(state, 100);
-
     arb_init(emb);
-    arb_from_interval(emb, c_array+i, k_array[i], prec);
+    arb_from_interval(emb, c_array+i, k_array[i], fmpz_bits(c_array + i) + FLINT_MAX(k_array[i], 0) + 2);
 
     fmpq_poly_init(p2);
     fmpq_poly_set_fmpz_poly(p2, p);
 
-    /* renf init might not be happy with our ball !! */
+    /* NOTE: renf init might not be happy with the ball emb */
     renf_init(nf, p2, emb, prec);
 
     _fmpz_vec_clear(c_array, p->length);

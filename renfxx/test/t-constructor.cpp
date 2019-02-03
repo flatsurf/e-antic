@@ -69,7 +69,7 @@ int main(void)
 
     {
         renf_t nf;
-        renf_randtest(nf, state, 10, 50);
+        renf_randtest(nf, state, 10, 128, 50);
         renf_class K(nf);
 
         renf_elem_class a(K);
@@ -125,14 +125,21 @@ int main(void)
         fmpq_poly_init(p);
         fmpq_poly_set_str(p, "2  -7/3 3/5");
         renf_elem_class a(K, p);
+
+        renf_elem_class b(K);
+        if (b.parent() != K)
+            throw std::runtime_error("nf not set correctly");
+        b = p;
+
         fmpq_poly_clear(p);
 
-        renf_elem_class b(K, "-7/3 + 3/5*a");
+        renf_elem_class c(K, "-7/3 + 3/5*a");
 
-        renf_elem_class c = 3 * K.gen() / 5 - 7 * K.one() / 3;
+        renf_elem_class d = 3 * K.gen() / 5 - 7 * K.one() / 3;
 
         check_equal(a, b);
         check_equal(a, c);
+        check_equal(a, d);
     }
 
     {

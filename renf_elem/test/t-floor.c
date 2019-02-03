@@ -186,7 +186,10 @@ int main()
 
         fmpz_init(f);
         arb_init(e);
-        renf_randtest(nf, state, 2 + n_randint(state, 20), 20 + n_randint(state, 10));
+        renf_randtest(nf, state, 
+                2 + n_randint(state, 20),   /* length */
+                8 + n_randint(state, 1024), /* prec */
+                20 + n_randint(state, 10)); /* bits */
         renf_elem_init(a, nf);
         renf_elem_randtest(a, state, 20 + n_randint(state, 10), nf);
 
