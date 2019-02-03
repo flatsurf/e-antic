@@ -40,29 +40,16 @@ int main(void)
     }
 
     {
-        renf_t nf;
-        arb_t emb;
         fmpq_t k;
         fmpq_poly_t p;
 
-        fmpq_init(k);
-        fmpq_poly_init(p);
-
-        fmpq_poly_set_coeff_si(p, 2, 1);
-        fmpq_poly_set_coeff_si(p, 1, -1);
-        fmpq_poly_set_coeff_si(p, 0, -1);
-
-        arb_init(emb);
-        arb_set_d(emb, 1.61803398874989);
-        arb_add_error_2exp_si(emb, -20);
-        renf_init(nf, p, emb, 20 + n_randint(state, 100));
-        arb_clear(emb);
-
-        renf_class K(nf);
-        renf_clear(nf);
+        renf_class K("x^2-x-1", "x", "1.618 +/- 0.1");
 
         /* (1+sqrt(5))/2 vs Fibonacci */
         renf_elem_class a(K);
+
+        fmpq_poly_init(p);
+        fmpq_init(k);
         fmpq_poly_zero(p);
         fmpq_poly_set_coeff_si(p, 1, -1);
         for (iter = 1; iter < 2000; iter++)
@@ -70,10 +57,15 @@ int main(void)
             fmpz_fib_ui(fmpq_numref(k), iter+1);
             fmpz_fib_ui(fmpq_denref(k), iter);
             fmpq_poly_set_coeff_fmpq(p, 0, k);
-            renf_elem_set_fmpq_poly(a.get_renf_elem(), p, nf);
+            a = p;
 
             if (a.ceil() != 1 - iter % 2)
-                throw std::runtime_error("pb with Fibonacci ceil");
+            {
+                std::cerr << "pb with Fibonacci ceil" << std::endl;
+                std::cerr << "got " << a.ceil() << " instead of " << (1 - iter % 2) << " at iteration " << iter << std::endl;
+
+                throw std::runtime_error("ceil test error");
+            }
         }
 
         fmpq_clear(k);
