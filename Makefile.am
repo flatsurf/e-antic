@@ -42,7 +42,8 @@ libeantic_la_SOURCES +=                         \
     poly_extra/num_real_roots_0_1_sturm.c       \
     poly_extra/fmpz_poly_positive_root_upper_bound_2exp.c \
     poly_extra/fmpz_poly_isolate_real_roots.c     \
-    poly_extra/sgn_at_half.c
+    poly_extra/sgn_at_half.c                      \
+    poly_extra/fmpz_poly_relative_condition_number_2exp.c
 if FLINT252
 libeantic_la_SOURCES +=                           \
     poly_extra/fmpz_poly_product_roots_fmpq_vec.c \
@@ -193,14 +194,16 @@ check_PROGRAMS +=                  \
     renf/test/t-randtest           \
     renf/test/t-real_embeddings
 
+noinst_HEADERS +=                    \
+    renf_elem/rounding_template.h
+
 # renf_elem
 libeantic_la_SOURCES +=            \
-    renf_elem/ceil.c               \
     renf_elem/check_embedding.c    \
     renf_elem/clear.c              \
     renf_elem/cmp.c                \
     renf_elem/cmp_fmpq.c           \
-    renf_elem/floor.c              \
+    renf_elem/floor_ceil.c         \
     renf_elem/gen.c                \
     renf_elem/get_cfrac.c          \
     renf_elem/get_str_pretty.c     \
@@ -210,7 +213,8 @@ libeantic_la_SOURCES +=            \
     renf_elem/set_evaluation.c     \
     renf_elem/set_fmpq_poly.c      \
     renf_elem/sgn.c                \
-    renf_elem/get_d.c
+    renf_elem/get_d.c              \
+    renf_elem/relative_condition_number_2exp.c
 
 check_PROGRAMS +=                \
     renf_elem/test/t-binop       \

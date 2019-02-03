@@ -31,5 +31,7 @@ void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec)
     _fmpz_poly_derivative(nf->der->coeffs, fmpq_poly_numref(pol), len);
     _fmpz_poly_set_length(nf->der, len - 1);
     nf->prec = prec;
-    renf_refine_embedding(nf, 2 * prec);
+
+    if (!(nf->nf->flag & NF_LINEAR))
+        renf_refine_embedding(nf, prec);
 }

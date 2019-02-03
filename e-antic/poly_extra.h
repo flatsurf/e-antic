@@ -28,6 +28,7 @@
 void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
 
+int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var);
 int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
 int _fmpz_poly_has_real_root(fmpz * pol, slong len);
@@ -68,6 +69,26 @@ slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
     return fmpz_poly_num_real_roots_0_1_vca(pol);
 }
 
+static __inline__
+void _fmpz_vec_abs(fmpz * res, fmpz * p, slong len)
+{
+    slong i;
+    for (i = 0; i < len; i++)
+        fmpz_abs(res + i, p + i);
+}
+
+static __inline__
+void fmpz_poly_abs(fmpz_poly_t res, fmpz_poly_t p)
+{
+    slong len = fmpz_poly_length(p);
+
+    if (res != p)
+    {
+        fmpz_poly_fit_length(res, len);
+        _fmpz_poly_set_length(res, len);
+    }
+    _fmpz_vec_abs(res->coeffs, p->coeffs, len);
+}
 
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
@@ -151,6 +172,11 @@ void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, slong len, const arf_t
 void fmpz_poly_evaluate_arf(arf_t res, const fmpz_poly_t pol, const arf_t a, slong prec);
 
 void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec);
+
+/* condition number of a_0 + a_1 x + ... + a_d x^d at a number t is: */
+/*  |a_0| + |a_1 t| + ... + |a_d t^d|                                */
+int _fmpz_poly_relative_condition_number_2exp(slong * cond, fmpz * p, slong len, arb_t x, slong prec);
+int fmpz_poly_relative_condition_number_2exp(slong * cond, fmpz_poly_t p, arb_t x, slong prec);
 
 /* root refinement */
 int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);

@@ -14,54 +14,62 @@
 
 int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
 {
-    arb_t difference;
-    slong prec;
+    renf_elem_t diff;
+    slong prec, conda, condb;
     int s;
 
-    /* equality? */
+    /* equality */
     if (nf_elem_equal(a->elem, b->elem, nf->nf)) return 0;
 
-    /* try default precision */
-    arb_init(difference);
-    arb_sub(difference, a->emb, b->emb, nf->prec);
-    if (!arb_contains_zero(difference))
+    /* compare enclosures */
+    if (arb_lt(a->emb, b->emb))
+        return -1;
+    if (arb_gt(a->emb, b->emb))
+        return 1;
+
+    /* rationals */
+    if (nf_elem_is_rational(a->elem, nf->nf) &&
+        nf_elem_is_rational(b->elem, nf->nf))
     {
-        s = arf_sgn(arb_midref(difference));
-        arb_clear(difference);
-        return s;
+        if (nf->nf->flag & NF_LINEAR)
+            return _fmpq_cmp(
+                        LNF_ELEM_NUMREF(a->elem),
+                        LNF_ELEM_DENREF(a->elem),
+                        LNF_ELEM_NUMREF(b->elem),
+                        LNF_ELEM_DENREF(b->elem));
+        else if (nf->nf->flag & NF_QUADRATIC)
+            return _fmpq_cmp(
+                        QNF_ELEM_NUMREF(a->elem),
+                        QNF_ELEM_DENREF(a->elem),
+                        QNF_ELEM_NUMREF(b->elem),
+                        QNF_ELEM_DENREF(b->elem));
+        else
+            return _fmpq_cmp(
+                        NF_ELEM_NUMREF(a->elem),
+                        NF_ELEM_DENREF(a->elem),
+                        NF_ELEM_NUMREF(b->elem),
+                        NF_ELEM_DENREF(b->elem));
     }
 
-    /* precision doubling up to the current precision */
-    prec = 2 * nf->prec;
-    while (prec < arf_bits(arb_midref(nf->emb)))
-    {
-        if (2 * arf_bits(arb_midref(a->emb)) < prec)
-            renf_elem_set_evaluation(a, nf, prec);
-        if (2 * arf_bits(arb_midref(b->emb)) < prec)
-            renf_elem_set_evaluation(b, nf, prec);
-        arb_sub(difference, a->emb, b->emb, prec);
-        if (!arb_contains_zero(difference))
-        {
-            s = arf_sgn(arb_midref(difference));
-            arb_clear(difference);
-            return s;
-        }
-        prec *= 2;
-    }
+    /* try better enclosures */
+    prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
 
-    /* augment precision ad libitum */
-    do{
-        renf_refine_embedding(nf, prec);
-        renf_elem_set_evaluation(a, nf, prec);
-        renf_elem_set_evaluation(b, nf, prec);
-        arb_sub(difference, a->emb, b->emb, prec);
-        if(!arb_contains_zero(difference))
-        {
-            s = arf_sgn(arb_midref(difference));
-            arb_clear(difference);
-            return s;
-        }
-        prec *= 2;
-    }while (1);
+    renf_elem_relative_condition_number_2exp(&conda, a, nf);
+    renf_elem_set_evaluation(a, nf, nf->prec + conda);
+
+    renf_elem_relative_condition_number_2exp(&condb, b, nf);
+    renf_elem_set_evaluation(b, nf, nf->prec + condb);
+
+    if (arb_lt(a->emb, b->emb))
+        return -1;
+    if (arb_gt(a->emb, b->emb))
+        return 1;
+
+    /* sign of the difference */
+    renf_elem_init(diff, nf);
+    renf_elem_sub(diff, a, b, nf);
+    s = renf_elem_sgn(diff, nf);
+    renf_elem_clear(diff, nf);
+    return s;
 }
 

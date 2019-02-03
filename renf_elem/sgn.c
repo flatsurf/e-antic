@@ -14,6 +14,7 @@
 int renf_elem_sgn(renf_elem_t a, renf_t nf)
 {
     slong prec;
+    slong cond;
 
     if (nf_elem_is_rational(a->elem, nf->nf))
     {
@@ -32,9 +33,9 @@ int renf_elem_sgn(renf_elem_t a, renf_t nf)
     if (arb_is_negative(a->emb))
         return -1;
 
-    prec = nf->prec;
-    if(2 * arf_bits(arb_midref(a->emb)) < prec)
-        renf_elem_set_evaluation(a, nf, prec);
+    renf_elem_relative_condition_number_2exp(&cond, a, nf);
+    prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
+    renf_elem_set_evaluation(a, nf, prec + cond);
 
     do
     {
@@ -45,12 +46,11 @@ int renf_elem_sgn(renf_elem_t a, renf_t nf)
 
         prec *= 2;
         renf_refine_embedding(nf, prec);
-        renf_elem_set_evaluation(a, nf, prec);
-
+        renf_elem_set_evaluation(a, nf, prec + cond);
     } while(1);
 
-
     /* we should not get here */
+    abort();
     return -3;
 }
 

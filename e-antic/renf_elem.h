@@ -67,6 +67,8 @@ void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, ren
 
 void renf_elem_check_embedding(const renf_elem_t a, const renf_t nf, slong prec);
 
+int renf_elem_relative_condition_number_2exp(slong * cond, renf_elem_t a, renf_t nf);
+
 /* inline set and binary operations */
 
 static __inline__

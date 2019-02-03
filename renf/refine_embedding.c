@@ -12,29 +12,47 @@
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
-/* TODO: use multiple Newton if possible */
-
 void renf_refine_embedding(renf_t nf, slong prec)
 {
     #pragma omp critical(RENF_REFINE)
     {
-        arb_t tmp;
-        arb_init(tmp);
+    arb_t tmp;
+    slong cond;
+    slong comp_prec;
 
+    _fmpz_poly_relative_condition_number_2exp(&cond,
+            nf->nf->pol->coeffs, nf->nf->pol->length,
+            nf->emb, FLINT_MAX(nf->prec, 64));
+    cond *= nf->nf->pol->length;
+    arb_init(tmp);
+
+    comp_prec = 2 * FLINT_ABS(arb_rel_accuracy_bits(nf->emb)) + cond;
+    while (arb_rel_accuracy_bits(nf->emb) < prec)
+    {
         if(!_fmpz_poly_newton_step_arb(tmp,
                 fmpq_poly_numref(nf->nf->pol),
                 nf->der->coeffs,
                 fmpq_poly_length(nf->nf->pol),
                 nf->emb,
-                prec))
+                comp_prec))
         {
-            _fmpz_poly_bisection_step_arb(tmp,
+            if(!_fmpz_poly_bisection_step_arb(tmp,
                     fmpq_poly_numref(nf->nf->pol),
                     fmpq_poly_length(nf->nf->pol),
                     nf->emb,
-                    prec);
+                    comp_prec))
+            {
+                comp_prec *= 2;
+                continue;
+            }
         }
         arb_swap(tmp, nf->emb);
-        arb_clear(tmp);
+
+        _fmpz_poly_relative_condition_number_2exp(&cond,
+                nf->nf->pol->coeffs, nf->nf->pol->length,
+                nf->emb, 32);
+        comp_prec = 2 * FLINT_ABS(arb_rel_accuracy_bits(nf->emb)) + cond * nf->nf->pol->length;
+    }
+    arb_clear(tmp);
     } // #pragma
 }

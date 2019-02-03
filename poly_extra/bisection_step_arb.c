@@ -17,38 +17,35 @@ void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len
     arf_t m;
 
     arf_init(m);
+
+    /* TODO: we should do the mean operation faster */
+    /* it is likely that l and r shares a lot       */
+    arf_add(m, l, r, prec, ARF_RND_NEAR);
+    arf_div_ui(m, m, 2, prec, ARF_RND_NEAR);
+    if ((arf_cmp(m, l) <= 0) || (arf_cmp(r, m) <= 0))
+    {
+        arf_clear(m);
+        return;
+    }
+
     arb_init(b);
     arb_init(c);
-
-    do
+    arb_set_arf(b, m);
+    _fmpz_poly_evaluate_arb(c, pol, len, b, prec);
+    if (arb_contains_zero(c))
     {
-        /* TODO: we should do the mean operation faster */
-        /* it is likely that l and r shares a lot       */
-        arf_add(m, l, r, prec, ARF_RND_NEAR);
-        arf_div_ui(m, m, 2, prec, ARF_RND_NEAR);
-        if ((arf_cmp(m, l) <= 0) || (arf_cmp(r, m) <= 0))
-        {
-            arf_clear(m);
-            arb_clear(b);
-            arb_clear(c);
-            break;
-        }
-
-        arb_set_arf(b, m);
-        _fmpz_poly_evaluate_arb(c, pol, len, b, prec);
-        if (arb_contains_zero(c))
-        {
-            arf_clear(m);
-            arb_clear(b);
-            arb_clear(c);
-            break;
-        }
-        if (arf_sgn(arb_midref(c)) == sl)
-            arf_set(l, m);
-        else
-            arf_set(r, m);
-
-    } while (1);
+        arf_clear(m);
+        arb_clear(b);
+        arb_clear(c);
+        return;
+    }
+    if (arf_sgn(arb_midref(c)) == sl)
+        arf_set(l, m);
+    else
+        arf_set(r, m);
+    arb_clear(b);
+    arb_clear(c);
+    arf_clear(m);
 }
 
 int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slong prec)
@@ -95,9 +92,7 @@ int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slo
 
     _fmpz_poly_bisection_step_arf(l, r, pol, len, sl, sr, prec);
     arb_set_interval_arf(rres, l, r, prec);
-    ans = arb_contains(a, rres) && !arb_equal(rres, a);
-    if (ans)
-        arb_swap(res, rres);
+    arb_intersection(res, rres, a, prec);
 
     arb_clear(b);
     arb_clear(c);
@@ -105,7 +100,7 @@ int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slo
     arf_clear(l);
     arf_clear(r);
 
-    return ans;
+    return 1;
 }
 
 int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec)

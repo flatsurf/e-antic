@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
+    Copyright (C) 2016-2019 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -10,6 +10,7 @@
 */
 
 #include <e-antic/poly_extra.h>
+#include <stdio.h>
 
 int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec)
 {
@@ -19,6 +20,12 @@ int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, sl
     /*   - set res = m - f(m) / f'(a) where evaluation of both f and f'  */
     /*     is done with ball evaluation                                  */
     arb_t m, y;
+
+    if (prec <= 0)
+    {
+        fprintf(stderr, "invalid precision %ld\n", prec);
+        abort();
+    }
 
     _fmpz_poly_evaluate_arb(res, der, len - 1, a, prec);
     if (arb_contains_zero(res)) return 0;
