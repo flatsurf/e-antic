@@ -79,6 +79,8 @@ int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong
                 return 1;
             }
         }
+        else
+            return 0;
         arb_clear(b);
 
         /* 2 - expensive testing                                        */
