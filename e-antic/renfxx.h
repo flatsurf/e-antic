@@ -125,9 +125,15 @@ public:
     __constructor(mpq_class&);
     __constructor(fmpz_t);
     __constructor(fmpq_t);
-    __constructor(fmpq_poly_t);
     __constructor(std::string);
     #undef __constructor
+
+    inline renf_elem_class(renf_class &k, const fmpq_poly_t p)
+    {
+        nf = &k;
+        renf_elem_init(a, nf->get_renf());
+        assign(p);
+    }
 
     // underlying number field
     renf_class& parent(void) const { return *nf; };
@@ -145,6 +151,7 @@ public:
     __eq(ulong);
     __eq(mpz_class&);
     __eq(mpq_class&);
+    __eq(fmpq_poly_t);
     __eq(renf_elem_class&);
     #undef __eq
 
@@ -329,11 +336,19 @@ inline renf_class::renf_class(const char * pol, const char * var, const char * e
     fmpq_poly_t p;
 
     fmpq_poly_init(p);
-    fmpq_poly_set_str_pretty(p, pol, var);
+    if (fmpq_poly_set_str_pretty(p, pol, var))
+    {
+        fmpq_poly_clear(p);
+        std::invalid_argument("renf_class: can not read polynomial from string");
+    }
     gen_name = var;
 
     arb_init(e);
-    arb_set_str(e, emb, prec);
+    if (arb_set_str(e, emb, prec))
+    {
+        arb_clear(e);
+        std::invalid_argument("renf_class: can not read ball from string");
+    }
 
     renf_init(nf, p, e, prec);
     fmpq_poly_clear(p);
