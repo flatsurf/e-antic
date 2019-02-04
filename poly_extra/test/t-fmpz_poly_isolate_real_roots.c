@@ -79,14 +79,14 @@ int main(void)
         return 1;
     }
 
-    fmpq_set_si(a, -2497397708202708803, 623751320421068880); /* approx of root 1 */
+    fmpq_set_si(a, WORD(-2497397708202708803), WORD(623751320421068880)); /* approx of root 1 */
     if (check_isolation(c_array, k_array[0], a))
     {
         fprintf(stderr, "Failed root1 of poly1\n");
         return 1;
     }
 
-    fmpq_set_si(a, -83382880964438876, 172646812034399449); /* approx of root 2 */
+    fmpq_set_si(a, WORD(-83382880964438876), WORD(172646812034399449)); /* approx of root 2 */
     if (check_isolation(c_array + 1, k_array[1], a))
     {
         fprintf(stderr, "Failed root2 of poly1\n");
@@ -109,13 +109,13 @@ int main(void)
         return 1;
     }
 
-    fmpq_set_si(a, -1729553040654133611, 995268582037528766);
+    fmpq_set_si(a, WORD(-1729553040654133611), WORD(995268582037528766));
     if (check_isolation(c_array, k_array[0], a))
     {
         fprintf(stderr, "Failed root1 of poly2\n");
         return 1;
     }
-    fmpq_set_si(a, 1148746836908268129, 150128881916767);
+    fmpq_set_si(a, WORD(1148746836908268129), WORD(150128881916767));
     if (check_isolation(c_array + 1, k_array[1], a))
     {
         fprintf(stderr, "Failed root2 of poly2\n");
@@ -138,13 +138,13 @@ int main(void)
         return 1;
     }
 
-    fmpq_set_si(a, 606001226841264272, 806515533049393);
+    fmpq_set_si(a, WORD(606001226841264272), WORD(806515533049393));
     if (check_isolation(c_array, k_array[0], a))
     {
         fprintf(stderr, "Failed root1 of poly2\n");
         return 1;
     }
-    fmpq_set_si(a, 607804650398072193, 806515533049393);
+    fmpq_set_si(a, WORD(607804650398072193), WORD(806515533049393));
     if (check_isolation(c_array + 1, k_array[1], a))
     {
         fprintf(stderr, "Failed root2 of poly2\n");
@@ -167,13 +167,13 @@ int main(void)
         return 1;
     }
 
-    fmpq_set_si(a, 370174771560547, 804552393201742478);
+    fmpq_set_si(a, WORD(370174771560547), WORD(804552393201742478));
     if (check_isolation(c_array, k_array[0], a))
     {
         fprintf(stderr, "Failed root1 of poly2\n");
         return 1;
     }
-    fmpq_set_si(a, 442898231808688, 962580472320952871);
+    fmpq_set_si(a, WORD(442898231808688), WORD(962580472320952871));
     if (check_isolation(c_array + 1, k_array[1], a))
     {
         fprintf(stderr, "Failed root2 of poly2\n");
