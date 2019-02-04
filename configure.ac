@@ -32,6 +32,8 @@ AM_CONDITIONAL(ENABLE_OPENMP, [test x$enable_openmp = xyes])
 
 ## Test for valgrind test suite
 AX_VALGRIND_DFLT([sgcheck], [off])
+AX_VALGRIND_DFLT([drd], [off])
+AX_VALGRIND_DFLT([helgrind], [off])
 AX_VALGRIND_CHECK
 
 ## Flint development
