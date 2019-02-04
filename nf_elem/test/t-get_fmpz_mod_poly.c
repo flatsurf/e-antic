@@ -54,7 +54,7 @@ main(void)
         fmpz_init(reduced_coeff);
         fmpz_mod_poly_init(reduced_elem, mod);
 
-        nf_init_randtest(nf, state, 40, 200);
+        nf_init_randtest(nf, state, 2 + n_randint(state, 20), 200);
 
         nf_elem_init(a, nf);
 
