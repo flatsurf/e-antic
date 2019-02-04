@@ -25,7 +25,7 @@ int main(void)
         fmpz_poly_randtest_irreducible(p, state, len, maxbits);
         if (fmpz_poly_length(p) > len)
         {
-            fprintf(stderr, "ERROR: too long %u instead of len=%u",
+            fprintf(stderr, "ERROR: too long %lu instead of len=%lu",
                     fmpz_poly_length(p),
                     len);
             fmpz_poly_fprint_pretty(stderr, p, "x");
@@ -35,7 +35,7 @@ int main(void)
 
         if (EANTIC_FIXED_fmpz_poly_max_bits(p) > maxbits)
         {
-            fprintf(stderr, "ERROR: too many bits %u instead of maxbits=%u\n",
+            fprintf(stderr, "ERROR: too many bits %lu instead of maxbits=%lu\n",
                     EANTIC_FIXED_fmpz_poly_max_bits(p),
                     maxbits);
             fmpz_poly_fprint_pretty(stderr, p, "x");

@@ -31,14 +31,14 @@ int main()
                 nf->nf->pol->length);
         if (test > bits)
         {
-            printf("ERROR: too many bits in numerator, got %u instead of %u",
+            printf("ERROR: too many bits in numerator, got %lu instead of %lu",
                     test, bits);
             return 1;
         }
         test = fmpz_bits(nf->nf->pol->den);
         if (test > bits)
         {
-            printf("ERROR: too many bits in denominator, got %u instead of %u",
+            printf("ERROR: too many bits in denominator, got %lu instead of %lu",
                     test, bits);
             return 1;
         }
