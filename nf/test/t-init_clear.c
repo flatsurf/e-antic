@@ -86,12 +86,18 @@ main(void)
     {
         nf_t nf;
 
-        nf_init_randtest(nf, state, 40, 200);
+        nf_init_randtest(nf, state,
+                2 + n_randint(state, 50),
+                1 + n_randint(state, 200));
+        nf_clear(nf);
+
+        nf_init_randtest(nf, state,
+                2 + n_randint(state, 50),
+                1 + n_randint(state, 200));
         nf_clear(nf);
     }
 
     flint_randclear(state);
-    flint_cleanup();
     flint_printf("PASS\n");
     return 0;
 }
