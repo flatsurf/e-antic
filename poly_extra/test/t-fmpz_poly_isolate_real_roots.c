@@ -184,6 +184,7 @@ int main(void)
     _fmpz_vec_clear(c_array, 5);
     flint_free(k_array);
     fmpq_clear(a);
+    fmpz_poly_clear(p);
 
     return 0;
 }
