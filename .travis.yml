@@ -29,6 +29,7 @@ install:
   # build e-antic
   - ./bootstrap.sh
   - ./configure CFLAGS="-I${PREFIX}/include" CPPFLAGS="-I${PREFIX}/include" LDFLAGS="-L${PREFIX}/lib" --enable-valgrind
+  - cat config.log
   - make
   - ldd .libs/libeantic.so
 
