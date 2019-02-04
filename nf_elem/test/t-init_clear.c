@@ -43,9 +43,11 @@ main(void)
         nf_t nf;
         nf_elem_t a;
 
-        nf_init_randtest(nf, state, 40, 200); 
+        nf_init_randtest(nf, state, 2 + n_randint(state, 40), 2 + n_randint(state, 200));
 
         nf_elem_init(a, nf);
+        nf_elem_randtest(a, state, 200, nf);
+        nf_elem_randtest(a, state, 10, nf);
         nf_elem_randtest(a, state, 200, nf);
         nf_elem_clear(a, nf);
         
