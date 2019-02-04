@@ -82,6 +82,7 @@ main(void)
         nf_elem_clear(a, nf);
         fmpz_mod_poly_clear(reduced_elem);
         fmpz_clear(coeff);
+        fmpz_clear(reduced_coeff);
         fmpz_clear(mod);
         nf_clear(nf);
     }
