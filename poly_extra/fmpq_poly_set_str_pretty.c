@@ -194,9 +194,9 @@ int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var)
             fmpz_poly_clear(mon);
             return -2;
         }
-        fmpz_poly_zero(mon);
         fmpz_poly_set_coeff_fmpz(mon, pow, fmpq_numref(coeff));
         fmpz_poly_add(p, p, mon);
+        fmpz_poly_set_coeff_si(mon, pow, 0);
 
         start = end;
     }
@@ -248,9 +248,9 @@ int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
             fmpq_poly_clear(mon);
             return -1;
         }
-        fmpq_poly_zero(mon);
         fmpq_poly_set_coeff_fmpq(mon, pow, coeff);
         fmpq_poly_add(p, p, mon);
+        fmpq_poly_set_coeff_si(mon, pow, 0);
 
         start = end;
     }
