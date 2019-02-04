@@ -288,6 +288,10 @@ void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n
 #define _EANTIC_FIXED_fmpq_poly_get_str_pretty _fmpq_poly_get_str_pretty
 #define EANTIC_FIXED_fmpq_poly_get_str_pretty fmpq_poly_get_str_pretty
 
+#else
+
+#error "Invalid flint release: e-antic needs flint-2.5.2 or flint-2.5.3"
+
 #endif
 
 #ifdef __cplusplus
