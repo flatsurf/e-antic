@@ -103,6 +103,8 @@ int main(void)
                 abort();
         }
 
+        fmpz_clear(z);
+        fmpq_clear(q);
         fmpq_poly_clear(f);
         nf_elem_clear(a, nf);
         nf_clear(nf);
