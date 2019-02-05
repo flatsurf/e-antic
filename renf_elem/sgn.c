@@ -28,10 +28,8 @@ int renf_elem_sgn(renf_elem_t a, renf_t nf)
             return fmpz_sgn(NF_ELEM_NUMREF(a->elem));
     }
 
-    if (arb_is_positive(a->emb))
-        return 1;
-    if (arb_is_negative(a->emb))
-        return -1;
+    if (!arb_contains_zero(a->emb))
+        return arf_sgn(arb_midref(a->emb));
 
     renf_elem_relative_condition_number_2exp(&cond, a, nf);
     prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
@@ -39,10 +37,8 @@ int renf_elem_sgn(renf_elem_t a, renf_t nf)
 
     do
     {
-        if (arb_is_positive(a->emb))
-            return 1;
-        if (arb_is_negative(a->emb))
-            return -1;
+        if (!arb_contains_zero(a->emb))
+            return arf_sgn(arb_midref(a->emb));
 
         prec *= 2;
         renf_refine_embedding(nf, prec);
