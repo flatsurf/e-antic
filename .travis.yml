@@ -1,8 +1,12 @@
 language: c
 cache: ccache
-compiler:
-  - gcc
-  - clang
+matrix:
+  - compiler: gcc
+    env: CC=gcc
+         CXX=g++
+  - compiler: clang
+    env: CC=clang
+         CXX=clang++
 env:
   MAKE="make -j2"
 install:
