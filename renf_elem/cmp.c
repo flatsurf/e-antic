@@ -55,10 +55,10 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
     prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
 
     renf_elem_relative_condition_number_2exp(&conda, a, nf);
-    renf_elem_set_evaluation(a, nf, nf->prec + conda);
+    renf_elem_set_evaluation(a, nf, prec + conda);
 
     renf_elem_relative_condition_number_2exp(&condb, b, nf);
-    renf_elem_set_evaluation(b, nf, nf->prec + condb);
+    renf_elem_set_evaluation(b, nf, prec + condb);
 
     if (arb_lt(a->emb, b->emb))
         return -1;
