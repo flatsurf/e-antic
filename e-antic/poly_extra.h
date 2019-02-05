@@ -101,7 +101,63 @@ void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 
 static __inline__
-void fmpq_add_ui(fmpq_t a, fmpq_t b, ulong c)
+int fmpq_equal_fmpz(const fmpq_t a, const fmpz_t b)
+{
+    return fmpz_is_one(fmpq_denref(a)) && fmpz_equal(fmpq_numref(a), b);
+}
+
+static __inline__
+int fmpq_equal_si(const fmpq_t a, const slong b)
+{
+    return fmpz_is_one(fmpq_denref(a)) && fmpz_equal_si(fmpq_numref(a), b);
+}
+
+static __inline__
+int fmpq_equal_ui(const fmpq_t a, const ulong b)
+{
+    return fmpz_is_one(fmpq_denref(a)) && fmpz_equal_ui(fmpq_numref(a), b);
+}
+
+static __inline__
+int fmpq_cmp_fmpz(const fmpq_t a, const fmpz_t b)
+{
+    int s;
+    fmpz_t den;
+    fmpz_init(den);
+    fmpz_one(den);
+    s = _fmpq_cmp(fmpq_numref(a), fmpq_denref(a), b, den);
+    fmpz_clear(den);
+    return s;
+}
+
+static __inline__
+int fmpq_cmp_si(const fmpq_t a, slong b)
+{
+    int s;
+    fmpq_t bb;
+    fmpq_init(bb);
+    fmpz_set_si(fmpq_numref(bb), b);
+    fmpz_one(fmpq_denref(bb));
+    s = fmpq_cmp(a, bb);
+    fmpq_clear(bb);
+    return s;
+}
+
+static __inline__
+int fmpq_cmp_ui(const fmpq_t a, ulong b)
+{
+    int s;
+    fmpq_t bb;
+    fmpq_init(bb);
+    fmpz_set_ui(fmpq_numref(bb), b);
+    fmpz_one(fmpq_denref(bb));
+    s = fmpq_cmp(a, bb);
+    fmpq_clear(bb);
+    return s;
+}
+
+static __inline__
+void fmpq_add_ui(fmpq_t a, const fmpq_t b, ulong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -111,7 +167,7 @@ void fmpq_add_ui(fmpq_t a, fmpq_t b, ulong c)
 }
 
 static __inline__
-void fmpq_sub_ui(fmpq_t a, fmpq_t b, ulong c)
+void fmpq_sub_ui(fmpq_t a, const fmpq_t b, ulong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -121,7 +177,7 @@ void fmpq_sub_ui(fmpq_t a, fmpq_t b, ulong c)
 }
 
 static __inline__
-void fmpq_mul_si(fmpq_t a, fmpq_t b, slong c)
+void fmpq_mul_si(fmpq_t a, const fmpq_t b, slong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -131,7 +187,7 @@ void fmpq_mul_si(fmpq_t a, fmpq_t b, slong c)
 }
 
 static __inline__
-void fmpq_mul_ui(fmpq_t a, fmpq_t b, ulong c)
+void fmpq_mul_ui(fmpq_t a, const fmpq_t b, ulong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -141,7 +197,7 @@ void fmpq_mul_ui(fmpq_t a, fmpq_t b, ulong c)
 }
 
 static __inline__
-void fmpq_div_si(fmpq_t a, fmpq_t b, slong c)
+void fmpq_div_si(fmpq_t a, const fmpq_t b, slong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -151,7 +207,7 @@ void fmpq_div_si(fmpq_t a, fmpq_t b, slong c)
 }
 
 static __inline__
-void fmpq_div_ui(fmpq_t a, fmpq_t b, ulong c)
+void fmpq_div_ui(fmpq_t a, const fmpq_t b, ulong c)
 {
     fmpz_t tmp;
     fmpz_init(tmp);
