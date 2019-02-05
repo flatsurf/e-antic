@@ -17,26 +17,14 @@ int main(void)
     int iter;
 
     {
-        fmpq_t x;
-
-        fmpq_init(x);
-        fmpz_set_si(fmpq_numref(x), 3);
-        fmpz_set_si(fmpq_denref(x), 2);
-
-        renf_elem_class a(x);
-
+        renf_elem_class a("3/2");
         if (a.ceil() != 2)
             throw std::runtime_error("pb with ceil");
-
-        fmpz_set_si(fmpq_numref(x), -3);
-        fmpz_set_si(fmpq_denref(x), 2);
-
-        a = x;
-
+    }
+    {
+        renf_elem_class a("-3/2");
         if (a.ceil() != -1)
             throw std::runtime_error("pb with ceil");
-
-        fmpq_clear(x);
     }
 
     {
@@ -57,7 +45,7 @@ int main(void)
             fmpz_fib_ui(fmpq_numref(k), iter+1);
             fmpz_fib_ui(fmpq_denref(k), iter);
             fmpq_poly_set_coeff_fmpq(p, 0, k);
-            a = p;
+            renf_elem_set_fmpq_poly(a.get_renf_elem(), p, K.get_renf());
 
             if (a.ceil() != 1 - iter % 2)
             {

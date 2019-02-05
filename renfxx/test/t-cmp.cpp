@@ -60,6 +60,25 @@ void check_not_gen(T t, renf_class& K)
         throw std::runtime_error("comparison problem");
 }
 
+template<typename T>
+void check_order(T c1, T c2, renf_class& K)
+{
+    renf_elem_class a1(K, c1);
+    renf_elem_class a2(K, c2);
+
+    if (a1 == a2 || not (a1 != a2))
+        throw std::runtime_error("should not be equal");
+
+    if (a1 >= a2 || a1 > a2)
+        throw std::runtime_error("a1 > a2, a1 >= a2 issue");
+    if (not (a1 <= a2) || not (a1 < a2))
+        throw std::runtime_error("a1 < a2, a1 <= a2 issue");
+    if (a2 <= a1 || a2 < a1)
+        throw std::runtime_error("a2 <= a1, a2 < a1 issue");
+    if (not (a2 >= a1) || not (a2 > a1))
+        throw std::runtime_error("a2 >= a1, a2 > a1 issue");
+}
+
 
 int main(void)
 {
@@ -88,6 +107,19 @@ int main(void)
 
         check_eq_ne(c4, K);
         check_not_gen(c4, K);
+    }
+
+    for (iter = 0; iter < 10; iter++)
+    {
+        renf_t nf;
+        renf_randtest(nf, state, 5, 64, 10);
+        renf_class K(nf);
+        renf_clear(nf);
+
+        check_order((int) -1, (int) 1, K);
+        check_order((long) -1, (long) 13, K);
+        check_order(mpz_class(3), mpz_class(5), K);
+        check_order(mpq_class(1,3), mpq_class(1,2), K);
     }
 
     FLINT_TEST_CLEANUP(state);

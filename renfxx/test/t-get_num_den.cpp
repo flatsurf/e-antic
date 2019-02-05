@@ -18,25 +18,51 @@
 
 #include "e-antic/renfxx.h"
 
+void check_rational(int num, int den, renf_class& K)
+{
+    renf_elem_class a(K);
+    a = num;
+    a /= den;
+    if (a.get_num() != num || a.get_den() != den)
+    {
+        std::cerr << "num = " << num << std::endl;
+        std::cerr << "den = " << num << std::endl;
+        std::cerr << "a   = " << a << std::endl;
+        throw std::runtime_error("num pb");
+    }
+}
+
 void check_reconstruct(renf_class& K, renf_elem_class& a)
 {
     renf_elem_class g = K.gen();
     renf_elem_class gg = 1;
     renf_elem_class b = 0;
 
+    std::cerr << "bx = " << b << std::endl;
     std::vector<mpz_class> num = a.get_num_vector();
     for (std::vector<mpz_class>::iterator it = num.begin(); it < num.end(); it++)
     {
         b += gg * (*it);
         gg *= g;
+        std::cerr << "*it = " << *it << std::endl;
+        std::cerr << "bx = " << b << std::endl;
     }
     b /= a.get_den();
+    std::cerr << "bx = " << b << std::endl;
 
     if (a != b)
+    {
+        std::cerr << "a = " << a << std::endl;
+        std::cerr << "b = " << b << std::endl;
         throw std::runtime_error("a != b");
+    }
 
     if (a.is_rational() && a.get_den() * a != a.get_num())
-        throw std::runtime_error("rationallity failed");
+    {
+        std::cerr << "a = " << a << std::endl;
+        std::cerr << "b = " << b << std::endl;
+        throw std::runtime_error("rationality failed");
+    }
 }
 
 int main(void)
@@ -44,6 +70,8 @@ int main(void)
     {
         // linear
         renf_class K("x - 2/3", "x", "0.66 +/- 0.1");
+
+        check_rational(-12, 5, K);
 
         renf_elem_class a(K, 0);
         check_reconstruct(K, a);
@@ -55,6 +83,8 @@ int main(void)
     {
         // quadratic
         renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
+
+        check_rational(7, 12, K);
 
         renf_elem_class a(K, 0);
         check_reconstruct(K, a);

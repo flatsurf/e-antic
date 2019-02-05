@@ -20,7 +20,7 @@ void check_equal(renf_elem_class& a, renf_elem_class& b)
         std::cerr << "b = " << b.get_str(EANTIC_STR_ALG | EANTIC_STR_D) << "\n";
         std::cerr.flush();
 
-        throw std::runtime_error("wrong comparison with other renf_elem");
+        throw std::runtime_error("a and b expected equal");
     }
 }
 
@@ -32,7 +32,7 @@ void check_equal(renf_elem_class& a, slong b)
         std::cerr << "b = " << b << "\n";
         std::cerr.flush();
 
-        throw std::runtime_error("wrong comparison with slong");
+        throw std::runtime_error("a and b expected equal");
     }
 }
 
@@ -121,25 +121,10 @@ int main(void)
         // QQ[sqrt(2)]
         renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 128);
 
-        fmpq_poly_t p;
-        fmpq_poly_init(p);
-        fmpq_poly_set_str(p, "2  -7/3 3/5");
-        renf_elem_class a(K, p);
-
-        renf_elem_class b(K);
-        if (b.parent() != K)
-            throw std::runtime_error("nf not set correctly");
-        b = p;
-
-        fmpq_poly_clear(p);
-
-        renf_elem_class c(K, "-7/3 + 3/5*a");
-
-        renf_elem_class d = 3 * K.gen() / 5 - 7 * K.one() / 3;
+        renf_elem_class a(K, "-7/3 + 3/5*a");
+        renf_elem_class b = 3 * K.gen() / 5 - 7 * K.one() / 3;
 
         check_equal(a, b);
-        check_equal(a, c);
-        check_equal(a, d);
     }
 
     {

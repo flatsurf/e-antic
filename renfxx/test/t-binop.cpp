@@ -50,7 +50,11 @@
     if (b * (ca / cb) != a ||     \
         b * (ca / b) != a  ||     \
         b * (a / cb) != a)        \
-        throw std::runtime_error("wrong result in binary operation"); \
+    {                             \
+        std::cerr << "a = " << a << std::endl; \
+        std::cerr << "b = " << b << std::endl; \
+        throw std::runtime_error("wrong result in division"); \
+    }                             \
 }                                 \
 {                                 \
     renf_elem_class ca(K);        \
@@ -60,7 +64,11 @@
     if (b * (ca / cb) != a ||     \
         b * (ca / b) != a ||      \
         b * (a / cb) != a)        \
-        throw std::runtime_error("wrong result in binary operation"); \
+    {                             \
+        std::cerr << "a = " << a << std::endl; \
+        std::cerr << "b = " << b << std::endl; \
+        throw std::runtime_error("wrong result in division"); \
+    }                             \
 }                                 \
 }
 
@@ -93,7 +101,7 @@ int main(void)
     for (iter=0; iter<100; iter++)
     {
         renf_t nf;
-        renf_randtest(nf, state, 5, 32, 50);
+        renf_randtest(nf, state, 10, 32, 50);
         renf_class K(nf);
         renf_clear(nf);
 
@@ -167,6 +175,18 @@ int main(void)
         catch (std::domain_error)
         {
         }
+    }
+
+    {
+        renf_class K("x^2 - 2", "x", "1.41 +/- 0.01");
+
+        renf_elem_class a(K, "1/3 + 3/5*x");
+        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K.gen();
+        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K.gen() / mpz_class(5);
+        renf_elem_class d = mpq_class(1,3) + 3 * K.gen() / 5;
+
+        if (a != b || a != c || a != d)
+            throw std::runtime_error("error with operations");
     }
 
     FLINT_TEST_CLEANUP(state);
