@@ -50,9 +50,53 @@ void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);
 
 int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
+int _renf_elem_cmp_fmpq(renf_elem_t a, fmpz * num, fmpz * den, renf_t nf);
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf);
-/* int renf_elem_cmp_si(renf_elem_t a, const slong b, renf_t nf);    */
-/* int renf_elem_cmp_fmpz(renf_elem_t a, const fmpz_t b, renf_t nf); */
+
+static __inline__
+int renf_elem_cmp_fmpz(renf_elem_t a, const fmpz_t b, renf_t nf)
+{
+    int s;
+    fmpq_t bq;
+
+    fmpq_init(bq);
+    fmpz_set(fmpq_numref(bq), b);  /* TODO: avoid copy! */
+    fmpz_one(fmpq_denref(bq));
+
+    s = renf_elem_cmp_fmpq(a, bq, nf);
+    fmpq_clear(bq);
+    return s;
+}
+
+static __inline__
+int renf_elem_cmp_si(renf_elem_t a, const slong b, renf_t nf)
+{
+    int s;
+    fmpq_t bq;
+
+    fmpq_init(bq);
+    fmpz_set_si(fmpq_numref(bq), b);  /* TODO: avoid copy! */
+    fmpz_one(fmpq_denref(bq));
+
+    s = renf_elem_cmp_fmpq(a, bq, nf);
+    fmpq_clear(bq);
+    return s;
+}
+
+static __inline__
+int renf_elem_cmp_ui(renf_elem_t a, const slong b, renf_t nf)
+{
+    int s;
+    fmpq_t bq;
+
+    fmpq_init(bq);
+    fmpz_set_si(fmpq_numref(bq), b);
+    fmpz_one(fmpq_denref(bq));
+
+    s = renf_elem_cmp_fmpq(a, bq, nf);
+    fmpq_clear(bq);
+    return s;
+}
 
 double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
@@ -112,6 +156,12 @@ static __inline__
 int renf_elem_equal_si(const renf_elem_t a, const slong b, const renf_t nf)
 {
     return nf_elem_equal_si(a->elem, b, nf->nf);
+}
+
+static __inline__
+int renf_elem_equal_ui(const renf_elem_t a, const ulong b, const renf_t nf)
+{
+    return nf_elem_equal_ui(a->elem, b, nf->nf);
 }
 
 static __inline__
@@ -179,10 +229,9 @@ static __inline__
 void renf_elem_set_mpz(renf_elem_t a, const mpz_t c, const renf_t nf)
 {
     fmpz_t x;
-    fmpz_init(x);
-    fmpz_set_mpz(x, c);
+    fmpz_init_set_readonly(x, c);
     renf_elem_set_fmpz(a, x, nf);
-    fmpz_clear(x);
+    fmpz_clear_readonly(x);
 }
 
 static __inline__
@@ -196,10 +245,9 @@ static __inline__
 void renf_elem_set_mpq(renf_elem_t a, const mpq_t c, const renf_t nf)
 {
     fmpq_t x;
-    fmpq_init(x);
-    fmpq_set_mpq(x, c);
+    fmpq_init_set_readonly(x, c);
     renf_elem_set_fmpq(a, x, nf);
-    fmpq_clear(x);
+    fmpq_clear_readonly(x);
 }
 
 static __inline__
