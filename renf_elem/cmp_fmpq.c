@@ -11,7 +11,7 @@
 
 #include <e-antic/renf_elem.h>
 
-/* TODO: we might want to move this to ANTIC */
+/* TODO: move it to ANTIC? */
 int _nf_equal_fmpq(const nf_elem_t a, const fmpq_t b, const nf_t nf)
 {
     if (nf->flag & NF_LINEAR)
@@ -41,30 +41,62 @@ int _nf_equal_fmpq(const nf_elem_t a, const fmpq_t b, const nf_t nf)
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf)
 {
     int s;
-    arb_t bi, difference;
+    slong prec, cond;
+    arb_t diffball;
+    renf_elem_t diffnf;
 
-    if (_nf_equal_fmpq(a->elem, b, nf->nf)) return 0;
+    if (fmpq_is_zero(b))
+        return renf_elem_sgn(a, nf);
 
-    arb_init(bi);
-    arb_init(difference);
-    arb_set_fmpq(bi, b, nf->prec); 
-    arb_sub(difference, a->emb, bi, nf->prec);
-
-    if (arb_contains_zero(difference))
+    if (nf_elem_is_rational(a->elem, nf->nf))
     {
-        slong prec = nf->prec;
-        do
-        {
-            prec *= 2;
-            renf_refine_embedding(nf, prec);
-            arb_set_fmpq(bi, b, prec); 
-            renf_elem_set_evaluation(a, nf, prec);
-            arb_sub(difference, a->emb, bi, prec);
-        } while (arb_contains_zero(difference));
+        if (nf->nf->flag & NF_LINEAR)
+            return _fmpq_cmp(LNF_ELEM_NUMREF(a->elem),
+                             LNF_ELEM_DENREF(a->elem),
+                             fmpq_numref(b),
+                             fmpq_denref(b));
+        else if (nf->nf->flag & NF_QUADRATIC)
+            return _fmpq_cmp(QNF_ELEM_NUMREF(a->elem),
+                             QNF_ELEM_DENREF(a->elem),
+                             fmpq_numref(b),
+                             fmpq_denref(b));
+        else
+            return _fmpq_cmp(NF_ELEM_NUMREF(a->elem),
+                             NF_ELEM_DENREF(a->elem),
+                             fmpq_numref(b),
+                             fmpq_denref(b));
     }
 
-    s = arf_sgn(arb_midref(difference));
-    arb_clear(difference);
-    arb_clear(bi);
+    arb_init(diffball);
+    arb_set_fmpq(diffball, b, nf->prec);
+    arb_sub(diffball, a->emb, diffball, nf->prec);
+
+    if (!arb_contains_zero(diffball))
+    {
+        s = arf_sgn(arb_midref(diffball));
+        arb_clear(diffball);
+        return s;
+    }
+
+    renf_elem_relative_condition_number_2exp(&cond, a, nf);
+    prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
+    renf_elem_set_evaluation(a, nf, prec + cond);
+
+    arb_set_fmpq(diffball, b, prec);
+    arb_sub(diffball, a->emb, diffball, prec);
+
+    if (!arb_contains_zero(diffball))
+    {
+        s = arf_sgn(arb_midref(diffball));
+        arb_clear(diffball);
+        return s;
+    }
+
+    arb_clear(diffball);
+    renf_elem_init(diffnf, nf);
+    renf_elem_set(diffnf, a, nf);
+    renf_elem_sub_fmpq(diffnf, diffnf, b, nf);
+    s = renf_elem_sgn(diffnf, nf);
+    renf_elem_clear(diffnf, nf);
     return s;
 }
