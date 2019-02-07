@@ -5,7 +5,7 @@ E-ANTIC is a C/C++ library to deal with real embedded number fields built on
 top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as fast
 as possible exact arithmetic operations and comparisons.
 
-Source tarballs can be downloaded at http://www.labri.fr/perso/vdelecro/.
+Source tarballs can be downloaded at http://www.labri.fr/perso/vdelecro/e-antic.
 
 The dependencies are:
 
