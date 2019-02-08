@@ -39,7 +39,7 @@ void
 RENF_ELEM_INT(fmpz_t a, renf_elem_t b, renf_t nf)
 {
     arf_t cl, cr;
-    slong size, cond, prec;
+    slong size, cond = WORD_MIN, prec;
     fmpz_t zsize;
 
     if (nf_elem_is_rational(b->elem, nf->nf))
@@ -53,6 +53,22 @@ RENF_ELEM_INT(fmpz_t a, renf_elem_t b, renf_t nf)
         return;
     }
 
+    /* ensure that the encolsure is not infinite */
+    if (arf_is_inf(arb_midref(b->emb)) || mag_is_inf(arb_radref(b->emb)))
+    {
+        renf_elem_relative_condition_number_2exp(&cond, b, nf);
+        prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
+        renf_elem_set_evaluation(b, nf, prec + cond);
+
+        while (arf_is_inf(arb_midref(b->emb)) || mag_is_inf(arb_radref(b->emb)))
+        {
+            prec *= 2;
+            renf_refine_embedding(nf, prec);
+            renf_elem_set_evaluation(b, nf, prec + cond);
+        }
+    }
+
+    /* try default precision */
     arf_init(cl);
     arf_init(cr);
     if (ARB_UNIQUE_INT(a, b->emb, cl, cr, nf->prec))
@@ -62,9 +78,8 @@ RENF_ELEM_INT(fmpz_t a, renf_elem_t b, renf_t nf)
         return;
     }
 
-    /* result bits upper bound */
+    /* try higher precision and possibly refine the number field */
     fmpz_init(zsize);
-    arb_get_interval_arf(cl, cr, b->emb, 8);
 
     arf_abs_bound_lt_2exp_fmpz(zsize, cl);
     if (!fmpz_fits_si(zsize))
@@ -79,7 +94,9 @@ RENF_ELEM_INT(fmpz_t a, renf_elem_t b, renf_t nf)
     fmpz_clear(zsize);
 
     prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
-    renf_elem_relative_condition_number_2exp(&cond, b, nf);
+
+    if (cond == WORD_MIN)
+        renf_elem_relative_condition_number_2exp(&cond, b, nf);
 
     do {
         renf_elem_set_evaluation(b, nf, prec + cond);

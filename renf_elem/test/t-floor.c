@@ -39,7 +39,7 @@ void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
     fmpq_clear(k); \
     fmpq_poly_clear(p);
  
-void test_field1(flint_rand_t state)
+void test_field1_small(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
     int iter;
@@ -80,6 +80,53 @@ void test_field1(flint_rand_t state)
 
     TEST_FLOOR_CLEANUP;
 }
+
+void test_field1_big(flint_rand_t state)
+{
+    /* tests in QQ[sqrt(5)] with very small elements */
+    int iter;
+
+    fmpq_t k;
+    fmpq_poly_t p;
+    arb_t emb;
+    renf_t nf;
+    renf_elem_t a;
+
+    fmpq_init(k);
+    fmpq_poly_init(p);
+
+    fmpq_poly_set_coeff_si(p, 2, 1);
+    fmpq_poly_set_coeff_si(p, 1, -1);
+    fmpq_poly_set_coeff_si(p, 0, -1);
+
+    arb_init(emb);
+    arb_set_d(emb, 1.61803398874989);
+    arb_add_error_2exp_si(emb, -20);
+    renf_init(nf, p, emb, 20 + n_randint(state, 10));
+    arb_clear(emb);
+
+    renf_elem_init(a, nf);
+
+
+    /* (1+sqrt(5))/2 vs Fibonacci */
+    fmpq_poly_zero(p);
+    fmpq_poly_set_coeff_si(p, 1, -1);
+    for (iter = 1; iter < 2000; iter++)
+    {
+        fmpz_t n;
+        fmpz_init(n);
+        fmpz_fib_ui(fmpq_numref(k), iter+1);
+        fmpz_fib_ui(fmpq_denref(k), iter);
+        fmpq_poly_set_coeff_fmpq(p, 0, k);
+        renf_elem_set_fmpq_poly(a, p, nf);
+        renf_elem_inv(a, a, nf);
+        renf_elem_floor(n, a, nf);
+        fmpz_clear(n);
+    }
+
+    TEST_FLOOR_CLEANUP;
+}
+
 
 void test_field2(flint_rand_t state)
 {
@@ -174,7 +221,8 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    test_field1(state);
+    test_field1_small(state);
+    test_field1_big(state);
     test_field2(state);
 
     for (iter = 0; iter < 100; iter++)
