@@ -39,7 +39,7 @@ public:
 
     renf_class();
     renf_class(renf_t);
-    renf_class(renf_t, const std::string);
+    renf_class(renf_t, const std::string&);
     renf_class(const char * pol, const char * var, const char * emb, const slong prec=64);
     renf_class(const std::string& pol, const std::string& var, const std::string emb, const slong prec=64);
 
@@ -90,7 +90,7 @@ private:
     void assign_fmpq_poly(const fmpq_poly_t);
 
     void assign_char_ptr(const char *);
-    void assign_string(const std::string);
+    void assign_string(const std::string&);
     void assign_stream(std::istream& is);
 
     void assign_renf_elem_class(const renf_elem_class&);
@@ -138,7 +138,7 @@ public:
     __RENFXX_construct(unsigned long int, assign_ui);
     __RENFXX_construct(mpz_class&, assign_mpz_class);
     __RENFXX_construct(mpq_class&, assign_mpq_class);
-    __RENFXX_construct(std::string, assign_string);
+    __RENFXX_construct(std::string&, assign_string);
     #undef __constructor
 
     // underlying number field
@@ -307,7 +307,7 @@ inline renf_class::renf_class(renf_t k)
     gen_name = "a";
 }
 
-inline renf_class::renf_class(renf_t k, const std::string gen_name)
+inline renf_class::renf_class(renf_t k, const std::string& gen_name)
 {
     renf_init_set(nf, k);
     this->gen_name = gen_name;
@@ -584,7 +584,7 @@ inline void renf_elem_class::assign_renf_elem_class(const renf_elem_class& x)
         renf_elem_set(a, x.a, nf->get_renf());
 }
 
-inline void renf_elem_class::assign_string(const std::string s)
+inline void renf_elem_class::assign_string(const std::string& s)
 {
     assign_char_ptr(s.c_str());
 }
