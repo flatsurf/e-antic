@@ -70,9 +70,9 @@ public:
 class renf_elem_class
 {
 private:
-    mutable renf_class * nf;  /* not owned reference to a number field or NULL */
-    mutable renf_elem_t a;    /* the element when nf != NULL */
-    mutable fmpq_t b;         /* rational value when nf == NULL */
+    mutable renf_class * nf;  /* not owned reference to a number field or nullptr */
+    mutable renf_elem_t a;    /* the element when nf != nullptr */
+    mutable fmpq_t b;         /* rational value when nf == nullptr */
 
     void reset_parent(renf_class * p);
 
@@ -112,7 +112,7 @@ public:
     #define __RENFXX_construct(TYP, ASSIGN) \
     inline renf_elem_class(const TYP z)  \
     {                                    \
-        nf = NULL;                       \
+        nf = nullptr;                       \
         fmpq_init(b);                    \
         ASSIGN(z);                       \
     }                                    \
@@ -257,7 +257,7 @@ inline std::istream& operator >> (std::istream& is, renf_elem_class& a)
 {
     renf_class * nf = (renf_class *) is.pword(renf_class::xalloc());
 
-    if (nf != NULL)
+    if (nf != nullptr)
         // reset the number field with the one from the stream
         a.reset_parent(nf);
 
@@ -391,7 +391,7 @@ inline renf_elem_class renf_class::gen()
 
 inline void renf_elem_class::assign_fmpz(const fmpz_t z)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set(fmpq_numref(b), z);
@@ -402,7 +402,7 @@ inline void renf_elem_class::assign_fmpz(const fmpz_t z)
 
 inline void renf_elem_class::assign_mpz(const mpz_t z)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_mpz(fmpq_numref(b), z);
@@ -418,7 +418,7 @@ inline void renf_elem_class::assign_mpz_class(const mpz_class& z)
 
 inline void renf_elem_class::assign_mpq(const mpq_t z)
 {
-    if (nf == NULL)
+    if (nf == nullptr) 
         fmpq_set_mpq(b, z);
     else
         renf_elem_set_mpq(a, z, nf->get_renf());
@@ -431,7 +431,7 @@ inline void renf_elem_class::assign_mpq_class(const mpq_class& z)
 
 inline void renf_elem_class::assign_fmpq(const fmpq_t z)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         fmpq_set(b, z);
     else
         renf_elem_set_fmpq(a, z, nf->get_renf());
@@ -440,7 +440,7 @@ inline void renf_elem_class::assign_fmpq(const fmpq_t z)
 // TODO: the conversion "signed long int" -> slong is not very careful
 inline void renf_elem_class::assign_si(signed long int z)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_si(fmpq_numref(b), (slong) z);
@@ -452,7 +452,7 @@ inline void renf_elem_class::assign_si(signed long int z)
 // TODO: the conversion "unsigned long int" -> ulong is not very careful
 inline void renf_elem_class::assign_ui(unsigned long int z)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_ui(fmpq_numref(b), (ulong) z);
@@ -463,7 +463,7 @@ inline void renf_elem_class::assign_ui(unsigned long int z)
 
 inline void renf_elem_class::assign_fmpq_poly(const fmpq_poly_t p)
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         throw std::invalid_argument("renf_elem_class: can not assign from polynomial if number field not set");
     renf_elem_set_fmpq_poly(a, p, nf->get_renf());
 }
@@ -477,7 +477,7 @@ inline void renf_elem_class::assign_stream(std::istream& is)
         throw std::invalid_argument("empty stream");
 
     std::string g;
-    if (nf == NULL)
+    if (nf == nullptr)
         g = "";
     else
         g = parent().gen_name;
@@ -511,7 +511,7 @@ inline void renf_elem_class::assign_char_ptr(const char * s)
     const char * i = strchr(s, '~');
     char * t;
 
-    if (i != NULL)
+    if (i != nullptr)
     {
         t = (char *) flint_malloc((i - s + 1) * sizeof(char));
         strncpy(t, s, i - s);
@@ -523,7 +523,7 @@ inline void renf_elem_class::assign_char_ptr(const char * s)
         strcpy(t, s);
     }
 
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         err = fmpq_set_str(b, t, 10);
         if (err)
@@ -549,18 +549,18 @@ inline void renf_elem_class::assign_char_ptr(const char * s)
 
 inline void renf_elem_class::reset_parent(renf_class * p)
 {
-    if (p == NULL)
+    if (p == nullptr)
     {
-        if (nf != NULL)
+        if (nf != nullptr)
         {
             renf_elem_clear(a, nf->get_renf());
-            nf = NULL;
+            nf = nullptr;
             fmpq_init(b);
         }
     }
     else
     {
-        if (nf == NULL)
+        if (nf == nullptr)
         {
             fmpq_clear(b);
             renf_elem_init(a, p->get_renf());
@@ -578,7 +578,7 @@ inline void renf_elem_class::reset_parent(renf_class * p)
 inline void renf_elem_class::assign_renf_elem_class(const renf_elem_class& x)
 {
     reset_parent(x.nf);
-    if (x.nf == NULL)
+    if (x.nf == nullptr)
         fmpq_set(b, x.b);
     else
         renf_elem_set(a, x.a, nf->get_renf());
@@ -593,7 +593,7 @@ inline void renf_elem_class::assign_string(const std::string& s)
 
 inline renf_elem_class::renf_elem_class()
 {
-    nf = NULL;
+    nf = nullptr;
     fmpq_init(b);
     fmpq_zero(b);
 }
@@ -608,7 +608,7 @@ inline renf_elem_class::renf_elem_class(renf_class& k)
 inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
 {
     nf = x.nf;
-    if (nf == NULL)
+    if (nf == nullptr)
         fmpq_init(b);
     else
         renf_elem_init(a, nf->get_renf());
@@ -617,7 +617,7 @@ inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
 
 inline renf_elem_class::~renf_elem_class(void)
 {
-    if (nf == NULL) fmpq_clear(b);
+    if (nf == nullptr) fmpq_clear(b);
     else renf_elem_clear(a, nf->get_renf());
 }
 
@@ -625,7 +625,7 @@ inline renf_elem_class::~renf_elem_class(void)
 
 inline bool renf_elem_class::is_fmpq(void) const
 {
-    return (nf == NULL);
+    return (nf == nullptr);
 }
 
 inline fmpq * renf_elem_class::get_fmpq(void) const
@@ -646,7 +646,7 @@ inline mpz_class renf_elem_class::get_den() const
 {
     mpz_class res;
 
-    if (nf == NULL)
+    if (nf == nullptr)
         fmpz_get_mpz(res.__get_mp(), fmpq_denref(b));
     else
     {
@@ -664,7 +664,7 @@ inline mpz_class renf_elem_class::get_num(void) const
 {
     mpz_class x;
 
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
         return x;
@@ -694,7 +694,7 @@ inline mpq_class renf_elem_class::get_rational(void) const
 {
     mpq_class z;
 
-    if (nf == NULL)
+    if (nf == nullptr)
         fmpq_get_mpq(z.__get_mp(), b);
     else if(is_rational())
     {
@@ -721,11 +721,11 @@ inline std::string renf_elem_class::get_str(int flag) const
     }
 
     // call to renf_elem_get_str_pretty
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         if (flag & EANTIC_STR_ALG)
         {
-            char * u = fmpq_get_str(NULL, 10, b);
+            char * u = fmpq_get_str(nullptr, 10, b);
             s += u;
             flint_free(u);
 
@@ -777,7 +777,7 @@ inline std::string renf_elem_class::get_str(int flag) const
 inline renf_elem_class renf_elem_class::operator - () const
 {
     renf_elem_class ans(*this);
-    if (nf == NULL) fmpq_neg(ans.b, ans.b);
+    if (nf == nullptr) fmpq_neg(ans.b, ans.b);
     else renf_elem_neg(ans.a, ans.a, ans.nf->get_renf());
     return ans;
 }
@@ -795,16 +795,16 @@ static inline void renf_elem_fmpq_mul(renf_elem_t a, fmpq_t b, renf_elem_t c, re
 #define __RENFXX_binop(OP, INOP, FUN1, FUN2, FUN3, FUN4) \
 inline renf_elem_class& renf_elem_class::operator INOP (const renf_elem_class & other) \
 {                                                 \
-    if (nf != NULL)                               \
+    if (nf != nullptr)                               \
     {                                             \
         if (nf == other.nf)                       \
             FUN1(a, a, other.a, nf->get_renf());  \
-        else if (other.nf == NULL)                \
+        else if (other.nf == nullptr)                \
             FUN2(a, a, other.b, nf->get_renf());  \
         else                                      \
             throw std::domain_error("arithmetic invalid on renf_elem_classes with different fields"); \
     }                                             \
-    else if (other.nf != NULL)                    \
+    else if (other.nf != nullptr)                    \
     {                                             \
         /* promote to nf elt */                   \
         nf = other.nf;                            \
@@ -837,7 +837,7 @@ __RENFXX_binop(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmp
 #define __RENFXX_binop(TYP, FMPQ_FUN, RENF_FUN, INOP, OP) \
 inline renf_elem_class& renf_elem_class::operator INOP (TYP other) \
 {                                              \
-    if (nf == NULL)                            \
+    if (nf == nullptr)                            \
         FMPQ_FUN(b, b, other);                 \
     else                                       \
         RENF_FUN(a, a, other, nf->get_renf()); \
@@ -889,7 +889,7 @@ inline renf_elem_class& renf_elem_class::operator INOP (const TYP& other) \
 {                                              \
     FLINT_TYP tmp;                             \
     INITSET(tmp, other.__get_mp());            \
-    if (nf == NULL)                            \
+    if (nf == nullptr)                            \
         FMPQ_FUN(b, b, tmp);                   \
     else                                       \
         RENF_FUN(a, a, tmp, nf->get_renf());   \
@@ -926,18 +926,18 @@ __RENFXX_binop(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, f
 
 inline bool renf_elem_class::operator == (const renf_elem_class& other) const
 {
-    if (nf != NULL)
+    if (nf != nullptr)
     {
         if (nf == other.nf)
         {
             return renf_elem_equal(a, other.a, nf->get_renf());
         }
-        else if (other.nf == NULL)
+        else if (other.nf == nullptr)
             return renf_elem_equal_fmpq(a, other.b, nf->get_renf());
         else
             throw std::domain_error("can not compare renf_elem_class on different number fields");
     }
-    else if (other.nf == NULL)
+    else if (other.nf == nullptr)
         return fmpq_equal(b, other.b);
     else
         return renf_elem_equal_fmpq(other.a, b, other.nf->get_renf());
@@ -950,16 +950,16 @@ inline bool renf_elem_class::operator != (const renf_elem_class & other) const
 
 inline bool renf_elem_class::operator > (const renf_elem_class & other) const
 {
-    if (nf != NULL)
+    if (nf != nullptr)
     {
         if (nf == other.nf)
             return renf_elem_cmp(a, other.a, nf->get_renf()) > 0;
-        else if (other.nf == NULL)
+        else if (other.nf == nullptr)
             return renf_elem_cmp_fmpq(a, other.b, nf->get_renf()) > 0;
         else
             throw std::domain_error("can not compare renf_elem_class on different number fields");
     }
-    else if (other.nf == NULL)
+    else if (other.nf == nullptr)
         return fmpq_cmp(b, other.b) > 0;
     else
         return renf_elem_cmp_fmpq(other.a, b, other.nf->get_renf()) < 0;
@@ -981,84 +981,84 @@ inline bool renf_elem_class::operator <= (const renf_elem_class & other) const
 #define __RENFXX_cmp(TYP, FMPQ_EQ, FMPQ_CMP, RENF_EQ, RENF_CMP) \
 inline bool renf_elem_class::operator == (TYP other) const \
 {                                                    \
-    if (nf == NULL)                                  \
+    if (nf == nullptr)                                  \
         return FMPQ_EQ(b, other);                    \
     else                                             \
         return RENF_EQ(a, other, nf->get_renf());    \
 }                                                    \
 inline bool operator == (TYP other, const renf_elem_class& r) \
 {                                                    \
-    if (r.nf == NULL)                               \
+    if (r.nf == nullptr)                               \
         return FMPQ_EQ(r.b, other);                 \
     else                                             \
         return RENF_EQ(r.a, other, r.nf->get_renf()); \
 }                                                    \
 inline bool renf_elem_class::operator != (TYP other) const \
 {                                                     \
-    if (nf == NULL)                                   \
+    if (nf == nullptr)                                   \
         return not FMPQ_EQ(b, other);                 \
     else                                              \
         return not RENF_EQ(a, other, nf->get_renf()); \
 }                                \
 inline bool operator != (TYP other, const renf_elem_class& r) \
 {                                                             \
-    if (r.nf == NULL)                                        \
+    if (r.nf == nullptr)                                        \
         return not FMPQ_EQ(r.b, other);                      \
     else                                                      \
         return not RENF_EQ(r.a, other, r.nf->get_renf());    \
 }                                                             \
 inline bool renf_elem_class:: operator < (TYP other) const    \
 {                                                             \
-    if (nf == NULL)                                           \
+    if (nf == nullptr)                                           \
         return FMPQ_CMP(b, other) == -1;                      \
     else                                                      \
         return RENF_CMP(a, other, nf->get_renf()) == -1;      \
 }                                                             \
 inline bool operator < (TYP other, const renf_elem_class& r)        \
 {                                                             \
-    if (r.nf == NULL)                                        \
+    if (r.nf == nullptr)                                        \
         return FMPQ_CMP(r.b, other) == 1;                    \
     else                                                      \
         return RENF_CMP(r.a, other, r.nf->get_renf()) == 1; \
 }                                                             \
 inline bool renf_elem_class:: operator > (TYP other) const    \
 {                                                             \
-    if (nf == NULL)                                           \
+    if (nf == nullptr)                                           \
         return FMPQ_CMP(b, other) == 1;                       \
     else                                                      \
         return RENF_CMP(a, other, nf->get_renf()) == 1;       \
 }                                                             \
 inline bool operator > (TYP other, const renf_elem_class& r)        \
 {                                                             \
-    if (r.nf == NULL)                                        \
+    if (r.nf == nullptr)                                        \
         return FMPQ_CMP(r.b, other) == -1;                   \
     else                                                      \
         return RENF_CMP(r.a, other, r.nf->get_renf()) == -1; \
 }                                                              \
 inline bool renf_elem_class:: operator <= (TYP other) const    \
 {                                                              \
-    if (nf == NULL)                                            \
+    if (nf == nullptr)                                            \
         return FMPQ_CMP(b, other) <= 0;                        \
     else                                                       \
         return RENF_CMP(a, other, nf->get_renf()) <= 0;        \
 }                                                              \
 inline bool operator <= (TYP other, const renf_elem_class& r)        \
 {                                                              \
-    if (r.nf == NULL)                                         \
+    if (r.nf == nullptr)                                         \
         return FMPQ_CMP(r.b, other) >= 0;                     \
     else                                                       \
         return RENF_CMP(r.a, other, r.parent().get_renf()) >= 0;  \
 }                                                              \
 inline bool renf_elem_class:: operator >= (TYP other) const    \
 {                                                              \
-    if (nf == NULL)                                            \
+    if (nf == nullptr)                                            \
         return FMPQ_CMP(b, other) >= 0;                        \
     else                                                       \
         return RENF_CMP(a, other, nf->get_renf()) >= 0;        \
 }                                                              \
 inline bool operator >= (TYP other, const renf_elem_class& r)        \
 {                                                              \
-    if (r.nf == NULL)                                         \
+    if (r.nf == nullptr)                                         \
         return FMPQ_CMP(r.b, other) <= 0;                     \
     else                                                       \
         return RENF_CMP(r.a, other, r.parent().get_renf()) <= 0;  \
@@ -1083,7 +1083,7 @@ inline bool renf_elem_class:: operator == (const TYP& other) const \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (nf == NULL)                  \
+    if (nf == nullptr)                  \
         res = FMPQ_EQ(b, tmp);       \
     else                             \
         res = RENF_EQ(a, tmp, nf->get_renf()); \
@@ -1095,7 +1095,7 @@ inline bool operator == (const TYP& other, const renf_elem_class& r) \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (r.nf == NULL)                  \
+    if (r.nf == nullptr)                  \
         res = FMPQ_EQ(r.b, tmp);       \
     else                             \
         res = RENF_EQ(r.a, tmp, r.nf->get_renf()); \
@@ -1107,7 +1107,7 @@ inline bool renf_elem_class:: operator != (const TYP& other) const \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (nf == NULL)                  \
+    if (nf == nullptr)                  \
         res = not FMPQ_EQ(b, tmp);       \
     else                             \
         res = not RENF_EQ(a, tmp, nf->get_renf()); \
@@ -1119,7 +1119,7 @@ inline bool operator != (const TYP& other, const renf_elem_class& r) \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (r.nf == NULL)                  \
+    if (r.nf == nullptr)                  \
         res = not FMPQ_EQ(r.b, tmp);       \
     else                             \
         res = not RENF_EQ(r.a, tmp, r.nf->get_renf()); \
@@ -1138,7 +1138,7 @@ inline bool renf_elem_class:: operator OP (const TYP& other) const \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (nf == NULL)                  \
+    if (nf == nullptr)                  \
         res = FMPQ_CMP(b, tmp) COND;       \
     else                             \
         res = RENF_CMP(a, tmp, nf->get_renf()) COND; \
@@ -1150,7 +1150,7 @@ inline bool operator OP (const TYP& other, const renf_elem_class& r) \
     bool res;                        \
     FLINT_TYP tmp;                   \
     INITSET(tmp, other.__get_mp());      \
-    if (r.nf == NULL)                  \
+    if (r.nf == nullptr)                  \
         res = FMPQ_CMP(r.b, tmp) COND_INV;       \
     else                             \
         res = RENF_CMP(r.a, tmp, r.nf->get_renf()) COND_INV; \
@@ -1174,7 +1174,7 @@ __RENFXX_all_cmp(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly,
 
 inline bool renf_elem_class::is_zero() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         return fmpq_is_zero(b);
     else
         return renf_elem_is_zero(a, nf->get_renf());
@@ -1182,7 +1182,7 @@ inline bool renf_elem_class::is_zero() const
 
 inline bool renf_elem_class::is_one() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         return fmpq_is_one(b);
     else
         return renf_elem_is_one(a, nf->get_renf());
@@ -1190,7 +1190,7 @@ inline bool renf_elem_class::is_one() const
 
 inline bool renf_elem_class::is_rational() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         return true;
     else
         return renf_elem_is_rational(a, nf->get_renf());
@@ -1198,7 +1198,7 @@ inline bool renf_elem_class::is_rational() const
 
 inline bool renf_elem_class::is_integer() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         return fmpz_is_one(fmpq_denref(b));
     else
         return renf_elem_is_integer(a, nf->get_renf());
@@ -1209,7 +1209,7 @@ inline mpz_class renf_elem_class::floor() const
     fmpz_t tmp;
     fmpz_init(tmp);
 
-    if (nf == NULL) fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
+    if (nf == nullptr) fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
     else renf_elem_floor(tmp, a, nf->get_renf());
 
     mpz_class z;
@@ -1223,7 +1223,7 @@ inline mpz_class renf_elem_class::ceil() const
     fmpz_t tmp;
     fmpz_init(tmp);
 
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_add(tmp, fmpq_numref(b), fmpq_denref(b));
         fmpz_sub_ui(tmp, tmp, 1);
@@ -1239,7 +1239,7 @@ inline mpz_class renf_elem_class::ceil() const
 
 inline int renf_elem_class::sgn() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
         return fmpq_sgn(b);
     else
         return renf_elem_sgn(a, nf->get_renf());
@@ -1247,7 +1247,7 @@ inline int renf_elem_class::sgn() const
 
 inline double renf_elem_class::get_d() const
 {
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         arb_t s;
         arb_init(s);
