@@ -273,9 +273,9 @@ double fmpq_get_d(fmpq_t q)
 }
 
 static __inline__
-slong EANTIC_FIXED_fmpz_vec_max_bits(const fmpz * vec, slong len)
+ulong EANTIC_FIXED_fmpz_vec_max_bits(const fmpz * vec, slong len)
 {
-    slong n = 0;
+    ulong n = 0;
     slong i = 0;
 
     for (i = 0; i < len; i++)
