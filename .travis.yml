@@ -23,7 +23,7 @@ install:
   - cd arb-2.16.0
   - ./configure --prefix=/usr && make && sudo make install
   - cd ..
-  # install E-ANTIC
+  # build E-ANTIC
   - ./bootstrap.sh
   - ./configure --prefix=/usr --enable-valgrind
   - cat config.log
