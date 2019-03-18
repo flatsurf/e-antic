@@ -1,12 +1,10 @@
-language: c
+language: c++
 cache: ccache
+dist: xenial
 matrix:
-  - compiler: gcc
-    env: CC=gcc
-         CXX=g++
-  - compiler: clang
-    env: CC=clang
-         CXX=clang++
+  - compiler:
+    - clang
+    - gcc
 env:
   MAKEFLAGS="-j2"
 install:
