@@ -127,18 +127,20 @@ public:
         ASSIGN(n);                                   \
         return *this;                                \
     };
-    __RENFXX_construct(signed char, assign_si);
-    __RENFXX_construct(signed int, assign_si);
-    __RENFXX_construct(signed short int, assign_si);
-    __RENFXX_construct(signed long int, assign_si);
 
-    __RENFXX_construct(unsigned char, assign_ui);
-    __RENFXX_construct(unsigned int, assign_ui);
-    __RENFXX_construct(unsigned short int, assign_ui);
-    __RENFXX_construct(unsigned long int, assign_ui);
-    __RENFXX_construct(mpz_class&, assign_mpz_class);
-    __RENFXX_construct(mpq_class&, assign_mpq_class);
-    explicit __RENFXX_construct(std::string&, assign_string);
+    __RENFXX_construct(signed char, assign_si)
+    __RENFXX_construct(signed int, assign_si)
+    __RENFXX_construct(signed short int, assign_si)
+    __RENFXX_construct(signed long int, assign_si)
+
+    __RENFXX_construct(unsigned char, assign_ui)
+    __RENFXX_construct(unsigned int, assign_ui)
+    __RENFXX_construct(unsigned short int, assign_ui)
+    __RENFXX_construct(unsigned long int, assign_ui)
+    __RENFXX_construct(mpz_class&, assign_mpz_class)
+    __RENFXX_construct(mpq_class&, assign_mpq_class)
+    explicit __RENFXX_construct(std::string&, assign_string)
+
     #undef __constructor
 
     // underlying number field
@@ -481,8 +483,6 @@ inline void renf_elem_class::assign_stream(std::istream& is)
         g = "";
     else
         g = parent().gen_name;
-
-    bool after_g = false; /* whether we just read a variable name */
 
     c = is.peek();
     if (c == '(')
@@ -827,10 +827,10 @@ inline renf_elem_class renf_elem_class::operator OP (const renf_elem_class & oth
     return ans;                           \
 }
 
-__RENFXX_binop(+, +=, renf_elem_add, renf_elem_add_fmpq, renf_elem_fmpq_add, fmpq_add);
-__RENFXX_binop(*, *=, renf_elem_mul, renf_elem_mul_fmpq, renf_elem_fmpq_mul, fmpq_mul);
-__RENFXX_binop(-, -=, renf_elem_sub, renf_elem_sub_fmpq, renf_elem_fmpq_sub, fmpq_sub);
-__RENFXX_binop(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmpq_div);
+__RENFXX_binop(+, +=, renf_elem_add, renf_elem_add_fmpq, renf_elem_fmpq_add, fmpq_add)
+__RENFXX_binop(*, *=, renf_elem_mul, renf_elem_mul_fmpq, renf_elem_fmpq_mul, fmpq_mul)
+__RENFXX_binop(-, -=, renf_elem_sub, renf_elem_sub_fmpq, renf_elem_fmpq_sub, fmpq_sub)
+__RENFXX_binop(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmpq_div)
 #undef __RENFXX_binop
 
 // TODO: we are not careful enough about conversions to slong/ulong
