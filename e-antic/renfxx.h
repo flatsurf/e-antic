@@ -99,7 +99,7 @@ public:
     // constructors and destructor
     renf_elem_class();
     ~renf_elem_class();
-    renf_elem_class(renf_class& k);
+    explicit renf_elem_class(renf_class& k);
     renf_elem_class(const renf_elem_class& x);
 
     inline renf_elem_class& operator = (const renf_elem_class& x)
@@ -127,6 +127,7 @@ public:
         ASSIGN(n);                                   \
         return *this;                                \
     };
+
     __RENFXX_construct(signed char, assign_si)
     __RENFXX_construct(signed int, assign_si)
     __RENFXX_construct(signed short int, assign_si)
@@ -138,7 +139,8 @@ public:
     __RENFXX_construct(unsigned long int, assign_ui)
     __RENFXX_construct(mpz_class&, assign_mpz_class)
     __RENFXX_construct(mpq_class&, assign_mpq_class)
-    __RENFXX_construct(std::string&, assign_string)
+    explicit __RENFXX_construct(std::string&, assign_string)
+
     #undef __constructor
 
     // underlying number field
