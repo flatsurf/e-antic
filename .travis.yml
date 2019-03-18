@@ -8,7 +8,6 @@ matrix:
 env:
   MAKEFLAGS="-j2"
 install:
-  - export PREFIX="/usr"
   - sudo apt-get update
   - sudo apt-get install libgmp-dev libmpfr-dev valgrind
   # install FLINT (currently, there is no need to build as we are using a standard version)
@@ -16,17 +15,17 @@ install:
   # - wget http://flintlib.org/flint-2.5.2.tar.gz
   # - tar xf flint-2.5.2.tar.gz
   # - cd flint-2.5.2
-  # - ./configure && make && sudo make install
+  # - ./configure --prefix=/usr && make && sudo make install
   # - cd ..
   # install Arb
   - wget https://github.com/fredrik-johansson/arb/archive/2.16.0.tar.gz
   - tar xf 2.16.0.tar.gz
   - cd arb-2.16.0
-  - ./configure && make && sudo make install
+  - ./configure --prefix=/usr && make && sudo make install
   - cd ..
   # install E-ANTIC
   - ./bootstrap.sh
-  - ./configure --enable-valgrind
+  - ./configure --prefix=/usr --enable-valgrind
   - cat config.log
   - make
   - ldd .libs/libeantic.so
