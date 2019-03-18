@@ -32,6 +32,6 @@ install:
   - ldd .libs/libeantic.so
 
 script:
-  - V=1 make check
-  - V=1 make check-valgrind
-  - V=1 make distcheck
+  - make check || (cat `find test-suite.log`; false)
+  - make check-valgrind || (cat `find test-suite-memcheck.log`; false)
+  - make distcheck
