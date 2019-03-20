@@ -487,7 +487,7 @@ inline void renf_elem_class::assign_mpz_vector(const std::vector<mpz_class>& v)
 
     if (nf == nullptr)
         throw std::invalid_argument("renf_elem_class: can not assign from std::vector<mpz_class> if number field not set");
-    if (v.size() >= nf->degree())
+    if (v.size() > nf->degree())
         throw std::invalid_argument("vector too long");
 
     fmpq_poly_init(p);
@@ -503,7 +503,7 @@ inline void renf_elem_class::assign_mpq_vector(const std::vector<mpq_class>& v)
 
     if (nf == nullptr)
         throw std::invalid_argument("renf_elem_class: can not assign from std::vector<mpz_class> if number field not set");
-    if (v.size() >= nf->degree())
+    if (v.size() > nf->degree())
         throw std::invalid_argument("vector too long");
 
     fmpq_poly_init(p);
