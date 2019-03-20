@@ -159,6 +159,37 @@ int main(void)
                 throw std::runtime_error("constructor from another renf_elem_class is wrong (3)");
         }
 
+        {
+            if (K.degree() >= 2)
+            {
+                std::vector<mpz_class> v;
+                v.push_back(1);
+                v.push_back(1);
+                renf_elem_class a(K, v);
+                renf_elem_class b(K);
+                b = v;
+
+                if (a != K.gen() + 1 || b != K.gen() + 1)
+                    throw std::runtime_error("constructor from std::vector<mpz_class> failed");
+            }
+        }
+
+        {
+            if (K.degree() >= 2)
+            {
+                std::vector<mpq_class> v;
+                v.push_back(mpq_class(1,2));
+                v.push_back(mpq_class(-2,3));
+                renf_elem_class a(K,v);
+                renf_elem_class b(K,v);
+                b = v;
+
+                if (a != (-2*K.gen()/3 + mpq_class(1,2)) ||
+                    b != (-2*K.gen()/3 + mpq_class(1,2)))
+                    throw std::runtime_error("constructor from std::vector<mpq_class> failed");
+            }
+        }
+
     }
 
     FLINT_TEST_CLEANUP(state);

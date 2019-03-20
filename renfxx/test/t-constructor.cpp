@@ -65,6 +65,9 @@ int main(void)
 
         renf_elem_class a(K1, "a + 1");
         renf_elem_class b(K2, "a + 1");
+
+        if (K1.degree() != 2 || K2.degree() != 2)
+            throw std::runtime_error("wrong answer for degree");
     }
 
     {

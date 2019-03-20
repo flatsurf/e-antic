@@ -51,7 +51,6 @@ void renf_refine_embedding(renf_t nf, slong prec);
 
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
-
 static __inline__
 int nf_equal(const nf_t nf1, const nf_t nf2)
 {
@@ -62,6 +61,12 @@ static __inline__
 int renf_equal(const renf_t nf1, const renf_t nf2)
 {
     return nf_equal(nf1->nf, nf2->nf) && arb_overlaps(nf1->emb, nf2->emb);
+}
+
+static __inline__
+slong renf_degree(renf_t nf)
+{
+    return nf_degree(nf->nf);
 }
 
 /* Randomisation */
