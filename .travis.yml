@@ -9,15 +9,8 @@ env:
   MAKEFLAGS="-j2"
 install:
   - sudo apt-get update
-  - sudo apt-get install libgmp-dev libmpfr-dev valgrind
-  # install FLINT (currently, there is no need to build as we are using a standard version)
-  - sudo apt-get install libflint-dev
-  # - wget http://flintlib.org/flint-2.5.2.tar.gz
-  # - tar xf flint-2.5.2.tar.gz
-  # - cd flint-2.5.2
-  # - ./configure --prefix=/usr && make && sudo make install
-  # - cd ..
-  # install Arb
+  - sudo apt-get install libgmp-dev libmpfr-dev libflint-dev valgrind
+  # install Arb development version
   - wget https://github.com/fredrik-johansson/arb/archive/2.16.0.tar.gz
   - tar xf 2.16.0.tar.gz
   - cd arb-2.16.0
