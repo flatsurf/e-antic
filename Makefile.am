@@ -214,6 +214,7 @@ libeantic_la_SOURCES +=            \
     renf_elem/set_fmpq_poly.c      \
     renf_elem/sgn.c                \
     renf_elem/get_d.c              \
+    renf_elem/get_arb.c            \
     renf_elem/relative_condition_number_2exp.c
 
 check_PROGRAMS +=                \
@@ -227,6 +228,7 @@ check_PROGRAMS +=                \
     renf_elem/test/t-get_cfrac   \
     renf_elem/test/t-is_rational \
     renf_elem/test/t-get_d       \
+    renf_elem/test/t-get_arb     \
     renf_elem/test/t-get_str_pretty
 
 # C++

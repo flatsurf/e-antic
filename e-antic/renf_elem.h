@@ -100,6 +100,10 @@ int renf_elem_cmp_ui(renf_elem_t a, const slong b, renf_t nf)
 
 double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
+/* return an arb approximation of a with a relative precision at least prec */
+void renf_elem_get_arb(arb_t x, renf_elem_t a, renf_t nf, slong prec);
+
+/* set c to the continued fraction of a */
 slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, renf_t nf);
 
 void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec);
