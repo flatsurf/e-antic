@@ -10,8 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef NF_EMB_ELEMXX_H
-#define NF_EMB_ELEMXX_H
+#ifndef RENFXX_H
+#define RENFXX_H
 
 #include <cctype>
 #include <iostream>
@@ -27,10 +27,9 @@
 
 #include <e-antic/renf.h>
 #include <e-antic/renf_elem.h>
+#include <e-antic/renfxx_fwd.h>
 
 namespace eantic {
-
-class renf_elem_class; /* forward declaration */
 
 class renf_class
 {
