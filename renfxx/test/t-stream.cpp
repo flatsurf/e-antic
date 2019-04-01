@@ -14,6 +14,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace eantic;
+
 int main(void)
 {
     renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");

@@ -10,7 +10,9 @@
 */
 
 #include <flint/fmpq.h>
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
+
+using namespace eantic;
 
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {

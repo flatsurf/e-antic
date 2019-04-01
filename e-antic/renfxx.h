@@ -28,6 +28,8 @@
 #include <e-antic/renf.h>
 #include <e-antic/renf_elem.h>
 
+namespace eantic {
+
 class renf_elem_class; /* forward declaration */
 
 class renf_class
@@ -245,6 +247,7 @@ public:
 /* I/O operators */
 /*****************/
 
+
 inline std::istream& renf_class::set_istream(std::istream& is)
 {
     is.pword(renf_class::xalloc()) = this;
@@ -271,6 +274,7 @@ inline std::istream& operator >> (std::istream& is, renf_elem_class& a)
     a.assign_stream(is);
     return is;
 }
+
 
 /*********************/
 /* function overload */
@@ -1303,5 +1307,7 @@ inline double renf_elem_class::get_d() const
     else
         return renf_elem_get_d(a, nf->get_renf(), ARF_RND_NEAR);
 }
+
+} // end of namespace
 
 #endif

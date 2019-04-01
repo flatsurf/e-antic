@@ -9,10 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <e-antic/renfxx.h>
 
-#include "e-antic/renfxx.h"
-
-std::vector<mpz_class> renf_elem_class::get_num_vector(void) const
+std::vector<mpz_class> eantic::renf_elem_class::get_num_vector(void) const
 {
     mpz_class x;
     std::vector<mpz_class> res;

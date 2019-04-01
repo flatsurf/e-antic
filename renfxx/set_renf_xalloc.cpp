@@ -9,9 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
 
-int renf_class::xalloc()
+int eantic::renf_class::xalloc()
 {
     static int xa = std::ios_base::xalloc();
     return xa;

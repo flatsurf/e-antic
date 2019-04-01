@@ -16,7 +16,9 @@
 #include <exception>
 #include <vector>
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
+
+using namespace eantic;
 
 void check_rational(int num, int den, renf_class& K)
 {

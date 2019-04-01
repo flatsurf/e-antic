@@ -9,10 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
 
 #include <stdexcept>
 #include <string>
+
+using namespace eantic;
 
 void check_string(const renf_elem_class& a,
         const std::string& s_ALG_D,
