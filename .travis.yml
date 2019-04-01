@@ -1,43 +1,29 @@
-language: c
+language: c++
 cache: ccache
+dist: xenial
 matrix:
-  - compiler: gcc
-    env: CC=gcc
-         CXX=g++
-  - compiler: clang
-    env: CC=clang
-         CXX=clang++
+  - compiler:
+    - clang
+    - gcc
 env:
-  MAKE="make -j2"
+  MAKEFLAGS="-j2"
 install:
-  - sudo apt-get install libgmp-dev libmpfr-dev valgrind
-  # set local directory and check name resolution
-  - mkdir local
-  - export PREFIX="/usr/local"
-  - export LD_LIBRARY_PATH=${PREFIX}/lib
-  # build flint
-  - wget http://flintlib.org/flint-2.5.2.tar.gz
-  - tar xf flint-2.5.2.tar.gz
-  - cd flint-2.5.2
-  - ./configure --prefix=${PREFIX} && make && sudo make install
-  - cd ..
-  # build arb
+  - sudo apt-get update
+  - sudo apt-get install libgmp-dev libmpfr-dev libflint-dev valgrind
+  # install Arb development version
   - wget https://github.com/fredrik-johansson/arb/archive/2.16.0.tar.gz
   - tar xf 2.16.0.tar.gz
   - cd arb-2.16.0
-  - ./configure --prefix=${PREFIX} --with-flint=${PREFIX} && make && sudo make install
+  - ./configure --prefix=/usr && make && sudo make install
   - cd ..
-  # check linking of installation
-  - ldd ${PREFIX}/lib/libflint.so
-  - ldd ${PREFIX}/lib/libarb.so
-  # build e-antic
+  # build E-ANTIC
   - ./bootstrap.sh
-  - ./configure CFLAGS="-I${PREFIX}/include" CPPFLAGS="-I${PREFIX}/include" LDFLAGS="-L${PREFIX}/lib" --enable-valgrind
+  - ./configure --prefix=/usr --enable-valgrind
   - cat config.log
   - make
   - ldd .libs/libeantic.so
 
 script:
-  - V=1 make check
-  - V=1 make check-valgrind
-  - V=1 make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=\"-I${PREFIX}/include\" CPPFLAGS=\"-I${PREFIX}/include\" LDFLAGS=\"-L${PREFIX}/lib\""
+  - make check || (cat `find test-suite.log`; false)
+  - make check-valgrind || (cat `find test-suite-memcheck.log`; false)
+  - make distcheck
