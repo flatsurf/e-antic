@@ -18,8 +18,8 @@
 
 namespace eantic {
 
-class renf_elem_class;
-class renf_class;
+struct renf_elem_class;
+struct renf_class;
 
 }
 
