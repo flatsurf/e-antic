@@ -10,6 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <e-antic/renfxx.h>
 
 namespace eantic {
@@ -90,13 +91,13 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
     {
         fmpq_poly_t f;
         fmpq_poly_init(f);
-        nf_elem_get_fmpq_poly(f, a->elem, nf->get_renf()->nf);
+        nf_elem_get_fmpq_poly(f, a->elem, nf->renf_t()->nf);
         for (size_t i = 0; i < fmpq_poly_length(f); i++)
         {
             fmpz_get_mpz(x.__get_mp(), fmpq_poly_numref(f) + i);
             res.push_back(x);
         }
-        size_t deg = fmpq_poly_length(nf->get_renf()->nf->pol);
+        size_t deg = fmpq_poly_length(nf->renf_t()->nf->pol);
         for (size_t i = fmpq_poly_length(f); i < deg; i++)
             res.push_back(mpz_class(0));
         fmpq_poly_clear(f);
@@ -105,17 +106,8 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
     return res;
 }
 
-const std::shared_ptr<renf_class>& renf_elem_class::parent() const noexcept
-{
-  return nf;
-}
-
-std::shared_ptr<renf_class>& renf_elem_class::parent() noexcept
-{
-  return nf;
-}
-
-inline renf_elem_class& renf_elem_class::operator = (const renf_elem_class& x)
+/*
+inline renf_elem_class& renf_elem_class::operator = (const renf_elem_class& x) noexcept
 {
     assign_renf_elem_class(x);
     return *this;
@@ -235,8 +227,8 @@ inline void renf_elem_class::assign_mpq_vector(const std::vector<mpq_class>& v)
 
 inline void renf_elem_class::assign_stream(std::istream& is)
 {
-    std::string s;          /* part of the stream to use */
-    char c;                 /* current character in the stream */
+    std::string s;          // part of the stream to use
+    char c;                 // current character in the stream
 
     if (is.eof())
         throw std::invalid_argument("empty stream");
@@ -351,42 +343,44 @@ inline void renf_elem_class::assign_string(const std::string& s)
 {
     assign_char_ptr(s.c_str());
 }
+*/
 
 /* constructors destructor */
 
-inline renf_elem_class::renf_elem_class()
+inline renf_elem_class::renf_elem_class() noexcept
 {
     nf = nullptr;
     fmpq_init(b);
     fmpq_zero(b);
 }
 
-inline renf_elem_class::renf_elem_class(renf_class& k)
+inline renf_elem_class::renf_elem_class(const renf_class& k) noexcept
 {
     nf = &k;
-    renf_elem_init(a, nf->get_renf());
-    renf_elem_zero(a, nf->get_renf());
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_zero(a, nf->renf_t());
 }
 
-inline renf_elem_class::renf_elem_class(const renf_elem_class& x)
+inline renf_elem_class::renf_elem_class(const renf_elem_class& x) noexcept
 {
     nf = x.nf;
     if (nf == nullptr)
         fmpq_init(b);
     else
-        renf_elem_init(a, nf->get_renf());
-    assign_renf_elem_class(x);
+        renf_elem_init(a, nf->renf_t());
+
+    *this = x;
 }
 
-inline renf_elem_class::~renf_elem_class(void)
+inline renf_elem_class::~renf_elem_class(void) noexcept
 {
     if (nf == nullptr) fmpq_clear(b);
-    else renf_elem_clear(a, nf->get_renf());
+    else renf_elem_clear(a, nf->renf_t());
 }
 
 /* testing */
 
-inline bool renf_elem_class::is_fmpq(void) const
+inline bool renf_elem_class::is_fmpq(void) const noexcept
 {
     return (nf == nullptr);
 }
@@ -395,7 +389,8 @@ inline fmpq * renf_elem_class::get_fmpq(void) const
 {
     if (not is_fmpq())
         throw std::invalid_argument("renf_elem_class not a fmpq");
-    else return b;
+    // to stay compatible with the old interface, we cast away constness
+    else return const_cast<fmpq*>(b);
 }
 
 inline renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
@@ -415,7 +410,7 @@ inline mpz_class renf_elem_class::get_den() const
     {
         fmpz_t z;
         fmpz_init(z);
-        nf_elem_get_den(z, a->elem, nf->get_renf()->nf);
+        nf_elem_get_den(z, a->elem, nf->renf_t()->nf);
         fmpz_get_mpz(res.__get_mp(), z);
         fmpz_clear(z);
     }
@@ -432,9 +427,9 @@ inline mpz_class renf_elem_class::get_num(void) const
         fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
         return x;
     }
-    else if (nf->get_renf()->nf->flag & NF_LINEAR)
+    else if (nf->renf_t()->nf->flag & NF_LINEAR)
         fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
-    else if (nf->get_renf()->nf->flag & NF_QUADRATIC)
+    else if (nf->renf_t()->nf->flag & NF_QUADRATIC)
     {
         if (! fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1))
             throw std::invalid_argument("renf_elem_class not a rational");
@@ -461,9 +456,9 @@ inline mpq_class renf_elem_class::get_rational(void) const
         fmpq_get_mpq(z.__get_mp(), b);
     else if(is_rational())
     {
-        fmpq_t q;
+        ::fmpq_t q;
         fmpq_init(q);
-        nf_elem_get_fmpq(q, a->elem, parent().get_renf()->nf);
+        nf_elem_get_fmpq(q, a->elem, parent().renf_t()->nf);
         fmpq_get_mpq(z.__get_mp(), q);
         fmpq_clear(q);
     }
@@ -474,14 +469,11 @@ inline mpq_class renf_elem_class::get_rational(void) const
     return z;
 }
 
-inline std::string renf_elem_class::get_str(int flag) const
+inline std::string renf_elem_class::get_str(int flag) const noexcept
 {
     std::string s;
 
-    if ((flag & EANTIC_STR_D) && (flag & EANTIC_STR_ARB))
-    {
-        throw std::invalid_argument("invalid flag");
-    }
+    assert(!((flag & EANTIC_STR_D) && (flag & EANTIC_STR_ARB)));
 
     // call to renf_elem_get_str_pretty
     if (nf == nullptr)
@@ -498,7 +490,8 @@ inline std::string renf_elem_class::get_str(int flag) const
         if (flag & EANTIC_STR_D)
         {
             char * u = (char *) flint_malloc(20 * sizeof(char));
-            sprintf(u, "%lf", fmpq_get_d(b));
+            // TODO: Is it a bug in FLINT that the parameter is not const?
+            sprintf(u, "%lf", fmpq_get_d(const_cast<fmpq*>(b)));
             s += u;
             flint_free(u);
         }
@@ -516,9 +509,9 @@ inline std::string renf_elem_class::get_str(int flag) const
     }
     else
     {
-        char * u = renf_elem_get_str_pretty(get_renf_elem(),
-                parent().gen_name.c_str(),
-                parent().get_renf(),
+        char * u = renf_elem_get_str_pretty(renf_elem_t(),
+                parent().gen_name().c_str(),
+                parent().renf_t(),
                 10,
                 flag);
         s += u;
@@ -537,15 +530,15 @@ inline std::string renf_elem_class::get_str(int flag) const
 
 // Unary arithmetic
 
-inline renf_elem_class renf_elem_class::operator - () const
+inline renf_elem_class renf_elem_class::operator - () const noexcept
 {
     renf_elem_class ans(*this);
     if (nf == nullptr) fmpq_neg(ans.b, ans.b);
-    else renf_elem_neg(ans.a, ans.a, ans.nf->get_renf());
+    else renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
     return ans;
 }
 
-inline renf_elem_class renf_elem_class::operator + () const
+inline renf_elem_class renf_elem_class::operator + () const noexcept
 {
     return *this;
 }
@@ -590,10 +583,12 @@ inline renf_elem_class renf_elem_class::operator OP (const renf_elem_class & oth
     return ans;                           \
 }
 
+/*
 __RENFXX_binop(+, +=, renf_elem_add, renf_elem_add_fmpq, renf_elem_fmpq_add, fmpq_add)
 __RENFXX_binop(*, *=, renf_elem_mul, renf_elem_mul_fmpq, renf_elem_fmpq_mul, fmpq_mul)
 __RENFXX_binop(-, -=, renf_elem_sub, renf_elem_sub_fmpq, renf_elem_fmpq_sub, fmpq_sub)
 __RENFXX_binop(/, /=, renf_elem_div, renf_elem_div_fmpq, renf_elem_fmpq_div, fmpq_div)
+*/
 #undef __RENFXX_binop
 
 // TODO: we are not careful enough about conversions to slong/ulong
@@ -624,10 +619,12 @@ __RENFXX_binop(TYP, fmpq_sub_si, renf_elem_sub_si, -=, -) \
 __RENFXX_binop(TYP, fmpq_mul_si, renf_elem_mul_si, *=, *) \
 __RENFXX_binop(TYP, fmpq_div_si, renf_elem_div_si, /=, /)
 
+/*
 __RENFXX_all_binop_si(signed char)
 __RENFXX_all_binop_si(signed short int)
 __RENFXX_all_binop_si(signed int)
 __RENFXX_all_binop_si(signed long int)
+*/
 
 #undef __RENFXX_all_binop_si
 
@@ -637,10 +634,12 @@ __RENFXX_binop(TYP, fmpq_sub_ui, renf_elem_sub_ui, -=, -) \
 __RENFXX_binop(TYP, fmpq_mul_ui, renf_elem_mul_ui, *=, *) \
 __RENFXX_binop(TYP, fmpq_div_ui, renf_elem_div_ui, /=, /)
 
+/*
 __RENFXX_all_binop_ui(unsigned char)
 __RENFXX_all_binop_ui(unsigned short int)
 __RENFXX_all_binop_ui(unsigned int)
 __RENFXX_all_binop_ui(unsigned long int)
+*/
 
 #undef __RENFXX_all_binop_ui
 
@@ -672,6 +671,7 @@ inline renf_elem_class operator OP (const TYP& a, const renf_elem_class& b) \
     return x;                             \
 }
 
+/*
 __RENFXX_binop(mpz_class, fmpz_t, fmpz_init_set_readonly, fmpz_clear_readonly, fmpq_add_fmpz, renf_elem_add_fmpz, +=, +)
 __RENFXX_binop(mpz_class, fmpz_t, fmpz_init_set_readonly, fmpz_clear_readonly, fmpq_sub_fmpz, renf_elem_sub_fmpz, -=, -)
 __RENFXX_binop(mpz_class, fmpz_t, fmpz_init_set_readonly, fmpz_clear_readonly, fmpq_mul_fmpz, renf_elem_mul_fmpz, *=, *)
@@ -681,64 +681,55 @@ __RENFXX_binop(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, f
 __RENFXX_binop(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, fmpq_sub, renf_elem_sub_fmpq, -=, -)
 __RENFXX_binop(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, fmpq_mul, renf_elem_mul_fmpq, *=, *)
 __RENFXX_binop(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, fmpq_div, renf_elem_div_fmpq, /=, /)
+*/
 
 #undef __RENFXX_binop
 #undef __RENFXX_all_binop
 
 // Comparisons
 
-inline bool renf_elem_class::operator == (const renf_elem_class& other) const
+inline bool renf_elem_class::operator == (const renf_elem_class& other) const noexcept
 {
     if (nf != nullptr)
     {
         if (nf == other.nf)
         {
-            return renf_elem_equal(a, other.a, nf->get_renf());
+            return renf_elem_equal(a, other.a, nf->renf_t());
         }
         else if (other.nf == nullptr)
-            return renf_elem_equal_fmpq(a, other.b, nf->get_renf());
+            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
         else
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wterminate"
+            // TODO: This should be an assertion instead. Or a hard not implemented error.
             throw std::domain_error("can not compare renf_elem_class on different number fields");
+        #pragma GCC diagnostic pop
     }
     else if (other.nf == nullptr)
         return fmpq_equal(b, other.b);
     else
-        return renf_elem_equal_fmpq(other.a, b, other.nf->get_renf());
+        return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
 }
 
-inline bool renf_elem_class::operator != (const renf_elem_class & other) const
-{
-    return not (*this == other);
-}
-
-inline bool renf_elem_class::operator > (const renf_elem_class & other) const
+inline bool renf_elem_class::operator < (const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
     {
         if (nf == other.nf)
-            return renf_elem_cmp(a, other.a, nf->get_renf()) > 0;
+            return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
         else if (other.nf == nullptr)
-            return renf_elem_cmp_fmpq(a, other.b, nf->get_renf()) > 0;
+            return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
         else
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wterminate"
+            // TODO: This should be an assertion instead. Or a hard not implemented error.
             throw std::domain_error("can not compare renf_elem_class on different number fields");
+        #pragma GCC diagnostic pop
     }
     else if (other.nf == nullptr)
-        return fmpq_cmp(b, other.b) > 0;
+        return fmpq_cmp(b, other.b) < 0;
     else
-        return renf_elem_cmp_fmpq(other.a, b, other.nf->get_renf()) < 0;
-}
-
-inline bool renf_elem_class::operator >= (const renf_elem_class & other) const
-{
-    return (*this > other) || (*this == other);
-}
-inline bool renf_elem_class::operator < (const renf_elem_class & other) const
-{
-    return not (*this >= other);
-}
-inline bool renf_elem_class::operator <= (const renf_elem_class & other) const
-{
-    return not (* this > other);
+        return renf_elem_cmp_fmpq(other.a, b, other.nf->renf_t()) > 0;
 }
 
 #define __RENFXX_cmp(TYP, FMPQ_EQ, FMPQ_CMP, RENF_EQ, RENF_CMP) \
@@ -827,6 +818,7 @@ inline bool operator >= (TYP other, const renf_elem_class& r)        \
         return RENF_CMP(r.a, other, r.parent().get_renf()) <= 0;  \
 }
 
+/*
 __RENFXX_cmp(signed char, fmpq_equal_si, fmpq_cmp_si, renf_elem_equal_si, renf_elem_cmp_si)
 __RENFXX_cmp(signed short int, fmpq_equal_si, fmpq_cmp_si, renf_elem_equal_si, renf_elem_cmp_si)
 __RENFXX_cmp(signed int, fmpq_equal_si, fmpq_cmp_si, renf_elem_equal_si, renf_elem_cmp_si)
@@ -836,7 +828,7 @@ __RENFXX_cmp(unsigned char, fmpq_equal_ui, fmpq_cmp_ui, renf_elem_equal_ui, renf
 __RENFXX_cmp(unsigned short int, fmpq_equal_ui, fmpq_cmp_ui, renf_elem_equal_ui, renf_elem_cmp_ui)
 __RENFXX_cmp(unsigned int, fmpq_equal_ui, fmpq_cmp_ui, renf_elem_equal_ui, renf_elem_cmp_ui)
 __RENFXX_cmp(unsigned long int, fmpq_equal_ui, fmpq_cmp_ui, renf_elem_equal_ui, renf_elem_cmp_ui)
-
+*/
 #undef __RENFXX_cmp
 
 
@@ -889,10 +881,10 @@ inline bool operator != (const TYP& other, const renf_elem_class& r) \
     CLEAR(tmp);                      \
     return res;                      \
 }
-
+/*
 __RENFXX_eq_ne(mpz_class, fmpz_t, fmpz_init_set_readonly, fmpz_clear_readonly, fmpq_equal_fmpz, renf_elem_equal_fmpz)
 __RENFXX_eq_ne(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, fmpq_equal, renf_elem_equal_fmpq)
-
+*/
 #undef __RENFXX_eq_ne
 
 #define __RENFXX_cmp(TYP, FLINT_TYP, INITSET, CLEAR, FMPQ_CMP, RENF_CMP, OP, COND, COND_INV) \
@@ -926,54 +918,54 @@ __RENFXX_cmp(TYP, FLINT_TYP, INITSET, CLEAR, FMPQ_CMP, RENF_CMP, >=, >= 0, <= 0)
 __RENFXX_cmp(TYP, FLINT_TYP, INITSET, CLEAR, FMPQ_CMP, RENF_CMP, <=, <= 0, >= 0) \
 __RENFXX_cmp(TYP, FLINT_TYP, INITSET, CLEAR, FMPQ_CMP, RENF_CMP, >, > 0, < 0) \
 __RENFXX_cmp(TYP, FLINT_TYP, INITSET, CLEAR, FMPQ_CMP, RENF_CMP, <, < 0, > 0)
-
+/*
 __RENFXX_all_cmp(mpz_class, fmpz_t, fmpz_init_set_readonly, fmpz_clear_readonly, fmpq_cmp_fmpz, renf_elem_cmp_fmpz)
 __RENFXX_all_cmp(mpq_class, fmpq_t, fmpq_init_set_readonly, fmpq_clear_readonly, fmpq_cmp, renf_elem_cmp_fmpq)
-
+*/
 #undef __RENFXX_cmp
 #undef __RENFXX_all_cmp
 
 // Other functions
 
-inline bool renf_elem_class::is_zero() const
+inline bool renf_elem_class::is_zero() const noexcept
 {
     if (nf == nullptr)
         return fmpq_is_zero(b);
     else
-        return renf_elem_is_zero(a, nf->get_renf());
+        return renf_elem_is_zero(a, nf->renf_t());
 }
 
-inline bool renf_elem_class::is_one() const
+inline bool renf_elem_class::is_one() const noexcept
 {
     if (nf == nullptr)
         return fmpq_is_one(b);
     else
-        return renf_elem_is_one(a, nf->get_renf());
+        return renf_elem_is_one(a, nf->renf_t());
 }
 
-inline bool renf_elem_class::is_rational() const
+inline bool renf_elem_class::is_rational() const noexcept
 {
     if (nf == nullptr)
         return true;
     else
-        return renf_elem_is_rational(a, nf->get_renf());
+        return renf_elem_is_rational(a, nf->renf_t());
 }
 
-inline bool renf_elem_class::is_integer() const
+inline bool renf_elem_class::is_integer() const noexcept
 {
     if (nf == nullptr)
         return fmpz_is_one(fmpq_denref(b));
     else
-        return renf_elem_is_integer(a, nf->get_renf());
+        return renf_elem_is_integer(a, nf->renf_t());
 }
 
-inline mpz_class renf_elem_class::floor() const
+inline mpz_class renf_elem_class::floor() const noexcept
 {
     fmpz_t tmp;
     fmpz_init(tmp);
 
     if (nf == nullptr) fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
-    else renf_elem_floor(tmp, a, nf->get_renf());
+    else renf_elem_floor(tmp, a, nf->renf_t());
 
     mpz_class z;
     fmpz_get_mpz(z.get_mpz_t(), tmp);
@@ -981,7 +973,7 @@ inline mpz_class renf_elem_class::floor() const
     return z;
 }
 
-inline mpz_class renf_elem_class::ceil() const
+inline mpz_class renf_elem_class::ceil() const noexcept
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -992,7 +984,7 @@ inline mpz_class renf_elem_class::ceil() const
         fmpz_sub_ui(tmp, tmp, 1);
         fmpz_fdiv_q(tmp, tmp, fmpq_denref(b));
     }
-    else renf_elem_ceil(tmp, a, nf->get_renf());
+    else renf_elem_ceil(tmp, a, nf->renf_t());
 
     mpz_class z;
     fmpz_get_mpz(z.get_mpz_t(), tmp);
@@ -1000,15 +992,15 @@ inline mpz_class renf_elem_class::ceil() const
     return z;
 }
 
-inline int renf_elem_class::sgn() const
+inline int renf_elem_class::sgn() const noexcept
 {
     if (nf == nullptr)
         return fmpq_sgn(b);
     else
-        return renf_elem_sgn(a, nf->get_renf());
+        return renf_elem_sgn(a, nf->renf_t());
 }
 
-inline double renf_elem_class::get_d() const
+inline double renf_elem_class::get_d() const noexcept
 {
     if (nf == nullptr)
     {
@@ -1020,6 +1012,6 @@ inline double renf_elem_class::get_d() const
         return ans;
     }
     else
-        return renf_elem_get_d(a, nf->get_renf(), ARF_RND_NEAR);
+        return renf_elem_get_d(a, nf->renf_t(), ARF_RND_NEAR);
 }
-}
+} // end of namespace eantic

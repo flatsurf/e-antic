@@ -233,9 +233,9 @@ check_PROGRAMS +=                \
 
 # C++
 
-libeanticxx_la_SOURCES =        \
-    renfxx/get_num_vector.cpp   \
-    renfxx/set_renf_xalloc.cpp
+libeanticxx_la_SOURCES =       \
+    renfxx/renf_class.cpp      \
+    renfxx/renf_elem_class.cpp
 
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \

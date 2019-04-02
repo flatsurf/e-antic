@@ -22,7 +22,7 @@ static int xalloc = std::ios_base::xalloc();
 
 namespace eantic {
 
-inline renf_class& renf_class::operator = (const renf_class& k) noexcept
+renf_class& renf_class::operator = (const renf_class& k) noexcept
 {
     renf_clear(nf);
     renf_init_set(nf, k.nf);
@@ -33,47 +33,42 @@ inline renf_class& renf_class::operator = (const renf_class& k) noexcept
 /* I/O operators */
 /*****************/
 
-
-inline std::istream& renf_class::set_istream(std::istream& is)
+std::istream& renf_class::set_pword(std::istream& is) noexcept
 {
-    is.pword(renf_class::xalloc()) = this;
+    is.pword(xalloc) = this;
     return is;
 }
 
-inline std::ostream& operator << (std::ostream& os, const renf_elem_class& a)
+std::ostream& operator << (std::ostream& os, const renf_elem_class& a)
 {
     if (a.is_integer())
-        os << a.get_str(EANTIC_STR_ALG);
+        os << a.str(EANTIC_STR_ALG);
     else
-        os << a.get_str(EANTIC_STR_ALG | EANTIC_STR_D);
+        os << a.str(EANTIC_STR_ALG | EANTIC_STR_D);
     return os;
 }
 
-inline std::istream& operator >> (std::istream& is, renf_elem_class& a)
+std::istream& operator >> (std::istream& is, renf_elem_class& a)
 {
-    renf_class * nf = (renf_class *) is.pword(renf_class::xalloc());
+    renf_class * nf = (renf_class *) is.pword(xalloc);
 
+    throw std::logic_error("not implemented >>renf_elem_class - parse into string, assign to new element, then use operator= instead");
+
+    /*
     if (nf != nullptr)
         // reset the number field with the one from the stream
         a.reset_parent(nf);
 
     a.assign_stream(is);
     return is;
+    */
 }
-
-
-/*********************/
-/* function overload */
-/*********************/
-
-inline mpz_class floor(renf_elem_class x) { return x.floor(); }
-inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 
 /*****************************/
 /* renf_class implementation */
 /*****************************/
 
-inline renf_class::renf_class()
+renf_class::renf_class() noexcept
 {
     fmpq_poly_t minpoly;
     arb_t emb;
@@ -90,32 +85,32 @@ inline renf_class::renf_class()
     fmpq_poly_clear(minpoly);
     arb_clear(emb);
 
-    gen_name = "a";
+    name = "a";
 }
 
-inline renf_class::~renf_class()
+renf_class::~renf_class() noexcept
 {
     renf_clear(nf);
 }
 
-inline renf_class::renf_class(const renf_t& k, const std::string& gen_name)
+renf_class::renf_class(const ::renf_t& k, const std::string& gen_name) noexcept
 {
     renf_init_set(nf, k);
-    this->gen_name = gen_name;
+    this->name = gen_name;
 }
 
-inline renf_class::renf_class(const char * pol, const char * var, const char * emb, const slong prec)
+renf_class::renf_class(const char * minpoly, const char * gen, const char * emb, const slong prec)
 {
     arb_t e;
     fmpq_poly_t p;
 
     fmpq_poly_init(p);
-    if (fmpq_poly_set_str_pretty(p, pol, var))
+    if (fmpq_poly_set_str_pretty(p, minpoly, gen))
     {
         fmpq_poly_clear(p);
         std::invalid_argument("renf_class: can not read polynomial from string");
     }
-    gen_name = var;
+    name = gen;
 
     arb_init(e);
     if (arb_set_str(e, emb, prec))
@@ -129,17 +124,25 @@ inline renf_class::renf_class(const char * pol, const char * var, const char * e
     arb_clear(e);
 }
 
-inline renf_class::renf_class(const std::string& pol, const std::string& var, const std::string emb, const slong prec)
+renf_class::renf_class(const std::string& minpoly, const std::string& gen, const std::string emb, const slong prec)
 {
     arb_t e;
     fmpq_poly_t p;
 
     fmpq_poly_init(p);
-    fmpq_poly_set_str_pretty(p, pol.c_str(), var.c_str());
-    gen_name = var;
+    if (fmpq_poly_set_str_pretty(p, minpoly.c_str(), gen.c_str()))
+    {
+        fmpq_poly_clear(p);
+        std::invalid_argument("renf_class: can not read polynomial from string");
+    }
+    name = gen;
 
     arb_init(e);
-    arb_set_str(e, emb.c_str(), prec);
+    if (arb_set_str(e, emb.c_str(), prec))
+    {
+        arb_clear(e);
+        std::invalid_argument("renf_class: can not read ball from string");
+    }
 
     renf_init(nf, p, e, prec);
 
@@ -147,38 +150,33 @@ inline renf_class::renf_class(const std::string& pol, const std::string& var, co
     arb_clear(e);
 }
 
-inline bool renf_class::operator == (const renf_class& other) const
+bool renf_class::operator == (const renf_class& other) const noexcept
 {
     return renf_equal(this->nf, other.nf);
 }
 
-inline bool renf_class::operator != (const renf_class& other) const
-{
-    return not renf_equal(this->nf, other.nf);
-}
-
-inline renf_elem_class renf_class::zero()
+renf_elem_class renf_class::zero() const noexcept
 {
     renf_elem_class a(*this, 0);
     return a;
 }
 
-inline renf_elem_class renf_class::one()
+renf_elem_class renf_class::one() const noexcept
 {
     renf_elem_class a(*this, 1);
     return a;
 }
 
-inline renf_elem_class renf_class::gen()
+renf_elem_class renf_class::gen() const noexcept
 {
     renf_elem_class a(*this);
-    renf_elem_gen(a.get_renf_elem(), this->get_renf());
+    renf_elem_gen(a.renf_elem_t(), this->renf_t());
     return a;
 }
 
-inline slong renf_class::degree()
+slong renf_class::degree() const noexcept
 {
-    return nf == NULL ? 1 : nf_degree(nf->nf);
+    return nf_degree(nf->nf);
 }
 
-} // end of namespace eanticw
+} // end of namespace eantic
