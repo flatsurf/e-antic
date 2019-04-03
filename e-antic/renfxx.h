@@ -329,31 +329,21 @@ renf_elem_class::operator=(const Integer value) noexcept
         {
             fmpz_one(fmpq_denref(b));
             if constexpr (is_slong)
-            {
                 fmpz_set_si(fmpq_numref(b), value);
-            }
             else
-            {
                 fmpz_set_ui(fmpq_numref(b), value);
-            }
         }
         else
         {
             if constexpr (is_slong)
-            {
                 renf_elem_set_si(a, value, nf->renf_t());
-            }
             else
-            {
                 renf_elem_set_ui(a, value, nf->renf_t());
-            }
         }
         return *this;
     }
     else
-    {
         return *this = to_supported_integer<true>(value);
-    }
 }
 
 template <typename Coefficient>
@@ -361,13 +351,9 @@ renf_elem_class & renf_elem_class::operator=(
     const std::vector<Coefficient> & coefficients) noexcept
 {
     if (coefficients.size() == 0)
-    {
         return *this = 0;
-    }
     else if (coefficients.size() == 1)
-    {
         return *this = coefficients[0];
-    }
     else
     {
 #pragma GCC diagnostic push
@@ -396,13 +382,9 @@ renf_elem_class & renf_elem_class::operator=(
             {
                 auto c = to_supported_integer<false>(coefficients[i]);
                 if constexpr (std::is_same_v<decltype(c), slong>)
-                {
                     fmpq_poly_set_coeff_si(p, i, c);
-                }
                 else
-                {
                     fmpq_poly_set_coeff_ui(p, i, c);
-                }
             }
         }
 
