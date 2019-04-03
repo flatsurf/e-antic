@@ -57,7 +57,7 @@ AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
 AC_CHECK_LIB(arb, arb_init, [], [AC_MSG_ERROR([libarb not found])])
 
 AC_LANG_PUSH([C++])
-AX_CXX_COMPILE_STDCXX(11)
+AX_CXX_COMPILE_STDCXX(17)
 AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (gmp needs to be compiled with c++ support (--enable-cxx))])])
 AC_LANG_POP([C++])
 
