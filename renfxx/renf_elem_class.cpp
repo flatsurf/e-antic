@@ -15,21 +15,48 @@
 
 namespace eantic {
 
-renf_elem_class::renf_elem_class() noexcept : renf_elem_class(0) {}
-renf_elem_class::renf_elem_class(const renf_elem_class& value) noexcept : renf_elem_class() { *this = value; }
-renf_elem_class::renf_elem_class(renf_elem_class&& value) noexcept : renf_elem_class() { *this = std::move(value); }
-renf_elem_class::renf_elem_class(const std::string& value) : renf_elem_class() { *this = value; }
-renf_elem_class::renf_elem_class(const renf_class& k) noexcept : renf_elem_class(k, 0) {};
-renf_elem_class::renf_elem_class(const mpz_class& value) noexcept : renf_elem_class() { *this = value; }
-renf_elem_class::renf_elem_class(const mpq_class& value) noexcept : renf_elem_class() { *this = value; }
+renf_elem_class::renf_elem_class() noexcept
+    : renf_elem_class(0)
+{
+}
+renf_elem_class::renf_elem_class(const renf_elem_class & value) noexcept
+    : renf_elem_class()
+{
+    *this = value;
+}
+renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
+    : renf_elem_class()
+{
+    *this = std::move(value);
+}
+renf_elem_class::renf_elem_class(const std::string & value)
+    : renf_elem_class()
+{
+    *this = value;
+}
+renf_elem_class::renf_elem_class(const renf_class & k) noexcept
+    : renf_elem_class(k, 0) {};
+renf_elem_class::renf_elem_class(const mpz_class & value) noexcept
+    : renf_elem_class()
+{
+    *this = value;
+}
+renf_elem_class::renf_elem_class(const mpq_class & value) noexcept
+    : renf_elem_class()
+{
+    *this = value;
+}
 
 renf_elem_class::~renf_elem_class() noexcept
 {
-    if (is_fmpq()) fmpq_clear(b);
-    else renf_elem_clear(a, nf->renf_t());
+    if (is_fmpq())
+        fmpq_clear(b);
+    else
+        renf_elem_clear(a, nf->renf_t());
 }
 
-renf_elem_class& renf_elem_class::operator = (const renf_elem_class& value) noexcept
+renf_elem_class & renf_elem_class::operator=(
+    const renf_elem_class & value) noexcept
 {
     if (value.nf == nullptr)
     {
@@ -61,89 +88,109 @@ renf_elem_class& renf_elem_class::operator = (const renf_elem_class& value) noex
     else
         renf_elem_set(a, value.a, nf->renf_t());
 
-		return *this;
+    return *this;
 }
 
 // TODO: How can we move faster?
-renf_elem_class& renf_elem_class::operator = (renf_elem_class&& value) noexcept { return *this = value; }
-
-renf_elem_class& renf_elem_class::operator = (const mpz_class& value) noexcept
+renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
 {
-	if (is_fmpq())
-	{
+    return *this = value;
+}
+
+renf_elem_class & renf_elem_class::operator=(const mpz_class & value) noexcept
+{
+    if (is_fmpq())
+    {
         fmpz_one(fmpq_denref(b));
         fmpz_set_mpz(fmpq_numref(b), value.__get_mp());
     }
     else
         renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
 
-		return *this;
+    return *this;
 }
 
-renf_elem_class& renf_elem_class::operator = (const mpq_class& value) noexcept
+renf_elem_class & renf_elem_class::operator=(const mpq_class & value) noexcept
 {
-	is_fmpq() ? fmpq_set_mpq(b, value.__get_mp()) : renf_elem_set_mpq(a, value.__get_mp(), nf->renf_t());
-	return *this;
+    is_fmpq() ? fmpq_set_mpq(b, value.__get_mp())
+              : renf_elem_set_mpq(a, value.__get_mp(), nf->renf_t());
+    return *this;
 }
 
-renf_elem_class& renf_elem_class::operator = (const ::fmpq_t& value) noexcept
+renf_elem_class & renf_elem_class::operator=(const ::fmpq_t & value) noexcept
 {
-	is_fmpq() ? fmpq_set(b, value) : renf_elem_set_fmpq(a, value, nf->renf_t());
-	return *this;
+    is_fmpq() ? fmpq_set(b, value) : renf_elem_set_fmpq(a, value, nf->renf_t());
+    return *this;
 }
 
-void renf_elem_class::promote(const renf_class& nf) noexcept {
-	if (is_fmpq()) {
-		*this = (renf_elem_class(nf) = b);
-	} else {
-		if (*this->nf == nf)
-			return;
-		else
+void renf_elem_class::promote(const renf_class & nf) noexcept
+{
+    if (is_fmpq())
+    {
+        *this = (renf_elem_class(nf) = b);
+    }
+    else
+    {
+        if (*this->nf == nf)
+            return;
+        else
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wterminate"
-			throw std::logic_error("not implemented: cannot promote a renf_elem_class to a new number field");
+            throw std::logic_error("not implemented: cannot promote a "
+                                   "renf_elem_class to a new number field");
 #pragma GCC diagnostic pop
-	}
+    }
 }
 
-renf_elem_class& renf_elem_class::operator += (const renf_elem_class& rhs) noexcept {
-	if (rhs.is_fmpq()) inplace_binop(rhs.b, fmpq_add, renf_elem_add_fmpq);
-	else
-	{
-		promote(*rhs.nf);
-		renf_elem_add(a, a, rhs.a, nf->renf_t());
-	}
-	return *this;
+renf_elem_class & renf_elem_class::operator+=(
+    const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_add, renf_elem_add_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_add(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
 }
 
-renf_elem_class& renf_elem_class::operator -= (const renf_elem_class& rhs) noexcept {
-	if (rhs.is_fmpq()) inplace_binop(rhs.b, fmpq_sub, renf_elem_sub_fmpq);
-	else
-	{
-		promote(*rhs.nf);
-		renf_elem_sub(a, a, rhs.a, nf->renf_t());
-	}
-	return *this;
+renf_elem_class & renf_elem_class::operator-=(
+    const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_sub, renf_elem_sub_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_sub(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
 }
 
-renf_elem_class& renf_elem_class::operator *= (const renf_elem_class& rhs) noexcept {
-	if (rhs.is_fmpq()) inplace_binop(rhs.b, fmpq_mul, renf_elem_mul_fmpq);
-	else
-	{
-		promote(*rhs.nf);
-		renf_elem_mul(a, a, rhs.a, nf->renf_t());
-	}
-	return *this;
+renf_elem_class & renf_elem_class::operator*=(
+    const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_mul, renf_elem_mul_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_mul(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
 }
 
-renf_elem_class& renf_elem_class::operator /= (const renf_elem_class& rhs) {
-	if (rhs.is_fmpq()) inplace_binop(rhs.b, fmpq_div, renf_elem_div_fmpq);
-	else
-	{
-		promote(*rhs.nf);
-		renf_elem_div(a, a, rhs.a, nf->renf_t());
-	}
-	return *this;
+renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_div, renf_elem_div_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_div(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
 }
 
 std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
@@ -175,29 +222,29 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
     return res;
 }
 
-bool renf_elem_class::is_fmpq(void) const noexcept
-{
-    return (nf == nullptr);
-}
+bool renf_elem_class::is_fmpq(void) const noexcept { return (nf == nullptr); }
 
 fmpq * renf_elem_class::get_fmpq(void) const
 {
     if (not is_fmpq())
         throw std::invalid_argument("renf_elem_class not a fmpq");
     // to stay compatible with the pre-1.0 interface, we cast away constness
-    else return const_cast<fmpq*>(b);
+    else
+        return const_cast<fmpq *>(b);
 }
 
 renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
 {
     if (is_fmpq())
         throw std::invalid_argument("renf_elem_class is a fmpq");
-    else return a;
+    else
+        return a;
 }
 
-::renf_elem_t& renf_elem_class::renf_elem_t() const noexcept {
-	assert(!is_fmpq());
-	return a;
+::renf_elem_t & renf_elem_class::renf_elem_t() const noexcept
+{
+    assert(!is_fmpq());
+    return a;
 }
 
 mpz_class renf_elem_class::get_den() const
@@ -231,7 +278,7 @@ mpz_class renf_elem_class::get_num(void) const
         fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
     else if (nf->renf_t()->nf->flag & NF_QUADRATIC)
     {
-        if (! fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1))
+        if (!fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1))
             throw std::invalid_argument("renf_elem_class not a rational");
         fmpz_get_mpz(x.__get_mp(), QNF_ELEM_NUMREF(a->elem));
     }
@@ -254,7 +301,7 @@ mpq_class renf_elem_class::get_rational(void) const
 
     if (nf == nullptr)
         fmpq_get_mpq(z.__get_mp(), b);
-    else if(is_rational())
+    else if (is_rational())
     {
         ::fmpq_t q;
         fmpq_init(q);
@@ -269,7 +316,10 @@ mpq_class renf_elem_class::get_rational(void) const
     return z;
 }
 
-std::string renf_elem_class::get_str(int flag) const noexcept { return to_string(flag); }
+std::string renf_elem_class::get_str(int flag) const noexcept
+{
+    return to_string(flag);
+}
 
 std::string renf_elem_class::to_string(int flags) const noexcept
 {
@@ -286,20 +336,19 @@ std::string renf_elem_class::to_string(int flags) const noexcept
             s += u;
             flint_free(u);
 
-            if (flags & (EANTIC_STR_D | EANTIC_STR_ARB))
-                s += " ~ ";
+            if (flags & (EANTIC_STR_D | EANTIC_STR_ARB)) s += " ~ ";
         }
         if (flags & EANTIC_STR_D)
         {
             char * u = (char *) flint_malloc(20 * sizeof(char));
             // TODO: Is it a bug in FLINT that the parameter is not const?
-            sprintf(u, "%lf", fmpq_get_d(const_cast<fmpq*>(b)));
+            sprintf(u, "%lf", fmpq_get_d(const_cast<fmpq *>(b)));
             s += u;
             flint_free(u);
         }
         if (flags & EANTIC_STR_ARB)
         {
-            char *u;
+            char * u;
             arb_t x;
             arb_init(x);
             arb_set_fmpq(x, b, 128);
@@ -312,23 +361,19 @@ std::string renf_elem_class::to_string(int flags) const noexcept
     else
     {
         char * u = renf_elem_get_str_pretty(renf_elem_t(),
-                parent().gen_name().c_str(),
-                parent().renf_t(),
-                10,
-                flags);
+            parent().gen_name().c_str(), parent().renf_t(), 10, flags);
         s += u;
         flint_free(u);
     }
 
-    if (flags != EANTIC_STR_ALG &&
-        flags != EANTIC_STR_D &&
+    if (flags != EANTIC_STR_ALG && flags != EANTIC_STR_D &&
         flags != EANTIC_STR_ARB)
         return "(" + s + ")";
     else
         return s;
 }
 
-renf_elem_class& renf_elem_class::operator = (const std::string& str)
+renf_elem_class & renf_elem_class::operator=(const std::string & str)
 {
     const char * s = str.c_str();
 
@@ -340,7 +385,7 @@ renf_elem_class& renf_elem_class::operator = (const std::string& str)
     {
         t = (char *) flint_malloc((i - s + 1) * sizeof(char));
         strncpy(t, s, i - s);
-        t[i-s] = '\0';
+        t[i - s] = '\0';
     }
     else
     {
@@ -351,8 +396,7 @@ renf_elem_class& renf_elem_class::operator = (const std::string& str)
     if (nf == nullptr)
     {
         err = fmpq_set_str(b, t, 10);
-        if (err)
-            throw std::invalid_argument("renf_elem_class fmpq_set_str");
+        if (err) throw std::invalid_argument("renf_elem_class fmpq_set_str");
     }
     else
     {
@@ -363,7 +407,8 @@ renf_elem_class& renf_elem_class::operator = (const std::string& str)
         if (err)
         {
             fmpq_poly_clear(p);
-            throw std::invalid_argument("renf_elem_class fmpq_poly_set_str_pretty");
+            throw std::invalid_argument(
+                "renf_elem_class fmpq_poly_set_str_pretty");
         }
         renf_elem_set_fmpq_poly(a, p, nf->renf_t());
         fmpq_poly_clear(p);
@@ -371,25 +416,24 @@ renf_elem_class& renf_elem_class::operator = (const std::string& str)
 
     flint_free(t);
 
-		return *this;
-}
-
-renf_elem_class renf_elem_class::operator - () const noexcept
-{
-    renf_elem_class ans(*this);
-    if (nf == nullptr) fmpq_neg(ans.b, ans.b);
-    else renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
-    return ans;
-}
-
-renf_elem_class renf_elem_class::operator + () const noexcept
-{
     return *this;
 }
 
+renf_elem_class renf_elem_class::operator-() const noexcept
+{
+    renf_elem_class ans(*this);
+    if (nf == nullptr)
+        fmpq_neg(ans.b, ans.b);
+    else
+        renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
+    return ans;
+}
+
+renf_elem_class renf_elem_class::operator+() const noexcept { return *this; }
+
 // Binary arithmetic
 
-bool renf_elem_class::operator == (const renf_elem_class& other) const noexcept
+bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
     {
@@ -400,11 +444,13 @@ bool renf_elem_class::operator == (const renf_elem_class& other) const noexcept
         else if (other.nf == nullptr)
             return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
         else
-        #pragma GCC diagnostic push
-        #pragma GCC diagnostic ignored "-Wterminate"
-            // TODO: This should be an assertion instead. Or a hard not implemented error.
-            throw std::domain_error("can not compare renf_elem_class on different number fields");
-        #pragma GCC diagnostic pop
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wterminate"
+            // TODO: This should be an assertion instead. Or a hard not
+            // implemented error.
+            throw std::domain_error(
+                "can not compare renf_elem_class on different number fields");
+#pragma GCC diagnostic pop
     }
     else if (other.nf == nullptr)
         return fmpq_equal(b, other.b);
@@ -412,7 +458,7 @@ bool renf_elem_class::operator == (const renf_elem_class& other) const noexcept
         return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
 }
 
-bool renf_elem_class::operator < (const renf_elem_class & other) const noexcept
+bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
     {
@@ -421,11 +467,13 @@ bool renf_elem_class::operator < (const renf_elem_class & other) const noexcept
         else if (other.nf == nullptr)
             return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
         else
-        #pragma GCC diagnostic push
-        #pragma GCC diagnostic ignored "-Wterminate"
-            // TODO: This should be an assertion instead. Or a hard not implemented error.
-            throw std::domain_error("can not compare renf_elem_class on different number fields");
-        #pragma GCC diagnostic pop
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wterminate"
+            // TODO: This should be an assertion instead. Or a hard not
+            // implemented error.
+            throw std::domain_error(
+                "can not compare renf_elem_class on different number fields");
+#pragma GCC diagnostic pop
     }
     else if (other.nf == nullptr)
         return fmpq_cmp(b, other.b) < 0;
@@ -470,8 +518,10 @@ mpz_class renf_elem_class::floor() const noexcept
     fmpz_t tmp;
     fmpz_init(tmp);
 
-    if (nf == nullptr) fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
-    else renf_elem_floor(tmp, a, nf->renf_t());
+    if (nf == nullptr)
+        fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
+    else
+        renf_elem_floor(tmp, a, nf->renf_t());
 
     mpz_class z;
     fmpz_get_mpz(z.get_mpz_t(), tmp);
@@ -490,7 +540,8 @@ mpz_class renf_elem_class::ceil() const noexcept
         fmpz_sub_ui(tmp, tmp, 1);
         fmpz_fdiv_q(tmp, tmp, fmpq_denref(b));
     }
-    else renf_elem_ceil(tmp, a, nf->renf_t());
+    else
+        renf_elem_ceil(tmp, a, nf->renf_t());
 
     mpz_class z;
     fmpz_get_mpz(z.get_mpz_t(), tmp);
