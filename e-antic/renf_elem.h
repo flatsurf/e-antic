@@ -98,6 +98,14 @@ int renf_elem_cmp_ui(renf_elem_t a, const slong b, renf_t nf)
     return s;
 }
 
+static __inline__
+void renf_elem_swap(renf_elem_t a, renf_elem_t b)
+{
+    renf_elem_struct t = *a;
+    *a = *b;
+    *b = t;
+}
+
 double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
 /* return an arb approximation of a with a relative precision at least prec */
