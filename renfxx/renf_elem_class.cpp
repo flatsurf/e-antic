@@ -143,24 +143,30 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
     return *this;
 }
 
-renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept {
-	if (value.nf == nullptr) {
-		if (nf != nullptr) {
-			renf_elem_clear(a, nf->renf_t());
-			fmpq_init(b);
-		}
-		nf = value.nf;
-		fmpq_swap(b, value.b);
-	} else {
-		if (nf == nullptr) {
-			fmpq_clear(b);
-			renf_elem_init(a, value.nf->renf_t());
-		}
-		nf = value.nf;
-		renf_elem_swap(a, value.a);
-	}
+renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
+{
+    if (value.nf == nullptr)
+    {
+        if (nf != nullptr)
+        {
+            renf_elem_clear(a, nf->renf_t());
+            fmpq_init(b);
+        }
+        nf = value.nf;
+        fmpq_swap(b, value.b);
+    }
+    else
+    {
+        if (nf == nullptr)
+        {
+            fmpq_clear(b);
+            renf_elem_init(a, value.nf->renf_t());
+        }
+        nf = value.nf;
+        renf_elem_swap(a, value.a);
+    }
 
-	return *this;
+    return *this;
 }
 
 void renf_elem_class::promote(const renf_class & nf) noexcept
@@ -426,15 +432,11 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
         {
             return renf_elem_equal(a, other.a, nf->renf_t());
         }
-        else if (other.nf == nullptr)
-            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
         else
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-            // TODO: This should be an assertion instead. Or a hard not
-            // implemented error.
-            throw std::domain_error("can not compare renf_elem_class on different number fields");
-#pragma GCC diagnostic pop
+        {
+            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
+            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
+        }
     }
     else if (other.nf == nullptr)
         return fmpq_equal(b, other.b);
@@ -448,15 +450,11 @@ bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
     {
         if (nf == other.nf)
             return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
-        else if (other.nf == nullptr)
-            return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
         else
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-            // TODO: This should be an assertion instead. Or a hard not
-            // implemented error.
-            throw std::domain_error("can not compare renf_elem_class on different number fields");
-#pragma GCC diagnostic pop
+        {
+            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
+            return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
+        }
     }
     else if (other.nf == nullptr)
         return fmpq_cmp(b, other.b) < 0;

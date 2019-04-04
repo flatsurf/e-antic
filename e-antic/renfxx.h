@@ -14,9 +14,6 @@
 #ifndef RENFXX_H
 #define RENFXX_H
 
-// TODO: Check that I did not delete any methods but rather that everything is
-// deprecated.
-
 #include <vector>
 
 #include <boost/lexical_cast.hpp>

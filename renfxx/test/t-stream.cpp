@@ -48,15 +48,16 @@ int main(void)
     }
 
     {
-        // initialization of nf in constructor
         renf_elem_class a(K1);
 
         std::stringstream sin1("3/5*A+2");
+				K1.set_pword(sin1);
         sin1 >> a;
         if (a != 3*g1/5 + 2)
             throw std::runtime_error("wrong nf initialization");
 
         std::stringstream sin2("A-1");
+				K1.set_pword(sin2);
         sin2 >> a;
         if (a != g1 - 1)
             throw std::runtime_error("wrong nf reinitialization");
@@ -99,6 +100,7 @@ int main(void)
         std::stringstream s;
 
         s << a;
+				K1.set_pword(s);
         s >> b;
 
         if (a != b)

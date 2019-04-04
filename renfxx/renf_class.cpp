@@ -119,10 +119,6 @@ renf_class & renf_class::operator=(const renf_class & k) noexcept
     return *this;
 }
 
-/*****************/
-/* I/O operators */
-/*****************/
-
 std::istream & renf_class::set_pword(std::istream & is) noexcept
 {
     is.pword(xalloc) = this;
@@ -143,12 +139,6 @@ std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)
 std::istream & operator>>(std::istream & is, renf_elem_class & a)
 {
     renf_class const * nf = (renf_class *) is.pword(xalloc);
-    if (nf == nullptr)
-    {
-        // TODO: We should not allow for the nf to be set implicitly. It should
-        // always come through pword.
-        nf = a.nf;
-    }
 
     std::string s; // part of the stream to use
     char c; // current character in the stream
