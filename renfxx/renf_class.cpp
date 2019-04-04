@@ -86,7 +86,10 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_clear(e);
 }
 
-bool renf_class::operator==(const renf_class & other) const noexcept { return renf_equal(this->nf, other.nf); }
+bool renf_class::operator==(const renf_class & other) const noexcept
+{
+    return renf_equal(this->nf, other.nf) && this->name == other.name;
+}
 
 renf_elem_class renf_class::zero() const noexcept
 {
