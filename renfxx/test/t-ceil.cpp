@@ -20,12 +20,12 @@ int main(void)
     int iter;
 
     {
-        renf_elem_class a("3/2");
+        renf_elem_class a(mpq_class("3/2"));
         if (a.ceil() != 2)
             throw std::runtime_error("pb with ceil");
     }
     {
-        renf_elem_class a("-3/2");
+        renf_elem_class a(mpq_class("-3/2"));
         if (a.ceil() != -1)
             throw std::runtime_error("pb with ceil");
     }

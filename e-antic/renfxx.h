@@ -39,8 +39,7 @@ public:
     renf_class(const renf_class &) noexcept;
     renf_class(const ::renf_t &, const std::string & gen = "a") noexcept;
     renf_class(::renf_t &&, const std::string & gen = "a") noexcept;
-    renf_class(const std::string & minpoly, const std::string & gen,
-        const std::string emb, const slong prec = 64);
+    renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec = 64);
 
     ~renf_class() noexcept;
 
@@ -67,15 +66,10 @@ public:
     // stored embedding) even though they are morally const.
     ::renf_t & renf_t() const noexcept { return nf; }
 
-    [[deprecated("Use the constructor taking std::string "
-                 "instead.")]] renf_class(const char * minpoly,
-        const char * gen, const char * emb, const slong prec);
-    [[deprecated("Use renf_t() instead.")]] renf * get_renf() noexcept
-    {
-        return nf;
-    }
-    [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(
-        std::istream &) noexcept;
+    [[deprecated("Use the constructor taking std::string instead.")]] renf_class(
+        const char * minpoly, const char * gen, const char * emb, const slong prec);
+    [[deprecated("Use renf_t() instead.")]] renf * get_renf() noexcept { return nf; }
+    [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) noexcept;
 
 private:
     // The name of the generator
@@ -85,53 +79,53 @@ private:
     mutable ::renf_t nf;
 };
 
-class renf_elem_class
-    : boost::ordered_field_operators<renf_elem_class>,
-      boost::ordered_field_operators<renf_elem_class, signed char>,
-      boost::ordered_field_operators<renf_elem_class, unsigned char>,
-      boost::ordered_field_operators<renf_elem_class, signed int>,
-      boost::ordered_field_operators<renf_elem_class, unsigned int>,
-      boost::ordered_field_operators<renf_elem_class, signed short int>,
-      boost::ordered_field_operators<renf_elem_class, unsigned short int>,
-      boost::ordered_field_operators<renf_elem_class, signed long int>,
-      boost::ordered_field_operators<renf_elem_class, unsigned long int>,
-      boost::ordered_field_operators<renf_elem_class, mpz_class>,
-      boost::ordered_field_operators<renf_elem_class, mpq_class> {
+class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
+                        boost::ordered_field_operators<renf_elem_class, signed char>,
+                        boost::ordered_field_operators<renf_elem_class, unsigned char>,
+                        boost::ordered_field_operators<renf_elem_class, signed int>,
+                        boost::ordered_field_operators<renf_elem_class, unsigned int>,
+                        boost::ordered_field_operators<renf_elem_class, signed short int>,
+                        boost::ordered_field_operators<renf_elem_class, unsigned short int>,
+                        boost::ordered_field_operators<renf_elem_class, signed long int>,
+                        boost::ordered_field_operators<renf_elem_class, unsigned long int>,
+                        boost::ordered_field_operators<renf_elem_class, mpz_class>,
+                        boost::ordered_field_operators<renf_elem_class, mpq_class> {
 public:
     // The zero element of the rationals
     renf_elem_class() noexcept;
     renf_elem_class(const renf_elem_class &) noexcept;
     renf_elem_class(renf_elem_class &&) noexcept;
-    template <typename Integer,
-        typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
     renf_elem_class(Integer) noexcept;
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
-    // Parse the string into a rational number
-    explicit renf_elem_class(const std::string &);
-    // The zero element in the field k; holds a non-owning reference to the
-    // field, i.e., this element is only valid while that reference is.
+    renf_elem_class(const fmpq_t &) noexcept;
+    // The zero element in k; note that all overloads that take the field as a
+    // parameter hold a non-owning reference to the field, i.e., the element is
+    // only valid while that reference is.
     explicit renf_elem_class(const renf_class & k) noexcept;
-    // Create a renf_elem_class in the field k by invoking the operator= on the
-    // parameter. The constructed element holds a non-owning reference to the
-    // renf_class passed in, i.e., it is only valid while that reference is.
-    template <typename T> renf_elem_class(const renf_class & k, T &&) noexcept;
+    // An integer in the field k
+    renf_elem_class(const renf_class & k, const mpz_class &) noexcept;
+    // A rational in the field k
+    renf_elem_class(const renf_class & k, const mpq_class &) noexcept;
+    // A rational in the field k
+    renf_elem_class(const renf_class & k, const fmpq_t &) noexcept;
+    // An integer in the field k
+    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    renf_elem_class(const renf_class & k, const Integer) noexcept;
+    // Parse the string into an element in the field k
+    renf_elem_class(const renf_class & k, const std::string &);
+    // The element Σc_i·α^i where α is the generator of the field k; the number
+    // of coefficients must not exceed the degree of the field.
+    template <typename C> renf_elem_class(const renf_class & k, const std::vector<C> &) noexcept;
 
     ~renf_elem_class() noexcept;
 
+    // Note that we do not implement any operator= for other types explicitly
+    // but funnel everything through the implicit constructors above and the
+    // move assignment here.
     renf_elem_class & operator=(const renf_elem_class &) noexcept;
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
-    renf_elem_class & operator=(const mpz_class &) noexcept;
-    renf_elem_class & operator=(const mpq_class &) noexcept;
-    renf_elem_class & operator=(const fmpq_t &) noexcept;
-    // TODO: With the new semantics, this assignment operator should probably
-    // go away. Or we keep it for rationals?
-    renf_elem_class & operator=(const std::string &);
-    template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator=(
-        Integer) noexcept;
-    template <typename Coefficient>
-    renf_elem_class & operator=(const std::vector<Coefficient> &) noexcept;
 
     // containing number field; holds a nullptr if this is a rational number
     const renf_class & parent() const noexcept { return *nf; }
@@ -158,8 +152,7 @@ public:
     explicit operator mpq_class() const;
     std::vector<mpz_class> num_vector() const noexcept;
     explicit operator std::string() const noexcept;
-    std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const
-        noexcept;
+    std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
 
     // floor, ceil, round, approximation
     mpz_class floor() const noexcept;
@@ -182,43 +175,28 @@ public:
 
     // binary operations with primitive integer types
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator+=(
-        Integer) noexcept;
+    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator+=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator-=(
-        Integer) noexcept;
+    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator-=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator*=(
-        Integer) noexcept;
-    template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator/=(
-        Integer);
-    template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(
-        Integer) const noexcept;
-    template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const
-        noexcept;
-    template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const
-        noexcept;
+    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator*=(Integer) noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator/=(Integer);
+    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
     // deprecated pre-1.0 methods
-    [[deprecated("use to_string() instead")]] std::string get_str(
-        int flag = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
+    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const
+        noexcept;
     [[deprecated("use fmpq_t() instead")]] ::fmpq * get_fmpq() const;
-    [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr
-    get_renf_elem() const;
+    [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
     [[deprecated("use num() instead")]] mpz_class get_num() const;
-    [[deprecated("use static_cast<mpq_class>() instead")]] mpq_class
-    get_rational() const;
-    [[deprecated("use num_vector() instead")]] std::vector<mpz_class>
-    get_num_vector() const noexcept;
-    [[deprecated("use static_cast<double>() instead")]] double get_d() const
-        noexcept;
+    [[deprecated("use static_cast<mpq_class>() instead")]] mpq_class get_rational() const;
+    [[deprecated("use num_vector() instead")]] std::vector<mpz_class> get_num_vector() const noexcept;
+    [[deprecated("use static_cast<double>() instead")]] double get_d() const noexcept;
 
-    /* I/O */
+    // I/O
     friend std::ostream & operator<<(std::ostream &, const renf_elem_class &);
     friend std::istream & operator>>(std::istream &, renf_elem_class &);
 
@@ -237,8 +215,13 @@ private:
     void promote(const renf_class & nf) noexcept;
     template <typename T, typename fmpq_op, typename renf_op>
     int cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept;
-    template <typename T, typename fmpq_op, typename renf_op>
-    void inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf);
+    template <typename T, typename fmpq_op, typename renf_op> void inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf);
+    // Assign value to this element without changing this->nf.
+    void assign(slong) noexcept;
+    void assign(ulong) noexcept;
+    void assign(const ::fmpq_t &) noexcept;
+    void assign(const mpz_class &) noexcept;
+    void assign(const mpq_class &) noexcept;
 };
 
 // overloads for global functions
@@ -251,34 +234,19 @@ inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 template <auto = 0> constexpr bool false_v = false;
 template <typename = void> constexpr bool false_t = false;
 
-template <typename Integer,
-    typename std::enable_if_t<std::is_integral_v<Integer>, int>>
-renf_elem_class::renf_elem_class(Integer value) noexcept
-{
-    nf = nullptr;
-    fmpq_init(b);
-    *this = value;
-}
-
-template <typename T>
-renf_elem_class::renf_elem_class(const renf_class & k, T && value) noexcept
-{
-    nf = &k;
-    renf_elem_init(a, nf->renf_t());
-    *this = std::forward<T>(value);
-}
-
-template <bool fallback_to_string, typename Integer>
-auto to_supported_integer(Integer value) noexcept
+template <bool fallback_to_string, typename Integer> auto to_supported_integer(Integer value) noexcept
 {
     using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
 
+    static_assert(!std::is_same_v<S, mpz_class> && !std::is_same_v<S, mpq_class>,
+        "Specialized operators should be used for mpz/mpq instead.");
+
+    static_assert(!std::is_same_v<bool, S>, "Cannot create renf_elem_class from bool.");
+
     // This integer type is not natively understood, so we need to convert it
     // first
-    using Supported =
-        std::conditional_t<std::numeric_limits<S>::is_signed, slong, ulong>;
-    if constexpr (std::numeric_limits<Supported>::min() <=
-            std::numeric_limits<S>::min() &&
+    using Supported = std::conditional_t<std::numeric_limits<S>::is_signed, slong, ulong>;
+    if constexpr (std::numeric_limits<Supported>::min() <= std::numeric_limits<S>::min() &&
         std::numeric_limits<Supported>::max() >= std::numeric_limits<S>::max())
     {
         // We can safely cast to a supported type without overflow
@@ -308,91 +276,57 @@ auto to_supported_integer(Integer value) noexcept
     }
 }
 
-template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &>
-renf_elem_class::operator=(const Integer value) noexcept
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+renf_elem_class::renf_elem_class(Integer value) noexcept
 {
-    using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
+    nf = nullptr;
+    fmpq_init(b);
 
-    static_assert(
-        !std::is_same_v<S, mpz_class> && !std::is_same_v<S, mpq_class>,
-        "Specialized operators should be used for mpz/mpq instead.");
-    static_assert(
-        !std::is_same_v<bool, S>, "Cannot create renf_elem_class from bool.");
-
-    constexpr bool is_slong = std::is_same_v<slong, S>;
-    constexpr bool is_ulong = std::is_same_v<ulong, S>;
-
-    if constexpr (is_slong || is_ulong)
-    {
-        if (is_fmpq())
-        {
-            fmpz_one(fmpq_denref(b));
-            if constexpr (is_slong)
-                fmpz_set_si(fmpq_numref(b), value);
-            else
-                fmpz_set_ui(fmpq_numref(b), value);
-        }
-        else
-        {
-            if constexpr (is_slong)
-                renf_elem_set_si(a, value, nf->renf_t());
-            else
-                renf_elem_set_ui(a, value, nf->renf_t());
-        }
-        return *this;
-    }
-    else
-        return *this = to_supported_integer<true>(value);
+    assign(to_supported_integer<true>(value));
 }
 
 template <typename Coefficient>
-renf_elem_class & renf_elem_class::operator=(
-    const std::vector<Coefficient> & coefficients) noexcept
+renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coefficient> & coefficients) noexcept
+    : renf_elem_class(k)
 {
-    if (coefficients.size() == 0)
-        return *this = 0;
-    else if (coefficients.size() == 1)
-        return *this = coefficients[0];
-    else
-    {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wterminate"
-        if (nf == nullptr)
-            throw std::invalid_argument(
-                "can not assign renf_elem_class from vector of coefficients "
-                "when no number field has been set");
-        if (coefficients.size() > nf->degree())
-            throw std::invalid_argument(
-                "can not assign renf_elem_class from vector whose size "
-                "exceeds number field degree");
+    if (coefficients.size() > nf->degree())
+        throw std::invalid_argument("can not assign renf_elem_class from vector whose size "
+                                    "exceeds number field degree");
 #pragma GCC dignostic pop
 
-        using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
+    using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
 
-        fmpq_poly_t p;
-        fmpq_poly_init(p);
-        for (size_t i = 0; i < coefficients.size(); i++)
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+    {
+        if constexpr (std::is_same_v<S, mpz_class>)
+            fmpq_poly_set_coeff_mpz(p, i, coefficients[i].__get_mp());
+        else if constexpr (std::is_same_v<S, mpq_class>)
+            fmpq_poly_set_coeff_mpq(p, i, coefficients[i].__get_mp());
+        else
         {
-            if constexpr (std::is_same_v<S, mpz_class>)
-                fmpq_poly_set_coeff_mpz(p, i, coefficients[i].__get_mp());
-            else if constexpr (std::is_same_v<S, mpq_class>)
-                fmpq_poly_set_coeff_mpq(p, i, coefficients[i].__get_mp());
+            auto c = to_supported_integer<false>(coefficients[i]);
+            if constexpr (std::is_same_v<decltype(c), slong>)
+                fmpq_poly_set_coeff_si(p, i, c);
             else
-            {
-                auto c = to_supported_integer<false>(coefficients[i]);
-                if constexpr (std::is_same_v<decltype(c), slong>)
-                    fmpq_poly_set_coeff_si(p, i, c);
-                else
-                    fmpq_poly_set_coeff_ui(p, i, c);
-            }
+                fmpq_poly_set_coeff_ui(p, i, c);
         }
-
-        renf_elem_set_fmpq_poly(a, p, nf->renf_t());
-        fmpq_poly_clear(p);
-
-        return *this;
     }
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+renf_elem_class::renf_elem_class(const renf_class & k, Integer value) noexcept
+{
+    nf = &k;
+    renf_elem_init(a, k.renf_t());
+
+    assign(to_supported_integer<true>(value));
 }
 
 // generic operators
@@ -400,13 +334,11 @@ renf_elem_class & renf_elem_class::operator=(
 template <typename T, typename fmpq_op, typename renf_op>
 int renf_elem_class::cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept
 {
-    return is_fmpq() ? fmpq(b, std::forward<T>(rhs))
-                     : renf(a, std::forward<T>(rhs), nf->renf_t());
+    return is_fmpq() ? fmpq(b, std::forward<T>(rhs)) : renf(a, std::forward<T>(rhs), nf->renf_t());
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(
-    Integer rhs) const noexcept
+std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -416,8 +348,7 @@ std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(
-    Integer rhs) const noexcept
+std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -427,8 +358,7 @@ std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(
-    Integer rhs) const noexcept
+std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -441,13 +371,11 @@ template <typename T, typename fmpq_op, typename renf_op>
 void renf_elem_class::inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf)
 {
     using S = std::remove_cv_t<std::remove_reference_t<T>>;
-    is_fmpq() ? fmpq(b, b, std::forward<T>(rhs))
-              : renf(a, a, std::forward<T>(rhs), nf->renf_t());
+    is_fmpq() ? fmpq(b, b, std::forward<T>(rhs)) : renf(a, a, std::forward<T>(rhs), nf->renf_t());
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &>
-renf_elem_class::operator+=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator+=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -458,8 +386,7 @@ renf_elem_class::operator+=(Integer rhs) noexcept
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &>
-renf_elem_class::operator-=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator-=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -470,8 +397,7 @@ renf_elem_class::operator-=(Integer rhs) noexcept
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &>
-renf_elem_class::operator*=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator*=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
@@ -482,8 +408,7 @@ renf_elem_class::operator*=(Integer rhs) noexcept
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &>
-renf_elem_class::operator/=(Integer rhs)
+std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator/=(Integer rhs)
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)

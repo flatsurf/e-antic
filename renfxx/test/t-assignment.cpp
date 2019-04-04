@@ -169,7 +169,7 @@ int main(void)
                 v.push_back(1);
                 renf_elem_class a(K, v);
                 renf_elem_class b(K);
-                b = v;
+                b = renf_elem_class(b.parent(), v);
 
                 if (a != K.gen() + 1 || b != K.gen() + 1)
                     throw std::runtime_error("constructor from std::vector<mpz_class> failed");
@@ -184,7 +184,7 @@ int main(void)
                 v.push_back(mpq_class(-2,3));
                 renf_elem_class a(K,v);
                 renf_elem_class b(K,v);
-                b = v;
+                b = renf_elem_class(b.parent(), v);
 
                 if (a != (-2*K.gen()/3 + mpq_class(1,2)) ||
                     b != (-2*K.gen()/3 + mpq_class(1,2)))

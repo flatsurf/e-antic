@@ -25,7 +25,7 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a("0");
+        renf_elem_class a(mpz_class("0"));
         s << a;
         if (s.str() != "0")
             throw std::runtime_error("wrong 0 string, got " + s.str());
@@ -33,7 +33,7 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a("2/3");
+        renf_elem_class a(mpq_class("2/3"));
         s << a;
         if (s.str() != "(2/3 ~ 0.666667)")
             throw std::runtime_error("wrong 0 string, got " + s.str());

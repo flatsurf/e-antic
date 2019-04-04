@@ -9,7 +9,7 @@ BraceWrapping:
   BeforeCatch: true
 IndentCaseLabels: true
 SpaceAfterCStyleCast: true
-ColumnLimit: 80
+ColumnLimit: 120
 BreakBeforeBinaryOperators: None
 AllowShortIfStatementsOnASingleLine: true
 PointerAlignment: Middle
