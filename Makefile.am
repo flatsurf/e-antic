@@ -218,6 +218,7 @@ libeantic_la_SOURCES +=            \
     renf_elem/relative_condition_number_2exp.c
 
 check_PROGRAMS +=                \
+    renf_elem/test/t-swap        \
     renf_elem/test/t-binop       \
     renf_elem/test/t-ceil        \
     renf_elem/test/t-equal_fmpq  \

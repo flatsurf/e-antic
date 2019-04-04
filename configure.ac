@@ -51,10 +51,10 @@ AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
 AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([flint header not found])])
-AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
+AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])], [-lmpfr])
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
-AC_CHECK_LIB(arb, arb_init, [], [AC_MSG_ERROR([libarb not found])])
+AC_CHECK_LIB(arb, arb_init, [], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(17)
