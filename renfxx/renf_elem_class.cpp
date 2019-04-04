@@ -46,7 +46,7 @@ renf_elem_class::renf_elem_class(const mpq_class & value) noexcept
     assign(value);
 }
 
-renf_elem_class::renf_elem_class(const ::fmpq_t & value) noexcept
+renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
     : renf_elem_class()
 {
     assign(value);
@@ -579,7 +579,7 @@ void renf_elem_class::assign(const mpq_class & value) noexcept
         renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 }
 
-void renf_elem_class::assign(const ::fmpq_t & value) noexcept
+void renf_elem_class::assign(const ::fmpq_t value) noexcept
 {
     if (nf == nullptr)
         fmpq_set(b, value);

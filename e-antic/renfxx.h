@@ -99,7 +99,7 @@ public:
     renf_elem_class(Integer) noexcept;
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
-    renf_elem_class(const fmpq_t &) noexcept;
+    renf_elem_class(const fmpq_t) noexcept;
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
     // only valid while that reference is.
@@ -109,7 +109,7 @@ public:
     // A rational in the field k
     renf_elem_class(const renf_class & k, const mpq_class &) noexcept;
     // A rational in the field k
-    renf_elem_class(const renf_class & k, const fmpq_t &) noexcept;
+    renf_elem_class(const renf_class & k, const fmpq_t) noexcept;
     // An integer in the field k
     template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
     renf_elem_class(const renf_class & k, const Integer) noexcept;
@@ -219,7 +219,7 @@ private:
     // Assign value to this element without changing this->nf.
     void assign(slong) noexcept;
     void assign(ulong) noexcept;
-    void assign(const ::fmpq_t &) noexcept;
+    void assign(const ::fmpq_t) noexcept;
     void assign(const mpz_class &) noexcept;
     void assign(const mpq_class &) noexcept;
 };
