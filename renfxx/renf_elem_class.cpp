@@ -143,8 +143,25 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
     return *this;
 }
 
-// TODO: How can we move faster?
-renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept { return *this = value; }
+renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept {
+	if (value.nf == nullptr) {
+		if (nf != nullptr) {
+			renf_elem_clear(a, nf->renf_t());
+			fmpq_init(b);
+		}
+		nf = value.nf;
+		fmpq_swap(b, value.b);
+	} else {
+		if (nf == nullptr) {
+			fmpq_clear(b);
+			renf_elem_init(a, value.nf->renf_t());
+		}
+		nf = value.nf;
+		renf_elem_swap(a, value.a);
+	}
+
+	return *this;
+}
 
 void renf_elem_class::promote(const renf_class & nf) noexcept
 {
