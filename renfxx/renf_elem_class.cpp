@@ -358,8 +358,7 @@ std::string renf_elem_class::to_string(int flags) const noexcept
         if (flags & EANTIC_STR_D)
         {
             char * u = (char *) flint_malloc(20 * sizeof(char));
-            // TODO: Is it a bug in FLINT that the parameter is not const?
-            sprintf(u, "%lf", fmpq_get_d(const_cast<fmpq *>(b)));
+            sprintf(u, "%lf", fmpq_get_d(b));
             s += u;
             flint_free(u);
         }

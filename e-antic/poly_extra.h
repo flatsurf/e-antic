@@ -257,7 +257,7 @@ void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
 }
 
 static __inline__
-double fmpq_get_d(fmpq_t q)
+double fmpq_get_d(const fmpq_t q)
 {
     arb_t z;
     double d;
