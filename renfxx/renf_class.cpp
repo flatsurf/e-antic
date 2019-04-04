@@ -116,6 +116,7 @@ renf_class & renf_class::operator=(const renf_class & k) noexcept
         renf_clear(nf);
         renf_init_set(nf, k.nf);
     }
+    this->name = k.name;
     return *this;
 }
 
