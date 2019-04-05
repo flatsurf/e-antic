@@ -9,13 +9,35 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <err.h>
+#include <threads.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
+static once_flag mtx_initialized;
+static mtx_t mtx;
+
+void initialize_mtx()
+{
+    if (mtx_init(&mtx, mtx_plain) != thrd_success)
+    {
+	err(1, "failed to create mutex for renf_refine_embedding()");
+    }
+}
+
 void renf_refine_embedding(renf_t nf, slong prec)
 {
-    #pragma omp critical(RENF_REFINE)
+    call_once(&mtx_initialized, initialize_mtx);
+
+    // We need to make sure that no two threads attempt to refine the same
+    // number field embedding at the same time: if two threads were looking for
+    // different precisions, we might end up with the lower precision
+    // eventually. Also the arb_swap() would not be safe.
+    if (mtx_lock(&mtx) != thrd_success)
     {
+	err(1, "failed to lock mutex for renf_refine_embedding()");
+    }
+
     arb_t tmp;
     slong cond;
     slong comp_prec;
@@ -54,5 +76,9 @@ void renf_refine_embedding(renf_t nf, slong prec)
         comp_prec = 2 * FLINT_ABS(arb_rel_accuracy_bits(nf->emb)) + cond * nf->nf->pol->length;
     }
     arb_clear(tmp);
-    } // #pragma
+
+    if (mtx_unlock(&mtx) != thrd_success)
+    {
+	err(1, "failed to unlock mutex for renf_refine_embedding()");
+    }
 }
