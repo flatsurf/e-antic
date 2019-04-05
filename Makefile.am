@@ -3,6 +3,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
+libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
+libeanticxx_la_LDFLAGS = -version-info @libeanticxx_version_info@ -no-undefined
 
 # Linked-against libraries
 libeantic_la_LIBADD = @LIBS@
