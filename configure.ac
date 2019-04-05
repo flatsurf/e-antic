@@ -54,7 +54,7 @@ AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([flint
 AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])], [-lmpfr])
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
-AC_CHECK_LIB(arb, arb_init, [], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
+AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(17)
