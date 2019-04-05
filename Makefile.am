@@ -7,8 +7,8 @@ AM_CFLAGS = $(OPENMP_CFLAGS)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
 # Linked-against libraries
-libeantic_la_LIBADD = -larb -lflint -lgmp
-libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
+libeantic_la_LIBADD = @LIBS@
+libeanticxx_la_LIBADD = @LIBS@ libeantic.la -lgmpxx
 
 # Installed headers
 nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
@@ -20,7 +20,7 @@ check_PROGRAMS =
 dist_doc_DATA =
 
 # TODO: we currently build all tests with linked c++ libraries
-LDADD = libeanticxx.la libeantic.la -larb -lflint -lgmpxx -lgmp
+LDADD = libeanticxx.la libeantic.la @LIBS@ -lgmpxx
 
 @VALGRIND_CHECK_RULES@
 
