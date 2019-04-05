@@ -69,7 +69,7 @@ int main(void)
 
             renf_elem_class d((long) LONG_MIN);
             renf_elem_class e((long) LONG_MAX);
-            if (d != mpz_class((long) LONG_MIN) || e != mpz_class((long) LONG_MAX))
+            if (d != (long) LONG_MIN || e != (long) LONG_MAX)
                 throw std::runtime_error("constructor from LONG_MIN/LONG_MAX is wrong");
         }
 
