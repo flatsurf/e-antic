@@ -22,3 +22,70 @@ Initial release 0.1
 - renf structure (renf.h)
 - renf_elem structures (renf_elem.h)
 - C++ interface (renfxx.h)
+
+Release 1.0
+===========
+
+Breaking Changes to the C++ Interface
+-------------------------------------
+- `e-antic/renfxx.h` now requires C++17 support. It would not be too hard to
+  backport things to C++14 if this bothers you too much.
+- The semantics of `operator =` have changed. Before, you could do the
+  following to obtain a 1 in the field K.
+  ```
+  renf_elem_class x(K);
+  x = 1;
+  ```
+  Now, assignment resets the number field so that after an assignment `x = y`
+  the condition `x.nf == renf_elem_class(y).nf` holds.
+  In the above example you should now just write `renf_elem_class x(K, 1);`
+  which was already valid before.
+- This also affects reading from streams into a `renf_elem_class`. Before the
+  following would parse an element into a number field:
+  ```
+  renf_elem_class x(K);
+  in >> x;
+  ```
+  Now this only works if the stream contains a rational number. (Otherwise an
+  exception is raised.) As `in >> x` also resets `x.nf`. The above code should
+  be replaced with:
+  ```
+  renf_elem_class x;
+  K.set_pword(in);
+  in >> x;
+  ```
+- `renf_elem_class(string&)` has been removed. If you want to parse a rational
+  number, use `renf_elem_class(mpq_class(string))`. If you want to parse into a
+  number field, use `renf_elem_class(renf_class&, string&)`.
+- `renf_elem_class::operator=(string&)` has been removed. If you want to parse
+  a rational into an element, use `x = mpq_class(string)`. If you want to parse
+  into a number field, use `x = renf_elem_class(x.parent(), string)`.
+- `renf_elem_class(vector<…>)` have been removed as it would have thrown an
+  exception always anyway.
+- `renf_elem_class::operator=(vector<…>)` have been removed due to the change
+  of semantics of `=`. If `x` is not a rational you get the same behaviour as
+  before with `x = renf_elem_class(x.parent(), {1, 2, 3})`.
+- `renf_class::xalloc()` has been removed and replaced by an implementation
+  detail.
+- `string renf_class::gen_name` is now a method so it needs to be called.
+- Many operations that threw an exception before when domains were mixed, now
+  abort program execution (typically through a call to `assert()`.) You can
+  identify these operations by their `noexcept` modifier.
+- `renf_class.operator==` now also checks that the generator name is the same.
+  Similarly, `renf_class.operator=` now also resets the generator name.
+
+
+Non-Breaking Changes to the C++ Interface
+-----------------------------------------
+- There is now `e-antic/renfxx_fwd.h` if you only need forward declarations of
+  `renf_class` and `renf_elem_class`.
+- Some methods have been deprecated and might be removed in a future release,
+  mostly to make the interface more consistent. The deprecation warnings give
+  hints which methods to use instead.
+- `renf_elem_class` can now be created from signed and unsigned long long.
+- `renf_elem_class` can now be created from vectors of primitive integers, e.g.,
+  ```
+  renf_elem_class x(K, {1, 2, 3}); // = 3*x^2 + 2*x + 1
+  ```
+  where before the entries of the vector had to be `mpz_class`.
+- Move semantics `&&` have been added to `renf_elem_class`.
