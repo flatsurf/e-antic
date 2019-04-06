@@ -50,7 +50,7 @@ renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
 }
 
 renf_elem_class::renf_elem_class(const renf_class & k) noexcept
-    : renf_elem_class(k, 0) {};
+    : renf_elem_class(k, 0) {}
 
 renf_elem_class::renf_elem_class(const renf_class & k, const mpz_class & value) noexcept
     : renf_elem_class(k)
