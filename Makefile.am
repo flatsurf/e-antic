@@ -1,13 +1,14 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CFLAGS = -std=c11
+CC = ${PTHREAD_CC}
+AM_CFLAGS = -std=c11 @PTHREAD_CFLAGS@
 
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
 # Linked-against libraries
-libeantic_la_LIBADD = @LIBS@
+libeantic_la_LIBADD = @LIBS@ @PTHREAD_LIBS@
 libeanticxx_la_LIBADD = @LIBS@ libeantic.la -lgmpxx
 
 # Installed headers
