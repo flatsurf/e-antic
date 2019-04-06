@@ -17,7 +17,8 @@ http://www.gnu.org/licenses/ or write to the Free Software Foundation, Inc.,
 
 ##############################################################################
 
-Initial release 0.1
+Release 0.1
+===========
 - real roots isolation and refinement (poly_extra.h)
 - renf structure (renf.h)
 - renf_elem structures (renf_elem.h)
@@ -26,22 +27,36 @@ Initial release 0.1
 Release 1.0
 ===========
 
+New C function
+--------------
+- ` renf_elem_swap(renf_elem_t, renf_elem_t)`
+
+Multithread support
+-------------------
+- e-antic used to be thread safe via an open MP pragma (in the number field
+  refinement). It now uses a more direct mutex from the pthread library.
+
 Breaking Changes to the C++ Interface
 -------------------------------------
-- `e-antic/renfxx.h` now requires C++17 support. It would not be too hard to
-  backport things to C++14 if this bothers you too much.
-- The semantics of `operator =` have changed. Before, you could do the
-  following to obtain a 1 in the field K.
+- `e-antic/renfxx.h` requires C++17.
+- All classes are now declared in the namespace `eantic`.
+- The semantics of `operator =` have changed. In e-antic 0.1 the following
+  would create the unit in the field K.
   ```
   renf_elem_class x(K);
   x = 1;
   ```
-  Now, assignment resets the number field so that after an assignment `x = y`
-  the condition `x.nf == renf_elem_class(y).nf` holds.
-  In the above example you should now just write `renf_elem_class x(K, 1);`
-  which was already valid before.
-- This also affects reading from streams into a `renf_elem_class`. Before the
-  following would parse an element into a number field:
+  Now the above statement makes x a rational number. More generally, an
+  assignment resets the number field so that after `x = y` the condition
+  `x.nf == renf_elem_class(y).nf` holds. To mimic the old behavior you need
+  to rewrite the above as
+  ```
+  renf_elem_class x(K);
+  x = renf_elem_class(K, 1);
+  ```
+- The change of semantics in assignment also affects reading from streams (in
+  order to create `renf_elem_class`). Before the following would parse an element
+  into a number field:
   ```
   renf_elem_class x(K);
   in >> x;
@@ -60,9 +75,9 @@ Breaking Changes to the C++ Interface
 - `renf_elem_class::operator=(string&)` has been removed. If you want to parse
   a rational into an element, use `x = mpq_class(string)`. If you want to parse
   into a number field, use `x = renf_elem_class(x.parent(), string)`.
-- `renf_elem_class(vector<…>)` have been removed as it would have thrown an
+- `renf_elem_class(vector<...>)` have been removed as it would have thrown an
   exception always anyway.
-- `renf_elem_class::operator=(vector<…>)` have been removed due to the change
+- `renf_elem_class::operator=(vector<...>)` have been removed due to the change
   of semantics of `=`. If `x` is not a rational you get the same behaviour as
   before with `x = renf_elem_class(x.parent(), {1, 2, 3})`.
 - `renf_class::xalloc()` has been removed and replaced by an implementation
@@ -89,3 +104,5 @@ Non-Breaking Changes to the C++ Interface
   ```
   where before the entries of the vector had to be `mpz_class`.
 - Move semantics `&&` have been added to `renf_elem_class`.
+
+
