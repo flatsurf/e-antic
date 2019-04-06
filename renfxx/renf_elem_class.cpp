@@ -32,9 +32,6 @@ renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
     *this = std::move(value);
 }
 
-renf_elem_class::renf_elem_class(const renf_class & k) noexcept
-    : renf_elem_class(k, 0) {};
-
 renf_elem_class::renf_elem_class(const mpz_class & value) noexcept
     : renf_elem_class()
 {
@@ -48,6 +45,27 @@ renf_elem_class::renf_elem_class(const mpq_class & value) noexcept
 
 renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
     : renf_elem_class()
+{
+    assign(value);
+}
+
+renf_elem_class::renf_elem_class(const renf_class & k) noexcept
+    : renf_elem_class(k, 0) {};
+
+renf_elem_class::renf_elem_class(const renf_class & k, const mpz_class & value) noexcept
+    : renf_elem_class(k)
+{
+    assign(value);
+}
+
+renf_elem_class::renf_elem_class(const renf_class & k, const mpq_class & value) noexcept
+    : renf_elem_class(k)
+{
+    assign(value);
+}
+
+renf_elem_class::renf_elem_class(const renf_class & k, const ::fmpq_t value) noexcept
+    : renf_elem_class(k)
 {
     assign(value);
 }
@@ -86,18 +104,6 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::string & str)
     fmpq_poly_clear(p);
 
     flint_free(t);
-}
-
-renf_elem_class::renf_elem_class(const renf_class & k, const mpz_class & value) noexcept
-    : renf_elem_class(k)
-{
-    assign(value);
-}
-
-renf_elem_class::renf_elem_class(const renf_class & k, const mpq_class & value) noexcept
-    : renf_elem_class(k)
-{
-    assign(value);
 }
 
 renf_elem_class::~renf_elem_class() noexcept
@@ -169,76 +175,124 @@ renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
     return *this;
 }
 
-void renf_elem_class::promote(const renf_class & nf) noexcept
+bool renf_elem_class::is_fmpq(void) const noexcept { return (nf == nullptr); }
+
+bool renf_elem_class::is_zero() const noexcept
 {
-    if (is_fmpq())
+    if (nf == nullptr)
+        return fmpq_is_zero(b);
+    else
+        return renf_elem_is_zero(a, nf->renf_t());
+}
+
+bool renf_elem_class::is_one() const noexcept
+{
+    if (nf == nullptr)
+        return fmpq_is_one(b);
+    else
+        return renf_elem_is_one(a, nf->renf_t());
+}
+
+bool renf_elem_class::is_integer() const noexcept
+{
+    if (nf == nullptr)
+        return fmpz_is_one(fmpq_denref(b));
+    else
+        return renf_elem_is_integer(a, nf->renf_t());
+}
+
+bool renf_elem_class::is_rational() const noexcept
+{
+    if (nf == nullptr)
+        return true;
+    else
+        return renf_elem_is_rational(a, nf->renf_t());
+}
+
+::fmpq_t & renf_elem_class::fmpq_t() noexcept
+{
+    assert(is_fmpq());
+    return b;
+}
+
+const ::fmpq_t & renf_elem_class::fmpq_t() const noexcept
+{
+    assert(is_fmpq());
+    return b;
+}
+
+::renf_elem_t & renf_elem_class::renf_elem_t() const noexcept
+{
+    assert(is_renf_elem());
+    return a;
+}
+
+mpz_class renf_elem_class::num() const noexcept {
+    mpz_class x;
+
+    if (nf == nullptr)
     {
-        renf_elem_class promoted = renf_elem_class(nf);
-        promoted.assign(b);
-        *this = std::move(promoted);
+        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
+        return x;
+    }
+    else if (nf->renf_t()->nf->flag & NF_LINEAR)
+        fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
+    else if (nf->renf_t()->nf->flag & NF_QUADRATIC)
+    {
+        assert(fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1) && "renf_elem_class not a rational");
+        fmpz_get_mpz(x.__get_mp(), QNF_ELEM_NUMREF(a->elem));
     }
     else
     {
-        if (*this->nf == nf)
-            return;
+        if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
+            mpz_set_si(x.__get_mp(), 0);
         else
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-            throw std::logic_error("not implemented: cannot promote a "
-                                   "renf_elem_class to a new number field");
-#pragma GCC diagnostic pop
+        {
+            assert(fmpq_poly_length(NF_ELEM(a->elem)) == 1 && "renf_elem_class not a rational");
+            fmpz_get_mpz(x.__get_mp(), NF_ELEM_NUMREF(a->elem));
+        }
     }
+
+    return x;
 }
 
-renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexcept
-{
-    if (rhs.is_fmpq())
-        inplace_binop(rhs.b, fmpq_add, renf_elem_add_fmpq);
+mpz_class renf_elem_class::den() const noexcept {
+    mpz_class res;
+
+    if (nf == nullptr)
+        fmpz_get_mpz(res.__get_mp(), fmpq_denref(b));
     else
     {
-        promote(*rhs.nf);
-        renf_elem_add(a, a, rhs.a, nf->renf_t());
+        fmpz_t z;
+        fmpz_init(z);
+        nf_elem_get_den(z, a->elem, nf->renf_t()->nf);
+        fmpz_get_mpz(res.__get_mp(), z);
+        fmpz_clear(z);
     }
-    return *this;
+
+    return res;
 }
 
-renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs) noexcept
+renf_elem_class::operator mpq_class() const noexcept
 {
-    if (rhs.is_fmpq())
-        inplace_binop(rhs.b, fmpq_sub, renf_elem_sub_fmpq);
-    else
+    mpq_class z;
+
+    if (nf == nullptr)
+        fmpq_get_mpq(z.__get_mp(), b);
+    else if (is_rational())
     {
-        promote(*rhs.nf);
-        renf_elem_sub(a, a, rhs.a, nf->renf_t());
+        assert(is_rational() && "renf_elem_class not a rational");
+        ::fmpq_t q;
+        fmpq_init(q);
+        nf_elem_get_fmpq(q, a->elem, parent().renf_t()->nf);
+        fmpq_get_mpq(z.__get_mp(), q);
+        fmpq_clear(q);
     }
-    return *this;
+
+    return z;
 }
 
-renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs) noexcept
-{
-    if (rhs.is_fmpq())
-        inplace_binop(rhs.b, fmpq_mul, renf_elem_mul_fmpq);
-    else
-    {
-        promote(*rhs.nf);
-        renf_elem_mul(a, a, rhs.a, nf->renf_t());
-    }
-    return *this;
-}
-
-renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
-{
-    if (rhs.is_fmpq())
-        inplace_binop(rhs.b, fmpq_div, renf_elem_div_fmpq);
-    else
-    {
-        promote(*rhs.nf);
-        renf_elem_div(a, a, rhs.a, nf->renf_t());
-    }
-    return *this;
-}
-
-std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
+std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
 {
     mpz_class x;
     std::vector<mpz_class> res;
@@ -267,99 +321,10 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept
     return res;
 }
 
-bool renf_elem_class::is_fmpq(void) const noexcept { return (nf == nullptr); }
-
-fmpq * renf_elem_class::get_fmpq(void) const
+renf_elem_class::operator std::string() const noexcept
 {
-    if (not is_fmpq()) throw std::invalid_argument("renf_elem_class not a fmpq");
-    // to stay compatible with the pre-1.0 interface, we cast away constness
-    else
-        return const_cast<fmpq *>(b);
+    return to_string();
 }
-
-renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
-{
-    if (is_fmpq())
-        throw std::invalid_argument("renf_elem_class is a fmpq");
-    else
-        return a;
-}
-
-::renf_elem_t & renf_elem_class::renf_elem_t() const noexcept
-{
-    assert(!is_fmpq());
-    return a;
-}
-
-mpz_class renf_elem_class::get_den() const
-{
-    mpz_class res;
-
-    if (nf == nullptr)
-        fmpz_get_mpz(res.__get_mp(), fmpq_denref(b));
-    else
-    {
-        fmpz_t z;
-        fmpz_init(z);
-        nf_elem_get_den(z, a->elem, nf->renf_t()->nf);
-        fmpz_get_mpz(res.__get_mp(), z);
-        fmpz_clear(z);
-    }
-
-    return res;
-}
-
-mpz_class renf_elem_class::get_num(void) const
-{
-    mpz_class x;
-
-    if (nf == nullptr)
-    {
-        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
-        return x;
-    }
-    else if (nf->renf_t()->nf->flag & NF_LINEAR)
-        fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
-    else if (nf->renf_t()->nf->flag & NF_QUADRATIC)
-    {
-        if (!fmpz_is_zero(QNF_ELEM_NUMREF(a->elem) + 1)) throw std::invalid_argument("renf_elem_class not a rational");
-        fmpz_get_mpz(x.__get_mp(), QNF_ELEM_NUMREF(a->elem));
-    }
-    else
-    {
-        if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
-            mpz_set_si(x.__get_mp(), 0);
-        else if (fmpq_poly_length(NF_ELEM(a->elem)) == 1)
-            fmpz_get_mpz(x.__get_mp(), NF_ELEM_NUMREF(a->elem));
-        else
-            throw std::invalid_argument("renf_elem_class not a rational");
-    }
-
-    return x;
-}
-
-mpq_class renf_elem_class::get_rational(void) const
-{
-    mpq_class z;
-
-    if (nf == nullptr)
-        fmpq_get_mpq(z.__get_mp(), b);
-    else if (is_rational())
-    {
-        ::fmpq_t q;
-        fmpq_init(q);
-        nf_elem_get_fmpq(q, a->elem, parent().renf_t()->nf);
-        fmpq_get_mpq(z.__get_mp(), q);
-        fmpq_clear(q);
-    }
-    else
-    {
-    }
-
-    return z;
-}
-
-std::string renf_elem_class::get_str(int flag) const noexcept { return to_string(flag); }
 
 std::string renf_elem_class::to_string(int flags) const noexcept
 {
@@ -410,90 +375,6 @@ std::string renf_elem_class::to_string(int flags) const noexcept
         return s;
 }
 
-renf_elem_class renf_elem_class::operator-() const noexcept
-{
-    renf_elem_class ans(*this);
-    if (nf == nullptr)
-        fmpq_neg(ans.b, ans.b);
-    else
-        renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
-    return ans;
-}
-
-renf_elem_class renf_elem_class::operator+() const noexcept { return *this; }
-
-// Binary arithmetic
-
-bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
-{
-    if (nf != nullptr)
-    {
-        if (nf == other.nf)
-        {
-            return renf_elem_equal(a, other.a, nf->renf_t());
-        }
-        else
-        {
-            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
-            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
-        }
-    }
-    else if (other.nf == nullptr)
-        return fmpq_equal(b, other.b);
-    else
-        return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
-}
-
-bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
-{
-    if (nf != nullptr)
-    {
-        if (nf == other.nf)
-            return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
-        else
-        {
-            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
-            return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
-        }
-    }
-    else if (other.nf == nullptr)
-        return fmpq_cmp(b, other.b) < 0;
-    else
-        return renf_elem_cmp_fmpq(other.a, b, other.nf->renf_t()) > 0;
-}
-
-bool renf_elem_class::is_zero() const noexcept
-{
-    if (nf == nullptr)
-        return fmpq_is_zero(b);
-    else
-        return renf_elem_is_zero(a, nf->renf_t());
-}
-
-bool renf_elem_class::is_one() const noexcept
-{
-    if (nf == nullptr)
-        return fmpq_is_one(b);
-    else
-        return renf_elem_is_one(a, nf->renf_t());
-}
-
-bool renf_elem_class::is_rational() const noexcept
-{
-    if (nf == nullptr)
-        return true;
-    else
-        return renf_elem_is_rational(a, nf->renf_t());
-}
-
-bool renf_elem_class::is_integer() const noexcept
-{
-    if (nf == nullptr)
-        return fmpz_is_one(fmpq_denref(b));
-    else
-        return renf_elem_is_integer(a, nf->renf_t());
-}
-
 mpz_class renf_elem_class::floor() const noexcept
 {
     fmpz_t tmp;
@@ -538,7 +419,7 @@ int renf_elem_class::sgn() const noexcept
         return renf_elem_sgn(a, nf->renf_t());
 }
 
-double renf_elem_class::get_d() const noexcept
+renf_elem_class::operator double() const noexcept
 {
     if (nf == nullptr)
     {
@@ -551,6 +432,158 @@ double renf_elem_class::get_d() const noexcept
     }
     else
         return renf_elem_get_d(a, nf->renf_t(), ARF_RND_NEAR);
+}
+
+renf_elem_class renf_elem_class::operator-() const noexcept
+{
+    renf_elem_class ans(*this);
+    if (nf == nullptr)
+        fmpq_neg(ans.b, ans.b);
+    else
+        renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
+    return ans;
+}
+
+renf_elem_class renf_elem_class::operator+() const noexcept { return *this; }
+
+renf_elem_class::operator bool() const noexcept
+{
+    return *this != 0;
+}
+
+renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_add, renf_elem_add_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_add(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_sub, renf_elem_sub_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_sub(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs) noexcept
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_mul, renf_elem_mul_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_mul(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
+{
+    if (rhs.is_fmpq())
+        inplace_binop(rhs.b, fmpq_div, renf_elem_div_fmpq);
+    else
+    {
+        promote(*rhs.nf);
+        renf_elem_div(a, a, rhs.a, nf->renf_t());
+    }
+    return *this;
+}
+
+bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
+{
+    if (nf != nullptr)
+    {
+        if (nf == other.nf)
+        {
+            return renf_elem_equal(a, other.a, nf->renf_t());
+        }
+        else
+        {
+            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
+            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
+        }
+    }
+    else if (other.nf == nullptr)
+        return fmpq_equal(b, other.b);
+    else
+        return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
+}
+
+bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
+{
+    if (nf != nullptr)
+    {
+        if (nf == other.nf)
+            return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
+        else
+        {
+            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
+            return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
+        }
+    }
+    else if (other.nf == nullptr)
+        return fmpq_cmp(b, other.b) < 0;
+    else
+        return renf_elem_cmp_fmpq(other.a, b, other.nf->renf_t()) > 0;
+}
+
+std::string renf_elem_class::get_str(int flag) const noexcept { return to_string(flag); }
+
+fmpq * renf_elem_class::get_fmpq(void) const
+{
+    if (not is_fmpq()) throw std::invalid_argument("renf_elem_class not a fmpq");
+    // to stay compatible with the pre-1.0 interface, we cast away constness
+    else
+        return const_cast<fmpq *>(b);
+}
+
+renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
+{
+    if (is_fmpq())
+        throw std::invalid_argument("renf_elem_class is a fmpq");
+    else
+        return a;
+}
+
+mpz_class renf_elem_class::get_den() const { return den(); }
+
+mpz_class renf_elem_class::get_num(void) const { return num(); }
+
+mpq_class renf_elem_class::get_rational(void) const { return static_cast<mpq_class>(*this); }
+
+std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept { return num_vector(); }
+
+double renf_elem_class::get_d() const noexcept { return static_cast<double>(*this); }
+
+void renf_elem_class::promote(const renf_class & nf) noexcept
+{
+    if (is_fmpq())
+    {
+        renf_elem_class promoted = renf_elem_class(nf);
+        promoted.assign(b);
+        *this = std::move(promoted);
+    }
+    else
+    {
+        if (*this->nf == nf)
+            return;
+        else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wterminate"
+            throw std::logic_error("not implemented: cannot promote a "
+                                   "renf_elem_class to a new number field");
+#pragma GCC diagnostic pop
+    }
 }
 
 void renf_elem_class::assign(slong value) noexcept
@@ -575,6 +608,14 @@ void renf_elem_class::assign(ulong value) noexcept
         renf_elem_set_ui(a, value, nf->renf_t());
 }
 
+void renf_elem_class::assign(const ::fmpq_t value) noexcept
+{
+    if (nf == nullptr)
+        fmpq_set(b, value);
+    else
+        renf_elem_set_fmpq(a, value, nf->renf_t());
+}
+
 void renf_elem_class::assign(const mpz_class & value) noexcept
 {
     if (nf == nullptr)
@@ -592,14 +633,6 @@ void renf_elem_class::assign(const mpq_class & value) noexcept
         fmpq_set_mpq(b, value.__get_mp());
     else
         renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
-}
-
-void renf_elem_class::assign(const ::fmpq_t value) noexcept
-{
-    if (nf == nullptr)
-        fmpq_set(b, value);
-    else
-        renf_elem_set_fmpq(a, value, nf->renf_t());
 }
 
 } // end of namespace eantic

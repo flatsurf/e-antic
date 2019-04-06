@@ -35,13 +35,11 @@ public:
     renf_class() noexcept;
     renf_class(const renf_class &) noexcept;
     renf_class(const ::renf_t &, const std::string & gen = "a") noexcept;
-    renf_class(::renf_t &&, const std::string & gen = "a") noexcept;
     renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec = 64);
 
     ~renf_class() noexcept;
 
     renf_class & operator=(const renf_class &) noexcept;
-    renf_class & operator=(renf_class &&) noexcept;
 
     slong degree() const noexcept;
 
@@ -144,9 +142,9 @@ public:
     ::renf_elem_t & renf_elem_t() const noexcept;
 
     // data conversion
-    mpz_class den() const;
-    mpz_class num() const;
-    explicit operator mpq_class() const;
+    mpz_class num() const noexcept;
+    mpz_class den() const noexcept;
+    explicit operator mpq_class() const noexcept;
     std::vector<mpz_class> num_vector() const noexcept;
     explicit operator std::string() const noexcept;
     std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
