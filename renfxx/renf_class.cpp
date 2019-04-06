@@ -42,8 +42,6 @@ renf_class::renf_class() noexcept
     name = "a";
 }
 
-renf_class::~renf_class() noexcept { renf_clear(nf); }
-
 renf_class::renf_class(const renf_class & k) noexcept
     : renf_class(k.renf_t(), k.gen_name())
 {
@@ -53,11 +51,6 @@ renf_class::renf_class(const ::renf_t & k, const std::string & gen_name) noexcep
 {
     renf_init_set(nf, k);
     this->name = gen_name;
-}
-
-renf_class::renf_class(const char * minpoly, const char * gen, const char * emb, const slong prec)
-    : renf_class(std::string(minpoly), std::string(gen), std::string(emb), prec)
-{
 }
 
 renf_class::renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec)
@@ -86,10 +79,20 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_clear(e);
 }
 
-bool renf_class::operator==(const renf_class & other) const noexcept
+renf_class::~renf_class() noexcept { renf_clear(nf); }
+
+renf_class & renf_class::operator=(const renf_class & k) noexcept
 {
-    return renf_equal(this->nf, other.nf) && this->name == other.name;
+    if (this != &k)
+    {
+        renf_clear(nf);
+        renf_init_set(nf, k.nf);
+    }
+    this->name = k.name;
+    return *this;
 }
+
+slong renf_class::degree() const noexcept { return nf_degree(nf->nf); }
 
 renf_elem_class renf_class::zero() const noexcept
 {
@@ -110,23 +113,20 @@ renf_elem_class renf_class::gen() const noexcept
     return a;
 }
 
-slong renf_class::degree() const noexcept { return nf_degree(nf->nf); }
-
-renf_class & renf_class::operator=(const renf_class & k) noexcept
+bool renf_class::operator==(const renf_class & other) const noexcept
 {
-    if (this != &k)
-    {
-        renf_clear(nf);
-        renf_init_set(nf, k.nf);
-    }
-    this->name = k.name;
-    return *this;
+    return renf_equal(this->nf, other.nf) && this->name == other.name;
 }
 
 std::istream & renf_class::set_pword(std::istream & is) noexcept
 {
     is.pword(xalloc) = this;
     return is;
+}
+
+renf_class::renf_class(const char * minpoly, const char * gen, const char * emb, const slong prec)
+    : renf_class(std::string(minpoly), std::string(gen), std::string(emb), prec)
+{
 }
 
 std::istream & renf_class::set_istream(std::istream & is) noexcept { return set_pword(is); }
