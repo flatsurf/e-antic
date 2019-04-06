@@ -11,25 +11,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 
-## Test for OpenMP parallelization.
-AC_ARG_ENABLE([openmp],
-    [AS_HELP_STRING([--enable-openmp@<:@=ARG@:>@],
-      [enable parallelization with OpenMP @<:@default=check@:>@])],
-    [:],
-    [enable_openmp=check])
-AS_IF([test "x$enable_openmp" != xno],
-  [AX_OPENMP([have_openmp=yes],
-            [have_openmp=no])])
-AS_IF([test x$have_openmp = xyes],
-  [enable_openmp=yes],
-  [AS_IF([test "x$enable_openmp" = xyes],
-    [AC_MSG_ERROR([openmp not available])],
-    [AS_IF([test "x$enable_openmp" != xno],
-        [AC_MSG_NOTICE([Parallelization with OpenMP will not be available because no suitable compiler was found])])
-     enable_openmp=no])])
-AC_SUBST(OPENMP_CFLAGS)
-AM_CONDITIONAL(ENABLE_OPENMP, [test x$enable_openmp = xyes])
-
 ## Test for valgrind test suite
 AX_VALGRIND_DFLT([sgcheck], [off])
 AX_VALGRIND_DFLT([drd], [off])

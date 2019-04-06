@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CFLAGS = $(OPENMP_CFLAGS) -std=c11
+AM_CFLAGS = -std=c11
 
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
