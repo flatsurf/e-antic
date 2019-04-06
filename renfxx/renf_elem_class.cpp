@@ -448,7 +448,7 @@ renf_elem_class renf_elem_class::operator+() const noexcept { return *this; }
 
 renf_elem_class::operator bool() const noexcept
 {
-    return *this == 0;
+    return *this != 0;
 }
 
 renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexcept
