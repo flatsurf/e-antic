@@ -287,7 +287,7 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coeffic
     if (coefficients.size() > nf->degree())
         throw std::invalid_argument("can not assign renf_elem_class from vector whose size "
                                     "exceeds number field degree");
-#pragma GCC dignostic pop
+#pragma GCC diagnostic pop
 
     using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
 
@@ -363,7 +363,6 @@ std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(
 template <typename T, typename fmpq_op, typename renf_op>
 void renf_elem_class::inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf)
 {
-    using S = std::remove_cv_t<std::remove_reference_t<T>>;
     is_fmpq() ? fmpq(b, b, std::forward<T>(rhs)) : renf(a, a, std::forward<T>(rhs), nf->renf_t());
 }
 
