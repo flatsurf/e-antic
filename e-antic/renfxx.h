@@ -27,7 +27,7 @@
 
 namespace eantic {
 
-// Backports of C++17 language features
+// Backports of C++17 definitions
 template< class T >
 constexpr bool is_integral_v = std::is_integral<T>::value;
 template< class S, class T >
@@ -229,8 +229,6 @@ inline mpz_class floor(renf_elem_class x) { return x.floor(); }
 inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 
 // generic construction and assignment
-template <typename = void> constexpr bool false_t = false;
-
 template <bool fallback_to_string, typename Integer> auto to_supported_integer(Integer value) noexcept
 {
     using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
@@ -250,27 +248,35 @@ template <bool fallback_to_string, typename Integer> auto to_supported_integer(I
         [&](auto) { return static_cast<Supported>(value); },
         // The cast might not work but we can still try
         [&](auto) {
-        return std::get<fallback_to_string ? 0 : 1>(std::forward_as_tuple(
-            [&](auto) {
-                try
-                {
-                    return boost::numeric_cast<Supported>(value);
-                }
-                catch (boost::bad_numeric_cast &)
-                {
-                    // The cast did not work, convert to a string and parse that (slow
-                    // of course)
-                    return boost::lexical_cast<std::string>(value);
-                }
-            },
-            [&](auto) {
-                static_assert(false_t<Integer>,
-                    "Integer type is too wide to be safely converted to slong or "
-                    "ulong. You should probably cast it to an mpz_class() "
-                    "explicitly.");
-                return 0;
+            return std::get<fallback_to_string ? 0 : 1>(std::forward_as_tuple(
+                [&](auto) {
+                    try
+                    {
+                        return boost::numeric_cast<Supported>(value);
+                    }
+                    catch (boost::bad_numeric_cast &)
+                    {
+                        // The cast did not work, convert to a string and parse that (slow
+                        // of course)
+                        return boost::lexical_cast<std::string>(value);
+                    }
+                },
+                [&](auto) {
+                    static_assert(
+                        (std::numeric_limits<Supported>::min() <= std::numeric_limits<S>::min() && std::numeric_limits<Supported>::max() >= std::numeric_limits<S>::max()) ||
+                        // Strangely, some GCCs fail without the preceding line
+                        // when set to C++14 mode as the static assert is
+                        // evaluated even if this code path should not be
+                        // looked at at all.
+                        std::integral_constant<Integer, 0>::value,
+                        "Integer type is too wide to be safely converted to slong or "
+                        "ulong. You should probably cast it to an mpz_class() "
+                        "explicitly.");
+                    // code impossible to reach
+                    assert(false);
+                    return 0;
+                }))(0);
             }))(0);
-        }))(0);
 }
 
 template <typename Integer, typename std::enable_if_t<is_integral_v<Integer>, int>>

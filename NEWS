@@ -38,7 +38,7 @@ Multithread support
 
 Breaking Changes to the C++ Interface
 -------------------------------------
-- `e-antic/renfxx.h` requires C++17.
+- `e-antic/renfxx.h` requires C++14.
 - All classes are now declared in the namespace `eantic`.
 - The semantics of `operator =` have changed. In e-antic 0.1 the following
   would create the unit in the field K.
