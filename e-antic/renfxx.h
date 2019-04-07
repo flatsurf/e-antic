@@ -27,6 +27,12 @@
 
 namespace eantic {
 
+// Backports of C++17 language features
+template< class T >
+constexpr bool is_integral_v = std::is_integral<T>::value;
+template< class S, class T >
+constexpr bool is_same_v = std::is_same<S, T>::value;
+
 // A Real Embedded Number Field
 // This class provides C++ memory management for the underlying renf_t.
 class renf_class : boost::equality_comparable<renf_class> {
@@ -90,7 +96,7 @@ public:
     renf_elem_class() noexcept;
     renf_elem_class(const renf_elem_class &) noexcept;
     renf_elem_class(renf_elem_class &&) noexcept;
-    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    template <typename Integer, typename std::enable_if_t<is_integral_v<Integer>, int> = 0>
     renf_elem_class(Integer) noexcept;
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
@@ -106,7 +112,7 @@ public:
     // A rational in the field k
     renf_elem_class(const renf_class & k, const fmpq_t) noexcept;
     // An integer in the field k
-    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    template <typename Integer, typename std::enable_if_t<is_integral_v<Integer>, int> = 0>
     renf_elem_class(const renf_class & k, const Integer) noexcept;
     // Parse the string into an element in the field k
     renf_elem_class(const renf_class & k, const std::string &);
@@ -170,15 +176,15 @@ public:
 
     // binary operations with primitive integer types
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator+=(Integer) noexcept;
+    std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> operator+=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator-=(Integer) noexcept;
+    std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> operator-=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator*=(Integer) noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator/=(Integer);
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
+    std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> operator*=(Integer) noexcept;
+    template <typename Integer> std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> operator/=(Integer);
+    template <typename Integer> std::enable_if_t<is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
     // deprecated pre-1.0 methods
     [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const
@@ -225,53 +231,51 @@ inline mpz_class floor(renf_elem_class x) { return x.floor(); }
 inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
 
 // generic construction and assignment
-
-template <auto = 0> constexpr bool false_v = false;
 template <typename = void> constexpr bool false_t = false;
 
 template <bool fallback_to_string, typename Integer> auto to_supported_integer(Integer value) noexcept
 {
     using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
 
-    static_assert(!std::is_same_v<S, mpz_class> && !std::is_same_v<S, mpq_class>,
+    static_assert(!is_same_v<S, mpz_class> && !is_same_v<S, mpq_class>,
         "Specialized operators should be used for mpz/mpq instead.");
 
-    static_assert(!std::is_same_v<bool, S>, "Cannot create renf_elem_class from bool.");
+    static_assert(!is_same_v<bool, S>, "Cannot create renf_elem_class from bool.");
 
     // This integer type is not natively understood, so we need to convert it
     // first
     using Supported = std::conditional_t<std::numeric_limits<S>::is_signed, slong, ulong>;
-    if constexpr (std::numeric_limits<Supported>::min() <= std::numeric_limits<S>::min() &&
-        std::numeric_limits<Supported>::max() >= std::numeric_limits<S>::max())
-    {
+
+    // This should be "if constexpr () else if constexpr () else" with C++17
+    return std::get<(std::numeric_limits<Supported>::min() <= std::numeric_limits<S>::min() && std::numeric_limits<Supported>::max() >= std::numeric_limits<S>::max()) ? 0 : 1>(std::forward_as_tuple(
         // We can safely cast to a supported type without overflow
-        return static_cast<Supported>(value);
-    }
-    else if constexpr (fallback_to_string)
-    {
+        [&](auto) { return static_cast<Supported>(value); },
         // The cast might not work but we can still try
-        try
-        {
-            return boost::numeric_cast<Supported>(value);
-        }
-        catch (boost::bad_numeric_cast &)
-        {
-            // The cast did not work, convert to a string and parse that (slow
-            // of course)
-            return boost::lexical_cast<std::string>(value);
-        }
-    }
-    else
-    {
-        static_assert(false_t<Integer>,
-            "Integer type is too wide to be safely converted to slong or "
-            "ulong. You should probably cast it to an mpz_class() "
-            "explicitly.");
-        return 0;
-    }
+        [&](auto) {
+        return std::get<fallback_to_string ? 0 : 1>(std::forward_as_tuple(
+            [&](auto) {
+                try
+                {
+                    return boost::numeric_cast<Supported>(value);
+                }
+                catch (boost::bad_numeric_cast &)
+                {
+                    // The cast did not work, convert to a string and parse that (slow
+                    // of course)
+                    return boost::lexical_cast<std::string>(value);
+                }
+            },
+            [&](auto) {
+                static_assert(false_t<Integer>,
+                    "Integer type is too wide to be safely converted to slong or "
+                    "ulong. You should probably cast it to an mpz_class() "
+                    "explicitly.");
+                return 0;
+            }))(0);
+        }))(0);
 }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename std::enable_if_t<is_integral_v<Integer>, int>>
 renf_elem_class::renf_elem_class(Integer value) noexcept
 {
     nf = nullptr;
@@ -297,25 +301,27 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coeffic
     fmpq_poly_init(p);
     for (size_t i = 0; i < coefficients.size(); i++)
     {
-        if constexpr (std::is_same_v<S, mpz_class>)
-            fmpq_poly_set_coeff_mpz(p, i, coefficients[i].__get_mp());
-        else if constexpr (std::is_same_v<S, mpq_class>)
-            fmpq_poly_set_coeff_mpq(p, i, coefficients[i].__get_mp());
-        else
-        {
-            auto c = to_supported_integer<false>(coefficients[i]);
-            if constexpr (std::is_same_v<decltype(c), slong>)
-                fmpq_poly_set_coeff_si(p, i, c);
-            else
-                fmpq_poly_set_coeff_ui(p, i, c);
-        }
+        // This should be a chain of "if constexpr ()" with C++17
+        std::get<is_same_v<S, mpz_class> ? 0 : 1>(std::forward_as_tuple(
+            [&](auto) { fmpq_poly_set_coeff_mpz(p, i, coefficients[i].__get_mp()); },
+            [&](auto) {
+            std::get<is_same_v<S, mpq_class> ? 0 : 1>(std::forward_as_tuple(
+                [&](auto) { fmpq_poly_set_coeff_mpq(p, i, coefficients[i].__get_mp()); },
+                [&](auto) {
+                    auto c = to_supported_integer<false>(coefficients[i]);
+                    std::get<is_same_v<decltype(c), slong> ? 0 : 1>(std::forward_as_tuple(
+                        [&](auto) { fmpq_poly_set_coeff_si(p, i, c); },
+                        [&](auto) { fmpq_poly_set_coeff_ui(p, i, c); }
+                    ))(0);
+                }))(0);
+            }))(0);
     }
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
 }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename std::enable_if_t<is_integral_v<Integer>, int>>
 renf_elem_class::renf_elem_class(const renf_class & k, Integer value) noexcept
 {
     nf = &k;
@@ -333,33 +339,30 @@ int renf_elem_class::cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(Integer rhs) const noexcept
+std::enable_if_t<is_integral_v<Integer>, bool> renf_elem_class::operator<(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) < 0;
-    else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) < 0;
+    return std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) < 0; },
+        [&](auto) { return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) < 0; }))(0);
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(Integer rhs) const noexcept
+std::enable_if_t<is_integral_v<Integer>, bool> renf_elem_class::operator>(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) > 0;
-    else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) > 0;
+    return std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) > 0; },
+        [&](auto) { return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) > 0; }))(0);
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(Integer rhs) const noexcept
+std::enable_if_t<is_integral_v<Integer>, bool> renf_elem_class::operator==(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) == 0;
-    else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) == 0;
+    return std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) == 0; },
+        [&](auto) { return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) == 0; }))(0);
 }
 
 template <typename T, typename fmpq_op, typename renf_op>
@@ -370,46 +373,42 @@ void renf_elem_class::inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf)
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator+=(Integer rhs) noexcept
+std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator+=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_add_si, renf_elem_add_si);
-    else
-        inplace_binop(other, fmpq_add_ui, renf_elem_add_ui);
+    std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { inplace_binop(other, fmpq_add_si, renf_elem_add_si); },
+        [&](auto) { inplace_binop(other, fmpq_add_ui, renf_elem_add_ui); }))(0);
     return *this;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator-=(Integer rhs) noexcept
+std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator-=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_sub_si, renf_elem_sub_si);
-    else
-        inplace_binop(other, fmpq_sub_ui, renf_elem_sub_ui);
+    std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { inplace_binop(other, fmpq_sub_si, renf_elem_sub_si); },
+        [&](auto) { inplace_binop(other, fmpq_sub_ui, renf_elem_sub_ui); }))(0);
     return *this;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator*=(Integer rhs) noexcept
+std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator*=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_mul_si, renf_elem_mul_si);
-    else
-        inplace_binop(other, fmpq_mul_ui, renf_elem_mul_ui);
+    std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { inplace_binop(other, fmpq_mul_si, renf_elem_mul_si); },
+        [&](auto) { inplace_binop(other, fmpq_mul_ui, renf_elem_mul_ui); }))(0);
     return *this;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator/=(Integer rhs)
+std::enable_if_t<is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator/=(Integer rhs)
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_div_si, renf_elem_div_si);
-    else
-        inplace_binop(other, fmpq_div_ui, renf_elem_div_ui);
+    std::get<is_same_v<decltype(other), slong> ? 0 : 1>(std::forward_as_tuple(
+        [&](auto) { inplace_binop(other, fmpq_div_si, renf_elem_div_si); },
+        [&](auto) { inplace_binop(other, fmpq_div_ui, renf_elem_div_ui); }))(0);
     return *this;
 }
 

@@ -38,7 +38,7 @@ AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
 AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
 
 AC_LANG_PUSH([C++])
-AX_CXX_COMPILE_STDCXX(17)
+AX_CXX_COMPILE_STDCXX(11)
 AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (gmp needs to be compiled with c++ support (--enable-cxx))])])
 AC_CHECK_HEADERS(boost/lexical_cast.hpp, , [AC_MSG_ERROR([boost headers not found])])
 AC_LANG_POP([C++])
