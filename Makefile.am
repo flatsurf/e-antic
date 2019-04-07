@@ -193,9 +193,10 @@ check_PROGRAMS +=                  \
     renf/test/t-init               \
     renf/test/t-init_nth_root_fmpq \
     renf/test/t-randtest           \
-    renf/test/t-real_embeddings
+    renf/test/t-real_embeddings    \
+    renf/test/t-thread
 
-noinst_HEADERS +=                    \
+noinst_HEADERS +=                  \
     renf_elem/rounding_template.h
 
 # renf_elem
