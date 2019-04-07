@@ -124,11 +124,6 @@ std::istream & renf_class::set_pword(std::istream & is) noexcept
     return is;
 }
 
-renf_class::renf_class(const char * minpoly, const char * gen, const char * emb, const slong prec)
-    : renf_class(std::string(minpoly), std::string(gen), std::string(emb), prec)
-{
-}
-
 std::istream & renf_class::set_istream(std::istream & is) noexcept { return set_pword(is); }
 
 std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)

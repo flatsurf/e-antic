@@ -67,8 +67,6 @@ public:
     // stored embedding) even though they are morally const.
     ::renf_t & renf_t() const noexcept { return nf; }
 
-    [[deprecated("Use the constructor taking std::string instead.")]] renf_class(
-        const char * minpoly, const char * gen, const char * emb, const slong prec);
     [[deprecated("Use renf_t() instead.")]] renf * get_renf() noexcept { return nf; }
     [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) noexcept;
 

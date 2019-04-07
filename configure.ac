@@ -28,6 +28,8 @@ esac],[flintdevel=false])
 AM_CONDITIONAL([FLINT252], [test x$flintdevel = xfalse])
 
 ## Check for headers and libraries
+ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
+
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
