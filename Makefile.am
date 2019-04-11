@@ -253,27 +253,27 @@ check_PROGRAMS +=                     \
 # check programs. However, automake seems confused with the
 # mix of C and C++ files.
 renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
-renfxx_test_t_constructor_LDADD = libeanticxx.la
+renfxx_test_t_constructor_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
-renfxx_test_t_get_LDADD = libeanticxx.la
+renfxx_test_t_get_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
-renfxx_test_t_assignment_LDADD = libeanticxx.la
+renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
-renfxx_test_t_get_num_den_LDADD = libeanticxx.la
+renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
-renfxx_test_t_cmp_LDADD = libeanticxx.la
+renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
-renfxx_test_t_binop_LDADD = libeanticxx.la
+renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
-renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la
+renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
-renfxx_test_t_floor_LDADD = libeanticxx.la
+renfxx_test_t_floor_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
-renfxx_test_t_ceil_LDADD = libeanticxx.la
+renfxx_test_t_ceil_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
-renfxx_test_t_get_str_LDADD = libeanticxx.la
+renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
-renfxx_test_t_stream_LDADD = libeanticxx.la
+renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
 
 # test suite
 TESTS = $(check_PROGRAMS)
