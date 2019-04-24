@@ -32,7 +32,7 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const
             fmpz_get_mpz(x.__get_mp(), fmpq_poly_numref(f) + i);
             res.push_back(x);
         }
-        size_t deg = fmpq_poly_length(nf->get_renf()->nf->pol);
+        size_t deg = fmpq_poly_degree(nf->get_renf()->nf->pol);
         for (size_t i = fmpq_poly_length(f); i < deg; i++)
             res.push_back(mpz_class(0));
         fmpq_poly_clear(f);
