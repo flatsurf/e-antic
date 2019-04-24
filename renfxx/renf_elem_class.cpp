@@ -501,22 +501,7 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
 
 bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 {
-    if (nf != nullptr)
-    {
-        if (nf == other.nf)
-        {
-            return renf_elem_equal(a, other.a, nf->renf_t());
-        }
-        else
-        {
-            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
-            return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
-        }
-    }
-    else if (other.nf == nullptr)
-        return fmpq_equal(b, other.b);
-    else
-        return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
+    return (*this - other).is_zero();
 }
 
 bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept

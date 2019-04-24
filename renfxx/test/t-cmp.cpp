@@ -37,10 +37,16 @@ void check_eq_ne(T t, renf_class& K)
     b += 2;
     c += 3;
     d += 4;
+
+    // a zero in another (trivial) number field
+    renf_class Q;
+    renf_elem_class z(Q);
+
     #define test_eq(x,y) (x == y) || (y == x) || not (x != y) || not (y != x)
     if (test_eq(t, a) || test_eq(t, b) || test_eq(t, c) || test_eq(t, d) ||
-        test_eq(a, b) || test_eq(a, c) || test_eq(a, d) || test_eq(b, c) ||
-        test_eq(b, d) || test_eq(c, d))
+        test_eq(t, z) || test_eq(a, b) || test_eq(a, c) || test_eq(a, d) ||
+        test_eq(a, z) || test_eq(b, c) || test_eq(b, d) || test_eq(b, z) ||
+        test_eq(c, d) || test_eq(c, z) || test_eq(d, z))
         throw std::runtime_error("== and != not coherent on renf_elem_class (2)");
     #undef test_eq
 }
