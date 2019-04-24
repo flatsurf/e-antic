@@ -42,6 +42,8 @@ void check_reconstruct(renf_class& K, renf_elem_class& a)
 
     std::cerr << "bx = " << b << std::endl;
     std::vector<mpz_class> num = a.get_num_vector();
+    if (num.size() != K.degree())
+        throw std::runtime_error("wrong vector length");
     for (std::vector<mpz_class>::iterator it = num.begin(); it < num.end(); it++)
     {
         b += gg * (*it);
@@ -94,7 +96,7 @@ int main(void)
         renf_elem_class b(K, "1/2");
         check_reconstruct(K, b);
 
-        renf_elem_class c(K, "-3/7");
+        renf_elem_class c(K, "-3/7x + 1");
         check_reconstruct(K, c);
     }
 
