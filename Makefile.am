@@ -1,15 +1,12 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 
-CC = ${PTHREAD_CC}
-AM_CFLAGS = -std=c11 @PTHREAD_CFLAGS@
-
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
 # Linked-against libraries
-libeantic_la_LIBADD = @LIBS@ @PTHREAD_LIBS@
-libeanticxx_la_LIBADD = @LIBS@ libeantic.la -lgmpxx
+libeantic_la_LIBADD = @LIBS@
+libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
 nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
@@ -20,8 +17,7 @@ libeantic_la_SOURCES =
 check_PROGRAMS =
 dist_doc_DATA =
 
-# TODO: we currently build all tests with linked c++ libraries
-LDADD = libeanticxx.la libeantic.la @LIBS@ -lgmpxx
+LDADD = libeantic.la
 
 @VALGRIND_CHECK_RULES@
 
@@ -257,16 +253,27 @@ check_PROGRAMS +=                     \
 # check programs. However, automake seems confused with the
 # mix of C and C++ files.
 renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
+renfxx_test_t_constructor_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
+renfxx_test_t_get_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
+renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
+renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
+renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
+renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
+renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
+renfxx_test_t_floor_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
+renfxx_test_t_ceil_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
+renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
+renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
 
 # test suite
 TESTS = $(check_PROGRAMS)
