@@ -115,7 +115,6 @@ renf_elem_class renf_class::gen() const noexcept
 
 bool renf_class::operator==(const renf_class & other) const noexcept
 {
-    if (this == &other) return true;
     return (this->nf == other.nf || renf_equal(this->nf, other.nf))
       && this->name == other.name;
 }
