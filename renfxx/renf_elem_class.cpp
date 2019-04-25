@@ -297,7 +297,7 @@ std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
     mpz_class x;
     std::vector<mpz_class> res;
 
-    if (nf == NULL)
+    if (nf == nullptr)
     {
         fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
         res.push_back(x);
@@ -503,7 +503,7 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
     {
-        if (nf == other.nf)
+        if (other.nf != nullptr && *nf == *other.nf)
         {
             return renf_elem_equal(a, other.a, nf->renf_t());
         }
@@ -523,7 +523,7 @@ bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
     {
-        if (nf == other.nf)
+        if (other.nf != nullptr && *nf == *other.nf)
             return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
         else
         {
