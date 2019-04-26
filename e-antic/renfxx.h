@@ -394,7 +394,7 @@ inline renf_elem_class renf_class::gen()
 
 inline slong renf_class::degree()
 {
-    return nf == NULL ? 1 : nf_degree(nf->nf);
+    return nf_degree(nf->nf);
 }
 
 
