@@ -12,6 +12,7 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
+using std::make_shared;
 
 int main(void)
 {
@@ -43,10 +44,10 @@ int main(void)
 
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 50);
-        renf_class K(nf);
+        auto K = make_shared<renf_class>(nf);
         renf_clear(nf);
 
-        renf_elem_class a(K);
+        renf_elem_class a(*K);
 
         // should work
         r = a.get_renf_elem();

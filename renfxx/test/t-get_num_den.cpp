@@ -19,6 +19,7 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
+using std::make_shared;
 
 void check_rational(int num, int den, renf_class& K)
 {
@@ -73,48 +74,48 @@ int main(void)
 {
     {
         // linear
-        renf_class K("x - 2/3", "x", "0.66 +/- 0.1");
+        auto K = make_shared<renf_class>("x - 2/3", "x", "0.66 +/- 0.1");
 
-        check_rational(-12, 5, K);
+        check_rational(-12, 5, *K);
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "2/3");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "2/3");
+        check_reconstruct(*K, b);
     }
 
     {
         // quadratic
-        renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
+        auto K = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.1");
 
-        check_rational(7, 12, K);
+        check_rational(7, 12, *K);
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "1/2");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "1/2");
+        check_reconstruct(*K, b);
 
-        renf_elem_class c(K, "-3/7x + 1");
-        check_reconstruct(K, c);
+        renf_elem_class c(*K, "-3/7x + 1");
+        check_reconstruct(*K, c);
     }
 
     {
         // cubic
-        renf_class K("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
+        auto K = make_shared<renf_class>("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "53/22");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "53/22");
+        check_reconstruct(*K, b);
 
-        renf_elem_class c(K, "222/317 -75/22*ZT");
-        check_reconstruct(K, c);
+        renf_elem_class c(*K, "222/317 -75/22*ZT");
+        check_reconstruct(*K, c);
 
-        renf_elem_class d(K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
-        check_reconstruct(K, d);
+        renf_elem_class d(*K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
+        check_reconstruct(*K, d);
     }
 
     return 0;

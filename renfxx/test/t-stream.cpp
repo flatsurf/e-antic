@@ -15,13 +15,14 @@
 #include <sstream>
 
 using namespace eantic;
+using std::make_shared;
 
 int main(void)
 {
-    renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");
-    renf_class K2("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
-    const renf_elem_class g1 = K1.gen();
-    const renf_elem_class g2 = K2.gen();
+    auto K1 = make_shared<renf_class>("A^3 - 2", "A", "1.25 +/- 0.1");
+    auto K2 = make_shared<renf_class>("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+    const renf_elem_class g1 = K1->gen();
+    const renf_elem_class g2 = K2->gen();
 
     {
         std::stringstream s;
@@ -41,23 +42,23 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a = K1.gen();
+        renf_elem_class a = K1->gen();
         s << a;
         if (s.str() != "(A ~ 1.259921)")
             throw std::runtime_error("wrong string, got " + s.str());
     }
 
     {
-        renf_elem_class a(K1);
+        renf_elem_class a(*K1);
 
         std::stringstream sin1("3/5*A+2");
-        K1.set_pword(sin1);
+        K1->set_pword(sin1);
         sin1 >> a;
         if (a != 3*g1/5 + 2)
             throw std::runtime_error("wrong nf initialization");
 
         std::stringstream sin2("A-1");
-        K1.set_pword(sin2);
+        K1->set_pword(sin2);
         sin2 >> a;
         if (a != g1 - 1)
             throw std::runtime_error("wrong nf reinitialization");
@@ -78,29 +79,29 @@ int main(void)
         renf_elem_class a;
 
         std::stringstream sin1("3*A^2-7");
-        K1.set_istream(sin1) >> a;
+        K1->set_istream(sin1) >> a;
         if (a != 3*g1*g1-7)
             throw std::runtime_error("bad stream_set_renf initialization");
 
         std::stringstream sin2("A+1");
-        K1.set_istream(sin2) >> a;
+        K1->set_istream(sin2) >> a;
         if (a != g1+1)
             throw std::runtime_error("bad stream_set_renf reinitialization 1");
 
         std::stringstream sin3("abc^2-1");
-        K2.set_istream(sin3) >> a;
+        K2->set_istream(sin3) >> a;
         if (a != g2*g2 - 1)
             throw std::runtime_error("bad stream_set_renf reinitialization 2");
     }
 
     {
         // use the result of writing in a stream <<
-        renf_elem_class a(K1, "3*A^2-1");
-        renf_elem_class b(K1);
+        renf_elem_class a(*K1, "3*A^2-1");
+        renf_elem_class b(*K1);
         std::stringstream s;
 
         s << a;
-        K1.set_pword(s);
+        K1->set_pword(s);
         s >> b;
 
         if (a != b)

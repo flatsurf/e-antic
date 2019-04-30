@@ -13,6 +13,7 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
+using std::make_shared;
 
 #define CHECK_OP(a, b, K, T, OP)  \
 {                                 \
@@ -105,52 +106,52 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 32, 50);
-        renf_class K(nf);
+        auto K = make_shared<renf_class>(nf);
         renf_clear(nf);
 
         {
             int c1 = -1123, c2 = 142;
-            check_binop(c1, c2, K);
+            check_binop(c1, c2, *K);
         }
         {
             unsigned int c1 = 2223, c2 = 123;
-            check_binop(c1, c2, K);
+            check_binop(c1, c2, *K);
         }
         {
             long c1 = 134, c2 = -1111;
-            check_binop(c1, c2, K);
+            check_binop(c1, c2, *K);
         }
         {
             unsigned long c1 = 513, c2 = 3;
-            check_binop(c2, c2, K);
+            check_binop(c2, c2, *K);
         }
         {
             mpz_class c1(232);
             mpz_class c2(12);
-            check_binop(c1, c2, K);
+            check_binop(c1, c2, *K);
         }
         {
             mpq_class c1(211561);
             mpq_class c2(13);
-            check_binop(c1, c2, K);
+            check_binop(c1, c2, *K);
         }
     }
 
     {
-        renf_class K1("x^2 - 2", "x", "1.41 +/- 0.01");
-        renf_class K2("x^2 - 3", "x", "1.73 +/- 0.01");
+        auto K1 = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K2 = make_shared<renf_class>("x^2 - 3", "x", "1.73 +/- 0.01");
 
-        renf_elem_class a1(K1);
-        renf_elem_class a2(K2);
+        renf_elem_class a1(*K1);
+        renf_elem_class a2(*K2);
     }
 
     {
-        renf_class K("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.01");
 
-        renf_elem_class a(K, "1/3 + 3/5*x");
-        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K.gen();
-        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K.gen() / mpz_class(5);
-        renf_elem_class d = mpq_class(1,3) + 3 * K.gen() / 5;
+        renf_elem_class a(*K, "1/3 + 3/5*x");
+        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K->gen();
+        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K->gen() / mpz_class(5);
+        renf_elem_class d = mpq_class(1,3) + 3 * K->gen() / 5;
 
         if (a != b || a != c || a != d)
             throw std::runtime_error("error with operations");

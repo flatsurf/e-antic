@@ -15,6 +15,7 @@
 #include <stdexcept>
 
 using namespace eantic;
+using std::make_shared;
 
 int main(void)
 {
@@ -25,13 +26,13 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 64, 10);
-        renf_class K(nf);
+        auto K = std::make_shared<renf_class>(nf);
 
         renf_clear(nf);
 
         {
             int c = 2;
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -46,7 +47,7 @@ int main(void)
 
         {
             unsigned int c = 2;
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -60,7 +61,7 @@ int main(void)
 
         {
             long c = 2;
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -75,7 +76,7 @@ int main(void)
 
         {
             unsigned long c = 2;
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -90,7 +91,7 @@ int main(void)
         {
             mpz_class c(2);
 
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -100,7 +101,7 @@ int main(void)
         {
             mpz_class c("134983749573957838576538601923480397593857698357946");
 
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -109,7 +110,7 @@ int main(void)
         {
             mpq_class c(2);
 
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -121,7 +122,7 @@ int main(void)
         {
             mpq_class c("130498349583795687209384039850478694587694856/193482794587695830598130598349851");
 
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(0);
             a = c;
             b = c;
@@ -137,14 +138,14 @@ int main(void)
 
         {
             renf_elem_class a;
-            renf_elem_class b(K, 2);
+            renf_elem_class b(*K, 2);
             a = b;
             if (a != 2 || 2 != a || a != b || b != a)
                 throw std::runtime_error("constructor from another renf_elem_class is wrong (2)");
         }
 
         {
-            renf_elem_class a(K);
+            renf_elem_class a(*K);
             renf_elem_class b(2);
             a = b;
 
@@ -153,8 +154,8 @@ int main(void)
         }
 
         {
-            renf_elem_class a(K);
-            renf_elem_class b(K, 2);
+            renf_elem_class a(*K);
+            renf_elem_class b(*K, 2);
             a = b;
 
             if (b != 2 || 2 != b || a != b || b != a)
@@ -162,32 +163,32 @@ int main(void)
         }
 
         {
-            if (K.degree() >= 2)
+            if (K->degree() >= 2)
             {
                 std::vector<mpz_class> v;
                 v.push_back(1);
                 v.push_back(1);
-                renf_elem_class a(K, v);
-                renf_elem_class b(K);
+                renf_elem_class a(*K, v);
+                renf_elem_class b(*K);
                 b = renf_elem_class(b.parent(), v);
 
-                if (a != K.gen() + 1 || b != K.gen() + 1)
+                if (a != K->gen() + 1 || b != K->gen() + 1)
                     throw std::runtime_error("constructor from std::vector<mpz_class> failed");
             }
         }
 
         {
-            if (K.degree() >= 2)
+            if (K->degree() >= 2)
             {
                 std::vector<mpq_class> v;
                 v.push_back(mpq_class(1,2));
                 v.push_back(mpq_class(-2,3));
-                renf_elem_class a(K,v);
-                renf_elem_class b(K,v);
+                renf_elem_class a(*K,v);
+                renf_elem_class b(*K,v);
                 b = renf_elem_class(b.parent(), v);
 
-                if (a != (-2*K.gen()/3 + mpq_class(1,2)) ||
-                    b != (-2*K.gen()/3 + mpq_class(1,2)))
+                if (a != (-2*K->gen()/3 + mpq_class(1,2)) ||
+                    b != (-2*K->gen()/3 + mpq_class(1,2)))
                     throw std::runtime_error("constructor from std::vector<mpq_class> failed");
             }
         }

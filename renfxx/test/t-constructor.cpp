@@ -14,6 +14,7 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
+using std::make_shared;
 
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
@@ -62,25 +63,24 @@ int main(void)
 
     {
         // operator = for renf_class
-        renf_class K1("a^2 - 2", "a", "1.41 +/- 0.1", 128);
-        renf_class K2;
-        K2 = K1;
+        auto K1 = make_shared<renf_class>("a^2 - 2", "a", "1.41 +/- 0.1", 128);
+				auto K2 = make_shared<renf_class>(*K1);
 
-        renf_elem_class a(K1, "a + 1");
-        renf_elem_class b(K2, "a + 1");
+        renf_elem_class a(*K1, "a + 1");
+        renf_elem_class b(*K2, "a + 1");
 
-        if (K1.degree() != 2 || K2.degree() != 2)
+        if (K1->degree() != 2 || K2->degree() != 2)
             throw std::runtime_error("wrong answer for degree");
     }
 
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 128, 50);
-        renf_class K(nf);
+        auto K = make_shared<renf_class>(nf);
 
-        renf_elem_class a(K);
+        renf_elem_class a(*K);
         renf_elem_class b(a);
-        renf_elem_class c = K.zero();
+        renf_elem_class c = K->zero();
 
         if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq())
             throw std::runtime_error("problem with renf_elem_class constructor");
@@ -94,12 +94,12 @@ int main(void)
     }
 
     {
-        renf_class K("a^2 - 2", "a", "1.4142 +/- 0.5", 128);
-        renf_elem_class a(K);
-        renf_elem_class b(K, 0);
-        renf_elem_class c(K, "0");
-        renf_elem_class d(K, "0*a^2 + 0");
-        renf_elem_class e = K.zero();
+        auto K = make_shared<renf_class>("a^2 - 2", "a", "1.4142 +/- 0.5", 128);
+        renf_elem_class a(*K);
+        renf_elem_class b(*K, 0);
+        renf_elem_class c(*K, "0");
+        renf_elem_class d(*K, "0*a^2 + 0");
+        renf_elem_class e = K->zero();
 
         if (a.is_fmpq() || b.is_fmpq() || c.is_fmpq() || d.is_fmpq() || e.is_fmpq())
             throw std::runtime_error("problem with renf_elem_class constructor");
@@ -112,11 +112,11 @@ int main(void)
 
     {
         // QQ
-        renf_class K;
-        renf_elem_class a(K);
-        renf_elem_class b(K, 0);
-        renf_elem_class c(K, "0");
-        renf_elem_class d = K.zero();
+        auto K = make_shared<renf_class>();
+        renf_elem_class a(*K);
+        renf_elem_class b(*K, 0);
+        renf_elem_class c(*K, "0");
+        renf_elem_class d = K->zero();
 
         check_equal(a, b);
         check_equal(a, c);
@@ -125,20 +125,20 @@ int main(void)
 
     {
         // QQ[sqrt(2)]
-        renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 128);
+        auto K = make_shared<renf_class>("a^2 - 2", "a", "1.41 +/- 0.1", 128);
 
-        renf_elem_class a(K, "-7/3 + 3/5*a");
-        renf_elem_class b = 3 * K.gen() / 5 - 7 * K.one() / 3;
+        renf_elem_class a(*K, "-7/3 + 3/5*a");
+        renf_elem_class b = 3 * K->gen() / 5 - 7 * K->one() / 3;
 
         check_equal(a, b);
     }
 
     {
         // QQ[cbrt(2)]
-        renf_class K("A^3 - 2", "A", "1.26 +/- 0.1");
+        auto K = make_shared<renf_class>("A^3 - 2", "A", "1.26 +/- 0.1");
 
-        renf_elem_class a(K, "2/5 - 3/2 * A + 7/4 * A^2");
-        renf_elem_class b = mpq_class(2, 5) - mpq_class(3, 2) * K.gen() + mpq_class(7, 4) * K.gen() * K.gen();
+        renf_elem_class a(*K, "2/5 - 3/2 * A + 7/4 * A^2");
+        renf_elem_class b = mpq_class(2, 5) - mpq_class(3, 2) * K->gen() + mpq_class(7, 4) * K->gen() * K->gen();
 
         check_equal(a, b);
     }

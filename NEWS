@@ -105,4 +105,6 @@ Non-Breaking Changes to the C++ Interface
   where before the entries of the vector had to be `mpz_class`.
 - Move semantics `&&` have been added to `renf_elem_class`.
 
+TODO: Write about shared_ptr and how to convert existing code without having to
+make many changes.
 

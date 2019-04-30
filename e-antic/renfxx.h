@@ -15,6 +15,7 @@
 #define RENFXX_H
 
 #include <vector>
+#include <memory>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -29,8 +30,10 @@ namespace eantic {
 
 // A Real Embedded Number Field
 // This class provides C++ memory management for the underlying renf_t.
-class renf_class : boost::equality_comparable<renf_class> {
+class renf_class : public std::enable_shared_from_this<renf_class>,
+                   private boost::equality_comparable<renf_class> {
 public:
+    // TODO: Hide these constructors and provide factory functions instead that produce a shared_ptr<>.
     // The trivial number field adjoining a root of (x - 1) to the rationals
     renf_class() noexcept;
     renf_class(const renf_class &) noexcept;
@@ -54,6 +57,7 @@ public:
 
     // Prepare an input stream to read elements living in this number field
     // from it.
+    [[deprecated("use the methods in renfxx_cereal.h instead.")]]
     std::istream & set_pword(std::istream &) noexcept;
 
     // Raw access to the underlying renf_t; we do not return a const renf_t
@@ -61,8 +65,8 @@ public:
     // stored embedding) even though they are morally const.
     ::renf_t & renf_t() const noexcept { return nf; }
 
-    [[deprecated("Use renf_t() instead.")]] renf * get_renf() noexcept { return nf; }
-    [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) noexcept;
+    [[deprecated("use renf_t() instead.")]] renf * get_renf() noexcept { return nf; }
+    [[deprecated("use set_pword() instead.")]] std::istream & set_istream(std::istream &) noexcept;
 
 private:
     // The name of the generator
@@ -93,6 +97,7 @@ public:
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
     renf_elem_class(const fmpq_t) noexcept;
+    // TODO: Add constructors that accept a shared_ptr<renf_class>. Or shared_ptr<const renf_class>?
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
     // only valid while that reference is.
@@ -179,8 +184,7 @@ public:
     template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
     // deprecated pre-1.0 methods
-    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const
-        noexcept;
+    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
     [[deprecated("use fmpq_t() instead")]] ::fmpq * get_fmpq() const;
     [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
@@ -195,7 +199,7 @@ public:
 
 private:
     // The parent number field; a nullptr if the element is rational.
-    renf_class const * nf;
+    std::shared_ptr<const renf_class> nf;
     // The underlying element when nf != nullptr.
     // We need mutability as calls might need to refine the precision of
     // the stored embedding.
@@ -316,7 +320,7 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coeffic
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
 renf_elem_class::renf_elem_class(const renf_class & k, Integer value) noexcept
 {
-    nf = &k;
+    nf = k.shared_from_this();
     renf_elem_init(a, k.renf_t());
 
     assign(to_supported_integer<true>(value));
