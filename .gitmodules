@@ -1,0 +1,3 @@
+[submodule "renfxx/test/external/cereal"]
+	path = renfxx/test/external/cereal
+	url = https://github.com/USCiLab/cereal.git

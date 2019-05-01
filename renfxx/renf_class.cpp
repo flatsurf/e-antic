@@ -146,7 +146,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
     if (is.eof()) throw std::invalid_argument("empty stream");
 
     c = is.peek();
-    if (c == '(')
+    if (c == '(' && nf != nullptr)
     {
         // read until ")"
         is.get();
@@ -157,6 +157,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
     }
     else
     {
+        if (c == '(') is.get();
         // read until space or EOF
         while (!is.eof() && !isspace(is.peek()) && is.peek() != EOF)
             s += is.get();

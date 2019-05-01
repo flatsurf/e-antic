@@ -332,7 +332,6 @@ std::string renf_elem_class::to_string(int flags) const noexcept
 
     assert(!((flags & EANTIC_STR_D) && (flags & EANTIC_STR_ARB)));
 
-    // call to renf_elem_get_str_pretty
     if (!nf)
     {
         if (flags & EANTIC_STR_ALG)

@@ -74,6 +74,13 @@ private:
 
     // The actual underlying renf_t
     mutable ::renf_t nf;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
+    template <typename Archive>
+    void load(Archive & archive, std::uint32_t version);
+    template <typename Archive>
+    void save(Archive & archive, std::uint32_t version) const;
 };
 
 class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
@@ -219,6 +226,13 @@ private:
     void assign(const ::fmpq_t) noexcept;
     void assign(const mpz_class &) noexcept;
     void assign(const mpq_class &) noexcept;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
+    template <typename Archive>
+    void load(Archive & archive, std::uint32_t version);
+    template <typename Archive>
+    void save(Archive & archive, std::uint32_t version) const;
 };
 
 // overloads for global functions

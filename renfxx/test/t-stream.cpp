@@ -38,6 +38,11 @@ int main(void)
         s << a;
         if (s.str() != "(2/3 ~ 0.666667)")
             throw std::runtime_error("wrong 0 string, got " + s.str());
+
+        renf_elem_class b;
+        s >> b;
+        if (a != b)
+            throw std::runtime_error("could not recover original element");
     }
 
     {

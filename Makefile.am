@@ -249,7 +249,8 @@ check_PROGRAMS +=                     \
     renfxx/test/t-is_integer_rational \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
-    renfxx/test/t-stream
+    renfxx/test/t-stream              \
+    renfxx/test/t-cereal
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -276,6 +277,9 @@ renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
+renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_CPPFLAGS = -isystem renfxx/test/external/cereal/include
 
 # test suite
 TESTS = $(check_PROGRAMS)
