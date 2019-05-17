@@ -8,6 +8,13 @@ AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIR([m4])
+
+## Check for which system:
+AC_CANONICAL_HOST
+
+## Package setup:
+EANTIC_AC_PKG_EANTIC_SETUP
+
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 

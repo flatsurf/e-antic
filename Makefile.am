@@ -6,9 +6,17 @@ AM_CFLAGS = $(OPENMP_CFLAGS)
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
+# Provide LT INFOrmation
+libeantic_la_LT_INFO = -version-info $(EANTIC_LT_INFO)
+libeanticxx_la_LT_INFO = -version-info $(EANTIC_LT_INFO)
+
 # Linked-against libraries
 libeantic_la_LIBADD = -larb -lflint -lgmp
 libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
+
+# Set up LDFLAGS
+libeantic_la_LDFLAGS = $(libeantic_la_LT_INFO)
+libeanticxx_la_LDFLAGS = $(libeanticxx_la_LT_INFO)
 
 # Installed headers
 nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h
