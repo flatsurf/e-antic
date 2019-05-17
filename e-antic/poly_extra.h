@@ -315,8 +315,7 @@ slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol);
 void _fmpz_poly_resultant_modular_div(fmpz_t res,
         const fmpz * poly1, slong len1,
         const fmpz * poly2, slong len2, const fmpz_t divisor, slong nbits);
-void
-fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
+void fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
               const fmpz_poly_t poly2, const fmpz_t divisor, slong nbits);
 
 slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
@@ -335,7 +334,7 @@ void _fmpq_vec_sort(fmpq * vec, slong len);
 void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
 void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state,
                                                 slong len, mp_bitcnt_t bits);
- void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
+void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
 
 void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n);
 
