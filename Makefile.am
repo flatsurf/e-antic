@@ -10,13 +10,22 @@ lib_LTLIBRARIES = libeantic.la libeanticxx.la
 libeantic_la_LT_INFO = -version-info $(EANTIC_LT_INFO)
 libeanticxx_la_LT_INFO = -version-info $(EANTIC_LT_INFO)
 
+# Provide version script support
+libeantic_la_LD_VERSION_SCRIPT=
+libeanticxx_la_LD_VERSION_SCRIPT=
+if HAVE_LD_VERSION_SCRIPT
+  libeantic_la_LD_VERSION_SCRIPT+= -Wl,--version-script=$(top_srcdir)/libeantic.map
+  libeanticxx_la_LD_VERSION_SCRIPT+= -Wl,--version-script=$(top_srcdir)/libeanticxx.map
+endif
+
+
 # Linked-against libraries
 libeantic_la_LIBADD = -larb -lflint -lgmp
 libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
 
 # Set up LDFLAGS
-libeantic_la_LDFLAGS = $(libeantic_la_LT_INFO)
-libeanticxx_la_LDFLAGS = $(libeanticxx_la_LT_INFO)
+libeantic_la_LDFLAGS = $(libeantic_la_LT_INFO) $(libeantic_la_LD_VERSION_SCRIPT)
+libeanticxx_la_LDFLAGS = $(libeanticxx_la_LT_INFO) $(libeanticxx_la_LD_VERSION_SCRIPT)
 
 # Installed headers
 nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h

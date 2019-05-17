@@ -18,6 +18,9 @@ EANTIC_AC_PKG_EANTIC_SETUP
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 
+## Checks for linker script support:
+gl_LD_VERSION_SCRIPT
+
 ## Test for OpenMP parallelization.
 AC_ARG_ENABLE([openmp],
     [AS_HELP_STRING([--enable-openmp@<:@=ARG@:>@],
