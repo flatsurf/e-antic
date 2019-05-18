@@ -47,7 +47,7 @@ renf_class::renf_class(const renf_class & k) noexcept
 {
 }
 
-renf_class::renf_class(const ::renf_t & k, const std::string & gen_name) noexcept
+renf_class::renf_class(const ::renf_t k, const std::string & gen_name) noexcept
 {
     renf_init_set(nf, k);
     this->name = gen_name;
