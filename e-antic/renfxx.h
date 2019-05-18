@@ -143,6 +143,7 @@ public:
     __RENFXX_construct(unsigned long int, assign_ui)
     __RENFXX_construct(mpz_class&, assign_mpz_class)
     __RENFXX_construct(mpq_class&, assign_mpq_class)
+    __RENFXX_construct(fmpq_poly_t, assign_fmpq_poly)
     explicit __RENFXX_construct(std::vector<mpz_class>&, assign_mpz_vector);
     explicit __RENFXX_construct(std::vector<mpq_class>&, assign_mpq_vector);
     explicit __RENFXX_construct(std::string&, assign_string)
