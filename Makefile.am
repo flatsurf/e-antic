@@ -1,17 +1,17 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CFLAGS = $(OPENMP_CFLAGS)
-
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
+libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
+libeanticxx_la_LDFLAGS = -version-info @libeanticxx_version_info@ -no-undefined
 
 # Linked-against libraries
-libeantic_la_LIBADD = -larb -lflint -lgmp
-libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
+libeantic_la_LIBADD = @LIBS@
+libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h
+nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -19,8 +19,7 @@ libeantic_la_SOURCES =
 check_PROGRAMS =
 dist_doc_DATA =
 
-# TODO: we currently build all tests with linked c++ libraries
-LDADD = libeanticxx.la libeantic.la -larb -lflint -lgmpxx -lgmp
+LDADD = libeantic.la
 
 @VALGRIND_CHECK_RULES@
 
@@ -192,9 +191,10 @@ check_PROGRAMS +=                  \
     renf/test/t-init               \
     renf/test/t-init_nth_root_fmpq \
     renf/test/t-randtest           \
-    renf/test/t-real_embeddings
+    renf/test/t-real_embeddings    \
+    renf/test/t-thread
 
-noinst_HEADERS +=                    \
+noinst_HEADERS +=                  \
     renf_elem/rounding_template.h
 
 # renf_elem
@@ -218,6 +218,7 @@ libeantic_la_SOURCES +=            \
     renf_elem/relative_condition_number_2exp.c
 
 check_PROGRAMS +=                \
+    renf_elem/test/t-swap        \
     renf_elem/test/t-binop       \
     renf_elem/test/t-ceil        \
     renf_elem/test/t-equal_fmpq  \
@@ -233,9 +234,9 @@ check_PROGRAMS +=                \
 
 # C++
 
-libeanticxx_la_SOURCES =        \
-    renfxx/get_num_vector.cpp   \
-    renfxx/set_renf_xalloc.cpp
+libeanticxx_la_SOURCES =       \
+    renfxx/renf_class.cpp      \
+    renfxx/renf_elem_class.cpp
 
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
@@ -254,16 +255,27 @@ check_PROGRAMS +=                     \
 # check programs. However, automake seems confused with the
 # mix of C and C++ files.
 renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
+renfxx_test_t_constructor_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
+renfxx_test_t_get_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
+renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
+renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
+renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
+renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
+renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp
+renfxx_test_t_floor_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
+renfxx_test_t_ceil_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
+renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
+renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
 
 # test suite
 TESTS = $(check_PROGRAMS)

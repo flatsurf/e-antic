@@ -9,10 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
 
 #include <stdexcept>
 #include <string>
+
+using namespace eantic;
 
 void check_string(const renf_elem_class& a,
         const std::string& s_ALG_D,
@@ -41,7 +43,7 @@ int main(void)
     {
         // fmpq elements (nf reference is NULL)
         {
-            renf_elem_class a("1/2");
+            renf_elem_class a(mpq_class("1/2"));
             check_string(a, "(1/2 ~ 0.500000)", "1/2", "0.500000");
         }
     }

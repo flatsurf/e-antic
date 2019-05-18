@@ -9,8 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
 
+using namespace eantic;
 
 int main(void)
 {

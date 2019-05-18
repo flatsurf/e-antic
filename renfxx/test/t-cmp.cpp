@@ -9,7 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
+
+using namespace eantic;
 
 template<typename T>
 void check_eq_ne(T t, renf_class& K)
@@ -24,10 +26,13 @@ void check_eq_ne(T t, renf_class& K)
 
     renf_elem_class d(K, t);
 
+    renf_class L(K);
+    renf_elem_class e(L, t);
+
     #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
-    if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) ||
-        test_neq(a, b) || test_neq(a, c) || test_neq(a, d) || test_neq(b, c) ||
-        test_neq(b, d) || test_neq(c, d))
+    if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) || test_neq(t, e) ||
+        test_neq(a, b) || test_neq(a, c) || test_neq(a, d) || test_neq(t, e) || test_neq(b, c) ||
+        test_neq(b, d) || test_neq(b, e) || test_neq(c, d) || test_neq(c, e) || test_neq(d, e))
         throw std::runtime_error("== and != not coherent on renf_elem_class (1)");
     #undef test_neq
 
@@ -35,10 +40,11 @@ void check_eq_ne(T t, renf_class& K)
     b += 2;
     c += 3;
     d += 4;
+    e += 5;
     #define test_eq(x,y) (x == y) || (y == x) || not (x != y) || not (y != x)
-    if (test_eq(t, a) || test_eq(t, b) || test_eq(t, c) || test_eq(t, d) ||
-        test_eq(a, b) || test_eq(a, c) || test_eq(a, d) || test_eq(b, c) ||
-        test_eq(b, d) || test_eq(c, d))
+    if (test_eq(t, a) || test_eq(t, b) || test_eq(t, c) || test_eq(t, d) || test_eq(t, e) ||
+        test_eq(a, b) || test_eq(a, c) || test_eq(a, d) || test_eq(t, e) || test_eq(b, c) ||
+        test_eq(b, d) || test_eq(b, e) || test_eq(c, d) || test_eq(c, e) || test_eq(d, e))
         throw std::runtime_error("== and != not coherent on renf_elem_class (2)");
     #undef test_eq
 }
