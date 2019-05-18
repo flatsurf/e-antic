@@ -32,14 +32,14 @@
 #define NF_ELEM_INLINE static __inline__
 #endif
 
-#include "gmp.h"
-#include "flint/flint.h"
-#include "flint/fmpq_poly.h"
-#include "flint/fmpq_mat.h"
-#include "flint/fmpz_mat.h"
-#include "flint/fmpz_mod_poly.h"
-#include "e-antic/poly_extra.h"
-#include "e-antic/nf.h"
+#include <gmp.h>
+#include <flint/flint.h>
+#include <flint/fmpq_poly.h>
+#include <flint/fmpq_mat.h>
+#include <flint/fmpz_mat.h>
+#include <flint/fmpz_mod_poly.h>
+#include <e-antic/poly_extra.h>
+#include <e-antic/nf.h>
 
 #ifdef __cplusplus
  extern "C" {
