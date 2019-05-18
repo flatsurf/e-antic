@@ -9,7 +9,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#include <iostream>
+#include <e-antic/renfxx.h>
+
+using namespace eantic;
 
 #define CHECK_OP(a, b, K, T, OP)  \
 {                                 \
@@ -139,42 +142,6 @@ int main(void)
 
         renf_elem_class a1(K1);
         renf_elem_class a2(K2);
-
-        try
-        {
-            a1 + a2;
-            throw std::runtime_error("a1 + a2 did not raise an error");
-        }
-        catch (std::domain_error)
-        {
-        }
-
-        try
-        {
-            a1 - a2;
-            throw std::runtime_error("a1 - a2 did not raise an error");
-        }
-        catch (std::domain_error)
-        {
-        }
-
-        try
-        {
-            a1 * a2;
-            throw std::runtime_error("a1 * a2 did not raise an error");
-        }
-        catch (std::domain_error)
-        {
-        }
-
-        try
-        {
-            a1 / a2;
-            throw std::runtime_error("a1 / a2 did not raise an error");
-        }
-        catch (std::domain_error)
-        {
-        }
     }
 
     {

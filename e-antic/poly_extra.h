@@ -257,7 +257,7 @@ void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
 }
 
 static __inline__
-double fmpq_get_d(fmpq_t q)
+double fmpq_get_d(const fmpq_t q)
 {
     arb_t z;
     double d;
@@ -315,14 +315,12 @@ slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol);
 void _fmpz_poly_resultant_modular_div(fmpz_t res,
         const fmpz * poly1, slong len1,
         const fmpz * poly2, slong len2, const fmpz_t divisor, slong nbits);
-void
-fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
+void fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
               const fmpz_poly_t poly2, const fmpz_t divisor, slong nbits);
 
 slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
 void _fmpz_poly_scale_2exp(fmpz * pol, slong len, slong k);
 
-int fmpq_set_str(fmpq_t x, const char *str, int base);
 int _fmpq_vec_fprint(FILE * file, const fmpq * vec, slong len);
 
 static __inline__
@@ -335,8 +333,6 @@ void _fmpq_vec_sort(fmpq * vec, slong len);
 void _fmpq_vec_randtest_uniq_sorted(fmpq * vec, flint_rand_t state, slong len, mp_bitcnt_t bits);
 void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state,
                                                 slong len, mp_bitcnt_t bits);
- void _fmpz_poly_num_real_roots_sturm(slong * n_neg, slong * n_pos, const fmpz * pol, slong len);
-
 void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n);
 
 #elif __FLINT_RELEASE == 20503

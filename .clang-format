@@ -1,0 +1,15 @@
+BasedOnStyle: WebKit
+BreakBeforeBraces: Custom
+BraceWrapping:
+  # AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  BeforeElse: true
+  BeforeCatch: true
+IndentCaseLabels: true
+SpaceAfterCStyleCast: true
+ColumnLimit: 120
+BreakBeforeBinaryOperators: None
+AllowShortIfStatementsOnASingleLine: true
+PointerAlignment: Middle

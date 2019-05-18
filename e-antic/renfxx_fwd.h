@@ -1,5 +1,6 @@
-/*
-    Copyright (C) 2018 Vincent Delecroix
+/*  This is a -*- C++ -*- header file.
+
+    Copyright (C) 2019 Julian Rüth
 
     This file is part of e-antic
 
@@ -9,10 +10,17 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "e-antic/renfxx.h"
+#ifndef RENFXX_FWD_H
+#define RENFXX_FWD_H
 
-int renf_class::xalloc()
-{
-    static int xa = std::ios_base::xalloc();
-    return xa;
+// This file contains forward declarations for all the C++ classes defined by
+// renfxx.h to speed up compilation when included in header files.
+
+namespace eantic {
+
+class renf_elem_class;
+class renf_class;
+
 }
+
+#endif

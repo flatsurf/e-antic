@@ -9,8 +9,11 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <flint/fmpq.h>
-#include "e-antic/renfxx.h"
+#include <e-antic/renfxx.h>
+
+using namespace eantic;
 
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {

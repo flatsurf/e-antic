@@ -14,6 +14,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace eantic;
+
 int main(void)
 {
     renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");
@@ -23,7 +25,7 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a("0");
+        renf_elem_class a(mpz_class("0"));
         s << a;
         if (s.str() != "0")
             throw std::runtime_error("wrong 0 string, got " + s.str());
@@ -31,7 +33,7 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a("2/3");
+        renf_elem_class a(mpq_class("2/3"));
         s << a;
         if (s.str() != "(2/3 ~ 0.666667)")
             throw std::runtime_error("wrong 0 string, got " + s.str());
@@ -46,15 +48,16 @@ int main(void)
     }
 
     {
-        // initialization of nf in constructor
         renf_elem_class a(K1);
 
         std::stringstream sin1("3/5*A+2");
+        K1.set_pword(sin1);
         sin1 >> a;
         if (a != 3*g1/5 + 2)
             throw std::runtime_error("wrong nf initialization");
 
         std::stringstream sin2("A-1");
+        K1.set_pword(sin2);
         sin2 >> a;
         if (a != g1 - 1)
             throw std::runtime_error("wrong nf reinitialization");
@@ -97,6 +100,7 @@ int main(void)
         std::stringstream s;
 
         s << a;
+        K1.set_pword(s);
         s >> b;
 
         if (a != b)
