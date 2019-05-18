@@ -34,7 +34,7 @@ public:
     // The trivial number field adjoining a root of (x - 1) to the rationals
     renf_class() noexcept;
     renf_class(const renf_class &) noexcept;
-    renf_class(const ::renf_t &, const std::string & gen = "a") noexcept;
+    renf_class(const ::renf_t, const std::string & gen = "a") noexcept;
     renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec = 64);
 
     ~renf_class() noexcept;
