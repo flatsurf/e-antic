@@ -578,11 +578,15 @@ void renf_elem_class::promote(const renf_class & nf) noexcept
         if (*this->nf == nf)
             return;
         else
+#ifdef __GNUG__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wterminate"
+#endif
             throw std::logic_error("not implemented: cannot promote a "
                                    "renf_elem_class to a new number field");
+#ifdef __GNUG__
 #pragma GCC diagnostic pop
+#endif
     }
 }
 

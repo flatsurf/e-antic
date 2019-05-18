@@ -282,12 +282,16 @@ template <typename Coefficient>
 renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coefficient> & coefficients) noexcept
     : renf_elem_class(k)
 {
+#ifdef __GNUG__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wterminate"
+#endif
     if (coefficients.size() > nf->degree())
         throw std::invalid_argument("can not assign renf_elem_class from vector whose size "
                                     "exceeds number field degree");
+#ifdef __GNUG__
 #pragma GCC diagnostic pop
+#endif
 
     using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
 
