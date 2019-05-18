@@ -15,6 +15,7 @@
 #define RENFXX_H
 
 #include <vector>
+#include <type_traits>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
