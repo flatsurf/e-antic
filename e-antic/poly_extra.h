@@ -315,8 +315,7 @@ slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol);
 void _fmpz_poly_resultant_modular_div(fmpz_t res,
         const fmpz * poly1, slong len1,
         const fmpz * poly2, slong len2, const fmpz_t divisor, slong nbits);
-void
-fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
+void fmpz_poly_resultant_modular_div(fmpz_t res, const fmpz_poly_t poly1,
               const fmpz_poly_t poly2, const fmpz_t divisor, slong nbits);
 
 slong _fmpz_poly_remove_content_2exp(fmpz * pol, slong len);
