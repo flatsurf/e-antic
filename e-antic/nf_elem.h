@@ -946,7 +946,12 @@ FLINT_DLL void nf_elem_div(nf_elem_t a, const nf_elem_t b, const nf_elem_t c, co
 
 FLINT_DLL void _nf_elem_pow(nf_elem_t res, const nf_elem_t b, ulong e, const nf_t nf);
 
-FLINT_DLL void nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf);
+FLINT_DLL void nf_elem_pow_si(nf_elem_t res, const nf_elem_t a, slong e, const nf_t nf);
+
+NF_ELEM_INLINE void nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
+{
+    nf_elem_pow_si(res, a, (slong) e, nf);
+}
 
 FLINT_DLL void _nf_elem_norm(fmpz_t rnum, fmpz_t rden, const nf_elem_t a, const nf_t nf);
 

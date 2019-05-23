@@ -440,6 +440,22 @@ void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, cons
     arb_div(a->emb, b->emb, c->emb, nf->prec);
 }
 
+static __inline__
+void renf_elem_pow_si(renf_elem_t res, const renf_elem_t a, slong e, const renf_t nf)
+{
+    nf_elem_pow_si(res->elem, a->elem, e, nf->nf);
+    if (e >= 0)
+        arb_pow_ui(res->emb, a->emb, (ulong) e, nf->prec);
+    else
+    {
+        arb_t b;
+        arb_init(b);
+        arb_inv(b, a->emb, nf->prec);
+        arb_pow_ui(res->emb, b, (ulong) (-e), nf->prec);
+        arb_clear(b);
+    }
+}
+
 #ifdef __cplusplus
 }
 #endif

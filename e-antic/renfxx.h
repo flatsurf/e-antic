@@ -170,6 +170,9 @@ public:
     bool operator==(const renf_elem_class &) const noexcept;
     bool operator<(const renf_elem_class &) const noexcept;
 
+    // powering
+    renf_elem_class pow(int) const noexcept;
+
     // binary operations with primitive integer types
     template <typename Integer>
     std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator+=(Integer) noexcept;
@@ -225,6 +228,7 @@ private:
 
 inline mpz_class floor(renf_elem_class x) { return x.floor(); }
 inline mpz_class ceil(renf_elem_class x) { return x.ceil(); }
+inline renf_elem_class pow(renf_elem_class x, int exp) { return x.pow(exp); }
 
 // generic construction and assignment
 

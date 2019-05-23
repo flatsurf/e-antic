@@ -499,6 +499,15 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
     return *this;
 }
 
+renf_elem_class renf_elem_class::pow(int exp) const noexcept
+{
+    renf_elem_class res(parent());
+
+    renf_elem_pow_si(res.renf_elem_t(), renf_elem_t(), exp, parent().renf_t());
+
+    return res;
+}
+
 bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 {
     if (nf != nullptr)
