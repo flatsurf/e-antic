@@ -73,6 +73,8 @@ slong renf_degree(renf_t nf)
 
 void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
+/* Printing */
+char * renf_get_str(const renf_t nf, const char * var, slong prec);
 void renf_print(const renf_t nf);
 
 #ifdef __cplusplus

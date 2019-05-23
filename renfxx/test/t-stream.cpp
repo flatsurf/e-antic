@@ -20,6 +20,22 @@ int main(void)
 {
     renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");
     renf_class K2("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+
+
+    {
+        std::stringstream s;
+        s << K1;
+        if (s.str() != "NumberField(A^3 - 2, [1.25992104989487316476721061 +/- 4.87e-27])")
+            throw std::runtime_error("wrong K1 string, got " + s.str());
+    }
+
+    {
+        std::stringstream s;
+        s << K2;
+        if (s.str() != "NumberField(2*abc^4 - 5*abc + 1, [0.200648339181800500946306030432 +/- 2.64e-31])")
+            throw std::runtime_error("wrong K2 string, got " + s.str());
+    }
+
     const renf_elem_class g1 = K1.gen();
     const renf_elem_class g2 = K2.gen();
 

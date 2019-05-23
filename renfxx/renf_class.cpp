@@ -127,6 +127,20 @@ std::istream & renf_class::set_pword(std::istream & is) noexcept
 
 std::istream & renf_class::set_istream(std::istream & is) noexcept { return set_pword(is); }
 
+std::string renf_class::to_string() const noexcept
+{
+    char * u = renf_get_str(renf_t(), gen_name().c_str(), 64);
+    std::string s = u;
+    flint_free(u);
+    return s;
+}
+
+std::ostream & operator<<(std::ostream & os, const renf_class & nf)
+{
+    os << nf.to_string();
+    return os;
+}
+
 std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)
 {
     if (a.is_integer())
