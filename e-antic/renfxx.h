@@ -57,6 +57,9 @@ public:
     // from it.
     std::istream & set_pword(std::istream &) noexcept;
 
+    std::string to_string() const noexcept;
+    friend std::ostream & operator<<(std::ostream &, const renf_class &);
+
     // Raw access to the underlying renf_t; we do not return a const renf_t
     // since calls in the C API might need to modify it (e.g., to refine the
     // stored embedding) even though they are morally const.

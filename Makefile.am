@@ -184,6 +184,7 @@ libeantic_la_SOURCES +=               \
     renf/init_set.c                   \
     renf/init_nth_root.c              \
     renf/print.c                      \
+    renf/get_str.c                    \
     renf/randtest.c                   \
     renf/refine_embedding.c
 
