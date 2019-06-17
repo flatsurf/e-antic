@@ -18,26 +18,26 @@ using namespace eantic;
 
 int main(void)
 {
-    renf_class K1("A^3 - 2", "A", "1.25 +/- 0.1");
-    renf_class K2("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+    auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
+    auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
 
 
     {
         std::stringstream s;
-        s << K1;
+        s << *K1;
         if (s.str() != "NumberField(A^3 - 2, [1.25992104989487316476721061 +/- 4.87e-27])")
             throw std::runtime_error("wrong K1 string, got " + s.str());
     }
 
     {
         std::stringstream s;
-        s << K2;
+        s << *K2;
         if (s.str() != "NumberField(2*abc^4 - 5*abc + 1, [0.200648339181800500946306030432 +/- 2.64e-31])")
             throw std::runtime_error("wrong K2 string, got " + s.str());
     }
 
-    const renf_elem_class g1 = K1.gen();
-    const renf_elem_class g2 = K2.gen();
+    const renf_elem_class g1 = K1->gen();
+    const renf_elem_class g2 = K2->gen();
 
     {
         std::stringstream s;
@@ -57,7 +57,7 @@ int main(void)
 
     {
         std::stringstream s;
-        renf_elem_class a = K1.gen();
+        renf_elem_class a = K1->gen();
         s << a;
         if (s.str() != "(A ~ 1.259921)")
             throw std::runtime_error("wrong string, got " + s.str());
@@ -67,13 +67,13 @@ int main(void)
         renf_elem_class a(K1);
 
         std::stringstream sin1("3/5*A+2");
-        K1.set_pword(sin1);
+        K1->set_pword(sin1);
         sin1 >> a;
         if (a != 3*g1/5 + 2)
             throw std::runtime_error("wrong nf initialization");
 
         std::stringstream sin2("A-1");
-        K1.set_pword(sin2);
+        K1->set_pword(sin2);
         sin2 >> a;
         if (a != g1 - 1)
             throw std::runtime_error("wrong nf reinitialization");
@@ -94,17 +94,17 @@ int main(void)
         renf_elem_class a;
 
         std::stringstream sin1("3*A^2-7");
-        K1.set_istream(sin1) >> a;
+        K1->set_istream(sin1) >> a;
         if (a != 3*g1*g1-7)
             throw std::runtime_error("bad stream_set_renf initialization");
 
         std::stringstream sin2("A+1");
-        K1.set_istream(sin2) >> a;
+        K1->set_istream(sin2) >> a;
         if (a != g1+1)
             throw std::runtime_error("bad stream_set_renf reinitialization 1");
 
         std::stringstream sin3("abc^2-1");
-        K2.set_istream(sin3) >> a;
+        K2->set_istream(sin3) >> a;
         if (a != g2*g2 - 1)
             throw std::runtime_error("bad stream_set_renf reinitialization 2");
     }
@@ -116,7 +116,7 @@ int main(void)
         std::stringstream s;
 
         s << a;
-        K1.set_pword(s);
+        K1->set_pword(s);
         s >> b;
 
         if (a != b)

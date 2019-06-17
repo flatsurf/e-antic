@@ -34,7 +34,7 @@ int main(void)
         fmpq_t k;
         fmpq_poly_t p;
 
-        renf_class K("x^2-x-1", "x", "1.618 +/- 0.1");
+        auto K = renf_class::make("x^2-x-1", "x", "1.618 +/- 0.1");
 
         /* (1+sqrt(5))/2 vs Fibonacci */
         renf_elem_class a(K);
@@ -48,7 +48,7 @@ int main(void)
             fmpz_fib_ui(fmpq_numref(k), iter+1);
             fmpz_fib_ui(fmpq_denref(k), iter);
             fmpq_poly_set_coeff_fmpq(p, 0, k);
-            renf_elem_set_fmpq_poly(a.get_renf_elem(), p, K.get_renf());
+            renf_elem_set_fmpq_poly(a.get_renf_elem(), p, K->get_renf());
 
             if (a.ceil() != 1 - iter % 2)
             {

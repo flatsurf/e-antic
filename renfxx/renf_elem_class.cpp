@@ -49,29 +49,29 @@ renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
     assign(value);
 }
 
-renf_elem_class::renf_elem_class(const renf_class & k) noexcept
-    : renf_elem_class(k, 0) {}
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k) noexcept
+    : renf_elem_class(std::move(k), 0) {}
 
-renf_elem_class::renf_elem_class(const renf_class & k, const mpz_class & value) noexcept
-    : renf_elem_class(k)
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class & value) noexcept
+    : renf_elem_class(std::move(k))
 {
     assign(value);
 }
 
-renf_elem_class::renf_elem_class(const renf_class & k, const mpq_class & value) noexcept
-    : renf_elem_class(k)
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class & value) noexcept
+    : renf_elem_class(std::move(k))
 {
     assign(value);
 }
 
-renf_elem_class::renf_elem_class(const renf_class & k, const ::fmpq_t value) noexcept
-    : renf_elem_class(k)
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value) noexcept
+    : renf_elem_class(std::move(k))
 {
     assign(value);
 }
 
-renf_elem_class::renf_elem_class(const renf_class & k, const std::string & str)
-    : renf_elem_class(k)
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std::string & str)
+    : renf_elem_class(std::move(k))
 {
     const char * s = str.c_str();
 
@@ -81,13 +81,13 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::string & str)
 
     if (i != nullptr)
     {
-        t = (char *) flint_malloc((i - s + 1) * sizeof(char));
+        t = static_cast<char *>(flint_malloc((i - s + 1) * sizeof(char)));
         strncpy(t, s, i - s);
         t[i - s] = '\0';
     }
     else
     {
-        t = (char *) flint_malloc((strlen(s) + 1) * sizeof(char));
+        t = static_cast<char *>(flint_malloc((strlen(s) + 1) * sizeof(char)));
         strcpy(t, s);
     }
 
@@ -284,7 +284,7 @@ renf_elem_class::operator mpq_class() const noexcept
         assert(is_rational() && "renf_elem_class not a rational");
         ::fmpq_t q;
         fmpq_init(q);
-        nf_elem_get_fmpq(q, a->elem, parent().renf_t()->nf);
+        nf_elem_get_fmpq(q, a->elem, parent()->renf_t()->nf);
         fmpq_get_mpq(z.__get_mp(), q);
         fmpq_clear(q);
     }
@@ -364,7 +364,7 @@ std::string renf_elem_class::to_string(int flags) const noexcept
     }
     else
     {
-        char * u = renf_elem_get_str_pretty(renf_elem_t(), parent().gen_name().c_str(), parent().renf_t(), 10, flags);
+        char * u = renf_elem_get_str_pretty(renf_elem_t(), parent()->gen_name().c_str(), parent()->renf_t(), 10, flags);
         s += u;
         flint_free(u);
     }
@@ -457,7 +457,7 @@ renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexc
         inplace_binop(rhs.b, fmpq_add, renf_elem_add_fmpq);
     else
     {
-        promote(*rhs.nf);
+        promote(rhs.nf);
         renf_elem_add(a, a, rhs.a, nf->renf_t());
     }
     return *this;
@@ -469,7 +469,7 @@ renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs) noexc
         inplace_binop(rhs.b, fmpq_sub, renf_elem_sub_fmpq);
     else
     {
-        promote(*rhs.nf);
+        promote(rhs.nf);
         renf_elem_sub(a, a, rhs.a, nf->renf_t());
     }
     return *this;
@@ -481,7 +481,7 @@ renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs) noexc
         inplace_binop(rhs.b, fmpq_mul, renf_elem_mul_fmpq);
     else
     {
-        promote(*rhs.nf);
+        promote(rhs.nf);
         renf_elem_mul(a, a, rhs.a, nf->renf_t());
     }
     return *this;
@@ -493,7 +493,7 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
         inplace_binop(rhs.b, fmpq_div, renf_elem_div_fmpq);
     else
     {
-        promote(*rhs.nf);
+        promote(rhs.nf);
         renf_elem_div(a, a, rhs.a, nf->renf_t());
     }
     return *this;
@@ -503,7 +503,7 @@ renf_elem_class renf_elem_class::pow(int exp) const noexcept
 {
     renf_elem_class res(parent());
 
-    renf_elem_pow_si(res.renf_elem_t(), renf_elem_t(), exp, parent().renf_t());
+    renf_elem_pow_si(res.renf_elem_t(), renf_elem_t(), exp, parent()->renf_t());
 
     return res;
 }
@@ -574,7 +574,7 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept { re
 
 double renf_elem_class::get_d() const noexcept { return static_cast<double>(*this); }
 
-void renf_elem_class::promote(const renf_class & nf) noexcept
+void renf_elem_class::promote(std::shared_ptr<const renf_class> nf) noexcept
 {
     if (is_fmpq())
     {
@@ -584,7 +584,7 @@ void renf_elem_class::promote(const renf_class & nf) noexcept
     }
     else
     {
-        if (*this->nf == nf)
+        if (*this->nf == *nf)
             return;
         else
 #ifdef __GNUG__

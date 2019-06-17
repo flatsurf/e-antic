@@ -25,7 +25,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 64, 10);
-        renf_class K(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         {
@@ -38,7 +38,7 @@ int main(void)
         }
 
         {
-            renf_elem_class a = K.gen();
+            renf_elem_class a = K->gen();
             if (a.pow(5) * a.pow(-5) != 1)
                 std::runtime_error("a^5 is wrong");
         }

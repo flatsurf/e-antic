@@ -76,7 +76,7 @@ using namespace eantic;
 }
 
 template <typename T>
-typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_class& K)
+typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
     CHECK_OP(a, b, K, T, +);
     CHECK_OP(a, b, K, T, *);
@@ -85,7 +85,7 @@ typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a,
 }
 
 template <typename T>
-typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_class& K)
+typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
     CHECK_OP(a, b, K, T, +);
     CHECK_OP(a, b, K, T, -);
@@ -105,7 +105,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 32, 50);
-        renf_class K(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         {
@@ -137,20 +137,20 @@ int main(void)
     }
 
     {
-        renf_class K1("x^2 - 2", "x", "1.41 +/- 0.01");
-        renf_class K2("x^2 - 3", "x", "1.73 +/- 0.01");
+        auto K1 = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K2 = renf_class::make("x^2 - 3", "x", "1.73 +/- 0.01");
 
         renf_elem_class a1(K1);
         renf_elem_class a2(K2);
     }
 
     {
-        renf_class K("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
 
         renf_elem_class a(K, "1/3 + 3/5*x");
-        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K.gen();
-        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K.gen() / mpz_class(5);
-        renf_elem_class d = mpq_class(1,3) + 3 * K.gen() / 5;
+        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K->gen();
+        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K->gen() / mpz_class(5);
+        renf_elem_class d = mpq_class(1,3) + 3 * K->gen() / 5;
 
         if (a != b || a != c || a != d)
             throw std::runtime_error("error with operations");
