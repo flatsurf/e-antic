@@ -54,6 +54,9 @@ Breaking Changes to the C++ Interface
   renf_elem_class x(K);
   x = renf_elem_class(K, 1);
   ```
+- `renf_class` is now hidden behind a factory to get shared_ptr semantics
+  everywhere. Create a `renf_class` by calling `renf_class::make(…)`. This
+	returns a smart pointer, so you might have to replace some `.` with `->`.
 - The change of semantics in assignment also affects reading from streams (in
   order to create `renf_elem_class`). Before the following would parse an element
   into a number field:

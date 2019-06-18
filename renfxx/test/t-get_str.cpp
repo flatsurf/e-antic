@@ -50,7 +50,7 @@ int main(void)
 
     {
         // quadratic example
-        renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
+        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
         {
             renf_elem_class a(K, "0");
@@ -74,7 +74,7 @@ int main(void)
 
     {
         // cubic example
-        renf_class K("x^3 - 2/3", "x", "0.87 +/- 0.1");
+        auto K = renf_class::make("x^3 - 2/3", "x", "0.87 +/- 0.1");
 
         {
             renf_elem_class a(K, "0");

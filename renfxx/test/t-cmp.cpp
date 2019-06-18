@@ -14,7 +14,7 @@
 using namespace eantic;
 
 template<typename T>
-void check_eq_ne(T t, renf_class& K)
+void check_eq_ne(T t, std::shared_ptr<const renf_class> K)
 {
     renf_elem_class a;
     a = t;
@@ -26,7 +26,7 @@ void check_eq_ne(T t, renf_class& K)
 
     renf_elem_class d(K, t);
 
-    renf_class L(K);
+    auto L = K;
     renf_elem_class e(L, t);
 
     #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
@@ -50,10 +50,10 @@ void check_eq_ne(T t, renf_class& K)
 }
 
 template<typename T>
-void check_not_gen(T t, renf_class& K)
+void check_not_gen(T t, std::shared_ptr<const renf_class> K)
 {
     renf_elem_class a(K);
-    renf_elem_gen(a.get_renf_elem(), K.get_renf());
+    renf_elem_gen(a.get_renf_elem(), K->get_renf());
 
     if (a == t || t == a ||
         not (a != t) || not (t != a) ||
@@ -67,7 +67,7 @@ void check_not_gen(T t, renf_class& K)
 }
 
 template<typename T>
-void check_order(T c1, T c2, renf_class& K)
+void check_order(T c1, T c2, std::shared_ptr<const renf_class> K)
 {
     renf_elem_class a1(K, c1);
     renf_elem_class a2(K, c2);
@@ -99,7 +99,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 10);
-        renf_class K(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         check_eq_ne(c1, K);
@@ -119,7 +119,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 10);
-        renf_class K(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         check_order((int) -1, (int) 1, K);
