@@ -31,6 +31,8 @@ int main()
         fmpq_init(d);
         fmpq_poly_init(p);
         fmpq_set_si(d, n_randtest_not_zero(state), 37);
+        if (fmpq_cmp_si(d, 0) < 0)
+            fmpq_neg(d, d);
         renf_init_nth_root_fmpq(nf, d, 5, 64);
 
         renf_elem_init(a, nf);

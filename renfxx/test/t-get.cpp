@@ -44,10 +44,10 @@ int main(void)
 
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 50);
-        auto K = make_shared<renf_class>(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        renf_elem_class a(*K);
+        renf_elem_class a(K);
 
         // should work
         r = a.get_renf_elem();

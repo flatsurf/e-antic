@@ -184,6 +184,7 @@ libeantic_la_SOURCES +=               \
     renf/init_set.c                   \
     renf/init_nth_root.c              \
     renf/print.c                      \
+    renf/get_str.c                    \
     renf/randtest.c                   \
     renf/refine_embedding.c
 
@@ -220,6 +221,7 @@ libeantic_la_SOURCES +=            \
 check_PROGRAMS +=                \
     renf_elem/test/t-swap        \
     renf_elem/test/t-binop       \
+    renf_elem/test/t-pow         \
     renf_elem/test/t-ceil        \
     renf_elem/test/t-equal_fmpq  \
     renf_elem/test/t-cmp         \
@@ -246,6 +248,7 @@ check_PROGRAMS +=                     \
     renfxx/test/t-get_num_den         \
     renfxx/test/t-cmp                 \
     renfxx/test/t-binop               \
+    renfxx/test/t-pow                 \
     renfxx/test/t-is_integer_rational \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
@@ -267,6 +270,8 @@ renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
 renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
 renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la -lgmpxx
+renfxx_test_t_pow_SOURCES = renfxx/test/t-pow.cpp
+renfxx_test_t_pow_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
 renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp

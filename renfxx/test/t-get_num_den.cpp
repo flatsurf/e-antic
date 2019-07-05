@@ -21,7 +21,7 @@
 using namespace eantic;
 using std::make_shared;
 
-void check_rational(int num, int den, renf_class& K)
+void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
 {
     renf_elem_class a(K);
     a = num;
@@ -35,15 +35,15 @@ void check_rational(int num, int den, renf_class& K)
     }
 }
 
-void check_reconstruct(renf_class& K, renf_elem_class& a)
+void check_reconstruct(std::shared_ptr<const renf_class> K, renf_elem_class& a)
 {
-    renf_elem_class g = K.gen();
+    renf_elem_class g = K->gen();
     renf_elem_class gg = 1;
     renf_elem_class b = 0;
 
     std::cerr << "bx = " << b << std::endl;
     std::vector<mpz_class> num = a.get_num_vector();
-    if (num.size() != K.degree())
+    if (num.size() != K->degree())
         throw std::runtime_error("wrong vector length");
     for (std::vector<mpz_class>::iterator it = num.begin(); it < num.end(); it++)
     {
@@ -74,48 +74,48 @@ int main(void)
 {
     {
         // linear
-        auto K = make_shared<renf_class>("x - 2/3", "x", "0.66 +/- 0.1");
+        auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
 
-        check_rational(-12, 5, *K);
+        check_rational(-12, 5, K);
 
-        renf_elem_class a(*K, 0);
-        check_reconstruct(*K, a);
+        renf_elem_class a(K, 0);
+        check_reconstruct(K, a);
 
-        renf_elem_class b(*K, "2/3");
-        check_reconstruct(*K, b);
+        renf_elem_class b(K, "2/3");
+        check_reconstruct(K, b);
     }
 
     {
         // quadratic
-        auto K = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.1");
+        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
-        check_rational(7, 12, *K);
+        check_rational(7, 12, K);
 
-        renf_elem_class a(*K, 0);
-        check_reconstruct(*K, a);
+        renf_elem_class a(K, 0);
+        check_reconstruct(K, a);
 
-        renf_elem_class b(*K, "1/2");
-        check_reconstruct(*K, b);
+        renf_elem_class b(K, "1/2");
+        check_reconstruct(K, b);
 
-        renf_elem_class c(*K, "-3/7x + 1");
-        check_reconstruct(*K, c);
+        renf_elem_class c(K, "-3/7x + 1");
+        check_reconstruct(K, c);
     }
 
     {
         // cubic
-        auto K = make_shared<renf_class>("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
+        auto K = renf_class::make("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
-        renf_elem_class a(*K, 0);
-        check_reconstruct(*K, a);
+        renf_elem_class a(K, 0);
+        check_reconstruct(K, a);
 
-        renf_elem_class b(*K, "53/22");
-        check_reconstruct(*K, b);
+        renf_elem_class b(K, "53/22");
+        check_reconstruct(K, b);
 
-        renf_elem_class c(*K, "222/317 -75/22*ZT");
-        check_reconstruct(*K, c);
+        renf_elem_class c(K, "222/317 -75/22*ZT");
+        check_reconstruct(K, c);
 
-        renf_elem_class d(*K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
-        check_reconstruct(*K, d);
+        renf_elem_class d(K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
+        check_reconstruct(K, d);
     }
 
     return 0;

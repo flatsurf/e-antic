@@ -35,10 +35,10 @@ int main(void)
         fmpq_t k;
         fmpq_poly_t p;
 
-        auto K = make_shared<renf_class>("x^2-x-1", "x", "1.618 +/- 0.1");
+        auto K = renf_class::make("x^2-x-1", "x", "1.618 +/- 0.1");
 
         /* (1+sqrt(5))/2 vs Fibonacci */
-        renf_elem_class a(*K);
+        renf_elem_class a(K);
 
         fmpq_poly_init(p);
         fmpq_init(k);

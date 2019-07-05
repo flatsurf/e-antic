@@ -56,9 +56,9 @@ int main(void)
     test_serialization(renf_elem_class(mpq_class("2/3")));
     test_serialization(K1->gen());
     test_serialization(K2->gen());
-    test_serialization(renf_elem_class(*K1));
-    test_serialization(renf_elem_class(*K2));
-    test_serialization(renf_elem_class(*K1, "3*A^2-1"));
+    test_serialization(renf_elem_class(K1));
+    test_serialization(renf_elem_class(K2));
+    test_serialization(renf_elem_class(K1, "3*A^2-1"));
 
     auto items = test_serialization(std::vector{g1, K1->one()});
     if (&items[0].parent() != &items[1].parent())

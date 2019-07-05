@@ -77,7 +77,7 @@ using std::make_shared;
 }
 
 template <typename T>
-typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_class& K)
+typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
     CHECK_OP(a, b, K, T, +);
     CHECK_OP(a, b, K, T, *);
@@ -86,7 +86,7 @@ typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a,
 }
 
 template <typename T>
-typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, renf_class& K)
+typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
     CHECK_OP(a, b, K, T, +);
     CHECK_OP(a, b, K, T, -);
@@ -106,49 +106,49 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 32, 50);
-        auto K = make_shared<renf_class>(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         {
             int c1 = -1123, c2 = 142;
-            check_binop(c1, c2, *K);
+            check_binop(c1, c2, K);
         }
         {
             unsigned int c1 = 2223, c2 = 123;
-            check_binop(c1, c2, *K);
+            check_binop(c1, c2, K);
         }
         {
             long c1 = 134, c2 = -1111;
-            check_binop(c1, c2, *K);
+            check_binop(c1, c2, K);
         }
         {
             unsigned long c1 = 513, c2 = 3;
-            check_binop(c2, c2, *K);
+            check_binop(c2, c2, K);
         }
         {
             mpz_class c1(232);
             mpz_class c2(12);
-            check_binop(c1, c2, *K);
+            check_binop(c1, c2, K);
         }
         {
             mpq_class c1(211561);
             mpq_class c2(13);
-            check_binop(c1, c2, *K);
+            check_binop(c1, c2, K);
         }
     }
 
     {
-        auto K1 = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.01");
-        auto K2 = make_shared<renf_class>("x^2 - 3", "x", "1.73 +/- 0.01");
+        auto K1 = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K2 = renf_class::make("x^2 - 3", "x", "1.73 +/- 0.01");
 
-        renf_elem_class a1(*K1);
-        renf_elem_class a2(*K2);
+        renf_elem_class a1(K1);
+        renf_elem_class a2(K2);
     }
 
     {
-        auto K = make_shared<renf_class>("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
 
-        renf_elem_class a(*K, "1/3 + 3/5*x");
+        renf_elem_class a(K, "1/3 + 3/5*x");
         renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K->gen();
         renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K->gen() / mpz_class(5);
         renf_elem_class d = mpq_class(1,3) + 3 * K->gen() / 5;

@@ -42,18 +42,13 @@ renf_class::renf_class() noexcept
     name = "a";
 }
 
-renf_class::renf_class(const renf_class & k) noexcept
-    : renf_class(k.renf_t(), k.gen_name())
-{
-}
-
-renf_class::renf_class(const ::renf_t & k, const std::string & gen_name) noexcept
+renf_class::renf_class(const ::renf_t k, const std::string & gen_name) noexcept
 {
     renf_init_set(nf, k);
     this->name = gen_name;
 }
 
-renf_class::renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec)
+renf_class::renf_class(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
 {
     arb_t e;
     fmpq_poly_t p;
@@ -79,6 +74,21 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_clear(e);
 }
 
+std::shared_ptr<const renf_class> renf_class::make() noexcept
+{
+    return std::shared_ptr<const renf_class>(new renf_class());
+}
+
+std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name) noexcept
+{
+    return std::shared_ptr<const renf_class>(new renf_class(k, gen_name));
+}
+
+std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
+{
+    return std::shared_ptr<const renf_class>(new renf_class(minpoly, gen, emb, prec));
+}
+
 renf_class::~renf_class() noexcept { renf_clear(nf); }
 
 renf_class & renf_class::operator=(const renf_class & k) noexcept
@@ -96,19 +106,19 @@ slong renf_class::degree() const noexcept { return nf_degree(nf->nf); }
 
 renf_elem_class renf_class::zero() const noexcept
 {
-    renf_elem_class a(*this, 0);
+    renf_elem_class a(this->shared_from_this(), 0);
     return a;
 }
 
 renf_elem_class renf_class::one() const noexcept
 {
-    renf_elem_class a(*this, 1);
+    renf_elem_class a(this->shared_from_this(), 1);
     return a;
 }
 
 renf_elem_class renf_class::gen() const noexcept
 {
-    renf_elem_class a(*this);
+    renf_elem_class a(this->shared_from_this());
     renf_elem_gen(a.renf_elem_t(), this->renf_t());
     return a;
 }
@@ -119,13 +129,27 @@ bool renf_class::operator==(const renf_class & other) const noexcept
       && this->name == other.name;
 }
 
-std::istream & renf_class::set_pword(std::istream & is) noexcept
+std::istream & renf_class::set_pword(std::istream & is) const noexcept
 {
-    is.pword(xalloc) = this;
+    is.pword(xalloc) = (void *) this;
     return is;
 }
 
-std::istream & renf_class::set_istream(std::istream & is) noexcept { return set_pword(is); }
+std::istream & renf_class::set_istream(std::istream & is) const noexcept { return set_pword(is); }
+
+std::string renf_class::to_string() const noexcept
+{
+    char * u = renf_get_str(renf_t(), gen_name().c_str(), 64);
+    std::string s = u;
+    flint_free(u);
+    return s;
+}
+
+std::ostream & operator<<(std::ostream & os, const renf_class & nf)
+{
+    os << nf.to_string();
+    return os;
+}
 
 std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)
 {
@@ -163,7 +187,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
             s += is.get();
     }
 
-    a = (nf == nullptr) ? mpq_class(s) : renf_elem_class(*nf, s);
+    a = (nf == nullptr) ? mpq_class(s) : renf_elem_class(nf->shared_from_this(), s);
 
     return is;
 }

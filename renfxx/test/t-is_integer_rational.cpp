@@ -36,13 +36,13 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 32, 20);
-        auto K = make_shared<renf_class>(nf);
+        auto K = renf_class::make(nf);
         renf_clear(nf);
 
         if (fmpq_poly_length(nf->nf->pol) <= 1)
             continue;
 
-        renf_elem_class a(*K);
+        renf_elem_class a(K);
         renf_elem_gen(a.get_renf_elem(), K->get_renf());
 
         if (a.is_integer() || a.is_rational())

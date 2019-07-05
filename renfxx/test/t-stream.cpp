@@ -19,8 +19,24 @@ using std::make_shared;
 
 int main(void)
 {
-    auto K1 = make_shared<renf_class>("A^3 - 2", "A", "1.25 +/- 0.1");
-    auto K2 = make_shared<renf_class>("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+    auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
+    auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+
+
+    {
+        std::stringstream s;
+        s << *K1;
+        if (s.str() != "NumberField(A^3 - 2, [1.25992104989487316476721061 +/- 4.87e-27])")
+            throw std::runtime_error("wrong K1 string, got " + s.str());
+    }
+
+    {
+        std::stringstream s;
+        s << *K2;
+        if (s.str() != "NumberField(2*abc^4 - 5*abc + 1, [0.200648339181800500946306030432 +/- 2.64e-31])")
+            throw std::runtime_error("wrong K2 string, got " + s.str());
+    }
+
     const renf_elem_class g1 = K1->gen();
     const renf_elem_class g2 = K2->gen();
 
@@ -54,7 +70,7 @@ int main(void)
     }
 
     {
-        renf_elem_class a(*K1);
+        renf_elem_class a(K1);
 
         std::stringstream sin1("3/5*A+2");
         K1->set_pword(sin1);
@@ -101,8 +117,8 @@ int main(void)
 
     {
         // use the result of writing in a stream <<
-        renf_elem_class a(*K1, "3*A^2-1");
-        renf_elem_class b(*K1);
+        renf_elem_class a(K1, "3*A^2-1");
+        renf_elem_class b(K1);
         std::stringstream s;
 
         s << a;
