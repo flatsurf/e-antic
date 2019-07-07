@@ -12,7 +12,6 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
-using std::make_shared;
 
 template<typename T>
 void check_eq_ne(T t, std::shared_ptr<const renf_class> K)

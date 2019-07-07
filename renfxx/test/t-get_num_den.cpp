@@ -19,7 +19,6 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
-using std::make_shared;
 
 void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
 {

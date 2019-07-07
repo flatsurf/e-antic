@@ -110,7 +110,6 @@ public:
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
     renf_elem_class(const fmpq_t) noexcept;
-    // TODO: Add constructors that accept a shared_ptr<renf_class>. Or shared_ptr<const renf_class>?
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
     // only valid while that reference is.

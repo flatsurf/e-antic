@@ -17,7 +17,6 @@
 #include "e-antic/renfxx_cereal.h"
 
 using namespace eantic;
-using std::make_shared;
 using cereal::JSONOutputArchive;
 using cereal::JSONInputArchive;
 
@@ -47,8 +46,8 @@ T test_serialization(const T& x)
 
 int main(void)
 {
-    auto K1 = make_shared<renf_class>("A^3 - 2", "A", "1.25 +/- 0.1");
-    auto K2 = make_shared<renf_class>("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
+    auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
+    auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
     const renf_elem_class g1 = K1->gen();
     const renf_elem_class g2 = K2->gen();
 

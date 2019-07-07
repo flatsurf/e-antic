@@ -13,7 +13,6 @@
 #include <iostream>
 
 using namespace eantic;
-using std::make_shared;
 
 int main(void)
 {

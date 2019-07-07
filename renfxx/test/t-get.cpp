@@ -12,7 +12,6 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
-using std::make_shared;
 
 int main(void)
 {

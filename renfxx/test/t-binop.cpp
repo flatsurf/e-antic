@@ -13,7 +13,6 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
-using std::make_shared;
 
 #define CHECK_OP(a, b, K, T, OP)  \
 {                                 \

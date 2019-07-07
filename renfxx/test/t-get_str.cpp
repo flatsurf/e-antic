@@ -15,7 +15,6 @@
 #include <string>
 
 using namespace eantic;
-using std::make_shared;
 
 void check_string(const renf_elem_class& a,
         const std::string& s_ALG_D,

@@ -14,7 +14,6 @@
 #include <e-antic/renfxx.h>
 
 using namespace eantic;
-using std::make_shared;
 
 void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
