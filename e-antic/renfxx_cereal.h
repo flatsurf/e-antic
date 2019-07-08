@@ -43,9 +43,7 @@ class renf_class_cereal {
             
             archive(name, emb, pol, prec);
 
-            std::cout<<name<<" "<<emb<<" "<<pol<<std::endl;
             wrapped = renf_class::make(pol, name, emb, prec);
-            std::cout<<&*wrapped<<std::endl;
         }
     }
 
@@ -80,7 +78,7 @@ void serialize(Archive &, renf_class &, std::uint32_t)
 template <class Archive>
 void save(Archive & archive, const renf_elem_class& self, std::uint32_t)
 {
-    archive(renf_class_cereal{self.parent()}, boost::lexical_cast<std::string>(self));
+    archive(renf_class_cereal{self.parent()}, boost::lexical_cast<std::string>(self), static_cast<double>(self));
 }
 
 template <class Archive>
@@ -90,8 +88,9 @@ void load(Archive & archive, renf_elem_class& self, std::uint32_t version)
 
     renf_class_cereal nf;
     std::string serialized_element;
+    double _;
     
-    archive(nf, serialized_element);
+    archive(nf, serialized_element, _);
 
     std::stringstream ss(serialized_element);
     if (nf.wrapped)
