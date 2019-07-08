@@ -22,6 +22,10 @@ static int xalloc = std::ios_base::xalloc();
 
 // Deduplicating factory so that all renf_class are guaranteed to be unique
 // parents.
+// We use a renf_class as the key ad as the value here. They are equal
+// but not identical, in particular this means that the key does not keep the
+// value alive. Note that this means that actuall renf_class is not unique but
+// the instances visible to the user are unique.
 using Key = std::shared_ptr<const eantic::renf_class>;
 static UniqueFactory<eantic::renf_class, Key> factory;
 } // end of anonymous namespace
@@ -82,17 +86,17 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
 
 std::shared_ptr<const renf_class> renf_class::make() noexcept
 {
-    return factory.get(Key(new renf_class()), [&](const Key&) { return new renf_class; });
+    return factory.get(Key(new renf_class()), [&]() { return new renf_class; });
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name) noexcept
 {
-    return factory.get(Key(new renf_class(k, gen_name)), [&](const Key&) { return new renf_class(k, gen_name); });
+    return factory.get(Key(new renf_class(k, gen_name)), [&]() { return new renf_class(k, gen_name); });
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
 {
-    return factory.get(Key(new renf_class(minpoly, gen, emb, prec)), [&](const Key&) { return new renf_class(minpoly, gen, emb, prec); });
+    return factory.get(Key(new renf_class(minpoly, gen, emb, prec)), [&]() { return new renf_class(minpoly, gen, emb, prec); });
 }
 
 renf_class::~renf_class() noexcept { renf_clear(nf); }
