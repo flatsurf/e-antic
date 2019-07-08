@@ -38,7 +38,7 @@ T test_serialization(const T& x)
 
     if (x != y)
     {
-        throw std::runtime_error("deseralization failed to reconstruct element, the original value had serialized to " + s.str());
+        throw std::runtime_error("deserialization failed to reconstruct element, the original value had serialized to " + s.str());
     }
 
     return y;

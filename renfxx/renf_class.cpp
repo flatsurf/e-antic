@@ -22,7 +22,7 @@ static int xalloc = std::ios_base::xalloc();
 
 // Deduplicating factory so that all renf_class are guaranteed to be unique
 // parents.
-// We use a renf_class as the key ad as the value here. They are equal
+// We use a renf_class as the key and as the value here. They are equal
 // but not identical, in particular this means that the key does not keep the
 // value alive. Note that this means that actuall renf_class is not unique but
 // the instances visible to the user are unique.
