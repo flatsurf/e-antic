@@ -51,7 +51,7 @@ class renf_class_cereal {
     void save(Archive & archive, std::uint32_t) const
     {
         bool rational = !static_cast<bool>(wrapped);
-        archive(rational);
+        archive(cereal::make_nvp("rational", rational));
         if (rational)
         {
             return;
@@ -61,7 +61,11 @@ class renf_class_cereal {
             char * emb = arb_get_str(wrapped->renf_t()->emb, arf_bits(arb_midref(wrapped->renf_t()->emb)), 0);
             char * pol = fmpq_poly_get_str_pretty(wrapped->renf_t()->nf->pol, wrapped->gen_name().c_str());
 
-            archive(wrapped->gen_name(), std::string(emb), std::string(pol), wrapped->renf_t()->prec);
+            archive(
+                cereal::make_nvp("name", wrapped->gen_name()),
+                cereal::make_nvp("embedding", std::string(emb)),
+                cereal::make_nvp("minpoly", std::string(pol)),
+                cereal::make_nvp("precision", wrapped->renf_t()->prec));
 
             flint_free(pol);
             flint_free(emb);
@@ -78,7 +82,10 @@ void serialize(Archive &, renf_class &, std::uint32_t)
 template <class Archive>
 void save(Archive & archive, const renf_elem_class& self, std::uint32_t)
 {
-    archive(renf_class_cereal{self.parent()}, boost::lexical_cast<std::string>(self), static_cast<double>(self));
+    archive(
+        cereal::make_nvp("parent", renf_class_cereal{self.parent()}),
+        cereal::make_nvp("value", boost::lexical_cast<std::string>(self)),
+        cereal::make_nvp("double", static_cast<double>(self)));
 }
 
 template <class Archive>
