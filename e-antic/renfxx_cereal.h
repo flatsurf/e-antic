@@ -19,52 +19,86 @@
 
 namespace eantic {
 
+class renf_class_cereal {
+  public:
+    std::shared_ptr<const renf_class> wrapped;
+
+  private:  
+    friend cereal::access;
+    template <typename Archive>
+    void load(Archive & archive, std::uint32_t version)
+    {
+        if (version != 0) throw std::logic_error("unknown serialization from the future");
+
+        bool rational;
+        archive(rational);
+        if (rational)
+        {
+            wrapped = nullptr;
+        }
+        else
+        {
+            std::string name, emb, pol;
+            slong prec;
+            
+            archive(name, emb, pol, prec);
+
+            std::cout<<name<<" "<<emb<<" "<<pol<<std::endl;
+            wrapped = renf_class::make(pol, name, emb, prec);
+            std::cout<<&*wrapped<<std::endl;
+        }
+    }
+
+    template <typename Archive>
+    void save(Archive & archive, std::uint32_t) const
+    {
+        bool rational = !static_cast<bool>(wrapped);
+        archive(rational);
+        if (rational)
+        {
+            return;
+        }
+        else
+        {
+            char * emb = arb_get_str(wrapped->renf_t()->emb, arf_bits(arb_midref(wrapped->renf_t()->emb)), 0);
+            char * pol = fmpq_poly_get_str_pretty(wrapped->renf_t()->nf->pol, wrapped->gen_name().c_str());
+
+            archive(wrapped->gen_name(), std::string(emb), std::string(pol), wrapped->renf_t()->prec);
+
+            flint_free(pol);
+            flint_free(emb);
+        }
+    }
+};
+
 template <class Archive>
-void renf_class::save(Archive & archive, std::uint32_t) const 
+void serialize(Archive &, renf_class &, std::uint32_t)
 {
-    char * emb = arb_get_str(nf->emb, arf_bits(arb_midref(nf->emb)), 0);
-    char * pol = fmpq_poly_get_str_pretty(nf->nf->pol, name.c_str());
-
-    archive(name, std::string(emb), std::string(pol), nf->prec);
-
-    flint_free(pol);
-    flint_free(emb);
+    static_assert(false_t<Archive>, "Cannot serialize renf_class directly with cereal as this breaks deduplication of equal fields upon deseralization. Wrap the renf_class in a renf_class_cereal instead.");
 }
 
 template <class Archive>
-void renf_class::load(Archive & archive, std::uint32_t version)
+void save(Archive & archive, const renf_elem_class& self, std::uint32_t)
+{
+    archive(renf_class_cereal{self.parent()}, boost::lexical_cast<std::string>(self));
+}
+
+template <class Archive>
+void load(Archive & archive, renf_elem_class& self, std::uint32_t version)
 {
     if (version != 0) throw std::logic_error("unknown serialization from the future");
 
-    std::string name, emb, pol;
-    slong prec;
-    
-    archive(name, emb, pol, prec);
-
-    *this = renf_class(pol, name, emb, prec);
-
-    // TODO: Maybe replace with a load_and_construct so we can call a
-    // deduplicating factory
-}
-
-template <class Archive>
-void renf_elem_class::save(Archive & archive, std::uint32_t) const 
-{
-    archive(nf, boost::lexical_cast<std::string>(*this));
-}
-
-template <class Archive>
-void renf_elem_class::load(Archive & archive, std::uint32_t version)
-{
-    if (version != 0) throw std::logic_error("unknown serialization from the future");
-
-    std::shared_ptr<renf_class> nf;
+    renf_class_cereal nf;
     std::string serialized_element;
     
     archive(nf, serialized_element);
 
     std::stringstream ss(serialized_element);
-    nf->set_pword(ss) >> *this;
+    if (nf.wrapped)
+    {
+        nf.wrapped->set_pword(ss);
+    }
+    ss >> self;
 }
 
 }

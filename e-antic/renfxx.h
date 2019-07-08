@@ -45,7 +45,9 @@ public:
 
     ~renf_class() noexcept;
 
-    renf_class & operator=(const renf_class &) noexcept;
+    // Assignment is not possible since one renf_class uniquely corresponds to
+    // an embedded number field.
+    renf_class & operator=(const renf_class &) = delete;
 
     slong degree() const noexcept;
 
@@ -60,7 +62,7 @@ public:
 
     // Prepare an input stream to read elements living in this number field
     // from it.
-    [[deprecated("use the methods in renfxx_cereal.h instead.")]]
+    [[deprecated("use renfxx_cereal.h instead.")]]
     std::istream & set_pword(std::istream &) const noexcept;
 
     std::string to_string() const noexcept;
@@ -83,10 +85,6 @@ private:
 
     // Serialization, see renfxx_cereal.h
     friend cereal::access;
-    template <typename Archive>
-    void load(Archive & archive, std::uint32_t version);
-    template <typename Archive>
-    void save(Archive & archive, std::uint32_t version) const;
 };
 
 class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
@@ -237,10 +235,6 @@ private:
 
     // Serialization, see renfxx_cereal.h
     friend cereal::access;
-    template <typename Archive>
-    void load(Archive & archive, std::uint32_t version);
-    template <typename Archive>
-    void save(Archive & archive, std::uint32_t version) const;
 };
 
 // overloads for global functions

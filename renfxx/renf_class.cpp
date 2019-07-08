@@ -11,6 +11,7 @@
 */
 
 #include <e-antic/renfxx.h>
+#include "external/unique-factory/unique_factory.hpp"
 
 namespace {
 // An index returned from std::ios_base::xalloc() that we use to store a
@@ -18,6 +19,11 @@ namespace {
 // field at that index in a stream when we want to parse renf_elem_class
 // elements from it.
 static int xalloc = std::ios_base::xalloc();
+
+// Deduplicating factory so that all renf_class are guaranteed to be unique
+// parents.
+using Key = std::shared_ptr<const eantic::renf_class>;
+static UniqueFactory<eantic::renf_class, Key> factory;
 } // end of anonymous namespace
 
 namespace eantic {
@@ -76,31 +82,20 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
 
 std::shared_ptr<const renf_class> renf_class::make() noexcept
 {
-    return std::shared_ptr<const renf_class>(new renf_class());
+    return factory.get(Key(new renf_class()), [&](const Key&) { return new renf_class; });
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name) noexcept
 {
-    return std::shared_ptr<const renf_class>(new renf_class(k, gen_name));
+    return factory.get(Key(new renf_class(k, gen_name)), [&](const Key&) { return new renf_class(k, gen_name); });
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
 {
-    return std::shared_ptr<const renf_class>(new renf_class(minpoly, gen, emb, prec));
+    return factory.get(Key(new renf_class(minpoly, gen, emb, prec)), [&](const Key&) { return new renf_class(minpoly, gen, emb, prec); });
 }
 
 renf_class::~renf_class() noexcept { renf_clear(nf); }
-
-renf_class & renf_class::operator=(const renf_class & k) noexcept
-{
-    if (this != &k)
-    {
-        renf_clear(nf);
-        renf_init_set(nf, k.nf);
-    }
-    this->name = k.name;
-    return *this;
-}
 
 slong renf_class::degree() const noexcept { return nf_degree(nf->nf); }
 

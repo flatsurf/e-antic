@@ -63,8 +63,9 @@ libeantic_la_SOURCES +=                           \
     poly_extra/fmpq_poly_get_str_pretty.c
 endif
 
-noinst_HEADERS +=                    \
-    poly_extra/poly_evaluate_template.h
+noinst_HEADERS +=                                    \
+    poly_extra/poly_evaluate_template.h              \
+    renfxx/external/unique-factory/unique_factory.hpp
 
 check_PROGRAMS +=                                    \
     poly_extra/test/t-evaluate                       \
