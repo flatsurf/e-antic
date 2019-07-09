@@ -45,7 +45,9 @@ public:
 
     ~renf_class() noexcept;
 
-    renf_class & operator=(const renf_class &) noexcept;
+    // Assignment is not possible since one renf_class uniquely corresponds to
+    // an embedded number field.
+    renf_class & operator=(const renf_class &) = delete;
 
     slong degree() const noexcept;
 
@@ -60,6 +62,7 @@ public:
 
     // Prepare an input stream to read elements living in this number field
     // from it.
+    [[deprecated("use renfxx_cereal.h instead.")]]
     std::istream & set_pword(std::istream &) const noexcept;
 
     std::string to_string() const noexcept;
@@ -79,6 +82,9 @@ private:
 
     // The actual underlying renf_t
     mutable ::renf_t nf;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
 };
 
 class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
@@ -191,8 +197,7 @@ public:
     template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
     // deprecated pre-1.0 methods
-    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const
-        noexcept;
+    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
     [[deprecated("use fmpq_t() instead")]] ::fmpq * get_fmpq() const;
     [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
@@ -227,6 +232,9 @@ private:
     void assign(const ::fmpq_t) noexcept;
     void assign(const mpz_class &) noexcept;
     void assign(const mpq_class &) noexcept;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
 };
 
 // overloads for global functions

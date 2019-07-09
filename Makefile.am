@@ -11,7 +11,7 @@ libeantic_la_LIBADD = @LIBS@
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
+nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -63,8 +63,9 @@ libeantic_la_SOURCES +=                           \
     poly_extra/fmpq_poly_get_str_pretty.c
 endif
 
-noinst_HEADERS +=                    \
-    poly_extra/poly_evaluate_template.h
+noinst_HEADERS +=                                    \
+    poly_extra/poly_evaluate_template.h              \
+    renfxx/external/unique-factory/unique_factory.hpp
 
 check_PROGRAMS +=                                    \
     poly_extra/test/t-evaluate                       \
@@ -240,6 +241,15 @@ libeanticxx_la_SOURCES =       \
     renfxx/renf_class.cpp      \
     renfxx/renf_elem_class.cpp
 
+noinst_HEADERS +=                                     \
+    renfxx/external/unique-factory/unique_factory.hpp
+
+# We vendor the header-only library Cereal (serialization of the C++
+# structures) to be able to run the tests even when cereal is not installed.
+# Cereal is basically not packaged in any distribution since it is a
+# header-only library that people always vendor into their sourc tree.
+EXTRA_DIST = renfxx/test/external/cereal/include
+
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
     renfxx/test/t-get_str             \
@@ -252,7 +262,8 @@ check_PROGRAMS +=                     \
     renfxx/test/t-is_integer_rational \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
-    renfxx/test/t-stream
+    renfxx/test/t-stream              \
+    renfxx/test/t-cereal
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -281,6 +292,9 @@ renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
+renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_CPPFLAGS = -isystem $(srcdir)/renfxx/test/external/cereal/include
 
 # test suite
 TESTS = $(check_PROGRAMS)

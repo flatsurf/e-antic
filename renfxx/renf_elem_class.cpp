@@ -116,9 +116,9 @@ renf_elem_class::~renf_elem_class() noexcept
 
 renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noexcept
 {
-    if (value.nf == nullptr)
+    if (!value.nf)
     {
-        if (nf != nullptr)
+        if (nf)
         {
             renf_elem_clear(a, nf->renf_t());
             nf = nullptr;
@@ -127,13 +127,13 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
     }
     else
     {
-        if (nf == nullptr)
+        if (!nf)
         {
             fmpq_clear(b);
             renf_elem_init(a, value.nf->renf_t());
             nf = value.nf;
         }
-        else if (value.nf != nf)
+        else if (*value.nf != *nf)
         {
             renf_elem_clear(a, nf->renf_t());
             renf_elem_init(a, value.nf->renf_t());
@@ -141,7 +141,7 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
         }
     }
 
-    if (value.nf == nullptr)
+    if (!value.nf)
         fmpq_set(b, value.b);
     else
         renf_elem_set(a, value.a, nf->renf_t());
@@ -151,9 +151,9 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
 
 renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
 {
-    if (value.nf == nullptr)
+    if (!value.nf)
     {
-        if (nf != nullptr)
+        if (nf)
         {
             renf_elem_clear(a, nf->renf_t());
             fmpq_init(b);
@@ -163,7 +163,7 @@ renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
     }
     else
     {
-        if (nf == nullptr)
+        if (!nf)
         {
             fmpq_clear(b);
             renf_elem_init(a, value.nf->renf_t());
@@ -175,11 +175,11 @@ renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
     return *this;
 }
 
-bool renf_elem_class::is_fmpq(void) const noexcept { return (nf == nullptr); }
+bool renf_elem_class::is_fmpq(void) const noexcept { return !nf; }
 
 bool renf_elem_class::is_zero() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         return fmpq_is_zero(b);
     else
         return renf_elem_is_zero(a, nf->renf_t());
@@ -187,7 +187,7 @@ bool renf_elem_class::is_zero() const noexcept
 
 bool renf_elem_class::is_one() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         return fmpq_is_one(b);
     else
         return renf_elem_is_one(a, nf->renf_t());
@@ -195,7 +195,7 @@ bool renf_elem_class::is_one() const noexcept
 
 bool renf_elem_class::is_integer() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         return fmpz_is_one(fmpq_denref(b));
     else
         return renf_elem_is_integer(a, nf->renf_t());
@@ -203,7 +203,7 @@ bool renf_elem_class::is_integer() const noexcept
 
 bool renf_elem_class::is_rational() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         return true;
     else
         return renf_elem_is_rational(a, nf->renf_t());
@@ -230,7 +230,7 @@ const ::fmpq_t & renf_elem_class::fmpq_t() const noexcept
 mpz_class renf_elem_class::num() const noexcept {
     mpz_class x;
 
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
         return x;
@@ -259,7 +259,7 @@ mpz_class renf_elem_class::num() const noexcept {
 mpz_class renf_elem_class::den() const noexcept {
     mpz_class res;
 
-    if (nf == nullptr)
+    if (!nf)
         fmpz_get_mpz(res.__get_mp(), fmpq_denref(b));
     else
     {
@@ -277,7 +277,7 @@ renf_elem_class::operator mpq_class() const noexcept
 {
     mpq_class z;
 
-    if (nf == nullptr)
+    if (!nf)
         fmpq_get_mpq(z.__get_mp(), b);
     else if (is_rational())
     {
@@ -297,7 +297,7 @@ std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
     mpz_class x;
     std::vector<mpz_class> res;
 
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
         res.push_back(x);
@@ -332,8 +332,7 @@ std::string renf_elem_class::to_string(int flags) const noexcept
 
     assert(!((flags & EANTIC_STR_D) && (flags & EANTIC_STR_ARB)));
 
-    // call to renf_elem_get_str_pretty
-    if (nf == nullptr)
+    if (!nf)
     {
         if (flags & EANTIC_STR_ALG)
         {
@@ -380,7 +379,7 @@ mpz_class renf_elem_class::floor() const noexcept
     fmpz_t tmp;
     fmpz_init(tmp);
 
-    if (nf == nullptr)
+    if (!nf)
         fmpz_fdiv_q(tmp, fmpq_numref(b), fmpq_denref(b));
     else
         renf_elem_floor(tmp, a, nf->renf_t());
@@ -396,7 +395,7 @@ mpz_class renf_elem_class::ceil() const noexcept
     fmpz_t tmp;
     fmpz_init(tmp);
 
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_add(tmp, fmpq_numref(b), fmpq_denref(b));
         fmpz_sub_ui(tmp, tmp, 1);
@@ -413,7 +412,7 @@ mpz_class renf_elem_class::ceil() const noexcept
 
 int renf_elem_class::sgn() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         return fmpq_sgn(b);
     else
         return renf_elem_sgn(a, nf->renf_t());
@@ -421,7 +420,7 @@ int renf_elem_class::sgn() const noexcept
 
 renf_elem_class::operator double() const noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
     {
         arb_t s;
         arb_init(s);
@@ -437,7 +436,7 @@ renf_elem_class::operator double() const noexcept
 renf_elem_class renf_elem_class::operator-() const noexcept
 {
     renf_elem_class ans(*this);
-    if (nf == nullptr)
+    if (!nf)
         fmpq_neg(ans.b, ans.b);
     else
         renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
@@ -510,19 +509,19 @@ renf_elem_class renf_elem_class::pow(int exp) const noexcept
 
 bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 {
-    if (nf != nullptr)
+    if (nf)
     {
-        if (other.nf != nullptr && *nf == *other.nf)
+        if (other.nf && *nf == *other.nf)
         {
             return renf_elem_equal(a, other.a, nf->renf_t());
         }
         else
         {
-            assert(other.nf == nullptr && "can not compare renf_elem_class from different number fields");
+            assert(!other.nf && "can not compare renf_elem_class from different number fields");
             return renf_elem_equal_fmpq(a, other.b, nf->renf_t());
         }
     }
-    else if (other.nf == nullptr)
+    else if (!other.nf)
         return fmpq_equal(b, other.b);
     else
         return renf_elem_equal_fmpq(other.a, b, other.nf->renf_t());
@@ -530,9 +529,9 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 
 bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
 {
-    if (nf != nullptr)
+    if (nf)
     {
-        if (other.nf != nullptr && *nf == *other.nf)
+        if (other.nf && *nf == *other.nf)
             return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
         else
         {
@@ -540,7 +539,7 @@ bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
             return renf_elem_cmp_fmpq(a, other.b, nf->renf_t()) < 0;
         }
     }
-    else if (other.nf == nullptr)
+    else if (!other.nf)
         return fmpq_cmp(b, other.b) < 0;
     else
         return renf_elem_cmp_fmpq(other.a, b, other.nf->renf_t()) > 0;
@@ -601,7 +600,7 @@ void renf_elem_class::promote(std::shared_ptr<const renf_class> nf) noexcept
 
 void renf_elem_class::assign(slong value) noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_si(fmpq_numref(b), value);
@@ -612,7 +611,7 @@ void renf_elem_class::assign(slong value) noexcept
 
 void renf_elem_class::assign(ulong value) noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_ui(fmpq_numref(b), value);
@@ -623,7 +622,7 @@ void renf_elem_class::assign(ulong value) noexcept
 
 void renf_elem_class::assign(const ::fmpq_t value) noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         fmpq_set(b, value);
     else
         renf_elem_set_fmpq(a, value, nf->renf_t());
@@ -631,7 +630,7 @@ void renf_elem_class::assign(const ::fmpq_t value) noexcept
 
 void renf_elem_class::assign(const mpz_class & value) noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
     {
         fmpz_one(fmpq_denref(b));
         fmpz_set_mpz(fmpq_numref(b), value.__get_mp());
@@ -642,7 +641,7 @@ void renf_elem_class::assign(const mpz_class & value) noexcept
 
 void renf_elem_class::assign(const mpq_class & value) noexcept
 {
-    if (nf == nullptr)
+    if (!nf)
         fmpq_set_mpq(b, value.__get_mp());
     else
         renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());

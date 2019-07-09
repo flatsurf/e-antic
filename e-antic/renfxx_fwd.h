@@ -23,4 +23,10 @@ class renf_class;
 
 }
 
+namespace cereal {
+
+class access;
+
+}
+
 #endif
