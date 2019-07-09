@@ -11,7 +11,7 @@ libeantic_la_LIBADD = @LIBS@
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
+nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -241,6 +241,15 @@ libeanticxx_la_SOURCES =       \
     renfxx/renf_class.cpp      \
     renfxx/renf_elem_class.cpp
 
+noinst_HEADERS +=                                     \
+    renfxx/external/unique-factory/unique_factory.hpp
+
+# We vendor the header-only library Cereal (serialization of the C++
+# structures) to be able to run the tests even when cereal is not installed.
+# Cereal is basically not packaged in any distribution since it is a
+# header-only library that people always vendor into their sourc tree.
+EXTRA_DIST = renfxx/test/external/cereal/include
+
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
     renfxx/test/t-get_str             \
@@ -285,7 +294,7 @@ renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
 renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
-renfxx_test_t_cereal_CPPFLAGS = -isystem renfxx/test/external/cereal/include
+renfxx_test_t_cereal_CPPFLAGS = -isystem $(srcdir)/renfxx/test/external/cereal/include
 
 # test suite
 TESTS = $(check_PROGRAMS)
