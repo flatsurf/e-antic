@@ -11,7 +11,7 @@ libeantic_la_LIBADD = @LIBS@
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
+nobase_include_HEADERS = e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -244,11 +244,26 @@ libeanticxx_la_SOURCES =       \
 noinst_HEADERS +=                                     \
     renfxx/external/unique-factory/unique_factory.hpp
 
+# We generate e-antic.h in the Makefile (not in configure) as recommended by
+# autoconf to DESTDIR installs work.
+$(builddir)/e-antic/e-antic.h: $(srcdir)/e-antic/e-antic.h.in Makefile
+	mkdir -p $(builddir)/e-antic
+	sed -e 's,[@]libdir[@],$(libdir),g' < $< > $@
+
+# Since we generate e-antic.h, we need to search $(builddir) during out-of-tree builds aka VPATH builds
+VPATH = $(srcdir) $(builddir)
+# Generate e-antic.h before performing any compilation
+BUILT_SOURCES = e-antic/e-antic.h
+# Distribute e-antic.h.in as part of the tarball, but not e-antic.h
+EXTRA_DIST = e-antic/e-antic.h.in
+nodist_pkginclude_HEADERS = e-antic/e-antic.h
+
+CLEANFILES = e-antic/e-antic.h
 # We vendor the header-only library Cereal (serialization of the C++
 # structures) to be able to run the tests even when cereal is not installed.
 # Cereal is basically not packaged in any distribution since it is a
 # header-only library that people always vendor into their sourc tree.
-EXTRA_DIST = renfxx/test/external/cereal/include
+EXTRA_DIST += renfxx/test/external/cereal/include
 
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
