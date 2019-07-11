@@ -10,8 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENFXX_CEREAL_H
-#define RENFXX_CEREAL_H
+#ifndef E_ANTIC_RENFXX_CEREAL_H
+#define E_ANTIC_RENFXX_CEREAL_H
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>

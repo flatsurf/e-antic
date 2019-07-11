@@ -10,8 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENFXX_FWD_H
-#define RENFXX_FWD_H
+#ifndef E_ANTIC_RENFXX_FWD_H
+#define E_ANTIC_RENFXX_FWD_H
 
 // This file contains forward declarations for all the C++ classes defined by
 // renfxx.h to speed up compilation when included in header files.
