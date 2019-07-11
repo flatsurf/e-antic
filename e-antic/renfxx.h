@@ -11,8 +11,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENFXX_H
-#define RENFXX_H
+#ifndef E_ANTIC_RENFXX_H
+#define E_ANTIC_RENFXX_H
 
 #include <vector>
 #include <type_traits>
