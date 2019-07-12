@@ -35,9 +35,16 @@ AC_ARG_ENABLE([flint-devel],
 esac],[flintdevel=false])
 AM_CONDITIONAL([FLINT252], [test x$flintdevel = xfalse])
 
-## Check for headers and libraries
-AC_CHECK_LIB(pthread, pthread_mutex_init, [], AC_MSG_ERROR([pthread not supported]))
+dnl e-antic is thread-safe when pthread is available.
+AC_ARG_WITH([pthread], AS_HELP_STRING([--without-pythread], [Do not ensure thread-safety (with pthread)]))
+AS_IF([test "x$with_pthread" != "xno" && test "x$have_pthread" = "xyes"],
+      [
+       with_pthread=yes
+       AC_CHECK_LIB(pthread, pthread_mutex_init, [], AC_MSG_ERROR([pthread for thread-safety not found; run --without-pthread to disable thread-safety]))
+      ], [])
+AM_CONDITIONAL([HAVE_PTHREAD], [test "x$with_pthread" = "xyes"])
 
+## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
