@@ -193,8 +193,11 @@ check_PROGRAMS +=                  \
     renf/test/t-init               \
     renf/test/t-init_nth_root_fmpq \
     renf/test/t-randtest           \
-    renf/test/t-real_embeddings    \
-    renf/test/t-thread
+    renf/test/t-real_embeddings
+
+if HAVE_PTHREAD
+check_PROGRAMS += renf/test/t-thread
+endif
 
 noinst_HEADERS +=                  \
     renf_elem/rounding_template.h
@@ -264,6 +267,9 @@ CLEANFILES = e-antic/e-antic.h
 # Cereal is basically not packaged in any distribution since it is a
 # header-only library that people always vendor into their sourc tree.
 EXTRA_DIST += renfxx/test/external/cereal/include
+# Make sure we ship pthread tests even if pthread has been disabled in
+# configure
+EXTRA_DIST += renf/test/t-thread.c
 
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \

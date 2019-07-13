@@ -20,10 +20,6 @@
 #define NB_THREADS 4
 #define CFRAC_LENGTH 300
 
-typedef struct {
-    renf_ptr nf;
-    int err;
-} thread_data;
 void * thread_fcn(void *);
 
 int main(void)

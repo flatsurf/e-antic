@@ -1,6 +1,7 @@
 language: generic
 env:
   - CC=gcc CXX=g++ PACKAGES=g++
+  - CC=gcc CXX=g++ PACKAGES=g++ CONFIGURE=--without-pthread
   - CC=clang CXX=clang++ PACKAGES=clang
 services:
   - docker
@@ -12,7 +13,7 @@ script:
       apt-get update
       apt-get -y install libgmp-dev libmpfr-dev libflint-dev valgrind libflint-arb-dev libboost-all-dev libtool make autoconf $PACKAGES
       ./bootstrap.sh
-      ./configure --prefix=/usr --enable-valgrind || (cat config.log; false)
+      ./configure --prefix=/usr --enable-valgrind ${CONFIGURE} || (cat config.log; false)
       make
       ldd .libs/libeantic.so
       make check || (cat `find test-suite.log`; false)
