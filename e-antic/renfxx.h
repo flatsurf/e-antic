@@ -14,6 +14,7 @@
 #ifndef E_ANTIC_RENFXX_H
 #define E_ANTIC_RENFXX_H
 
+#include <cassert>
 #include <vector>
 #include <type_traits>
 #include <memory>
@@ -303,16 +304,8 @@ template <typename Coefficient>
 renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<Coefficient> & coefficients) noexcept
     : renf_elem_class(std::move(k))
 {
-#ifdef __GNUG__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-#endif
-    if (coefficients.size() > nf->degree())
-        throw std::invalid_argument("can not assign renf_elem_class from vector whose size "
-                                    "exceeds number field degree");
-#ifdef __GNUG__
-#pragma GCC diagnostic pop
-#endif
+    assert(coefficients.size() <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
     using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
 
