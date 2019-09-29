@@ -277,6 +277,7 @@ check_PROGRAMS +=                     \
     renfxx/test/t-get                 \
     renfxx/test/t-assignment          \
     renfxx/test/t-get_num_den         \
+    renfxx/test/t-num_content         \
     renfxx/test/t-cmp                 \
     renfxx/test/t-binop               \
     renfxx/test/t-pow                 \
@@ -297,6 +298,8 @@ renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
 renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
 renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la -lgmpxx
+renfxx_test_t_num_content_SOURCES = renfxx/test/t-num_content.cpp
+renfxx_test_t_num_content_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
 renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp

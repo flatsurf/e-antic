@@ -163,6 +163,9 @@ public:
     explicit operator std::string() const noexcept;
     std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
 
+    // gcd of numerator
+    mpz_class num_content() const noexcept;
+
     // floor, ceil, round, approximation
     mpz_class floor() const noexcept;
     mpz_class ceil() const noexcept;
