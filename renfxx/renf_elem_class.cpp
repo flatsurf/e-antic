@@ -256,6 +256,41 @@ mpz_class renf_elem_class::num() const noexcept {
     return x;
 }
 
+mpz_class renf_elem_class::num_content() const noexcept {
+    mpz_class x;
+
+    if (!nf)
+    {
+        fmpz_get_mpz(x.__get_mp(), fmpq_numref(b));
+        if (fmpq_sgn(b) < 0)
+            mpz_neg(x.__get_mp(), x.__get_mp());
+    }
+    else if (nf->renf_t()->nf->flag & NF_LINEAR)
+    {
+        fmpz_get_mpz(x.__get_mp(), LNF_ELEM_NUMREF(a->elem));
+        if (fmpz_sgn(LNF_ELEM_NUMREF(a->elem)) < 0)
+            mpz_neg(x.__get_mp(), x.__get_mp());
+    }
+    else if (nf->renf_t()->nf->flag & NF_QUADRATIC)
+    {
+        fmpz_t t;
+        fmpz_init(t);
+        fmpz_gcd(t, QNF_ELEM_NUMREF(a->elem), QNF_ELEM_NUMREF(a->elem) + 1);
+        fmpz_get_mpz(x.__get_mp(), t);
+        fmpz_clear(t);
+    }
+    else
+    {
+        fmpz_t t;
+        fmpz_init(t);
+        _fmpz_poly_content(t, NF_ELEM(a->elem)->coeffs, NF_ELEM(a->elem)->length);
+        fmpz_get_mpz(x.__get_mp(), t);
+        fmpz_clear(t);
+    }
+
+    return x;
+}
+
 mpz_class renf_elem_class::den() const noexcept {
     mpz_class res;
 
