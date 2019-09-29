@@ -235,6 +235,7 @@ check_PROGRAMS +=                \
 
 libeanticxx_la_SOURCES =        \
     renfxx/get_num_vector.cpp   \
+    renfxx/num_content.cpp      \
     renfxx/set_renf_xalloc.cpp
 
 check_PROGRAMS +=                     \
@@ -243,6 +244,7 @@ check_PROGRAMS +=                     \
     renfxx/test/t-get                 \
     renfxx/test/t-assignment          \
     renfxx/test/t-get_num_den         \
+    renfxx/test/t-num_content         \
     renfxx/test/t-cmp                 \
     renfxx/test/t-binop               \
     renfxx/test/t-is_integer_rational \
@@ -257,6 +259,7 @@ renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
 renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
 renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
+renfxx_test_t_num_content_SOURCES = renfxx/test/t-num_content.cpp
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp

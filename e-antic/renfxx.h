@@ -169,6 +169,9 @@ public:
     mpq_class get_rational(void) const;
     std::vector<mpz_class> get_num_vector(void) const;
 
+    // gcd of numerator
+    mpz_class num_content() const noexcept;
+
     // floor, ceil, round, approximation
     mpz_class floor() const;
     mpz_class ceil() const;
