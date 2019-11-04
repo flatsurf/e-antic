@@ -21,13 +21,13 @@ renf_elem_class::renf_elem_class() noexcept
 }
 
 renf_elem_class::renf_elem_class(const renf_elem_class & value) noexcept
-    : renf_elem_class()
+    : renf_elem_class(value.nf)
 {
     *this = value;
 }
 
 renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
-    : renf_elem_class()
+    : renf_elem_class(value.nf)
 {
     *this = std::move(value);
 }
@@ -133,7 +133,7 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noex
             renf_elem_init(a, value.nf->renf_t());
             nf = value.nf;
         }
-        else if (*value.nf != *nf)
+        else if (value.nf != nf)
         {
             renf_elem_clear(a, nf->renf_t());
             renf_elem_init(a, value.nf->renf_t());

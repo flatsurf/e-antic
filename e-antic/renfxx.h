@@ -295,13 +295,7 @@ template <bool fallback_to_string, typename Integer> auto to_supported_integer(I
 }
 
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
-renf_elem_class::renf_elem_class(Integer value) noexcept
-{
-    nf = nullptr;
-    fmpq_init(b);
-
-    assign(to_supported_integer<true>(value));
-}
+renf_elem_class::renf_elem_class(Integer value) noexcept : renf_elem_class(nullptr, value) {}
 
 template <typename Coefficient>
 renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<Coefficient> & coefficients) noexcept
@@ -338,7 +332,10 @@ template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, Integer value) noexcept
 {
     nf = std::move(k);
-    renf_elem_init(a, nf->renf_t());
+    if (nf)
+      renf_elem_init(a, nf->renf_t());
+    else
+      fmpq_init(b);
 
     assign(to_supported_integer<true>(value));
 }
