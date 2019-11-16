@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2019 Julian Rüth
 
     This file is part of e-antic
 
@@ -11,6 +12,20 @@
 
 
 #include <e-antic/renf_elem.h>
+
+void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
+{
+    int test;
+
+    if ((test = renf_elem_cmp_fmpq(a, b, nf)) != ans)
+    {
+        printf("FAIL:\n");
+        printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); fmpq_print(b); printf("\n");
+        printf("got cmp(a,b) = %d but expected %d", test, ans);
+        abort();
+    }
+}
 
 void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
 {
@@ -191,6 +206,21 @@ void test_field2(flint_rand_t state)
     renf_elem_set_fmpq(a, k, nf);
 
     check_cmp(a, b, nf, 1);
+
+    /* comparison with zero without coefficients, see
+     * https://github.com/videlec/e-antic/pull/75 */
+    fmpq_set_si(k, 1, 1);
+    /* Set a to a small integer that is not stored as an MPZ; the following
+     * renf_elem_zero() does not reset its storage but only changes the
+     * storage's length, i.e., RENF_ELEM_NUMREF is now invalid. */
+    renf_elem_set_si(a, 1, nf);
+    renf_elem_zero(a, nf);
+
+    check_cmp_fmpq(a, k, nf, -1);
+
+    fmpq_neg(k, k);
+
+    check_cmp_fmpq(a, k, nf, 1);
 
     TEST_CMP_CLEANUP;
 }
