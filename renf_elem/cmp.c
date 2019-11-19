@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2019 Julian Rüth
 
     This file is part of e-antic
 
@@ -31,6 +32,12 @@ int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf)
     if (nf_elem_is_rational(a->elem, nf->nf) &&
         nf_elem_is_rational(b->elem, nf->nf))
     {
+        if (nf_elem_is_zero(a->elem, nf->nf))
+            return -renf_elem_sgn(b, nf);
+
+        if (nf_elem_is_zero(b->elem, nf->nf))
+            return renf_elem_sgn(a, nf);
+
         if (nf->nf->flag & NF_LINEAR)
             return _fmpq_cmp(
                         LNF_ELEM_NUMREF(a->elem),
