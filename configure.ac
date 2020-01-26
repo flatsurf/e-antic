@@ -37,7 +37,7 @@ AM_CONDITIONAL([FLINT252], [test x$flintdevel = xfalse])
 
 dnl e-antic is thread-safe when pthread is available.
 AC_ARG_WITH([pthread], AS_HELP_STRING([--without-pthread], [Do not ensure thread-safety (with pthread)]))
-AS_IF([test "x$with_pthread" != "xno" && test "x$have_pthread" = "xyes"],
+AS_IF([test "x$with_pthread" != "xno"],
       [
        with_pthread=yes
        AC_CHECK_LIB(pthread, pthread_mutex_init, [], AC_MSG_ERROR([pthread for thread-safety not found; run --without-pthread to disable thread-safety]))
