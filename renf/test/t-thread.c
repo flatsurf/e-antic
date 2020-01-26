@@ -24,6 +24,13 @@ void * thread_fcn(void *);
 
 int main(void)
 {
+    if (getenv("VALGRIND") != NULL)
+    {
+        // This test takes very long when valgrind is enabled with make
+        // check-valgrind, so we skip it entirely.
+        return 0;
+    }
+
     pthread_t t[NB_THREADS];
     int i, result;
 
