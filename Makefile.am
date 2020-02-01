@@ -1,6 +1,5 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
-
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
@@ -12,6 +11,9 @@ libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
 nobase_include_HEADERS = e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
+
+# Put config.h on the search path, https://www.gnu.org/software/automake/manual/html_node/VPATH-Builds.html
+AM_CPPFLAGS = -I.
 
 # Initialize variables, to be filled below
 noinst_HEADERS =

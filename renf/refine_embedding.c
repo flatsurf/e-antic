@@ -9,11 +9,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
 #include <err.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
-
-#include "../config.h"
 
 #ifdef HAVE_PTHREAD
 #include <pthread.h>
