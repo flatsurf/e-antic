@@ -7,6 +7,6 @@ apt-get -y install libgmp-dev libmpfr-dev libflint-dev valgrind libflint-arb-dev
 ./configure --prefix=/usr --enable-valgrind ${CONFIGURE} || (cat config.log; false)
 make
 ldd .libs/libeantic.so
-make check || (cat `find test-suite.log`; false)
-make check-valgrind || (cat `find test-suite-memcheck.log`; false)
+make check || (cat `find test-suite.log` /dev/null; false)
+make check-valgrind || (cat `find test-suite-memcheck.log` /dev/null; false)
 make distcheck
