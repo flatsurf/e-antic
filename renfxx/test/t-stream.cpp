@@ -11,8 +11,10 @@
 
 #include "e-antic/renfxx.h"
 
+#include <string>
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 using namespace eantic;
 using std::make_shared;
@@ -22,18 +24,19 @@ int main(void)
     auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
     auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
 
+    std::string numerical_noise = "\\d+ \\+\\/\\- \\d+\\.\\d+\\e\\-\\d+\\]\\)";
 
     {
         std::stringstream s;
         s << *K1;
-        if (s.str() != "NumberField(A^3 - 2, [1.25992104989487316476721061 +/- 4.87e-27])")
+        if (! std::regex_match(s.str(), std::regex("NumberField\\(A\\^3 \\- 2, \\[1.2599210498948731" + numerical_noise)))
             throw std::runtime_error("wrong K1 string, got " + s.str());
     }
 
     {
         std::stringstream s;
         s << *K2;
-        if (s.str() != "NumberField(2*abc^4 - 5*abc + 1, [0.200648339181800500946306030432 +/- 2.64e-31])")
+        if (! std::regex_match(s.str(), std::regex("NumberField\\(2\\*abc\\^4 \\- 5\\*abc \\+ 1, \\[0.2006483391818005" + numerical_noise)))
             throw std::runtime_error("wrong K2 string, got " + s.str());
     }
 
