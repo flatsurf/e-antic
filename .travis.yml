@@ -6,4 +6,4 @@ env:
 services:
   - docker
 script:
-  - docker run -i -e CC -e CXX -e PACKAGES -v ${TRAVIS_BUILD_DIR}:/eantic -v `pwd`/.travis.sh:/travis.sh -w /eantic ubuntu:cosmic /travis.sh
+  - docker run -i -e CC -e CXX -e PACKAGES -v ${TRAVIS_BUILD_DIR}:/eantic -v `pwd`/.travis.sh:/travis.sh -w /eantic ubuntu:bionic /travis.sh
