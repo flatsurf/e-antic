@@ -38,6 +38,6 @@ install:
   - ldd .libs/libeantic.so
 
 script:
-  - V=1 make check
-  - V=1 make check-valgrind
+  - V=1 make check VERBOSE=1
+  - V=1 make check-valgrind VERBOSE=1
   - V=1 make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=\"-I${PREFIX}/include\" CPPFLAGS=\"-I${PREFIX}/include\" LDFLAGS=\"-L${PREFIX}/lib\""
