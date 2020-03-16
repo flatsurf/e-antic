@@ -14,7 +14,7 @@ install:
   # set local directory and check name resolution
   - mkdir local
   - export PREFIX="/usr/local"
-  - export LD_LIBRARY_PATH=${PREFIX}/lib
+  - export LD_LIBRARY_PATH=${PREFIX}/lib:$LD_LIBRARY_PATH
   # build flint
   - wget http://flintlib.org/flint-2.5.2.tar.gz
   - tar xf flint-2.5.2.tar.gz
