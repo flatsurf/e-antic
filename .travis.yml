@@ -7,14 +7,14 @@ matrix:
   - compiler: clang
     env: CC=clang
          CXX=clang++
+         LD_LIBRARY_PATH=$PREFIX/lib:/usr/local/clang/lib
 env:
+  PREFIX=/usr/local
   MAKE="make -j2"
 install:
   - sudo apt-get install libgmp-dev libmpfr-dev valgrind
   # set local directory and check name resolution
   - mkdir local
-  - export PREFIX="/usr/local"
-  - export LD_LIBRARY_PATH=${PREFIX}/lib
   # build flint
   - wget http://flintlib.org/flint-2.5.2.tar.gz
   - tar xf flint-2.5.2.tar.gz
@@ -38,6 +38,6 @@ install:
   - ldd .libs/libeantic.so
 
 script:
-  - V=1 make check
-  - V=1 make check-valgrind
+  - V=1 make check VERBOSE=1
+  - if [ "$CC" != clang ]; then V=1 make check-valgrind VERBOSE=1; fi
   - V=1 make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=\"-I${PREFIX}/include\" CPPFLAGS=\"-I${PREFIX}/include\" LDFLAGS=\"-L${PREFIX}/lib\""
