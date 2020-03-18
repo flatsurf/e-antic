@@ -7,8 +7,8 @@ AM_CFLAGS = $(OPENMP_CFLAGS)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 
 # Linked-against libraries
-libeantic_la_LIBADD = -larb -lflint -lgmp
-libeanticxx_la_LIBADD = libeantic.la -larb -lflint -lgmpxx -lgmp
+libeantic_la_LIBADD = @LIBS@
+libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
 nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h
