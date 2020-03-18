@@ -7,6 +7,7 @@ matrix:
   - compiler: clang
     env: CC=clang
          CXX=clang++
+         LD_LIBRARY_PATH=/usr/local/clang/lib
 env:
   MAKE="make -j2"
 install:
@@ -14,7 +15,6 @@ install:
   # set local directory and check name resolution
   - mkdir local
   - export PREFIX="/usr/local"
-  - export LD_LIBRARY_PATH="${PREFIX}/lib":$(if [[ "$CC" == "clang" ]]; then echo -n '/usr/local/clang/lib'; fi):"$LD_LIBRARY_PATH"
   # build flint
   - wget http://flintlib.org/flint-2.5.2.tar.gz
   - tar xf flint-2.5.2.tar.gz
