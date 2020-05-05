@@ -10,8 +10,8 @@
 */
 
 
-#ifndef NF_EMB_ELEM_H
-#define NF_EMB_ELEM_H
+#ifndef E_ANTIC_RENF_ELEM_H
+#define E_ANTIC_RENF_ELEM_H
 
 #include <flint/fmpq_poly.h>
 #include <arb.h>

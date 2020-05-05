@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2019 Julian Rüth
 
     This file is part of e-antic
 
@@ -11,6 +12,20 @@
 
 
 #include <e-antic/renf_elem.h>
+
+void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
+{
+    int test;
+
+    if ((test = renf_elem_cmp_fmpq(a, b, nf)) != ans)
+    {
+        printf("FAIL:\n");
+        printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
+        printf("b = "); fmpq_print(b); printf("\n");
+        printf("got cmp(a,b) = %d but expected %d", test, ans);
+        abort();
+    }
+}
 
 void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
 {
@@ -191,6 +206,32 @@ void test_field2(flint_rand_t state)
     renf_elem_set_fmpq(a, k, nf);
 
     check_cmp(a, b, nf, 1);
+
+    /* comparison with rational zero without coefficients, see
+     * https://github.com/videlec/e-antic/pull/75 */
+    fmpq_set_si(k, 1, 1);
+    /* Set a to a small integer that is not stored as an MPZ; the following
+     * renf_elem_zero() does not reset its storage but only changes the
+     * storage's length, i.e., RENF_ELEM_NUMREF is now invalid. */
+    renf_elem_set_si(a, 1, nf);
+    renf_elem_zero(a, nf);
+
+    check_cmp_fmpq(a, k, nf, -1);
+
+    fmpq_neg(k, k);
+
+    check_cmp_fmpq(a, k, nf, 1);
+
+    /* comparison with non-fmpq zero without coefficients, see
+     * https://github.com/videlec/e-antic/pull/75 */
+    /* We create a non-zero b with an embedding that contains zero */
+    fmpq_set_si(k, 1, 3);
+    renf_elem_set_fmpq(b, k, nf);
+    renf_elem_sub(b, b, b, nf);
+    fmpz_set_str(fmpq_denref(k), "179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216", 10);
+    renf_elem_add_fmpq(b, b, k, nf);
+
+    check_cmp(a, b, nf, -1);
 
     TEST_CMP_CLEANUP;
 }

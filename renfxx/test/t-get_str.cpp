@@ -50,23 +50,23 @@ int main(void)
 
     {
         // quadratic example
-        renf_class K("x^2 - 2", "x", "1.41 +/- 0.1");
+        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
         {
             renf_elem_class a(K, "0");
-            check_string(a, "(0 ~ 0.000000)", "0", "0.000000");
+            check_string(a, "(0 ~ 0)", "0", "0");
         }
 
         {
             std::string alg = "2/3";
             std::string d = "2/3";
             renf_elem_class a(K, alg);
-            check_string(a, "(2/3 ~ 0.666667)", "2/3", "0.666667");
+            check_string(a, "(2/3 ~ 0.66666667)", "2/3", "0.66666667");
         }
 
         {
             std::string alg = "x";
-            std::string d = "1.414214";
+            std::string d = "1.4142136";
             renf_elem_class a(K, alg);
             check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
         }
@@ -74,28 +74,28 @@ int main(void)
 
     {
         // cubic example
-        renf_class K("x^3 - 2/3", "x", "0.87 +/- 0.1");
+        auto K = renf_class::make("x^3 - 2/3", "x", "0.87 +/- 0.1");
 
         {
             renf_elem_class a(K, "0");
-            check_string(a, "(0 ~ 0.000000)", "0", "0.000000");
+            check_string(a, "(0 ~ 0)", "0", "0");
         }
 
         {
             renf_elem_class a(K, "2/3");
-            check_string(a, "(2/3 ~ 0.666667)", "2/3", "0.666667");
+            check_string(a, "(2/3 ~ 0.66666667)", "2/3", "0.66666667");
         }
 
         {
             std::string alg = "x";
-            std::string d = "0.873580";
+            std::string d = "0.87358046";
             renf_elem_class a(K, alg);
             check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
         }
 
         {
             std::string alg = "3/7*x-2/11";
-            std::string d = "0.192573";
+            std::string d = "0.19257345";
             renf_elem_class a(K, alg);
             check_string(a, "(" + alg + " ~ " + d + ")", alg, d);
         }

@@ -25,7 +25,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 10, 64, 10);
-        renf_class K(nf);
+        auto K = renf_class::make(nf);
 
         renf_clear(nf);
 
@@ -162,7 +162,7 @@ int main(void)
         }
 
         {
-            if (K.degree() >= 2)
+            if (K->degree() >= 2)
             {
                 std::vector<mpz_class> v;
                 v.push_back(1);
@@ -171,13 +171,13 @@ int main(void)
                 renf_elem_class b(K);
                 b = renf_elem_class(b.parent(), v);
 
-                if (a != K.gen() + 1 || b != K.gen() + 1)
+                if (a != K->gen() + 1 || b != K->gen() + 1)
                     throw std::runtime_error("constructor from std::vector<mpz_class> failed");
             }
         }
 
         {
-            if (K.degree() >= 2)
+            if (K->degree() >= 2)
             {
                 std::vector<mpq_class> v;
                 v.push_back(mpq_class(1,2));
@@ -186,8 +186,8 @@ int main(void)
                 renf_elem_class b(K,v);
                 b = renf_elem_class(b.parent(), v);
 
-                if (a != (-2*K.gen()/3 + mpq_class(1,2)) ||
-                    b != (-2*K.gen()/3 + mpq_class(1,2)))
+                if (a != (-2*K->gen()/3 + mpq_class(1,2)) ||
+                    b != (-2*K->gen()/3 + mpq_class(1,2)))
                     throw std::runtime_error("constructor from std::vector<mpq_class> failed");
             }
         }

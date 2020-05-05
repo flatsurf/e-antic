@@ -20,14 +20,17 @@
 #define NB_THREADS 4
 #define CFRAC_LENGTH 300
 
-typedef struct {
-    renf_ptr nf;
-    int err;
-} thread_data;
 void * thread_fcn(void *);
 
 int main(void)
 {
+    if (getenv("VALGRIND") != NULL)
+    {
+        // This test takes very long when valgrind is enabled with make
+        // check-valgrind, so we skip it entirely.
+        return 0;
+    }
+
     pthread_t t[NB_THREADS];
     int i, result;
 

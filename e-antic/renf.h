@@ -9,8 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef NF_EMB_H
-#define NF_EMB_H
+#ifndef E_ANTIC_RENF_H
+#define E_ANTIC_RENF_H
 
 #include <flint/fmpq_poly.h>
 #include <e-antic/e-antic.h>

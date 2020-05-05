@@ -18,6 +18,9 @@ void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec)
     fmpq_poly_t pol;
     arb_t emb;
 
+    if (fmpz_cmp_si(fmpq_numref(d), 0) < 0)
+        abort();
+
     fmpq_poly_init(pol);
     fmpq_init(p0);
     fmpq_set(p0, d);

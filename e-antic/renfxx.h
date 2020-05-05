@@ -11,11 +11,13 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENFXX_H
-#define RENFXX_H
+#ifndef E_ANTIC_RENFXX_H
+#define E_ANTIC_RENFXX_H
 
+#include <cassert>
 #include <vector>
 #include <type_traits>
+#include <memory>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -30,17 +32,23 @@ namespace eantic {
 
 // A Real Embedded Number Field
 // This class provides C++ memory management for the underlying renf_t.
-class renf_class : boost::equality_comparable<renf_class> {
-public:
+class renf_class : public std::enable_shared_from_this<renf_class>, boost::equality_comparable<renf_class> {
     // The trivial number field adjoining a root of (x - 1) to the rationals
     renf_class() noexcept;
-    renf_class(const renf_class &) noexcept;
-    renf_class(const ::renf_t, const std::string & gen = "a") noexcept;
-    renf_class(const std::string & minpoly, const std::string & gen, const std::string emb, const slong prec = 64);
+    renf_class(const ::renf_t, const std::string &) noexcept;
+    renf_class(const std::string &, const std::string &, const std::string &, const slong);
+
+public:
+    // The trivial number field adjoining a root of (x - 1) to the rationals
+    static std::shared_ptr<const renf_class> make() noexcept;
+    static std::shared_ptr<const renf_class> make(const ::renf_t, const std::string & gen = "a") noexcept;
+    static std::shared_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, const slong prec = 64);
 
     ~renf_class() noexcept;
 
-    renf_class & operator=(const renf_class &) noexcept;
+    // Assignment is not possible since one renf_class uniquely corresponds to
+    // an embedded number field.
+    renf_class & operator=(const renf_class &) = delete;
 
     slong degree() const noexcept;
 
@@ -55,7 +63,8 @@ public:
 
     // Prepare an input stream to read elements living in this number field
     // from it.
-    std::istream & set_pword(std::istream &) noexcept;
+    [[deprecated("use renfxx_cereal.h instead.")]]
+    std::istream & set_pword(std::istream &) const noexcept;
 
     std::string to_string() const noexcept;
     friend std::ostream & operator<<(std::ostream &, const renf_class &);
@@ -65,8 +74,8 @@ public:
     // stored embedding) even though they are morally const.
     ::renf_t & renf_t() const noexcept { return nf; }
 
-    [[deprecated("Use renf_t() instead.")]] renf * get_renf() noexcept { return nf; }
-    [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) noexcept;
+    [[deprecated("Use renf_t() instead.")]] renf * get_renf() const noexcept { return nf; }
+    [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) const noexcept;
 
 private:
     // The name of the generator
@@ -74,6 +83,9 @@ private:
 
     // The actual underlying renf_t
     mutable ::renf_t nf;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
 };
 
 class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
@@ -100,21 +112,21 @@ public:
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
     // only valid while that reference is.
-    explicit renf_elem_class(const renf_class & k) noexcept;
+    explicit renf_elem_class(std::shared_ptr<const renf_class> k) noexcept;
     // An integer in the field k
-    renf_elem_class(const renf_class & k, const mpz_class &) noexcept;
+    renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class &) noexcept;
     // A rational in the field k
-    renf_elem_class(const renf_class & k, const mpq_class &) noexcept;
+    renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class &) noexcept;
     // A rational in the field k
-    renf_elem_class(const renf_class & k, const fmpq_t) noexcept;
+    renf_elem_class(std::shared_ptr<const renf_class> k, const fmpq_t) noexcept;
     // An integer in the field k
     template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
-    renf_elem_class(const renf_class & k, const Integer) noexcept;
+    renf_elem_class(std::shared_ptr<const renf_class> k, const Integer) noexcept;
     // Parse the string into an element in the field k
-    renf_elem_class(const renf_class & k, const std::string &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::string &);
     // The element Σc_i·α^i where α is the generator of the field k; the number
     // of coefficients must not exceed the degree of the field.
-    template <typename C> renf_elem_class(const renf_class & k, const std::vector<C> &) noexcept;
+    template <typename C> renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<C> &) noexcept;
 
     ~renf_elem_class() noexcept;
 
@@ -125,7 +137,7 @@ public:
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
 
     // containing number field; holds a nullptr if this is a rational number
-    const renf_class & parent() const noexcept { return *nf; }
+    const std::shared_ptr<const renf_class>& parent() const noexcept { return nf; }
 
     // testing
     bool is_fmpq() const noexcept;
@@ -150,6 +162,9 @@ public:
     std::vector<mpz_class> num_vector() const noexcept;
     explicit operator std::string() const noexcept;
     std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
+
+    // gcd of numerator
+    mpz_class num_content() const noexcept;
 
     // floor, ceil, round, approximation
     mpz_class floor() const noexcept;
@@ -186,8 +201,7 @@ public:
     template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
     // deprecated pre-1.0 methods
-    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const
-        noexcept;
+    [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
     [[deprecated("use fmpq_t() instead")]] ::fmpq * get_fmpq() const;
     [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
@@ -202,7 +216,7 @@ public:
 
 private:
     // The parent number field; a nullptr if the element is rational.
-    renf_class const * nf;
+    std::shared_ptr<const renf_class> nf;
     // The underlying element when nf != nullptr.
     // We need mutability as calls might need to refine the precision of
     // the stored embedding.
@@ -212,7 +226,7 @@ private:
 
     // Make this->nf == nf; when this->nf != nullptr, only implemented in
     // trivial cases
-    void promote(const renf_class & nf) noexcept;
+    void promote(std::shared_ptr<const renf_class> nf) noexcept;
     template <typename T, typename fmpq_op, typename renf_op>
     int cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept;
     template <typename T, typename fmpq_op, typename renf_op> void inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf);
@@ -222,6 +236,9 @@ private:
     void assign(const ::fmpq_t) noexcept;
     void assign(const mpz_class &) noexcept;
     void assign(const mpq_class &) noexcept;
+
+    // Serialization, see renfxx_cereal.h
+    friend cereal::access;
 };
 
 // overloads for global functions
@@ -278,28 +295,14 @@ template <bool fallback_to_string, typename Integer> auto to_supported_integer(I
 }
 
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
-renf_elem_class::renf_elem_class(Integer value) noexcept
-{
-    nf = nullptr;
-    fmpq_init(b);
-
-    assign(to_supported_integer<true>(value));
-}
+renf_elem_class::renf_elem_class(Integer value) noexcept : renf_elem_class(nullptr, value) {}
 
 template <typename Coefficient>
-renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coefficient> & coefficients) noexcept
-    : renf_elem_class(k)
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<Coefficient> & coefficients) noexcept
+    : renf_elem_class(std::move(k))
 {
-#ifdef __GNUG__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-#endif
-    if (coefficients.size() > nf->degree())
-        throw std::invalid_argument("can not assign renf_elem_class from vector whose size "
-                                    "exceeds number field degree");
-#ifdef __GNUG__
-#pragma GCC diagnostic pop
-#endif
+    assert(coefficients.size() <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
     using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
 
@@ -326,10 +329,13 @@ renf_elem_class::renf_elem_class(const renf_class & k, const std::vector<Coeffic
 }
 
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
-renf_elem_class::renf_elem_class(const renf_class & k, Integer value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, Integer value) noexcept
 {
-    nf = &k;
-    renf_elem_init(a, k.renf_t());
+    nf = std::move(k);
+    if (nf)
+      renf_elem_init(a, nf->renf_t());
+    else
+      fmpq_init(b);
 
     assign(to_supported_integer<true>(value));
 }

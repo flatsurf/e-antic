@@ -9,11 +9,13 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
 #include <err.h>
-#include <pthread.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
+#ifdef HAVE_PTHREAD
+#include <pthread.h>
 static pthread_once_t mtx_initialized;
 static pthread_mutex_t mtx;
 
@@ -24,9 +26,11 @@ void initialize_mtx()
 	err(1, "failed to create mutex for renf_refine_embedding()");
     }
 }
+#endif
 
 void renf_refine_embedding(renf_t nf, slong prec)
 {
+#ifdef HAVE_PTHREAD
     pthread_once(&mtx_initialized, initialize_mtx);
 
     // We need to make sure that no two threads attempt to refine the same
@@ -37,6 +41,7 @@ void renf_refine_embedding(renf_t nf, slong prec)
     {
 	err(1, "failed to lock mutex for renf_refine_embedding()");
     }
+#endif
 
     arb_t tmp;
     slong cond;
@@ -77,8 +82,10 @@ void renf_refine_embedding(renf_t nf, slong prec)
     }
     arb_clear(tmp);
 
+#ifdef HAVE_PTHREAD
     if (pthread_mutex_unlock(&mtx) != 0)
     {
 	err(1, "failed to unlock mutex for renf_refine_embedding()");
     }
+#endif
 }

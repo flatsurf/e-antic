@@ -1,0 +1,6 @@
+[submodule "renfxx/test/external/cereal"]
+	path = renfxx/test/external/cereal
+	url = https://github.com/USCiLab/cereal.git
+[submodule "renfxx/external/unique-factory"]
+	path = renfxx/external/unique-factory
+	url = https://github.com/flatsurf/unique-factory.git

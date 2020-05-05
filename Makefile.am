@@ -1,6 +1,5 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
-
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la libeanticxx.la
 libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
@@ -11,7 +10,10 @@ libeantic_la_LIBADD = @LIBS@
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/e-antic.h e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h
+nobase_include_HEADERS = e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
+
+# Put config.h on the search path, https://www.gnu.org/software/automake/manual/html_node/VPATH-Builds.html
+AM_CPPFLAGS = -I.
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
@@ -63,8 +65,9 @@ libeantic_la_SOURCES +=                           \
     poly_extra/fmpq_poly_get_str_pretty.c
 endif
 
-noinst_HEADERS +=                    \
-    poly_extra/poly_evaluate_template.h
+noinst_HEADERS +=                                    \
+    poly_extra/poly_evaluate_template.h              \
+    renfxx/external/unique-factory/unique_factory.hpp
 
 check_PROGRAMS +=                                    \
     poly_extra/test/t-evaluate                       \
@@ -192,8 +195,11 @@ check_PROGRAMS +=                  \
     renf/test/t-init               \
     renf/test/t-init_nth_root_fmpq \
     renf/test/t-randtest           \
-    renf/test/t-real_embeddings    \
-    renf/test/t-thread
+    renf/test/t-real_embeddings
+
+if HAVE_PTHREAD
+check_PROGRAMS += renf/test/t-thread
+endif
 
 noinst_HEADERS +=                  \
     renf_elem/rounding_template.h
@@ -240,19 +246,48 @@ libeanticxx_la_SOURCES =       \
     renfxx/renf_class.cpp      \
     renfxx/renf_elem_class.cpp
 
+noinst_HEADERS +=                                     \
+    renfxx/external/unique-factory/unique_factory.hpp
+
+# We generate e-antic.h in the Makefile (not in configure) as recommended by
+# autoconf to DESTDIR installs work.
+$(builddir)/e-antic/e-antic.h: $(srcdir)/e-antic/e-antic.h.in Makefile
+	mkdir -p $(builddir)/e-antic
+	sed -e 's,[@]libdir[@],$(libdir),g' < $< > $@
+
+# Since we generate e-antic.h, we need to search $(builddir) during out-of-tree builds aka VPATH builds
+VPATH = $(srcdir) $(builddir)
+# Generate e-antic.h before performing any compilation
+BUILT_SOURCES = e-antic/e-antic.h
+# Distribute e-antic.h.in as part of the tarball, but not e-antic.h
+EXTRA_DIST = e-antic/e-antic.h.in
+nodist_pkginclude_HEADERS = e-antic/e-antic.h
+
+CLEANFILES = e-antic/e-antic.h
+# We vendor the header-only library Cereal (serialization of the C++
+# structures) to be able to run the tests even when cereal is not installed.
+# Cereal is basically not packaged in any distribution since it is a
+# header-only library that people always vendor into their sourc tree.
+EXTRA_DIST += renfxx/test/external/cereal/include
+# Make sure we ship pthread tests even if pthread has been disabled in
+# configure
+EXTRA_DIST += renf/test/t-thread.c
+
 check_PROGRAMS +=                     \
     renfxx/test/t-constructor         \
     renfxx/test/t-get_str             \
     renfxx/test/t-get                 \
     renfxx/test/t-assignment          \
     renfxx/test/t-get_num_den         \
+    renfxx/test/t-num_content         \
     renfxx/test/t-cmp                 \
     renfxx/test/t-binop               \
     renfxx/test/t-pow                 \
     renfxx/test/t-is_integer_rational \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
-    renfxx/test/t-stream
+    renfxx/test/t-stream              \
+    renfxx/test/t-cereal
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -265,6 +300,8 @@ renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
 renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
 renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la -lgmpxx
+renfxx_test_t_num_content_SOURCES = renfxx/test/t-num_content.cpp
+renfxx_test_t_num_content_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_cmp_SOURCES = renfxx/test/t-cmp.cpp
 renfxx_test_t_cmp_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
@@ -281,6 +318,9 @@ renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
+renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
+renfxx_test_t_cereal_CPPFLAGS = -isystem $(srcdir)/renfxx/test/external/cereal/include
 
 # test suite
 TESTS = $(check_PROGRAMS)
