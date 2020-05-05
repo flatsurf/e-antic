@@ -42,8 +42,10 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
     if (flag & EANTIC_STR_D)
     {
         // output of get_d
-        s = flint_malloc(20 * sizeof(char));
-        sprintf(s, "%lf", renf_elem_get_d(a, nf, ARF_RND_NEAR));
+        double d = renf_elem_get_d(a, nf, ARF_RND_NEAR);
+        int len = snprintf(NULL, 0, "%lf", d);
+        s = flint_malloc((len+1) * sizeof(char));
+        snprintf(s, len+1, "%lf", d);
         t = flint_realloc(t, strlen(t) + strlen(s) + 1);
         strcat(t, s);
         flint_free(s);
