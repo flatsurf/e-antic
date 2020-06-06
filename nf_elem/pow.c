@@ -45,17 +45,17 @@ _nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
     /*
        Set bits to the bitmask with a 1 one place lower than the msb of e
      */
-
+    
     while ((bit & e) == UWORD(0))
         bit >>= 1;
-
+    
     bit >>= 1;
-
+    
     /*
-       Trial run without any polynomial arithmetic to determine the parity
+       Trial run without any polynomial arithmetic to determine the parity 
        of the number of swaps;  then set R and S accordingly
      */
-
+    
     {
         unsigned int swaps = 0U;
         ulong bit2 = bit;
@@ -64,7 +64,7 @@ _nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
         while (bit2 >>= 1)
             if ((bit2 & e) == UWORD(0))
                 swaps = ~swaps;
-
+        
         if (swaps == 0U)
         {
             R = res;
@@ -76,11 +76,11 @@ _nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
             S = res;
         }
     }
-
+    
     /*
        We unroll the first step of the loop, referring to {poly, len}
      */
-
+    
     nf_elem_mul(R, a, a, nf);
     if ((bit & e))
     {
@@ -89,7 +89,7 @@ _nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
         R = S;
         S = T;
     }
-
+    
     while ((bit >>= 1))
     {
         if ((bit & e))
@@ -105,53 +105,54 @@ _nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
             S = T;
         }
     }
-
+    
     nf_elem_clear(v, nf);
 }
 
 void
-nf_elem_pow_si(nf_elem_t res, const nf_elem_t a, slong e, const nf_t nf)
+nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
 {
    nf_elem_t t;
-
-   if (e == WORD(0))
+   
+   if (e == UWORD(0))
    {
       nf_elem_one(res, nf);
+
       return;
    }
-
+    
    if (nf_elem_is_zero(a, nf))
    {
       nf_elem_zero(res, nf);
+
       return;
    }
-
+        
    if (nf->flag & NF_LINEAR)
-      _fmpq_pow_si(LNF_ELEM_NUMREF(res), LNF_ELEM_DENREF(res),
+      _fmpq_pow_si(LNF_ELEM_NUMREF(res), LNF_ELEM_DENREF(res), 
                    LNF_ELEM_NUMREF(a), LNF_ELEM_DENREF(a), e);
    else
    {
-        if (e == WORD(1))
+      if (e < UWORD(3))
+      {
+         if (e == UWORD(1))
             nf_elem_set(res, a, nf);
-        else if (e == WORD(-1))
-            nf_elem_inv(res, a, nf);
-        else if (e == WORD(2))
+         else /* e == UWORD(2) */
             nf_elem_mul(res, a, a, nf);
-        else if (e < WORD(0))
-        {
-            nf_elem_init(t, nf);
-            nf_elem_inv(t, a, nf);
-            _nf_elem_pow(res, t, (ulong) (-e), nf);
-            nf_elem_clear(t, nf);
-        }
-        else if (res == a)
-        {
-            nf_elem_init(t, nf);
-            _nf_elem_pow(t, a, (ulong) e, nf);
-            nf_elem_swap(t, res, nf);
-            nf_elem_clear(t, nf);
-        }
-        else
-            _nf_elem_pow(res, a, (ulong) e, nf);
+         
+         return;
+      }
+
+      if (res == a)
+      {
+         nf_elem_init(t, nf);
+
+         _nf_elem_pow(t, a, e, nf);
+         nf_elem_swap(t, res, nf);
+
+         nf_elem_clear(t, nf);
+      }
+      else
+         _nf_elem_pow(res, a, e, nf);
    }
 }

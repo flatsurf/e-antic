@@ -127,13 +127,9 @@ void _nf_elem_mul_red(nf_elem_t a, const nf_elem_t b,
                
                _fmpz_vec_set(r, NF_ELEM_NUMREF(a), plen);
 
-#if __FLINT_RELEASE < 20600
                _fmpz_poly_divrem(q, NF_ELEM_NUMREF(a), r, plen, 
-                  fmpq_poly_numref(nf->pol), len);
-#else
-               _fmpz_poly_divrem(q, NF_ELEM_NUMREF(a), r, plen,
                   fmpq_poly_numref(nf->pol), len, 0);
-#endif
+
                _fmpz_vec_clear(r, plen);
                _fmpz_vec_clear(q, plen - len + 1);
           
