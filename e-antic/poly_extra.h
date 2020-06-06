@@ -100,6 +100,8 @@ void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 
+#if __FLINT_RELEASE < 20600
+
 static __inline__
 int fmpq_equal_fmpz(const fmpq_t a, const fmpz_t b)
 {
@@ -196,6 +198,8 @@ void fmpq_mul_ui(fmpq_t a, const fmpq_t b, ulong c)
     fmpz_clear(tmp);
 }
 
+#endif
+
 static __inline__
 void fmpq_div_si(fmpq_t a, const fmpq_t b, slong c)
 {
@@ -256,6 +260,7 @@ void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
     return _fmpz_vec_sum(res, p, len);
 }
 
+#if __FLINT_RELEASE != 20600
 static __inline__
 double fmpq_get_d(const fmpq_t q)
 {
@@ -271,6 +276,7 @@ double fmpq_get_d(const fmpq_t q)
 
     return d;
 }
+#endif
 
 static __inline__
 ulong EANTIC_FIXED_fmpz_vec_max_bits(const fmpz * vec, slong len)
@@ -335,14 +341,14 @@ void fmpz_poly_randtest_no_real_root(fmpz_poly_t p, flint_rand_t state,
                                                 slong len, mp_bitcnt_t bits);
 void fmpz_poly_product_roots_fmpq_vec(fmpz_poly_t poly, const fmpq * xs, slong n);
 
-#elif __FLINT_RELEASE == 20503
+#elif __FLINT_RELEASE == 20503 || __FLINT_RELEASE == 20600
 
 #define _EANTIC_FIXED_fmpq_poly_get_str_pretty _fmpq_poly_get_str_pretty
 #define EANTIC_FIXED_fmpq_poly_get_str_pretty fmpq_poly_get_str_pretty
 
 #else
 
-#error "Invalid flint release: e-antic needs flint-2.5.2 or flint-2.5.3"
+#error "Invalid flint release: e-antic needs flint-2.5.2, flint-2.5.3 or flint-2.6.0"
 
 #endif
 
