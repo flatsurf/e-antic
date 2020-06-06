@@ -40,9 +40,9 @@ int main()
 
             renf_elem_randtest(a, state, 10 + n_randint(state, 30), nf);
 
-            exp = n_randint(state, 20) - 10;
+            exp = n_randint(state, 20);
 
-            renf_elem_pow_si(b, a, exp, nf);
+            renf_elem_pow(b, a, exp, nf);
             renf_elem_check_embedding(b, nf, 1024);
 
             renf_elem_clear(a, nf);

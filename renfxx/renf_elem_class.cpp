@@ -537,7 +537,15 @@ renf_elem_class renf_elem_class::pow(int exp) const noexcept
 {
     renf_elem_class res(parent());
 
-    renf_elem_pow_si(res.renf_elem_t(), renf_elem_t(), exp, parent()->renf_t());
+    if (exp < 0)
+    {
+        renf_elem_inv(res.renf_elem_t(), renf_elem_t(), parent()->renf_t());
+        renf_elem_pow(res.renf_elem_t(), res.renf_elem_t(), -exp, parent()->renf_t());
+    }
+    else
+    {
+        renf_elem_pow(res.renf_elem_t(), renf_elem_t(), exp, parent()->renf_t());
+    }
 
     return res;
 }
