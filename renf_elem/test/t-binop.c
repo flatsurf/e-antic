@@ -16,7 +16,7 @@ int main()
     int iter;
     FLINT_TEST_INIT(state);
 
-    for (iter = 0; iter < 100; iter++)
+    for (iter = 0; iter < 1000; iter++)
     {
         /* operations on two renf elements */
         renf_t nf;
@@ -28,6 +28,7 @@ int main()
 
         {
             /* renf renf operations */
+            fprintf(stderr, "renf renf operations\n");
             renf_elem_t a, b, c;
             renf_elem_init(a, nf);
             renf_elem_init(b, nf);
@@ -55,6 +56,7 @@ int main()
 
         {
             /* renf si operations */
+            fprintf(stderr, "renf si operations\n");
             renf_elem_t a, c;
             slong b;
             renf_elem_init(a, nf);
@@ -81,6 +83,7 @@ int main()
 
         {
             /* renf ui operations */
+            fprintf(stderr, "renf ui operations\n");
             renf_elem_t a, c;
             ulong b;
             renf_elem_init(a, nf);
@@ -107,6 +110,7 @@ int main()
 
         {
             /* renf fmpz operations */
+            fprintf(stderr, "renf fmpz operations\n");
             renf_elem_t a, c;
             fmpz_t b;
 
@@ -137,8 +141,10 @@ int main()
 
         {
             /* renf fmpq operations */
+            fprintf(stderr, "renf fmpq operations\n");
             renf_elem_t a, c;
             fmpq_t b;
+            char * res;
 
             renf_elem_init(a, nf);
             fmpq_init(b);
@@ -147,15 +153,44 @@ int main()
             renf_elem_randtest(a, state, 10 + n_randint(state, 30), nf);
             fmpq_randtest(b, state, 10 + n_randint(state, 30));
 
+            res = renf_elem_get_str_pretty(a, "x", nf, 10, EANTIC_STR_ALG | EANTIC_STR_ARB);
+            fprintf(stderr, "  a = "); fputs(res, stderr); fprintf(stderr, "\n");
+            flint_free(res);
+            fprintf(stderr, "  b = "); fmpq_fprint(stderr, b); fprintf(stderr, "\n");
+            fflush(stderr);
+
+            fprintf(stderr, "  add\n");
             renf_elem_add_fmpq(c, a, b, nf);
+            res = renf_elem_get_str_pretty(c, "x", nf, 10, EANTIC_STR_ALG | EANTIC_STR_ARB);
+            fprintf(stderr, "  c = "); fputs(res, stderr); fprintf(stderr, "\n");
+            flint_free(res);
+            fflush(stderr);
             renf_elem_check_embedding(c, nf, 1024);
+
+            fprintf(stderr, "  sub\n");
             renf_elem_sub_fmpq(c, a, b, nf);
+            res = renf_elem_get_str_pretty(c, "x", nf, 10, EANTIC_STR_ALG | EANTIC_STR_ARB);
+            fprintf(stderr, "  c = "); fputs(res, stderr); fprintf(stderr, "\n");
+            flint_free(res);
+            fflush(stderr);
             renf_elem_check_embedding(c, nf, 1024);
+
+            fprintf(stderr, "  mul\n");
             renf_elem_mul_fmpq(c, a, b, nf);
+            res = renf_elem_get_str_pretty(c, "x", nf, 10, EANTIC_STR_ALG | EANTIC_STR_ARB);
+            fprintf(stderr, "  c = "); fputs(res, stderr); fprintf(stderr, "\n");
+            flint_free(res);
+            fflush(stderr);
             renf_elem_check_embedding(c, nf, 1024);
+
             if (!fmpq_is_zero(b))
             {
+                fprintf(stderr, "  div\n");
                 renf_elem_div_fmpq(c, a, b, nf);
+                res = renf_elem_get_str_pretty(c, "x", nf, 10, EANTIC_STR_ALG | EANTIC_STR_ARB);
+                fprintf(stderr, "  c = "); fputs(res, stderr); fprintf(stderr, "\n");
+                flint_free(res);
+                fflush(stderr);
                 renf_elem_check_embedding(c, nf, 1024);
             }
 

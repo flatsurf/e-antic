@@ -55,7 +55,7 @@ typedef lnf_elem_struct lnf_elem_t[1];
 
 typedef struct /* element of a quadratic number field */
 {
-   fmpz num[3];
+   fmpz num[3]; /* extra coeff for delayed reduction */
    fmpz_t den;
 } qnf_elem_struct;
 
@@ -321,7 +321,7 @@ char * nf_elem_get_str_pretty(const nf_elem_t a,
    {
       const fmpz * const den = QNF_ELEM_DENREF(a);
       const fmpz * const num = QNF_ELEM_NUMREF(a);
-      slong len = 2;
+      slong len = 3;
 
       while (len != 0 && fmpz_is_zero(num + len - 1))
          len--;
@@ -946,12 +946,7 @@ FLINT_DLL void nf_elem_div(nf_elem_t a, const nf_elem_t b, const nf_elem_t c, co
 
 FLINT_DLL void _nf_elem_pow(nf_elem_t res, const nf_elem_t b, ulong e, const nf_t nf);
 
-FLINT_DLL void nf_elem_pow_si(nf_elem_t res, const nf_elem_t a, slong e, const nf_t nf);
-
-NF_ELEM_INLINE void nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf)
-{
-    nf_elem_pow_si(res, a, (slong) e, nf);
-}
+FLINT_DLL void nf_elem_pow(nf_elem_t res, const nf_elem_t a, ulong e, const nf_t nf);
 
 FLINT_DLL void _nf_elem_norm(fmpz_t rnum, fmpz_t rden, const nf_elem_t a, const nf_t nf);
 
@@ -979,13 +974,10 @@ FLINT_DLL void nf_elem_rep_mat_fmpz_mat_den(fmpz_mat_t res, fmpz_t den, const nf
 ******************************************************************************/
 
 FLINT_DLL
-void _nf_elem_mod_fmpz(nf_elem_t res, const nf_elem_t a, const fmpz_t mod, const nf_t nf);
+void nf_elem_coprime_den(nf_elem_t res, const nf_elem_t a, const fmpz_t mod, const nf_t nf);
 
 FLINT_DLL
-void nf_elem_mod_fmpz_den(nf_elem_t res, const nf_elem_t a, const fmpz_t mod, const nf_t nf, int den);
-
-FLINT_DLL
-void nf_elem_mod_fmpz(nf_elem_t res, const nf_elem_t a, const fmpz_t mod, const nf_t nf);
+void nf_elem_coprime_den_signed(nf_elem_t res, const nf_elem_t a, const fmpz_t mod, const nf_t nf);
 
 #ifdef __cplusplus
 }

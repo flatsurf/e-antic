@@ -441,9 +441,9 @@ void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, cons
 }
 
 static __inline__
-void renf_elem_pow_si(renf_elem_t res, const renf_elem_t a, slong e, const renf_t nf)
+void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, const renf_t nf)
 {
-    nf_elem_pow_si(res->elem, a->elem, e, nf->nf);
+    nf_elem_pow(res->elem, a->elem, e, nf->nf);
     if (e >= 0)
         arb_pow_ui(res->emb, a->emb, (ulong) e, nf->prec);
     else

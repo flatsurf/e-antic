@@ -43,10 +43,11 @@ void _nf_elem_get_fmpz_mod_poly(fmpz_mod_poly_t pol, const nf_elem_t a, const nf
         }
     } else if (nf->flag & NF_QUADRATIC)
     {
-        fmpz_mod_poly_fit_length(pol, 2);
+        fmpz_mod_poly_fit_length(pol, 3);
         fmpz_mod(pol->coeffs + 0, QNF_ELEM_NUMREF(a), &(pol->p));
         fmpz_mod(pol->coeffs + 1, QNF_ELEM_NUMREF(a) + 1, &(pol->p));
-        _fmpz_mod_poly_set_length(pol, 2);
+        fmpz_mod(pol->coeffs + 2, QNF_ELEM_NUMREF(a) + 2, &(pol->p));
+        _fmpz_mod_poly_set_length(pol, 3);
         _fmpz_mod_poly_normalise(pol);
     } else
     {
