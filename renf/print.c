@@ -13,6 +13,9 @@
 
 void renf_print(const renf_t nf)
 {
-    nf_print(nf->nf);
+    flint_printf("NumberField(");
+    fmpq_poly_print_pretty(nf->nf->pol, "x");
+    flint_printf(", ");
     arb_print(nf->emb);
+    flint_printf(")");
 }

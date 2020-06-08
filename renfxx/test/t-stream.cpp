@@ -41,7 +41,7 @@ int main(void)
         std::stringstream s;
         renf_elem_class a = K1.gen();
         s << a;
-        if (s.str() != "(A ~ 1.259921)")
+        if (s.str() != "(A ~ 1.2599210)")
             throw std::runtime_error("wrong string, got " + s.str());
     }
 
