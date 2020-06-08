@@ -89,6 +89,6 @@ void nf_elem_add_fmpq(nf_elem_t a, const nf_elem_t b, const fmpq_t c, const nf_t
        }
    } else
    {
-      fmpq_poly_add_fmpq(NF_ELEM(a), NF_ELEM(b), c);
+      EANTIC_FIXED_fmpq_poly_add_fmpq(NF_ELEM(a), NF_ELEM(b), c);
    }
 }

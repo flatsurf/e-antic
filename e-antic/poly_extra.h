@@ -100,6 +100,8 @@ void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 
+void EANTIC_FIXED_fmpq_poly_add_fmpq(fmpq_poly_t res, const fmpq_poly_t poly, const fmpq_t c);
+
 #if __FLINT_RELEASE < 20600
 
 static __inline__
