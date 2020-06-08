@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([e-antic], [0.1.5], [vincent.delecroix@math.cnrs.fr])
+AC_INIT([e-antic], [0.1.6], [vincent.delecroix@math.cnrs.fr])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
 AM_PROG_AR
