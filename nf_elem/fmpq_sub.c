@@ -59,6 +59,7 @@ void nf_elem_fmpq_sub(nf_elem_t a, const fmpq_t c, const nf_elem_t b, const nf_t
 		 if (fmpz_equal(fmpq_denref(c), den2))
 		 {
     		fmpz_sub(num, fmpq_numref(c), num2);
+            fmpz_neg(num + 1, num2 + 1);
 			fmpz_set(den, den2);
 		 } else /* slow path */
 		 {
@@ -69,17 +70,18 @@ void nf_elem_fmpq_sub(nf_elem_t a, const fmpq_t c, const nf_elem_t b, const nf_t
 			fmpz_init(g);
 			
 			nf_elem_set(a, b, nf);
-	  
+
 	        fmpz_gcd(g, fmpq_denref(c), den);
 			fmpz_divexact(d1, fmpq_denref(c), g);
 			fmpz_divexact(d2, den, g);
-			
+
 			fmpz_mul(num + 1, num + 1, d1);
 			fmpz_mul(num, num, d1);
 			fmpz_mul(den, den, d1);
 			
 			fmpz_submul(num, d2, fmpq_numref(c));
 		    fmpz_neg(num, num);
+		    fmpz_neg(num + 1, num + 1);
 			
 			fmpz_clear(g);
 			fmpz_clear(d1);

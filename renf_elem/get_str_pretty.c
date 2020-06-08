@@ -9,6 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <arb.h>
 #include <e-antic/renf_elem.h>
 #include <string.h>
 
@@ -41,11 +42,40 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
 
     if (flag & EANTIC_STR_D)
     {
-        // output of get_d
-        s = flint_malloc(20 * sizeof(char));
-        sprintf(s, "%lf", renf_elem_get_d(a, nf, ARF_RND_NEAR));
+        // Print the approximate double value of a.
+
+        double d = renf_elem_get_d(a, nf, ARF_RND_NEAR);
+
+        switch (isinf(d)) {
+            case -1:
+                s = flint_malloc(strlen("-inf") + 1);
+                strcpy(s, "-inf");
+                break;
+            case 1:
+                s = flint_malloc(strlen("inf") + 1);
+                strcpy(s, "inf");
+                break;
+            default:
+                // Since we do not like printf()'s double printing, (the output of %f
+                // is too large for big numbers, %e is hard to read for small integers,
+                // %g does not show enough digits in many cases,) we use Arb's double
+                // printing instead.
+                {
+                    arb_t x;
+                    arb_init(x);
+
+                    arb_set_d(x, d);
+
+                    s = arb_get_str(x, 8, ARB_STR_NO_RADIUS);
+
+                    arb_clear(x);
+                }
+                break;
+        }
+
         t = flint_realloc(t, strlen(t) + strlen(s) + 1);
         strcat(t, s);
+
         flint_free(s);
     }
 

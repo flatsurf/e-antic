@@ -36,6 +36,7 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpz_poly_scale_0_1_fmpq.c       \
     poly_extra/fmpz_poly_squarefree_part.c      \
     poly_extra/fmpq_poly_set_str_pretty.c       \
+    poly_extra/fmpq_poly_add_fmpq.c             \
     poly_extra/has_real_root.c                  \
     poly_extra/newton_step_arb.c                \
     poly_extra/num_real_roots_0_1.c             \
@@ -83,7 +84,8 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-fmpz_poly_set_str_pretty       \
     poly_extra/test/t-fmpq_poly_set_str_pretty       \
     poly_extra/test/t-fmpz_poly_randtest_irreducible \
-    poly_extra/test/t-fmpz_poly_isolate_real_roots
+    poly_extra/test/t-fmpz_poly_isolate_real_roots   \
+    poly_extra/test/t-fmpq_poly_add_sub_fmpq
 if FLINT252
 check_PROGRAMS +=                                    \
     poly_extra/test/t-nextprime                      \
@@ -128,7 +130,6 @@ libeantic_la_SOURCES +=               \
     nf_elem/inlines.c                 \
     nf_elem/inv.c                     \
     nf_elem/invertible_check.c        \
-    nf_elem/mod_fmpz.c                \
     nf_elem/mul.c                     \
     nf_elem/norm.c                    \
     nf_elem/norm_div.c                \
@@ -165,8 +166,8 @@ check_PROGRAMS +=                          \
     nf_elem/test/t-init_clear              \
     nf_elem/test/t-inv                     \
     nf_elem/test/t-is_rational_integer     \
-    nf_elem/test/t-mod_fmpz                \
     nf_elem/test/t-mul                     \
+    nf_elem/test/t-mul_div_fmpq            \
     nf_elem/test/t-mul_gen                 \
     nf_elem/test/t-norm                    \
     nf_elem/test/t-norm_div                \

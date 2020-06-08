@@ -19,7 +19,7 @@
 =============================================================================*/
 /******************************************************************************
 
-    Copyright (C) 2013 William Hart
+    Copyright (C) 2020 Vincent Delecroix
 
 ******************************************************************************/
 
@@ -30,95 +30,88 @@
 int
 main(void)
 {
-    int i, j, result;
+    int i, result;
     flint_rand_t state;
-
-    flint_printf("pow....");
-    fflush(stdout);
 
     flint_randinit(state);
 
-    /* test pow(a, e) = e*e*...*e */
+    /* test b + c - c = b */
     for (i = 0; i < 100; i++)
     {
         nf_t nf;
-        nf_elem_t a, p1, p2;
-        slong exp;
+        nf_elem_t a, b, t;
+        fmpq_t c;
 
-        nf_init_randtest(nf, state, 40, 20);
+        nf_init_randtest(nf, state, 40, 200);
 
         nf_elem_init(a, nf);
-        nf_elem_init(p1, nf);
-        nf_elem_init(p2, nf);
+        nf_elem_init(b, nf);
+        nf_elem_init(t, nf);
+        fmpq_init(c);
 
-        nf_elem_randtest(a, state, 20, nf);
+        nf_elem_randtest(b, state, 200, nf);
+        fmpq_randtest_not_zero(c, state, 200);
 
-        exp = n_randint(state, 10);
+        nf_elem_scalar_mul_fmpq(t, b, c, nf);
+        nf_elem_scalar_div_fmpq(a, t, c, nf);
 
-        nf_elem_pow(p1, a, exp, nf);
-        nf_elem_one(p2, nf);
-
-        for (j = 0; j < exp; j++)
-           nf_elem_mul(p2, p2, a, nf);
-
-        result = (nf_elem_equal(p1, p2, nf));
-        if (!result)
+        if (!nf_elem_equal(a, b, nf))
         {
            printf("FAIL:\n");
+           printf("nf = "); nf_print(nf); printf("\n");
            printf("a = "); nf_elem_print_pretty(a, nf, "x"); printf("\n");
-           printf("p1 = "); nf_elem_print_pretty(p1, nf, "x"); printf("\n");
-           printf("p2 = "); nf_elem_print_pretty(p2, nf, "x"); printf("\n");
-           flint_printf("exp = %w\n", exp);
+           printf("b = "); nf_elem_print_pretty(b, nf, "x"); printf("\n");
+           printf("c = "); fmpq_print(c); printf("\n");
            abort();
         }
 
         nf_elem_clear(a, nf);
-        nf_elem_clear(p1, nf);
-        nf_elem_clear(p2, nf);
+        nf_elem_clear(b, nf);
+        nf_elem_clear(t, nf);
+        fmpq_clear(c);
 
         nf_clear(nf);
     }
 
-    /* test aliasing a and res */
+    /* test aliasing a and b */
     for (i = 0; i < 100; i++)
     {
         nf_t nf;
-        nf_elem_t a, p1, p2;
-        slong exp;
+        nf_elem_t a, b;
+        fmpq_t c;
 
-        nf_init_randtest(nf, state, 40, 20);
+        nf_init_randtest(nf, state, 40, 200);
 
         nf_elem_init(a, nf);
-        nf_elem_init(p1, nf);
-        nf_elem_init(p2, nf);
+        nf_elem_init(b, nf);
+        fmpq_init(c);
 
-        nf_elem_randtest(a, state, 20, nf);
+        nf_elem_randtest(b, state, 200, nf);
+        fmpq_randtest_not_zero(c, state, 200);
 
-        exp = n_randint(state, 10);
+        nf_elem_set(a, b, nf);
+        nf_elem_scalar_mul_fmpq(b, b, c, nf);
+        nf_elem_scalar_div_fmpq(b, b, c, nf);
 
-        nf_elem_pow(p1, a, exp, nf);
-        nf_elem_set(p2, a, nf);
-        nf_elem_pow(p2, p2, exp, nf);
-
-        result = (nf_elem_equal(p1, p2, nf));
-        if (!result)
+        if (!nf_elem_equal(a, b, nf))
         {
            printf("FAIL:\n");
+           printf("(with aliasing)\n");
+           printf("nf = "); nf_print(nf); printf("\n");
            printf("a = "); nf_elem_print_pretty(a, nf, "x"); printf("\n");
-           printf("p1 = "); nf_elem_print_pretty(p1, nf, "x"); printf("\n");
-           printf("p2 = "); nf_elem_print_pretty(p2, nf, "x"); printf("\n");
-           flint_printf("exp = %w\n", exp);
+           printf("b = "); nf_elem_print_pretty(b, nf, "x"); printf("\n");
+           printf("c = "); fmpq_print(c); printf("\n");
            abort();
         }
 
         nf_elem_clear(a, nf);
-        nf_elem_clear(p1, nf);
-        nf_elem_clear(p2, nf);
+        nf_elem_clear(b, nf);
+        fmpq_clear(c);
 
         nf_clear(nf);
     }
 
     flint_randclear(state);
-    flint_printf("PASS\n");
+
     return 0;
 }
