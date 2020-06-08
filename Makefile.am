@@ -132,7 +132,6 @@ libeantic_la_SOURCES +=               \
     nf_elem/inlines.c                 \
     nf_elem/inv.c                     \
     nf_elem/invertible_check.c        \
-    nf_elem/mod_fmpz.c                \
     nf_elem/mul.c                     \
     nf_elem/norm.c                    \
     nf_elem/norm_div.c                \
@@ -170,7 +169,6 @@ check_PROGRAMS +=                          \
     nf_elem/test/t-init_clear              \
     nf_elem/test/t-inv                     \
     nf_elem/test/t-is_rational_integer     \
-    nf_elem/test/t-mod_fmpz                \
     nf_elem/test/t-mul                     \
     nf_elem/test/t-mul_div_fmpq            \
     nf_elem/test/t-mul_gen                 \
