@@ -31,11 +31,10 @@ void nf_elem_scalar_div_fmpq(nf_elem_t a, const nf_elem_t b,
    if (nf->flag & NF_LINEAR)
    {
       fmpz * den = LNF_ELEM_DENREF(a);
-	  fmpz * num = LNF_ELEM_NUMREF(a);
-	  const fmpz * const den2 = LNF_ELEM_DENREF(b);
-	  const fmpz * const num2 = LNF_ELEM_NUMREF(b);
-	  
-      _fmpq_mul(num, den, num2, den2, fmpq_denref(c), fmpq_numref(c));
+      fmpz * num = LNF_ELEM_NUMREF(a);
+      const fmpz * const den2 = LNF_ELEM_DENREF(b);
+      const fmpz * const num2 = LNF_ELEM_NUMREF(b);
+      _fmpq_div(num, den, num2, den2, fmpq_numref(c), fmpq_denref(c));
    }
    else if (nf->flag & NF_QUADRATIC)
    {

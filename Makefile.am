@@ -172,6 +172,7 @@ check_PROGRAMS +=                          \
     nf_elem/test/t-is_rational_integer     \
     nf_elem/test/t-mod_fmpz                \
     nf_elem/test/t-mul                     \
+    nf_elem/test/t-mul_div_fmpq            \
     nf_elem/test/t-mul_gen                 \
     nf_elem/test/t-norm                    \
     nf_elem/test/t-norm_div                \
