@@ -46,31 +46,33 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
 
         double d = renf_elem_get_d(a, nf, ARF_RND_NEAR);
 
-        switch (isinf(d)) {
-            case -1:
+        if (isinf(d))
+        {
+            if (d < 0)
+            {
                 s = flint_malloc(strlen("-inf") + 1);
                 strcpy(s, "-inf");
-                break;
-            case 1:
+            }
+            else
+            {
                 s = flint_malloc(strlen("inf") + 1);
                 strcpy(s, "inf");
-                break;
-            default:
-                // Since we do not like printf()'s double printing, (the output of %f
-                // is too large for big numbers, %e is hard to read for small integers,
-                // %g does not show enough digits in many cases,) we use Arb's double
-                // printing instead.
-                {
-                    arb_t x;
-                    arb_init(x);
+            }
+        }
+        else
+        {
+            // Since we do not like printf()'s double printing, (the output of %f
+            // is too large for big numbers, %e is hard to read for small integers,
+            // %g does not show enough digits in many cases,) we use Arb's double
+            // printing instead.
+            arb_t x;
+            arb_init(x);
 
-                    arb_set_d(x, d);
+            arb_set_d(x, d);
 
-                    s = arb_get_str(x, 8, ARB_STR_NO_RADIUS);
+            s = arb_get_str(x, 8, ARB_STR_NO_RADIUS);
 
-                    arb_clear(x);
-                }
-                break;
+            arb_clear(x);
         }
 
         t = flint_realloc(t, strlen(t) + strlen(s) + 1);
