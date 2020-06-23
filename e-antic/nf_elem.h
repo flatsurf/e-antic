@@ -315,7 +315,7 @@ char * nf_elem_get_str_pretty(const nf_elem_t a,
       const fmpz * const num = LNF_ELEM_NUMREF(a);
       slong len = 1 - fmpz_is_zero(num);
 
-      return _EANTIC_FIXED_fmpq_poly_get_str_pretty(num, den, len, var);
+      return _fmpq_poly_get_str_pretty(num, den, len, var);
    }
    else if (nf->flag & NF_QUADRATIC)
    {
@@ -326,10 +326,10 @@ char * nf_elem_get_str_pretty(const nf_elem_t a,
       while (len != 0 && fmpz_is_zero(num + len - 1))
          len--;
 
-      return _EANTIC_FIXED_fmpq_poly_get_str_pretty(num, den, len, var);
+      return _fmpq_poly_get_str_pretty(num, den, len, var);
    } else
    {
-      return EANTIC_FIXED_fmpq_poly_get_str_pretty(NF_ELEM(a), var);
+      return fmpq_poly_get_str_pretty(NF_ELEM(a), var);
    }
 }
 

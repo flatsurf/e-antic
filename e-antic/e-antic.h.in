@@ -32,10 +32,6 @@ extern "C" {
 
 /* check flint version */
 
-#if __FLINT_RELEASE != 20600
-#error FLINT 2.6.0 required
-#endif
-
 #ifdef __cplusplus
 }
 #endif

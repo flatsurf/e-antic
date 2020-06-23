@@ -179,13 +179,6 @@ slong EANTIC_FIXED_fmpz_poly_max_bits(const fmpz_poly_t p)
     return EANTIC_FIXED_fmpz_vec_max_bits(p->coeffs, p->length);
 }
 
-#if __FLINT_RELEASE == 20600
-
-#define _EANTIC_FIXED_fmpq_poly_get_str_pretty _fmpq_poly_get_str_pretty
-#define EANTIC_FIXED_fmpq_poly_get_str_pretty fmpq_poly_get_str_pretty
-
-#endif
-
 #ifdef __cplusplus
  }
 #endif

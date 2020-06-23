@@ -134,7 +134,7 @@ int main(void)
             fmpq_poly_randtest(a, state, n_randint(state, 100), 200);
             for (j = 0; j < 3; j++)
             {
-                char * s = EANTIC_FIXED_fmpq_poly_get_str_pretty(a, varname[j]);
+                char * s = fmpq_poly_get_str_pretty(a, varname[j]);
                 fmpq_poly_set_str_pretty(b, s, varname[j]);
                 if (!fmpq_poly_equal(a, b))
                     return 1;
