@@ -46,25 +46,6 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpz_poly_isolate_real_roots.c     \
     poly_extra/sgn_at_half.c                      \
     poly_extra/fmpz_poly_relative_condition_number_2exp.c
-if FLINT252
-libeantic_la_SOURCES +=                           \
-    poly_extra/fmpz_poly_product_roots_fmpq_vec.c \
-    poly_extra/fmpz_poly_randtest_no_real_root.c  \
-    poly_extra/fmpz_nextprime.c                   \
-    poly_extra/fmpz_randprime.c                   \
-    poly_extra/fmpq_poly_resultant_modular_div.c  \
-    poly_extra/fmpq_poly_inlines.c                \
-    poly_extra/fmpz_poly_num_real_roots.c         \
-    poly_extra/fmpz_poly_num_real_roots_sturm.c   \
-    poly_extra/fmpz_poly_resultant_modular_div.c  \
-    poly_extra/fmpz_poly_scale_2exp.c             \
-    poly_extra/fmpq_set_str.c                     \
-    poly_extra/fmpq_vec_fprint.c                  \
-    poly_extra/fmpq_vec_randtest_uniq_sorted.c    \
-    poly_extra/fmpq_vec_sort.c                    \
-    poly_extra/fmpz_poly_remove_content_2exp.c    \
-    poly_extra/fmpq_poly_get_str_pretty.c
-endif
 
 noinst_HEADERS +=                                    \
     poly_extra/poly_evaluate_template.h              \
@@ -88,16 +69,6 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-fmpz_poly_randtest_irreducible \
     poly_extra/test/t-fmpz_poly_isolate_real_roots   \
     poly_extra/test/t-fmpq_poly_add_sub_fmpq
-if FLINT252
-check_PROGRAMS +=                                    \
-    poly_extra/test/t-nextprime                      \
-    poly_extra/test/t-randprime                      \
-    poly_extra/test/t-fmpq_poly_resultant_div        \
-    poly_extra/test/t-fmpz_poly_resultant_modular_div \
-    poly_extra/test/t-fmpz_poly_scale_2exp           \
-    poly_extra/test/t-fmpq_get_set_str               \
-    poly_extra/test/t-fmpq_vec_randtest_uniq_sorted
-endif
 
 
 dist_doc_DATA +=                   \
