@@ -160,7 +160,15 @@ EXTRA_DIST = e-antic/e-antic.h.in
 nodist_pkginclude_HEADERS = e-antic/e-antic.h
 
 # Distribute files that we might need to fill/replace from our dependencies
-EXTRA_DIST += upstream/patched
+EXTRA_DIST += upstream/patched/EANTIC_fmpq_poly_add_fmpq.c        \
+              upstream/patched/EANTIC_nf_elem_add_fmpq.c          \
+              upstream/patched/EANTIC_nf_elem_scalar_div_fmpq.c   \
+              upstream/patched/fmpq_poly_add_fmpq.c               \
+              upstream/patched/nf_elem_add_fmpq.c                 \
+              upstream/patched/nf_elem.h                          \
+              upstream/patched/nf_elem_scalar_div_fmpq.c          \
+              upstream/patched/nf.h                               \
+              upstream/patched/nf_init_randtest.c
 
 CLEANFILES = e-antic/e-antic.h
 # We vendor the header-only library Cereal (serialization of the C++
