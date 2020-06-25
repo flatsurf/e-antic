@@ -50,23 +50,27 @@ noinst_HEADERS +=                                    \
     poly_extra/poly_evaluate_template.h              \
     renfxx/external/unique-factory/unique_factory.hpp
 
-check_PROGRAMS +=                                    \
-    poly_extra/test/t-evaluate                       \
-    poly_extra/test/t-fmpz_poly_scale_0_1_fmpq       \
-    poly_extra/test/t-descartes_bound                \
+check_PROGRAMS +=                                              \
+    poly_extra/test/t-check_unique_real_root                   \
+    poly_extra/test/t-descartes_bound                          \
+    poly_extra/test/t-evaluate                                 \
+    poly_extra/test/t-fmpq_poly_set_str_pretty                 \
+    poly_extra/test/t-fmpq_vec_randtest_uniq_sorted            \
+    poly_extra/test/t-fmpz_poly_isolate_real_roots             \
     poly_extra/test/t-fmpz_poly_positive_root_upper_bound_2exp \
-    poly_extra/test/t-has_real_root                  \
-    poly_extra/test/t-num_real_roots                 \
-    poly_extra/test/t-num_real_roots_sturm           \
-    poly_extra/test/t-num_real_roots_vca             \
-    poly_extra/test/t-num_real_roots_0_1             \
-    poly_extra/test/t-real_root_isolation            \
-    poly_extra/test/t-squarefree_part                \
-    poly_extra/test/t-check_unique_real_root         \
-    poly_extra/test/t-fmpz_poly_set_str_pretty       \
-    poly_extra/test/t-fmpq_poly_set_str_pretty       \
-    poly_extra/test/t-fmpz_poly_randtest_irreducible \
-    poly_extra/test/t-fmpz_poly_isolate_real_roots
+    poly_extra/test/t-fmpz_poly_randtest_irreducible           \
+    poly_extra/test/t-fmpz_poly_real_root_upper_bound_2exp     \
+    poly_extra/test/t-fmpz_poly_resultant_modular_div          \
+    poly_extra/test/t-fmpz_poly_scale_0_1_fmpq                 \
+    poly_extra/test/t-fmpz_poly_scale_2exp                     \
+    poly_extra/test/t-fmpz_poly_set_str_pretty                 \
+    poly_extra/test/t-has_real_root                            \
+    poly_extra/test/t-num_real_roots                           \
+    poly_extra/test/t-num_real_roots_0_1                       \
+    poly_extra/test/t-num_real_roots_sturm                     \
+    poly_extra/test/t-num_real_roots_vca                       \
+    poly_extra/test/t-real_root_isolation                      \
+    poly_extra/test/t-squarefree_part
 
 
 dist_doc_DATA +=                   \
