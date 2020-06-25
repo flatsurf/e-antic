@@ -38,8 +38,8 @@
 #include <flint/fmpq_mat.h>
 #include <flint/fmpz_mat.h>
 #include <flint/fmpz_mod_poly.h>
+#include <antic/nf.h>
 #include <e-antic/poly_extra.h>
-#include <e-antic/nf.h>
 
 #ifdef __cplusplus
  extern "C" {

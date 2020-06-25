@@ -26,7 +26,8 @@
 #include <stdio.h>
 #include <flint/flint.h>
 #include <flint/fmpq_poly.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int main(void)
@@ -53,7 +54,7 @@ int main(void)
 
         fmpq_poly_init(f);
 
-        fmpq_poly_randtest(f, state, nf_degree(nf) - 1, 200);
+        fmpq_poly_randtest(f, state, fmpq_poly_degree(nf->pol) - 1, 200);
         nf_elem_set_fmpq_poly(a, f, nf);
 
         is_rat = fmpq_poly_length(f) <= 1;

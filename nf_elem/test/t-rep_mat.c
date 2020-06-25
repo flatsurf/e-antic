@@ -25,7 +25,8 @@
 
 #include <stdio.h>
 #include "flint/fmpq_mat.h"
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int
@@ -50,7 +51,7 @@ main(void)
 
         nf_init_randtest(nf, state, 20, 100);
 
-        d = nf_degree(nf);
+        d = fmpq_poly_degree(nf->pol);
 
         fmpq_mat_init(R, d, d);
 

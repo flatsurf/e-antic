@@ -13,8 +13,8 @@
 #define E_ANTIC_RENF_H
 
 #include <flint/fmpq_poly.h>
+#include <antic/nf.h>
 #include <e-antic/e-antic.h>
-#include <e-antic/nf.h>
 #include <e-antic/nf_elem.h>
 #include <arb.h>
 #include <arb_poly.h>
@@ -66,7 +66,7 @@ int renf_equal(const renf_t nf1, const renf_t nf2)
 static __inline__
 slong renf_degree(renf_t nf)
 {
-    return nf_degree(nf->nf);
+    return fmpq_poly_degree(nf->nf->pol);
 }
 
 /* Randomisation */

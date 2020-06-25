@@ -16,8 +16,8 @@
 #include <flint/fmpq_poly.h>
 #include <arb.h>
 #include <arb_poly.h>
+#include <antic/nf.h>
 #include <e-antic/e-antic.h>
-#include <e-antic/nf.h>
 #include <e-antic/nf_elem.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>

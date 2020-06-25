@@ -16,6 +16,7 @@ AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_LIBOBJ_DIR([upstream/patched])
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 
@@ -50,6 +51,9 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 
 AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
 AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])], [-lflint])
+
+# Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
+AC_REPLACE_FUNCS(nf_init_randtest)
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
 AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])

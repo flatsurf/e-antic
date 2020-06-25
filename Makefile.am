@@ -6,11 +6,11 @@ libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
 libeanticxx_la_LDFLAGS = -version-info @libeanticxx_version_info@ -no-undefined
 
 # Linked-against libraries
-libeantic_la_LIBADD = @LIBS@
+libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
 
 # Installed headers
-nobase_include_HEADERS = e-antic/nf.h e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
+nobase_include_HEADERS = e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 
 # Put config.h on the search path, https://www.gnu.org/software/automake/manual/html_node/VPATH-Builds.html
 AM_CPPFLAGS = -I.
@@ -74,16 +74,6 @@ check_PROGRAMS +=                                    \
 dist_doc_DATA +=                   \
     README                         \
     poly_extra/doc/poly_extra.txt
-
-# nf
-libeantic_la_SOURCES +=               \
-    nf/init.c                         \
-    nf/clear.c                        \
-    nf/print.c                        \
-    nf/init_randtest.c
-
-check_PROGRAMS +=                     \
-    nf/test/t-init_clear
 
 # nf_elem
 libeantic_la_SOURCES +=               \
@@ -235,6 +225,9 @@ BUILT_SOURCES = e-antic/e-antic.h
 # Distribute e-antic.h.in as part of the tarball, but not e-antic.h
 EXTRA_DIST = e-antic/e-antic.h.in
 nodist_pkginclude_HEADERS = e-antic/e-antic.h
+
+# Distribute files that we might need to fill/replace from our dependencies
+EXTRA_DIST += upstream/patched
 
 CLEANFILES = e-antic/e-antic.h
 # We vendor the header-only library Cereal (serialization of the C++

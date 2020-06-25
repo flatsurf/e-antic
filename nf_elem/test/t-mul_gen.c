@@ -24,7 +24,8 @@
 ******************************************************************************/
 
 #include <stdio.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int
@@ -45,7 +46,7 @@ main(void)
         nf_elem_t a, b, p1, p2;
 
         nf_init_randtest(nf, state, 40, 200);
-        while (nf_degree(nf) == 1)
+        while (fmpq_poly_degree(nf->pol) == 1)
         {
             nf_clear(nf);
             nf_init_randtest(nf, state, 40, 200);
@@ -90,7 +91,7 @@ main(void)
         nf_elem_t b, c;
 
         nf_init_randtest(nf, state, 40, 200);
-        while (nf_degree(nf) == 1)
+        while (fmpq_poly_degree(nf->pol) == 1)
         {
             nf_clear(nf);
             nf_init_randtest(nf, state, 40, 200);

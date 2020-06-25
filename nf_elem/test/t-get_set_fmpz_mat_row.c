@@ -24,7 +24,8 @@
 ******************************************************************************/
 
 #include <stdio.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int
@@ -50,7 +51,7 @@ main(void)
 
         rows = n_randint(state, 100) + 1;
         j = n_randint(state, rows);
-        fmpz_mat_init(mat, rows, nf_degree(nf));
+        fmpz_mat_init(mat, rows, fmpq_poly_degree(nf->pol));
 
         nf_elem_init(a, nf);
         nf_elem_init(b, nf);
@@ -66,7 +67,7 @@ main(void)
         if (!result)
         {
            flint_printf("FAIL:\n");
-           flint_printf("rows = %wd, cols = %wd, j = %wd\n", rows, nf_degree(nf), j);
+           flint_printf("rows = %wd, cols = %wd, j = %wd\n", rows, fmpq_poly_degree(nf->pol), j);
            flint_printf("a = "); nf_elem_print_pretty(a, nf, "x"); printf("\n");
            flint_printf("b = "); nf_elem_print_pretty(b, nf, "x"); printf("\n");
            flint_printf("d = "); fmpz_print(d); printf("\n");

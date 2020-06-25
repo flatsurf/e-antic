@@ -24,7 +24,8 @@
 ******************************************************************************/
 
 #include <stdio.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int

@@ -24,7 +24,8 @@
 ******************************************************************************/
 
 #include <stdio.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int
@@ -60,7 +61,7 @@ main(void)
 
         nf_elem_get_nmod_poly_den(reduced_elem, a, nf, 0);
 
-        for (j = 0; j < nf_degree(nf); j++)
+        for (j = 0; j < fmpq_poly_degree(nf->pol); j++)
         {
             nf_elem_get_coeff_fmpz(coeff, a, j, nf);
             result = (nmod_poly_get_coeff_ui(reduced_elem, j) == fmpz_fdiv_ui(coeff, mod));
@@ -111,7 +112,7 @@ main(void)
 
         nf_elem_get_nmod_poly(reduced_elem, a, nf);
 
-        for (j = 0; j < nf_degree(nf); j++)
+        for (j = 0; j < fmpq_poly_degree(nf->pol); j++)
         {
             nf_elem_get_coeff_fmpz(coeff, a, j, nf);
             d_modinv = n_invmod(d_mod, mod);

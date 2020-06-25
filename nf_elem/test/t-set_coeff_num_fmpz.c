@@ -24,7 +24,8 @@
 ******************************************************************************/
 
 #include <stdio.h>
-#include "e-antic/nf.h"
+#include <antic/nf.h>
+#include "../../upstream/patched/nf.h"
 #include "e-antic/nf_elem.h"
 
 int
@@ -58,7 +59,7 @@ main(void)
         nf_elem_randtest(a, state, 200, nf);
         nf_elem_set(b, a, nf);
 
-        coeff = (slong) n_randint(state, nf_degree(nf) + 1);
+        coeff = (slong) n_randint(state, fmpq_poly_degree(nf->pol) + 1);
         
         fmpz_randtest(d, state, 200);
 
