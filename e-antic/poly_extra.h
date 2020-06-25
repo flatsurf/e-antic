@@ -160,23 +160,6 @@ void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
     return _fmpz_vec_sum(res, p, len);
 }
 
-static __inline__
-ulong EANTIC_FIXED_fmpz_vec_max_bits(const fmpz * vec, slong len)
-{
-    ulong n = 0;
-    slong i = 0;
-
-    for (i = 0; i < len; i++)
-        n = FLINT_MAX(n, fmpz_bits(vec + i));
-    return n;
-}
-
-static __inline__
-slong EANTIC_FIXED_fmpz_poly_max_bits(const fmpz_poly_t p)
-{
-    return EANTIC_FIXED_fmpz_vec_max_bits(p->coeffs, p->length);
-}
-
 #ifdef __cplusplus
  }
 #endif

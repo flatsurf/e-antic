@@ -27,18 +27,18 @@ int main()
         renf_t nf;
 
         renf_randtest(nf, state, len, prec, bits);
-        test = EANTIC_FIXED_fmpz_vec_max_bits(nf->nf->pol->coeffs,
-                nf->nf->pol->length);
+        test = abs(_fmpz_vec_max_bits(nf->nf->pol->coeffs,
+                nf->nf->pol->length));
         if (test > bits)
         {
-            printf("ERROR: too many bits in numerator, got %lu instead of %lu",
+            printf("ERROR: too many bits in numerator, got %lu instead of %lu\n",
                     test, bits);
             return 1;
         }
         test = fmpz_bits(nf->nf->pol->den);
         if (test > bits)
         {
-            printf("ERROR: too many bits in denominator, got %lu instead of %lu",
+            printf("ERROR: too many bits in denominator, got %lu instead of %lu\n",
                     test, bits);
             return 1;
         }
