@@ -4,7 +4,7 @@
 [submodule "renfxx/external/unique-factory"]
 	path = renfxx/external/unique-factory
 	url = https://github.com/flatsurf/unique-factory.git
-[submodule "patches/antic"]
+[submodule "upstream/antic"]
 	path = upstream/antic
 	url = https://github.com/flatsurf/antic.git
 [submodule "upstream/flint"]
