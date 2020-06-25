@@ -171,6 +171,12 @@ EXTRA_DIST += upstream/patched/EANTIC_fmpq_poly_add_fmpq.c        \
               upstream/patched/nf_init_randtest.c
 
 CLEANFILES = e-antic/e-antic.h
+
+# Probably a bug in autotools:
+# .libs in AC_CONFIG_LIBOBJ_DIR is not cleaned automatically.
+mostlyclean-local:
+	-rm -rf upstream/patched/.libs
+
 # We vendor the header-only library Cereal (serialization of the C++
 # structures) to be able to run the tests even when cereal is not installed.
 # Cereal is basically not packaged in any distribution since it is a
