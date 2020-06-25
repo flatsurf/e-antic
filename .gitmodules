@@ -7,3 +7,6 @@
 [submodule "patches/antic"]
 	path = upstream/antic
 	url = https://github.com/flatsurf/antic.git
+[submodule "upstream/flint"]
+	path = upstream/flint
+	url = https://github.com/wbhart/flint2.git

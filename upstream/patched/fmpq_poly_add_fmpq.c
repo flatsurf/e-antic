@@ -9,14 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <gmp.h>
-#include <e-antic/poly_extra.h>
+// This is a snippet of FLINT's current fmpq_poly/inlines.c that includes https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
 
-void EANTIC_FIXED_fmpq_poly_add_fmpq(fmpq_poly_t res, const fmpq_poly_t poly, const fmpq_t c)
+void fmpq_poly_add_fmpq(fmpq_poly_t res, const fmpq_poly_t poly, const fmpq_t c)
 {
     fmpz_t d;
 

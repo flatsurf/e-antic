@@ -7,10 +7,10 @@ libeanticxx_la_LDFLAGS = -version-info @libeanticxx_version_info@ -no-undefined
 
 # Linked-against libraries
 libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
-libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint
+libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint -lantic
 
 # Installed headers
-nobase_include_HEADERS = e-antic/nf_elem.h e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
+nobase_include_HEADERS = e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 
 # Put config.h on the search path, https://www.gnu.org/software/automake/manual/html_node/VPATH-Builds.html
 AM_CPPFLAGS = -I.
@@ -37,7 +37,6 @@ libeantic_la_SOURCES +=                         \
     poly_extra/fmpz_poly_scale_0_1_fmpq.c       \
     poly_extra/fmpz_poly_squarefree_part.c      \
     poly_extra/fmpq_poly_set_str_pretty.c       \
-    poly_extra/fmpq_poly_add_fmpq.c             \
     poly_extra/has_real_root.c                  \
     poly_extra/newton_step_arb.c                \
     poly_extra/num_real_roots_0_1.c             \
@@ -67,81 +66,12 @@ check_PROGRAMS +=                                    \
     poly_extra/test/t-fmpz_poly_set_str_pretty       \
     poly_extra/test/t-fmpq_poly_set_str_pretty       \
     poly_extra/test/t-fmpz_poly_randtest_irreducible \
-    poly_extra/test/t-fmpz_poly_isolate_real_roots   \
-    poly_extra/test/t-fmpq_poly_add_sub_fmpq
+    poly_extra/test/t-fmpz_poly_isolate_real_roots
 
 
 dist_doc_DATA +=                   \
     README                         \
     poly_extra/doc/poly_extra.txt
-
-# nf_elem
-libeantic_la_SOURCES +=               \
-    nf_elem/add.c                     \
-    nf_elem/add_fmpq.c                \
-    nf_elem/add_fmpz.c                \
-    nf_elem/add_si.c                  \
-    nf_elem/clear.c                   \
-    nf_elem/div.c                     \
-    nf_elem/equal.c                   \
-    nf_elem/fmpq_sub.c                \
-    nf_elem/fmpz_sub.c                \
-    nf_elem/get_fmpz_mat_row.c        \
-    nf_elem/get_fmpz_mod_poly.c       \
-    nf_elem/get_nmod_poly.c           \
-    nf_elem/init.c                    \
-    nf_elem/inlines.c                 \
-    nf_elem/inv.c                     \
-    nf_elem/invertible_check.c        \
-    nf_elem/mul.c                     \
-    nf_elem/norm.c                    \
-    nf_elem/norm_div.c                \
-    nf_elem/pow.c                     \
-    nf_elem/print_pretty.c            \
-    nf_elem/randtest.c                \
-    nf_elem/reduce.c                  \
-    nf_elem/rep_mat.c                 \
-    nf_elem/rep_mat_fmpz_mat_den.c    \
-    nf_elem/scalar_div_fmpq.c         \
-    nf_elem/scalar_div_fmpz.c         \
-    nf_elem/scalar_div_si.c           \
-    nf_elem/scalar_mul_fmpq.c         \
-    nf_elem/scalar_mul_fmpz.c         \
-    nf_elem/scalar_mul_si.c           \
-    nf_elem/set_fmpz_mat_row.c        \
-    nf_elem/si_sub.c                  \
-    nf_elem/sub.c                     \
-    nf_elem/sub_fmpq.c                \
-    nf_elem/sub_fmpz.c                \
-    nf_elem/sub_si.c                  \
-    nf_elem/trace.c
-
-check_PROGRAMS +=                          \
-    nf_elem/test/t-add_sub                 \
-    nf_elem/test/t-add_sub_fmpq            \
-    nf_elem/test/t-div                     \
-    nf_elem/test/t-equal_fmpz_fmpq         \
-    nf_elem/test/t-get_fmpz_mod_poly       \
-    nf_elem/test/t-get_nmod_poly           \
-    nf_elem/test/t-get_set_den             \
-    nf_elem/test/t-get_set_fmpq_poly       \
-    nf_elem/test/t-get_set_fmpz_mat_row    \
-    nf_elem/test/t-get_str_pretty          \
-    nf_elem/test/t-init_clear              \
-    nf_elem/test/t-inv                     \
-    nf_elem/test/t-is_rational_integer     \
-    nf_elem/test/t-mul                     \
-    nf_elem/test/t-mul_div_fmpq            \
-    nf_elem/test/t-mul_gen                 \
-    nf_elem/test/t-norm                    \
-    nf_elem/test/t-norm_div                \
-    nf_elem/test/t-pow                     \
-    nf_elem/test/t-rep_mat                 \
-    nf_elem/test/t-rep_mat_fmpz_mat_den    \
-    nf_elem/test/t-set_coeff_num_fmpz      \
-    nf_elem/test/t-set_equal               \
-    nf_elem/test/t-set_equal_si_ui         \
-    nf_elem/test/t-trace
 
 # renf
 libeantic_la_SOURCES +=               \
