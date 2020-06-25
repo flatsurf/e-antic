@@ -59,7 +59,6 @@ check_PROGRAMS +=                                              \
     poly_extra/test/t-fmpz_poly_isolate_real_roots             \
     poly_extra/test/t-fmpz_poly_positive_root_upper_bound_2exp \
     poly_extra/test/t-fmpz_poly_randtest_irreducible           \
-    poly_extra/test/t-fmpz_poly_real_root_upper_bound_2exp     \
     poly_extra/test/t-fmpz_poly_resultant_modular_div          \
     poly_extra/test/t-fmpz_poly_scale_0_1_fmpq                 \
     poly_extra/test/t-fmpz_poly_scale_2exp                     \
