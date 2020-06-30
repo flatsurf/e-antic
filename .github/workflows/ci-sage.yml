@@ -25,7 +25,7 @@ on:
       - '*'
 
 env:
-  DIST_PREREQ: python3-setuptools
+  DIST_PREREQ: libflint-dev
   SPKG:        e_antic
   TARGETS_PRE: build/make/Makefile
   TARGETS:     SAGE_CHECK=yes normaliz
