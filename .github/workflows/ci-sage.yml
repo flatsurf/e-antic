@@ -25,7 +25,7 @@ on: [push, pull_request]
 ##       - '*'
 
 env:
-  DIST_PREREQ: libflint-dev
+  DIST_PREREQ: libflint-dev libflint-arb-dev
   SPKG:        e_antic
   TARGETS_PRE: build/make/Makefile
   TARGETS:     SAGE_CHECK=yes normaliz
