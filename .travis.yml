@@ -1,7 +1,6 @@
 language: python
 env:
   - ""
-  - CONFIGURE=--without-pthread
   - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx
 services:
   - docker

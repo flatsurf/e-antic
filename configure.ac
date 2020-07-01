@@ -26,15 +26,6 @@ AX_VALGRIND_DFLT([drd], [off])
 AX_VALGRIND_DFLT([helgrind], [off])
 AX_VALGRIND_CHECK
 
-dnl e-antic is thread-safe when pthread is available.
-AC_ARG_WITH([pthread], AS_HELP_STRING([--without-pthread], [Do not ensure thread-safety (with pthread)]))
-AS_IF([test "x$with_pthread" != "xno"],
-      [
-       with_pthread=yes
-       AC_CHECK_LIB(pthread, pthread_mutex_init, [], AC_MSG_ERROR([pthread for thread-safety not found; run --without-pthread to disable thread-safety]))
-      ], [])
-AM_CONDITIONAL([HAVE_PTHREAD], [test "x$with_pthread" = "xyes"])
-
 ## Check for headers and libraries
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([GMP header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
