@@ -9,17 +9,14 @@ Source tarballs can be downloaded at http://www.labri.fr/perso/vdelecro/e-antic.
 
 The dependencies are:
 
- - flint 2.5 (see http://flintlib.org).
+ - flint 2.6 (see http://flintlib.org).
  - arb (see http://arblib.org/)
-
-E-ANTIC includes the current development version of ANTIC
-(see https://github.com/wbhart/antic/) and backports some features
-from the development branch of flint.
+ - antic (see https://github.com/wbhart/antic)
 
 If you have cloned the source directory you will need to setup the
 configure script and Makefile using autotools. That is
 
-    $ autoreconf --install
+    $ ./bootstrap.sh
 
 If you obtained a tarball of the sources or if the preceding step
 worked, you just have to do
@@ -29,14 +26,11 @@ worked, you just have to do
     $ make check
     $ make install
 
-If you happen to have flint and/or arb installed in a non
-standard directory you will have to specify the `CFLAGS`, `CPPFLAGS`
-and `LDFLAGS` variables in the configure script
+If you happen to have any of flint, arb, or antic installed in a non standard
+directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
+the configure script
 
-    $ ./configure CFLAGS=-I/my/path/include CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
+    $ ./configure CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
 
-To compile with the flint development version (currently 2.5.3) you need to
-specify the configure option --enable-flint-devel.
-
-For more detailed instructions read the INSTALL file.
+For more detailed but generic instructions please refer to the INSTALL file.
 
