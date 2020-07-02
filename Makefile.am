@@ -9,6 +9,12 @@ libeanticxx_la_LDFLAGS = -version-info @libeanticxx_version_info@ -no-undefined
 libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 libeanticxx_la_LIBADD = libeantic.la -lgmpxx -lflint -lantic
 
+# Provide version script support, https://www.gnu.org/software/gnulib/manual/html_node/LD-Version-Scripts.html
+if HAVE_LD_VERSION_SCRIPT
+  libeantic_la_LDFLAGS += -Wl,--version-script=$(top_srcdir)/libeantic.map
+  libeanticxx_la_LDFLAGS += -Wl,--version-script=$(top_srcdir)/libeanticxx.map
+endif
+
 # Installed headers
 nobase_include_HEADERS = e-antic/renf.h e-antic/renf_elem.h e-antic/poly_extra.h e-antic/renfxx.h e-antic/renfxx_fwd.h e-antic/renfxx_cereal.h
 

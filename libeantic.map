@@ -1,0 +1,47 @@
+## LD version script (https://www.gnu.org/software/gnulib/manual/html_node/LD-Version-Scripts.html)
+
+## This file is part of e-antic
+##
+## Copyright (C) 2020 Julian Rüth
+##
+## e-antic is free software: you can redistribute it and/or modify it under
+## the terms of the GNU Lesser General Public License (LGPL) as published
+## by the Free Software Foundation; either version 3.0 of the License, or
+## (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+##
+
+# This file lists the public interface for different versions of libeantic. It
+# needs to be adapted manually whenever the public interface changes.
+
+LIBEANTIC_1_0_0 {
+global:
+  renf_get_str;
+  renf_init;
+  renf_init_nth_root_fmpq;
+  renf_init_set;
+  renf_print;
+  renf_randtest;
+  renf_refine_embedding;
+  renf_set_embeddings_fmpz_poly;
+  renf_set_immutable;
+
+  renf_elem_ceil;
+  renf_elem_check_embedding;
+  renf_elem_clear;
+  renf_elem_cmp;
+  renf_elem_cmp_fmpq;
+  renf_elem_floor;
+  renf_elem_gen;
+  renf_elem_get_arb;
+  renf_elem_get_cfrac;
+  renf_elem_get_d;
+  renf_elem_get_str_pretty;
+  renf_elem_init;
+  renf_elem_print_pretty;
+  renf_elem_randtest;
+  renf_elem_relative_condition_number_2exp;
+  renf_elem_set_evaluation;
+  renf_elem_set_fmpq_poly;
+  renf_elem_sgn;
+local: *;
+};

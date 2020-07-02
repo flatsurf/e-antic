@@ -1,0 +1,20 @@
+## LD version script (https://www.gnu.org/software/gnulib/manual/html_node/LD-Version-Scripts.html)
+
+## This file is part of e-antic
+##
+## Copyright (C) 2020 Julian Rüth
+##
+## e-antic is free software: you can redistribute it and/or modify it under
+## the terms of the GNU Lesser General Public License (LGPL) as published
+## by the Free Software Foundation; either version 3.0 of the License, or
+## (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+##
+
+# This file lists the public interface for different versions of libeanticxx.
+# It needs to be adapted manually whenever the public interface changes.
+LIBEANTICXX_1_0_0 {
+global: *;
+# extern "C++" {
+# };
+# local: *;
+};

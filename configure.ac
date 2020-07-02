@@ -19,6 +19,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_LIBOBJ_DIR([upstream/patched])
 AC_PROG_LIBTOOL
 AC_PROG_CXX
+gl_LD_VERSION_SCRIPT
 
 ## Test for valgrind test suite
 AX_VALGRIND_DFLT([sgcheck], [off])
