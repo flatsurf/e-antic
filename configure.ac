@@ -16,6 +16,7 @@ AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_LIBOBJ_DIR([upstream/patched])
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 
@@ -25,38 +26,38 @@ AX_VALGRIND_DFLT([drd], [off])
 AX_VALGRIND_DFLT([helgrind], [off])
 AX_VALGRIND_CHECK
 
-## Flint development
-AC_ARG_ENABLE([flint-devel],
-[  --enable-flint-devel    Compile with flint development version],
-[case "${enableval}" in
-  yes) flintdevel=true ;;
-  no)  flintdevel=false ;;
-  *) AC_MSG_ERROR([bad value ${enableval} for --enable-flint-devel]) ;;
-esac],[flintdevel=false])
-AM_CONDITIONAL([FLINT252], [test x$flintdevel = xfalse])
-
-dnl e-antic is thread-safe when pthread is available.
-AC_ARG_WITH([pthread], AS_HELP_STRING([--without-pthread], [Do not ensure thread-safety (with pthread)]))
-AS_IF([test "x$with_pthread" != "xno"],
-      [
-       with_pthread=yes
-       AC_CHECK_LIB(pthread, pthread_mutex_init, [], AC_MSG_ERROR([pthread for thread-safety not found; run --without-pthread to disable thread-safety]))
-      ], [])
-AM_CONDITIONAL([HAVE_PTHREAD], [test "x$with_pthread" = "xyes"])
-
 ## Check for headers and libraries
-AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([gmp header not found])])
+AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([GMP header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
-AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([flint header not found])])
+AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([FLINT headers not found])])
 AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])], [-lmpfr])
+
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#include <flint/flint.h>
+#if __FLINT_RELEASE < 20600
+#error FLINT must be at least 2.6.0
+#endif
+])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
+
+AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
+AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])], [-lflint])
+
+# Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
+AC_REPLACE_FUNCS(nf_init_randtest)
+# Unconditionally patch nf_elem_scalar_div_fmpq which has aliasing issues in ANTIC, https://github.com/wbhart/antic/pull/48
+AC_LIBOBJ(EANTIC_nf_elem_scalar_div_fmpq)
+# Unconditionally patch fmpq_poly_add_fmpq which was fixed in https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
+AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
+# Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
+AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
 AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(17)
-AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (gmp needs to be compiled with c++ support (--enable-cxx))])])
+AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (GMP needs to be compiled with c++ support (--enable-cxx))])])
 AC_CHECK_HEADERS(boost/lexical_cast.hpp, , [AC_MSG_ERROR([boost headers not found])])
 AC_LANG_POP([C++])
 

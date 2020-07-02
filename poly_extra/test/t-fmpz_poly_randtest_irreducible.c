@@ -33,10 +33,10 @@ int main(void)
             return 1;
         }
 
-        if (EANTIC_FIXED_fmpz_poly_max_bits(p) > maxbits)
+        if (abs(fmpz_poly_max_bits(p)) > maxbits)
         {
             fprintf(stderr, "ERROR: too many bits %lu instead of maxbits=%lu\n",
-                    EANTIC_FIXED_fmpz_poly_max_bits(p),
+                    abs(fmpz_poly_max_bits(p)),
                     maxbits);
             fmpz_poly_fprint_pretty(stderr, p, "x");
             fprintf(stderr, "\n");

@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -13,9 +14,9 @@
 #define E_ANTIC_RENF_H
 
 #include <flint/fmpq_poly.h>
+#include <antic/nf.h>
+#include <antic/nf_elem.h>
 #include <e-antic/e-antic.h>
-#include <e-antic/nf.h>
-#include <e-antic/nf_elem.h>
 #include <arb.h>
 #include <arb_poly.h>
 
@@ -29,6 +30,7 @@ typedef struct
   fmpz_poly_t der;   /* derivative (without denominator)                   */
   slong prec;        /* precision used for binary operations on enclosures */
   arb_t emb;         /* embedding of generator as a real ball              */
+  int immutable;     /* whether emb cannot be refined currently            */
 } renf;
 
 typedef renf * renf_ptr;
@@ -47,9 +49,11 @@ void renf_clear(renf_t nf)
     fmpz_poly_clear(nf->der);
     arb_clear(nf->emb);
 }
+slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
+
 void renf_refine_embedding(renf_t nf, slong prec);
 
-slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
+int renf_set_immutable(renf_t nf, int immutable);
 
 static __inline__
 int nf_equal(const nf_t nf1, const nf_t nf2)
@@ -66,7 +70,7 @@ int renf_equal(const renf_t nf1, const renf_t nf2)
 static __inline__
 slong renf_degree(renf_t nf)
 {
-    return nf_degree(nf->nf);
+    return fmpq_poly_degree(nf->nf->pol);
 }
 
 /* Randomisation */

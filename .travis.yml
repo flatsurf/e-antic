@@ -1,9 +1,29 @@
-language: generic
+language: python
 env:
-  - CC=gcc CXX=g++ PACKAGES=g++
-  - CC=gcc CXX=g++ PACKAGES=g++ CONFIGURE=--without-pthread
-  - CC=clang CXX=clang++ PACKAGES=clang
+  - ""
+  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx
 services:
   - docker
+install:
+  - sudo apt update
+  - sudo apt install -y libc6-dbg
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda create -q -n e-antic-build -c conda-forge python=$TRAVIS_PYTHON_VERSION antic libflint arb valgrind autoconf automake cxx-compiler c-compiler libtool boost-cpp $PACKAGES
+  - conda activate e-antic-build
+  - export CC=${_CC:-$CC}
+  - export CXX=${_CXX:-$CXX}
+  - export CPP=${_CPP:-$CPP}
 script:
-  - docker run -i -e CC -e CXX -e PACKAGES -v ${TRAVIS_BUILD_DIR}:/eantic -v `pwd`/.travis.sh:/travis.sh -w /eantic ubuntu:bionic /travis.sh
+  - set -e
+  - ./bootstrap.sh
+  - ./configure --prefix=$CONDA_PREFIX --enable-valgrind ${CONFIGURE} || (cat config.log; false)
+  - make
+  - ldd .libs/libeantic.so
+  - make check || (cat `find test-suite.log` /dev/null; false)
+  - make check-valgrind || (cat `find test-suite-memcheck.log` /dev/null; false)
+  - make distcheck

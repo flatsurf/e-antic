@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -9,43 +10,20 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
 #include <config.h>
 #include <err.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
-#ifdef HAVE_PTHREAD
-#include <pthread.h>
-static pthread_once_t mtx_initialized;
-static pthread_mutex_t mtx;
-
-void initialize_mtx()
-{
-    if (pthread_mutex_init(&mtx, NULL) != 0)
-    {
-	err(1, "failed to create mutex for renf_refine_embedding()");
-    }
-}
-#endif
-
 void renf_refine_embedding(renf_t nf, slong prec)
 {
-#ifdef HAVE_PTHREAD
-    pthread_once(&mtx_initialized, initialize_mtx);
-
-    // We need to make sure that no two threads attempt to refine the same
-    // number field embedding at the same time: if two threads were looking for
-    // different precisions, we might end up with the lower precision
-    // eventually. Also the arb_swap() would not be safe.
-    if (pthread_mutex_lock(&mtx) != 0)
-    {
-	err(1, "failed to lock mutex for renf_refine_embedding()");
-    }
-#endif
-
     arb_t tmp;
     slong cond;
     slong comp_prec;
+    const char* threading_error = "An embedding cannot be safely refined in a multi-threaded environment; you should have refined as needed and called renf_set_immutable() before entering multi-threaded code. Alternatively, you might also be able to use a distinct copy of the renf_t in each thread.";
+
+    assert(!renf_set_immutable(nf, 1) && threading_error);
 
     _fmpz_poly_relative_condition_number_2exp(&cond,
             nf->nf->pol->coeffs, nf->nf->pol->length,
@@ -82,10 +60,5 @@ void renf_refine_embedding(renf_t nf, slong prec)
     }
     arb_clear(tmp);
 
-#ifdef HAVE_PTHREAD
-    if (pthread_mutex_unlock(&mtx) != 0)
-    {
-	err(1, "failed to unlock mutex for renf_refine_embedding()");
-    }
-#endif
+    assert(renf_set_immutable(nf, 0) && threading_error);
 }

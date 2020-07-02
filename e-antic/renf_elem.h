@@ -16,9 +16,9 @@
 #include <flint/fmpq_poly.h>
 #include <arb.h>
 #include <arb_poly.h>
+#include <antic/nf.h>
+#include <antic/nf_elem.h>
 #include <e-antic/e-antic.h>
-#include <e-antic/nf.h>
-#include <e-antic/nf_elem.h>
 #include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
@@ -29,6 +29,12 @@
 #define EANTIC_STR_ALG 1
 #define EANTIC_STR_D   2
 #define EANTIC_STR_ARB 4
+
+// Patch nf_elem_scalar_div & nf_elem_add_fmpq which have issues in the released version of ANTIC, see upstream/patched.
+FLINT_DLL void EANTIC_nf_elem_scalar_div_fmpq(nf_elem_t a, const nf_elem_t b, const fmpq_t c, const nf_t nf);
+#define nf_elem_scalar_div_fmpq(a, b, c, nf) EANTIC_nf_elem_scalar_div_fmpq(a, b, c, nf)
+FLINT_DLL void EANTIC_nf_elem_add_fmpq(nf_elem_t a, const nf_elem_t b, const fmpq_t c, const nf_t nf);
+#define nf_elem_add_fmpq(a, b, c, nf) EANTIC_nf_elem_add_fmpq(a, b, c, nf)
 
 typedef struct
 {

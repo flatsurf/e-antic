@@ -101,7 +101,7 @@ std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, 
 
 renf_class::~renf_class() noexcept { renf_clear(nf); }
 
-slong renf_class::degree() const noexcept { return nf_degree(nf->nf); }
+slong renf_class::degree() const noexcept { return fmpq_poly_degree(nf->nf->pol); }
 
 renf_elem_class renf_class::zero() const noexcept
 {

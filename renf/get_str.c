@@ -15,7 +15,7 @@
 
 char * renf_get_str(const renf_t nf, const char * var, slong prec)
 {
-    char * p = EANTIC_FIXED_fmpq_poly_get_str_pretty(nf->nf->pol, var);
+    char * p = fmpq_poly_get_str_pretty(nf->nf->pol, var);
     char * e = arb_get_str(nf->emb, prec, 0);
     char * res = (char *) flint_calloc(15 + strlen(p) + strlen(e) + 1, sizeof(char));
     res[0] = '\0';

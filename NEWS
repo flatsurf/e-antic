@@ -33,8 +33,12 @@ New C function
 
 Multithread support
 -------------------
-- e-antic used to be thread safe via an open MP pragma (in the number field
-  refinement). It now uses a more direct mutex from the pthread library.
+- e-antic had claimed to be thread safe via an open MP pragma (in the number
+  field refinement). In some cases, there was a problem with thread-safety. We
+  now require users to explicitly mark multithreaded sections by forbidding
+  mutations to a renf, see `renf_set_immutable`. As a result, there are some
+  operations that cannot be done anymore in a multi-threaded environment but
+  they now fail properly (instead of leading to random crashes.)
 
 Breaking Changes to the C++ Interface
 -------------------------------------

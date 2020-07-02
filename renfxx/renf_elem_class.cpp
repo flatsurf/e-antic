@@ -313,15 +313,23 @@ renf_elem_class::operator mpq_class() const noexcept
     mpq_class z;
 
     if (!nf)
+    {
         fmpq_get_mpq(z.__get_mp(), b);
-    else if (is_rational())
+    }
+    else if (is_zero())
+    {
+        return 0;
+    }
+    else
     {
         assert(is_rational() && "renf_elem_class not a rational");
-        ::fmpq_t q;
-        fmpq_init(q);
-        nf_elem_get_fmpq(q, a->elem, parent()->renf_t()->nf);
-        fmpq_get_mpq(z.__get_mp(), q);
-        fmpq_clear(q);
+
+        fmpq_poly_t f;
+        fmpq_poly_init(f);
+        nf_elem_get_fmpq_poly(f, a->elem, nf->renf_t()->nf);
+        fmpz_get_mpz(z.get_num_mpz_t(), fmpq_poly_numref(f));
+        fmpz_get_mpz(z.get_den_mpz_t(), fmpq_poly_denref(f));
+        fmpq_poly_clear(f);
     }
 
     return z;
