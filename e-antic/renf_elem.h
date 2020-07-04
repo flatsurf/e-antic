@@ -450,16 +450,7 @@ static __inline__
 void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, const renf_t nf)
 {
     nf_elem_pow(res->elem, a->elem, e, nf->nf);
-    if (e >= 0)
-        arb_pow_ui(res->emb, a->emb, (ulong) e, nf->prec);
-    else
-    {
-        arb_t b;
-        arb_init(b);
-        arb_inv(b, a->emb, nf->prec);
-        arb_pow_ui(res->emb, b, (ulong) (-e), nf->prec);
-        arb_clear(b);
-    }
+    arb_pow_ui(res->emb, a->emb, e, nf->prec);
 }
 
 #ifdef __cplusplus
