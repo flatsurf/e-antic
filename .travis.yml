@@ -1,7 +1,7 @@
 language: python
 env:
-  - ""
-  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx
+  - EXTRA_CFLAGS="-Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations" EXTRA_CXXFLAGS="-Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel"
+  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx EXTRA_CFLAGS="-Werror -Weverything -Wno-padded" EXTRA_CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-missing-prototypes"
 services:
   - docker
 install:
@@ -22,8 +22,8 @@ script:
   - set -e
   - ./bootstrap.sh
   - ./configure --prefix=$CONDA_PREFIX --enable-valgrind ${CONFIGURE} || (cat config.log; false)
-  - make
+  - make CFLAGS="$CFLAGS $EXTRA_CFLAGS" CXXFLAGS="$CXXFLAGS $EXTRA_CFLAGS $EXTRA_CXXFLAGS"
   - ldd .libs/libeantic.so
-  - make check || (cat `find test-suite.log` /dev/null; false)
+  - make check CFLAGS="$CFLAGS $EXTRA_CFLAGS" CXXFLAGS="$CXXFLAGS $EXTRA_CFLAGS $EXTRA_CXXFLAGS" || (cat `find test-suite.log` /dev/null; false)
   - make check-valgrind || (cat `find test-suite-memcheck.log` /dev/null; false)
   - make distcheck
