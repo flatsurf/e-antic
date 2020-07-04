@@ -18,18 +18,15 @@ int main(void)
     FLINT_TEST_INIT(state);
 
     {
-        fmpq * q;
-        renf_elem_srcptr r;
-
         renf_elem_class a(2);
 
         // should work
-        q = a.get_fmpq();
+        a.get_fmpq();
 
         // should not work
         try
         {
-            r = a.get_renf_elem();
+            a.get_renf_elem();
             throw std::runtime_error("get_renf_elem worked but shouldn't!");
         }
         catch (std::invalid_argument)
@@ -38,9 +35,6 @@ int main(void)
     }
 
     {
-        fmpq * q;
-        renf_elem_srcptr r;
-
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 50);
         auto K = renf_class::make(nf);
@@ -49,12 +43,12 @@ int main(void)
         renf_elem_class a(K);
 
         // should work
-        r = a.get_renf_elem();
+        a.get_renf_elem();
 
         // should not work
         try
         {
-            q = a.get_fmpq();
+            a.get_fmpq();
             throw std::runtime_error("get_fmpq worked but shouldn't!");
         }
         catch (std::invalid_argument)

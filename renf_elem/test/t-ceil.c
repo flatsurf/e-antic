@@ -37,7 +37,7 @@ int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
 void test_field1(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
-    int iter;
+    ulong iter;
 
     fmpq_t k;
     fmpq_poly_t p;
@@ -53,7 +53,7 @@ void test_field1(flint_rand_t state)
     arb_init(emb);
     arb_set_d(emb, 1.61803398874989);
     arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 20 + n_randint(state, 20));
+    renf_init(nf, p, emb, 20 + (slong)n_randint(state, 20));
     arb_clear(emb);
 
     renf_elem_init(a, nf);
@@ -64,9 +64,9 @@ void test_field1(flint_rand_t state)
     fmpq_poly_set_coeff_si(p, 1, -1);
     for (iter = 1; iter < 50; iter++)
     {
-        fprintf(stderr, "start iter = %d\n", iter);
+        fprintf(stderr, "start iter = %ld\n", iter);
         fflush(stderr);
-        fmpz_fib_ui(fmpq_numref(k), iter+1);
+        fmpz_fib_ui(fmpq_numref(k), iter + 1);
         fmpz_fib_ui(fmpq_denref(k), iter);
         fmpq_poly_set_coeff_fmpq(p, 0, k);
         renf_elem_set_fmpq_poly(a, p, nf);
@@ -94,7 +94,7 @@ void test_field2(flint_rand_t state)
     fmpq_poly_init(p);
 
     fmpq_set_si(d, 3, 1);
-    renf_init_nth_root_fmpq(nf, d, 4, 10 + n_randint(state, 10));
+    renf_init_nth_root_fmpq(nf, d, 4, 10 + (slong)n_randint(state, 10));
 
     fmpq_clear(d);
 
@@ -190,8 +190,8 @@ int main()
         fmpz_init(f);
         arb_init(e);
         renf_randtest(nf, state,
-                          2 + n_randint(state, 20),   /* length */
-                          8 + n_randint(state, 2408), /* prec   */
+                          2 + (slong)n_randint(state, 20),   /* length */
+                          8 + (slong)n_randint(state, 2408), /* prec   */
                           10 + n_randint(state, 10)   /* bits   */
                           );
         renf_elem_init(a, nf);

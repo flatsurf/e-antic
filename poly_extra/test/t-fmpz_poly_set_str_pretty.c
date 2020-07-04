@@ -130,7 +130,7 @@ int main(void)
             fmpz_poly_init(a);
             fmpz_poly_init(b);
 
-            fmpz_poly_randtest(a, state, n_randint(state, 100), 200);
+            fmpz_poly_randtest(a, state, (slong)n_randint(state, 100), 200);
             for (j = 0; j < 3; j++)
             {
                 char * s = fmpz_poly_get_str_pretty(a, varname[j]);

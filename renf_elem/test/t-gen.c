@@ -14,8 +14,7 @@
 
 int main(void)
 {
-    int iter;
-    int i,j;
+    slong i, j, iter;
     FLINT_TEST_INIT(state);
 
     for (iter = 0; iter < 100; iter++)
@@ -30,7 +29,7 @@ int main(void)
             renf_t nf;
             renf_elem_t a,b;
 
-            renf_init_nth_root_fmpq(nf, d, i, 64);
+            renf_init_nth_root_fmpq(nf, d, (ulong)i, 64);
 
             renf_elem_init(a, nf);
             renf_elem_init(b, nf);

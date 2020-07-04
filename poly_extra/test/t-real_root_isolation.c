@@ -52,13 +52,13 @@ void check_intervals(
             fmpz_add_ui(fmpq_numref(y), fmpq_numref(y), 1);
             if (k_array[k] > 0)
             {
-                fmpq_mul_2exp(x, x, k_array[k]);
-                fmpq_mul_2exp(y, y, k_array[k]);
+                fmpq_mul_2exp(x, x, (ulong)k_array[k]);
+                fmpq_mul_2exp(y, y, (ulong)k_array[k]);
             }
             else if (k_array[k] < 0)
             {
-                fmpq_div_2exp(x, x, -k_array[k]);
-                fmpq_div_2exp(y, y, -k_array[k]);
+                fmpq_div_2exp(x, x, (ulong)-k_array[k]);
+                fmpq_div_2exp(y, y, (ulong)-k_array[k]);
             }
         }
 
@@ -174,8 +174,8 @@ int main(void)
         fmpq exact_array[30];
         fmpz_poly_t p,q;
 
-        slong n = n_randint(state, 30);      /* real roots            */
-        slong nc = 1 + n_randint(state, 30); /* complex roots */
+        slong n = (slong)n_randint(state, 30);      /* real roots            */
+        slong nc = 1 + (slong)n_randint(state, 30); /* complex roots */
         slong i;
         slong n_exact, n_interval;
 

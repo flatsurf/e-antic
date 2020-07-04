@@ -20,14 +20,14 @@ int main()
     /* test polynomials with random rational roots */
     for( iter = 0; iter <= 1000; iter++ )
     {
-        int n_real_roots, n_complex_roots;
+        slong n_real_roots, n_complex_roots;
         fmpq * real_roots;
 
         slong bound;
         fmpz_poly_t p,q;
 
-        n_real_roots = n_randint(state, 30);
-        n_complex_roots = 1 + n_randint(state, 20);
+        n_real_roots = (slong)n_randint(state, 30);
+        n_complex_roots = 1 + (slong)n_randint(state, 20);
 
         real_roots = _fmpq_vec_init(n_real_roots);
 
@@ -45,8 +45,8 @@ int main()
         {
             printf("FAIL:\n");
             printf("p = "); fmpz_poly_print(p); printf("\n");
-            printf("n_real_roots = %d\n", n_real_roots);
-            printf("n_complex_roots  = %d\n", n_complex_roots);
+            printf("n_real_roots = %ld\n", n_real_roots);
+            printf("n_complex_roots  = %ld\n", n_complex_roots);
             flint_printf("got bound = %wd\n", bound);
             abort();
         }

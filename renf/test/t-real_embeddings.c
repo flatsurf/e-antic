@@ -21,7 +21,7 @@ int main()
 
     for (iter = 0; iter < 100; iter++)
     {
-        int i, n;
+        slong i, n;
         fmpz_poly_t p;
         renf nfemb[MAX_DEGREE];
 

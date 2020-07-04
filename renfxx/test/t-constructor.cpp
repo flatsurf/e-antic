@@ -46,7 +46,7 @@ int main(void)
 
     {
         renf_elem_class a;
-        renf_elem_class b((int) 1);
+        renf_elem_class b(1);
         renf_elem_class c(mpz_class(2));
         renf_elem_class d(mpq_class(3));
 

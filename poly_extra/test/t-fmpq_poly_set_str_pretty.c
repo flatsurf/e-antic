@@ -131,7 +131,7 @@ int main(void)
             fmpq_poly_init(a);
             fmpq_poly_init(b);
 
-            fmpq_poly_randtest(a, state, n_randint(state, 100), 200);
+            fmpq_poly_randtest(a, state, (slong)n_randint(state, 100), 200);
             for (j = 0; j < 3; j++)
             {
                 char * s = fmpq_poly_get_str_pretty(a, varname[j]);

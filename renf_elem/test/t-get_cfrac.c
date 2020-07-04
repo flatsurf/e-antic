@@ -100,7 +100,7 @@ int main()
     check_nf_cf(nf, state, 30, 100, 20);
     renf_clear(nf);
 
-    renf_randtest(nf, state, 2 + n_randint(state, 10), 64, 30);
+    renf_randtest(nf, state, 2 + (slong)n_randint(state, 10), 64, 30);
     check_nf_cf(nf, state, 30, 100, 20);
     renf_clear(nf);
 

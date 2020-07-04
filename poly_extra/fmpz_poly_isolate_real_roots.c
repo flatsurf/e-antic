@@ -9,6 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
+
 #include <e-antic/poly_extra.h>
 
 /* isolate the real roots of pol contained in [0,1] */
@@ -23,12 +25,11 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
         fmpz * pol, slong len)
 {
     fmpz_t c;
-    ulong k;
+    slong k;
     fmpz * p;
     fmpz * p0;
-    ulong i;
+    slong i;
     fmpz_t one;
-    slong bound;
     slong len0 = len;
 
     fmpz_init(one);
@@ -49,7 +50,9 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
             {
                 fmpz_set(fmpq_numref(exact_roots + *n_exact), c);
                 fmpz_one(fmpq_denref(exact_roots + *n_exact));
-                fmpq_div_2exp(exact_roots + *n_exact, exact_roots + *n_exact, k);
+
+                assert(k >= 0);
+                fmpq_div_2exp(exact_roots + *n_exact, exact_roots + *n_exact, (ulong)k);
             }
             (*n_exact)++;
             p++;
@@ -57,48 +60,54 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact,
         }
 
         /* use Descartes bound */
-        bound = _fmpz_poly_descartes_bound_0_1(p, len, 2);
-        switch(bound)
         {
-            case 2:
-            case WORD_MAX:
-                /* unknown: go down */
-                k += 1;
-                fmpz_mul_2exp(c, c, 1);
-                _fmpz_poly_scale_2exp(p, len, -1);
-                break;
-            case 1:
-                /* got a root! */
-                if ((c_array != NULL) && (k_array != NULL))
-                {
-                    fmpz_set(c_array + *n_intervals, c);
-                    k_array[*n_intervals] = -k;
-                }
-                (*n_intervals)++;
-            case 0:
-                /* no root: go up */
-                fmpz_add_ui(c, c, 1);
-                i = fmpz_val2(c);
-                if (k == i)
-                {
-                    fmpz_clear(c);
-                    fmpz_clear(one);
-                    _fmpz_vec_clear(p0, len0);
-                    return;
-                }
+            const slong bound = _fmpz_poly_descartes_bound_0_1(p, len, 2);
+            switch(bound)
+            {
+                case 2:
+                case WORD_MAX:
+                    /* unknown: go down */
+                    k += 1;
+                    fmpz_mul_2exp(c, c, 1);
+                    _fmpz_poly_scale_2exp(p, len, -1);
+                    continue;
+                case 1:
+                    /* got a root! */
+                    if ((c_array != NULL) && (k_array != NULL))
+                    {
+                        fmpz_set(c_array + *n_intervals, c);
+                        k_array[*n_intervals] = -k;
+                    }
+                    (*n_intervals)++;
+                    break;
+                case 0:
+                    break;
+                default:
+                    flint_fprintf(stderr, "ERROR: expected 0,1,WORD_MAX as output from descartes_bound but got %wd\n", bound);
+                    abort();
+            }
 
-                /* go to the next node */
-                _fmpz_poly_taylor_shift(p, one, len);
-                if (i)
-                {
-                    _fmpz_poly_scale_2exp(p, len, i);
-                    fmpz_fdiv_q_2exp(c, c, i);
-                    k -= i;
-                }
-                break;
-            default:
-                flint_fprintf(stderr, "ERROR: expected 0,1,WORD_MAX as output from descartes_bound but got %wd\n", bound);
-                abort();
+            /* no root: go up */
+            fmpz_add_ui(c, c, 1);
+            i = (slong)fmpz_val2(c);
+            if (k == i)
+            {
+                fmpz_clear(c);
+                fmpz_clear(one);
+                _fmpz_vec_clear(p0, len0);
+                return;
+            }
+
+            /* go to the next node */
+            _fmpz_poly_taylor_shift(p, one, len);
+            if (i)
+            {
+                _fmpz_poly_scale_2exp(p, len, i);
+                fmpz_fdiv_q_2exp(c, c, (ulong)i);
+
+                assert(k >= i);
+                k -= i;
+            }
         }
     }
 }
@@ -157,9 +166,9 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
             {
                 fmpq_neg(exact_roots + i, exact_roots + i);
                 if (k > 0)
-                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
+                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, (ulong)k);
                 else if (k < 0)
-                    fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
+                    fmpq_div_2exp(exact_roots + i, exact_roots + i, (ulong)-k);
             }
             for (i = 0; i < n_neg_exact/2; i++)
             {
@@ -197,9 +206,9 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
             for (i = n_neg_exact + n_zeros; i < *n_exact; i++)
             {
                 if (k > 0)
-                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, k);
+                    fmpq_mul_2exp(exact_roots + i, exact_roots + i, (ulong)k);
                 else if (k < 0)
-                    fmpq_div_2exp(exact_roots + i, exact_roots + i, -k);
+                    fmpq_div_2exp(exact_roots + i, exact_roots + i, (ulong)-k);
             }
         }
     }

@@ -14,6 +14,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
+
 #include <arb.h>
 #include <flint/fmpz_poly.h>
 #include <e-antic/poly_extra.h>
@@ -21,11 +23,13 @@
 slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len)
 {
     slong b, b0, bmin;
-    slong i, j, jmin;
+    slong i, j, jmin = -1;
     fmpz_t tmp;
 
     fmpz_init(tmp);
-    slong * coeffs = flint_malloc(len * sizeof(slong));
+
+    assert(len >= 0 && "len must be non-negative");
+    slong * coeffs = flint_malloc((ulong)len * sizeof(slong));
     for (i = 0; i < len; i++)
         coeffs[i] = 1;
 
@@ -64,6 +68,8 @@ slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slon
         }
 
         b0 = FLINT_MAX(b0, bmin);
+
+        assert(jmin >= 0);
         coeffs[jmin] ++;
     }
 

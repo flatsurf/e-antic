@@ -10,6 +10,8 @@
 */
 
 
+#include <assert.h>
+
 #include <e-antic/renf.h>
 
 void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec)
@@ -26,7 +28,7 @@ void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec)
     fmpq_set(p0, d);
     fmpq_neg(p0, p0);
     fmpq_poly_set_coeff_fmpq(pol, 0, p0);
-    fmpq_poly_set_coeff_ui(pol, n, 1);
+    fmpq_poly_set_coeff_ui(pol, (slong)n, 1);
 
     arb_init(emb);
     arb_set_fmpq(emb, d, prec);

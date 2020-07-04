@@ -122,7 +122,7 @@ int main(void)
         }
         {
             unsigned long c1 = 513, c2 = 3;
-            check_binop(c2, c2, K);
+            check_binop(c1, c2, K);
         }
         {
             mpz_class c1(232);

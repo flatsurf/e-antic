@@ -26,12 +26,12 @@ int main()
         fmpz_poly_t f, g;
         slong k;
 
-        k = n_randint(state, 200);
+        k = (slong)n_randint(state, 200);
 
         fmpz_poly_init(f);
         fmpz_poly_init(g);
 
-        fmpz_poly_randtest(f, state, n_randint(state, 100), 200);
+        fmpz_poly_randtest(f, state, (slong)n_randint(state, 100), 200);
         _fmpz_poly_remove_content_2exp(f->coeffs, f->length);
         fmpz_poly_set(g, f);
 
@@ -64,10 +64,10 @@ int main()
         fmpz_init(res1);
         fmpz_init(res2);
 
-        k = n_randint(state, 30);
+        k = (slong)n_randint(state, 30);
 
         fmpz_randtest(a2, state, 100);
-        fmpz_mul_2exp(a1, a2, k);
+        fmpz_mul_2exp(a1, a2, (ulong)k);
 
         /* positive case k */
         fmpz_poly_set(g, f);

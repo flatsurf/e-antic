@@ -22,7 +22,7 @@ int main()
     /* test polynomials with random Gaussian integer roots */
     for ( iter = 0; iter <= 5000; iter++ )
     {
-        int num_real_roots;
+        slong num_real_roots;
         int i;
         fmpq_t a, max_root;
         slong bound;
@@ -38,7 +38,7 @@ int main()
 
         /* generate random rational roots a/b: (b x - a)*/
         fmpq_set_si(max_root, -1, 1);
-        num_real_roots = n_randint(state, 50);
+        num_real_roots = (slong)n_randint(state, 50);
         for (i = 0; i < num_real_roots; i++)
         {
             fmpq_randtest(a, state, 1 + n_randint(state, 100));
@@ -57,7 +57,7 @@ int main()
             abort();
         }
 
-        fmpz_poly_randtest_no_real_root(q, state, 1 + n_randint(state, 50), 10 + n_randint(state, 100));
+        fmpz_poly_randtest_no_real_root(q, state, 1 + (slong)n_randint(state, 50), 10 + n_randint(state, 100));
         fmpz_poly_mul(p, p, q);
 
         bound = fmpz_poly_positive_root_upper_bound_2exp(p);
@@ -79,9 +79,9 @@ int main()
             fmpq_one(a);
 
             if (bound > 0)
-                fmpq_mul_2exp(a, a, bound);
+                fmpq_mul_2exp(a, a, (ulong)bound);
             else if (bound < 0)
-                fmpq_div_2exp(a, a, -bound);
+                fmpq_div_2exp(a, a, (ulong)-bound);
 
             if (fmpq_cmp(a, max_root) < 0)
             {

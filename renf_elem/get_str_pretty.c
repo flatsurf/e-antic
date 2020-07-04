@@ -15,9 +15,8 @@
 
 char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {
-    char *s, *t;
+    char *t;
 
-    s = NULL;
     t = flint_malloc(1 * sizeof(char));
     t[0] = '\0';
 
@@ -43,6 +42,7 @@ char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slon
     if (flag & EANTIC_STR_D)
     {
         // Print the approximate double value of a.
+        char* s = NULL;
 
         double d = renf_elem_get_d(a, nf, ARF_RND_NEAR);
 

@@ -70,7 +70,6 @@ int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
 
 int main()
 {
-    int iter;
     FLINT_TEST_INIT(state);
 
     renf_t nf;
@@ -89,7 +88,7 @@ int main()
         arb_init(emb);
         arb_set_d(emb, 1.61803398874989);
         arb_add_error_2exp_si(emb, -20);
-        renf_init(nf, p, emb, 20 + n_randint(state, 100));
+        renf_init(nf, p, emb, 20 + (slong)n_randint(state, 100));
         fmpq_poly_clear(p);
         arb_clear(emb);
     }

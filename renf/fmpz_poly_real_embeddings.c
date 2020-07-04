@@ -9,6 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
+
 #include <e-antic/renf.h>
 #include <e-antic/poly_extra.h>
 
@@ -22,7 +24,9 @@ slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong
 
     n = fmpz_poly_num_real_roots_upper_bound(pol);
     c = _fmpz_vec_init(n);
-    k = (slong *) flint_malloc(n * sizeof(slong));
+
+    assert(n >= 0);
+    k = (slong *) flint_malloc((ulong)n * sizeof(slong));
 
     fmpz_poly_isolate_real_roots(NULL, &n_exact, c, k, &n_interval, pol);
 

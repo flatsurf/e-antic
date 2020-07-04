@@ -387,7 +387,7 @@ std::string renf_elem_class::to_string(int flags) const noexcept
         }
         if (flags & EANTIC_STR_D)
         {
-            char * u = (char *) flint_malloc(20 * sizeof(char));
+            char * u = reinterpret_cast<char *>(flint_malloc(20 * sizeof(char)));
             sprintf(u, "%lf", fmpq_get_d(b));
             s += u;
             flint_free(u);

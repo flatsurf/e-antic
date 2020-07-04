@@ -27,7 +27,7 @@ int main()
         mp_bitcnt_t bits;
         fmpq * vec;
 
-        n = n_randint(state, 20);
+        n = (slong)n_randint(state, 20);
         vec = _fmpq_vec_init(n);
         bits = 21 + n_randint(state, 200);
         _fmpq_vec_randtest_uniq_sorted(vec, state, n, bits);

@@ -19,15 +19,15 @@ int main()
 
     for (iter = 0; iter < 200; iter++)
     {
-        slong len = 2 + n_randint(state, 30);
-        slong prec = 8 + n_randint(state, 2048);
+        slong len = 2 + (slong)n_randint(state, 30);
+        slong prec = 8 + (slong)n_randint(state, 2048);
         mp_bitcnt_t bits = 10 + n_randint(state, 30);
 
         slong test;
         renf_t nf;
 
         renf_randtest(nf, state, len, prec, bits);
-        test = abs(_fmpz_vec_max_bits(nf->nf->pol->coeffs,
+        test = labs(_fmpz_vec_max_bits(nf->nf->pol->coeffs,
                 nf->nf->pol->length));
         if (test > bits)
         {
@@ -35,7 +35,7 @@ int main()
                     test, bits);
             return 1;
         }
-        test = fmpz_bits(nf->nf->pol->den);
+        test = (slong)fmpz_bits(nf->nf->pol->den);
         if (test > bits)
         {
             printf("ERROR: too many bits in denominator, got %lu instead of %lu\n",

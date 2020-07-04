@@ -33,7 +33,7 @@ int _fmpz_poly_sgn_at_half(fmpz * pol, slong len)
     k = len;
     for (j = 0; j <= len - 1; j++, k--)
     {
-        fmpz_mul_2exp(y, pol + j, k);
+        fmpz_mul_2exp(y, pol + j, (ulong)k);
         fmpz_add(x, x, y);
     }
 

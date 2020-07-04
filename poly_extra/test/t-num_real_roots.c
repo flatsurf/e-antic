@@ -27,7 +27,7 @@ int main()
         fmpz_poly_init(p);
 
         do{
-            fmpz_poly_randtest_not_zero(p, state, 10 + n_randint(state, 50), 10 + n_randint(state, 100));
+            fmpz_poly_randtest_not_zero(p, state, 10 + (slong)n_randint(state, 50), 10 + n_randint(state, 100));
         } while (!fmpz_poly_is_squarefree(p));
 
         k1 = fmpz_poly_num_real_roots_sturm(p);

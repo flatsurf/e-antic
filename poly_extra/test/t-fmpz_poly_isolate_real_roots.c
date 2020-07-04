@@ -27,13 +27,13 @@ int check_isolation(fmpz * c, slong k, fmpq_t a)
     fmpq_add_si(r2, r2, 1);
     if (k > 0)
     {
-        fmpq_mul_2exp(r1, r1, k);
-        fmpq_mul_2exp(r2, r2, k);
+        fmpq_mul_2exp(r1, r1, (ulong)k);
+        fmpq_mul_2exp(r2, r2, (ulong)k);
     }
     else if (k < 0)
     {
-        fmpq_div_2exp(r1, r1, -k);
-        fmpq_div_2exp(r2, r2, -k);
+        fmpq_div_2exp(r1, r1, (ulong)-k);
+        fmpq_div_2exp(r2, r2, (ulong)-k);
     }
     if (fmpq_cmp(r1, a) >= 0 || fmpq_cmp(r2, a) <= 0)
     {

@@ -48,7 +48,7 @@ int main(void)
 
     fmpq_init(k);
     fmpq_set_si(k, 5, 1);
-    renf_init_nth_root_fmpq(nf, k, 2, 20 + n_randint(state, 100));
+    renf_init_nth_root_fmpq(nf, k, 2, 20 + (slong)n_randint(state, 100));
     renf_elem_init(a, nf);
 
     fmpq_poly_init(pol);

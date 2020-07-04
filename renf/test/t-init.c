@@ -75,7 +75,7 @@ void check_init(fmpq_poly_t p, double demb, double rad1, double rad2, slong iter
     arb_init(emb);
     for (i = 0; i < iter; i++)
     {
-        prec = 8 + n_randint(state, 2048);
+        prec = 8 + (slong)n_randint(state, 2048);
         randomized_embedding(emb, demb, rad1, rad2);
 
         renf_init(nf, p, emb, prec);

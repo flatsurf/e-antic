@@ -28,7 +28,7 @@ int main()
         fmpz_poly_init(q1);
         fmpz_poly_init(q2);
 
-        fmpz_poly_randtest(p, state, 1 + n_randint(state, 20), 10 + n_randint(state, 100));
+        fmpz_poly_randtest(p, state, 1 + (slong)n_randint(state, 20), 10 + n_randint(state, 100));
 
         fmpz_poly_squarefree_part(q1, p);
 
