@@ -20,7 +20,7 @@ check_PROGRAMS =
 dist_doc_DATA =
 
 # TODO: we currently build all tests with linked c++ libraries
-LDADD = libeanticxx.la libeantic.la -larb -lflint -lgmpxx -lgmp
+LDADD = libeanticxx.la libeantic.la @LIBS@ -lgmpxx -lgmp
 
 @VALGRIND_CHECK_RULES@
 
