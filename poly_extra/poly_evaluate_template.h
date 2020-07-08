@@ -94,7 +94,6 @@ void FMPQ_POLY_EVALUATE(NUM_T res, const fmpq_poly_t pol, const NUM_T a, slong p
 #undef INIT
 #undef ZERO
 #undef MUL
-#undef ADD
 #undef ADD_FMPZ
 #undef DIV_FMPZ
 #undef SWAP
