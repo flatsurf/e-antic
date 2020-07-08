@@ -49,6 +49,6 @@ int main()
     fmpq_clear(d);
     renf_clear(nf);
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

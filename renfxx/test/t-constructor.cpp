@@ -15,7 +15,7 @@
 
 using namespace eantic;
 
-void check_equal(renf_elem_class& a, renf_elem_class& b)
+static void check_equal(renf_elem_class& a, renf_elem_class& b)
 {
     if (a != b)
     {
@@ -27,7 +27,7 @@ void check_equal(renf_elem_class& a, renf_elem_class& b)
     }
 }
 
-void check_equal(renf_elem_class& a, slong b)
+static void check_equal(renf_elem_class& a, slong b)
 {
     if (a != b)
     {
@@ -142,6 +142,6 @@ int main(void)
         check_equal(a, b);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

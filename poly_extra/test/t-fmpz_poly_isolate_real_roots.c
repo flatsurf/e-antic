@@ -14,7 +14,7 @@
 
 /* check that a (= approximation of polynomial root) is in between */
 /* c 2^k and (c+1) 2^k (c and k are produced by root isolation).   */
-int check_isolation(fmpz * c, slong k, fmpq_t a)
+static int check_isolation(fmpz * c, slong k, fmpq_t a)
 {
     fmpq_t r1, r2;
 

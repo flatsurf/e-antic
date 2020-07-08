@@ -11,6 +11,8 @@
 */
 
 #include <cassert>
+#include <iostream>
+#include <cstdlib>
 #include <e-antic/renfxx.h>
 
 namespace eantic {
@@ -81,9 +83,10 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std:
 
     if (i != nullptr)
     {
-        t = static_cast<char *>(flint_malloc((i - s + 1) * sizeof(char)));
-        strncpy(t, s, i - s);
-        t[i - s] = '\0';
+        ulong len = static_cast<ulong>(i - s);
+        t = static_cast<char *>(flint_malloc((len + 1) * sizeof(char)));
+        strncpy(t, s, len);
+        t[len] = '\0';
     }
     else
     {
@@ -350,13 +353,13 @@ std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
         fmpq_poly_t f;
         fmpq_poly_init(f);
         nf_elem_get_fmpq_poly(f, a->elem, nf->renf_t()->nf);
-        for (size_t i = 0; i < fmpq_poly_length(f); i++)
+        for (slong i = 0; i < fmpq_poly_length(f); i++)
         {
             fmpz_get_mpz(x.__get_mp(), fmpq_poly_numref(f) + i);
             res.push_back(x);
         }
-        size_t deg = fmpq_poly_degree(nf->renf_t()->nf->pol);
-        for (size_t i = fmpq_poly_length(f); i < deg; i++)
+        slong deg = fmpq_poly_degree(nf->renf_t()->nf->pol);
+        for (slong i = fmpq_poly_length(f); i < deg; i++)
             res.push_back(mpz_class(0));
         fmpq_poly_clear(f);
     }
@@ -548,11 +551,11 @@ renf_elem_class renf_elem_class::pow(int exp) const noexcept
     if (exp < 0)
     {
         renf_elem_inv(res.renf_elem_t(), renf_elem_t(), parent()->renf_t());
-        renf_elem_pow(res.renf_elem_t(), res.renf_elem_t(), -exp, parent()->renf_t());
+        renf_elem_pow(res.renf_elem_t(), res.renf_elem_t(), static_cast<ulong>(-exp), parent()->renf_t());
     }
     else
     {
-        renf_elem_pow(res.renf_elem_t(), renf_elem_t(), exp, parent()->renf_t());
+        renf_elem_pow(res.renf_elem_t(), renf_elem_t(), static_cast<ulong>(exp), parent()->renf_t());
     }
 
     return res;
@@ -624,28 +627,22 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept { re
 
 double renf_elem_class::get_d() const noexcept { return static_cast<double>(*this); }
 
-void renf_elem_class::promote(std::shared_ptr<const renf_class> nf) noexcept
+void renf_elem_class::promote(std::shared_ptr<const renf_class> other) noexcept
 {
     if (is_fmpq())
     {
-        renf_elem_class promoted = renf_elem_class(nf);
+        renf_elem_class promoted = renf_elem_class(other);
         promoted.assign(b);
         *this = std::move(promoted);
     }
     else
     {
-        if (*this->nf == *nf)
+        if (*this->nf == *other)
             return;
-        else
-#ifdef __GNUG__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wterminate"
-#endif
-            throw std::logic_error("not implemented: cannot promote a "
-                                   "renf_elem_class to a new number field");
-#ifdef __GNUG__
-#pragma GCC diagnostic pop
-#endif
+        else {
+            std::cerr << "not implemented: cannot promote a renf_elem_class to a new number field" << std::endl;
+            abort();
+        }
     }
 }
 

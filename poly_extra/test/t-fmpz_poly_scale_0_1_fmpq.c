@@ -85,7 +85,7 @@ int main()
         _fmpq_vec_clear(v2, n);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

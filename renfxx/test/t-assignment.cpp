@@ -11,8 +11,8 @@
 
 #include <e-antic/renfxx.h>
 
-#include <limits.h>
 #include <stdexcept>
+#include <limits>
 
 using namespace eantic;
 
@@ -38,9 +38,9 @@ int main(void)
             if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from int is wrong");
 
-            renf_elem_class d((int) INT_MIN);
-            renf_elem_class e((int) INT_MAX);
-            if (d != (int) INT_MIN || e != (int) INT_MAX)
+            renf_elem_class d(std::numeric_limits<int>::min());
+            renf_elem_class e(std::numeric_limits<int>::max());
+            if (d != std::numeric_limits<int>::min() || e != std::numeric_limits<int>::max())
                 throw std::runtime_error("constructor from INT_MIN/INT_MAX is wrong");
         }
 
@@ -53,8 +53,8 @@ int main(void)
             if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from int is wrong");
 
-            renf_elem_class d((unsigned int) UINT_MAX);
-            if (d != (unsigned int) UINT_MAX)
+            renf_elem_class d(std::numeric_limits<unsigned int>::max());
+            if (d != std::numeric_limits<unsigned int>::max())
                 throw std::runtime_error("constructor from UINT_MAX is wrong");
         }
 
@@ -67,9 +67,9 @@ int main(void)
             if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from long is wrong");
 
-            renf_elem_class d((long) LONG_MIN);
-            renf_elem_class e((long) LONG_MAX);
-            if (d != (long) LONG_MIN || e != (long) LONG_MAX)
+            renf_elem_class d(std::numeric_limits<long>::min());
+            renf_elem_class e(std::numeric_limits<long>::max());
+            if (d != std::numeric_limits<long>::min() || e != std::numeric_limits<long>::max())
                 throw std::runtime_error("constructor from LONG_MIN/LONG_MAX is wrong");
         }
 
@@ -82,8 +82,8 @@ int main(void)
             if (a != 2 || b != 2 || 2 != a || 2 != b)
                 throw std::runtime_error("constructor from long is wrong");
 
-            renf_elem_class d((unsigned long) ULONG_MAX);
-            if (d != (unsigned long) ULONG_MAX)
+            renf_elem_class d(std::numeric_limits<unsigned long>::max());
+            if (d != std::numeric_limits<unsigned long>::max())
                 throw std::runtime_error("constructor from ULONG_MAX is wrong");
         }
 
@@ -194,7 +194,7 @@ int main(void)
 
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

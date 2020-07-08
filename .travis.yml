@@ -1,7 +1,7 @@
 language: python
 env:
   - EXTRA_CFLAGS="-Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations" EXTRA_CXXFLAGS="-Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel"
-  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx EXTRA_CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion" EXTRA_CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-missing-prototypes"
+  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx EXTRA_CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion" EXTRA_CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-zero-as-null-pointer-constant"
 services:
   - docker
 install:

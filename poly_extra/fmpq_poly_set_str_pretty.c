@@ -15,7 +15,7 @@
 #include <string.h>
 #include <errno.h>
 
-int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
+static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
 {
     char tmp;
     char * x = w;
@@ -127,7 +127,7 @@ int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
     }
 }
 
-int str_is_varname(const char* var)
+static int str_is_varname(const char* var)
 {
     if (isalpha(*var) || *var == '_')
         var++;

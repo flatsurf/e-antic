@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void check_valid(char * s, char * var, char * ans)
+static void check_valid(char * s, char * var, char * ans)
 {
     fmpq_poly_t p1, p2;
     int err1, err2;
@@ -50,7 +50,7 @@ void check_valid(char * s, char * var, char * ans)
     fmpq_poly_clear(p2);
 }
 
-void check_invalid(char *w, char * var)
+static void check_invalid(char *w, char * var)
 {
     fmpq_poly_t p;
     int ans;
@@ -146,7 +146,7 @@ int main(void)
 
         }
 
-        FLINT_TEST_CLEANUP(state);
+        FLINT_TEST_CLEANUP(state)
     }
 
     return 0;

@@ -20,7 +20,7 @@
 
 using namespace eantic;
 
-void test_rational_content(std::shared_ptr<const renf_class> K)
+static void test_rational_content(std::shared_ptr<const renf_class> K)
 {
     if (renf_elem_class(K, 0).num_content() != 0)
         throw std::runtime_error("content of 0 should be 0");
@@ -34,7 +34,7 @@ void test_rational_content(std::shared_ptr<const renf_class> K)
         throw std::runtime_error("content of -2/3 should be 2");
 }
 
-void test_degree_one_content(std::shared_ptr<const renf_class> K)
+static void test_degree_one_content(std::shared_ptr<const renf_class> K)
 {
 
     if (renf_elem_class(K, "x").num_content() != 1)
@@ -47,7 +47,7 @@ void test_degree_one_content(std::shared_ptr<const renf_class> K)
         throw std::runtime_error("content of -3*x+6 should be 3");
 }
 
-void test_degree_two_content(std::shared_ptr<const renf_class> K)
+static void test_degree_two_content(std::shared_ptr<const renf_class> K)
 {
     if (renf_elem_class(K, "x^2").num_content() != 1)
         throw std::runtime_error("content of x^2 should be 1");

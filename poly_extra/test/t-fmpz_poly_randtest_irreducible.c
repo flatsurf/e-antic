@@ -13,7 +13,7 @@
 
 int main(void)
 {
-    slong len;
+    ulong len;
     mp_bitcnt_t maxbits;
     FLINT_TEST_INIT(state);
 
@@ -22,8 +22,8 @@ int main(void)
         fmpz_poly_t p;
         fmpz_poly_init(p);
         maxbits = 2 + n_randint(state, 100);
-        fmpz_poly_randtest_irreducible(p, state, len, maxbits);
-        if (fmpz_poly_length(p) > len)
+        fmpz_poly_randtest_irreducible(p, state, (slong)len, maxbits);
+        if (fmpz_poly_length(p) > (slong)len)
         {
             fprintf(stderr, "ERROR: too long %lu instead of len=%lu",
                     fmpz_poly_length(p),
@@ -33,7 +33,7 @@ int main(void)
             return 1;
         }
 
-        if (labs(fmpz_poly_max_bits(p)) > maxbits)
+        if (labs(fmpz_poly_max_bits(p)) > (slong)maxbits)
         {
             fprintf(stderr, "ERROR: too many bits %lu instead of maxbits=%lu\n",
                     labs(fmpz_poly_max_bits(p)),
@@ -46,6 +46,6 @@ int main(void)
         fmpz_poly_clear(p);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

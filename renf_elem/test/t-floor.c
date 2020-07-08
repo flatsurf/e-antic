@@ -12,7 +12,7 @@
 
 #include <e-antic/renf_elem.h>
 
-void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
+static void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
 {
     fmpz_t n;
     int test;
@@ -39,7 +39,7 @@ void check_floor(renf_elem_t a, renf_t nf, int ans, const char * s)
     fmpq_clear(k); \
     fmpq_poly_clear(p);
  
-void test_field1_small(flint_rand_t state)
+static void test_field1_small(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
     ulong iter;
@@ -78,10 +78,10 @@ void test_field1_small(flint_rand_t state)
         check_floor(a, nf, -(int)iter % 2, "sqrt(5)");
     }
 
-    TEST_FLOOR_CLEANUP;
+    TEST_FLOOR_CLEANUP
 }
 
-void test_field1_big(flint_rand_t state)
+static void test_field1_big(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] with very small elements */
     ulong iter;
@@ -124,11 +124,11 @@ void test_field1_big(flint_rand_t state)
         fmpz_clear(n);
     }
 
-    TEST_FLOOR_CLEANUP;
+    TEST_FLOOR_CLEANUP
 }
 
 
-void test_field2(flint_rand_t state)
+static void test_field2(flint_rand_t state)
 {
     /* tests in QQ[3^(1/4)] */
     renf_t nf;
@@ -213,7 +213,7 @@ void test_field2(flint_rand_t state)
 
     check_floor(a, nf, 230, "3^(1/4)");
 
-    TEST_FLOOR_CLEANUP;
+    TEST_FLOOR_CLEANUP
 }
 
 int main()
@@ -263,7 +263,7 @@ int main()
     }
 
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

@@ -13,7 +13,7 @@
 
 #include <e-antic/renf_elem.h>
 
-void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
+static void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
 {
     int test;
 
@@ -27,7 +27,7 @@ void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
     }
 }
 
-void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
+static void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
 {
     int test;
 
@@ -76,7 +76,7 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
     renf_elem_clear(b, nf); \
     renf_clear(nf);
 
-void test_field1(flint_rand_t state)
+static void test_field1(flint_rand_t state)
 {
     /* QQ[sqrt(5)] */
 
@@ -110,10 +110,10 @@ void test_field1(flint_rand_t state)
         check_cmp(a, b, nf, 2 * ((int)iter % 2) - 1);
     }
 
-    TEST_CMP_CLEANUP;
+    TEST_CMP_CLEANUP
 }
 
-void test_field2(flint_rand_t state)
+static void test_field2(flint_rand_t state)
 {
     fmpq_t k;
     fmpq_poly_t pol;
@@ -233,7 +233,7 @@ void test_field2(flint_rand_t state)
 
     check_cmp(a, b, nf, -1);
 
-    TEST_CMP_CLEANUP;
+    TEST_CMP_CLEANUP
 }
 
 int main()
@@ -284,6 +284,6 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

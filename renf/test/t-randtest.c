@@ -29,14 +29,14 @@ int main()
         renf_randtest(nf, state, len, prec, bits);
         test = labs(_fmpz_vec_max_bits(nf->nf->pol->coeffs,
                 nf->nf->pol->length));
-        if (test > bits)
+        if (test > (slong)bits)
         {
             printf("ERROR: too many bits in numerator, got %lu instead of %lu\n",
                     test, bits);
             return 1;
         }
         test = (slong)fmpz_bits(nf->nf->pol->den);
-        if (test > bits)
+        if (test > (slong)bits)
         {
             printf("ERROR: too many bits in denominator, got %lu instead of %lu\n",
                     test, bits);
@@ -46,6 +46,6 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

@@ -57,7 +57,7 @@ int main(void)
         fmpq_clear(d);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     printf("PASS\n");
     return 0;
 }

@@ -15,12 +15,12 @@
 #include <e-antic/renf.h>
 #include <e-antic/poly_extra.h>
 
-void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
+static void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
 {
     /* we build the ball that gives exactly (c 2^k, (c+1) 2^k) */
     /*  center: (2c+1) 2^(k-1) */
     /*  radius: 2^(k-1)        */
-    if (prec <= 0 || prec < fmpz_bits(c) + 2)
+    if (prec <= 0 || prec < (slong)fmpz_bits(c) + 2)
     {
         fprintf(stderr, "not enough precision");
         abort();

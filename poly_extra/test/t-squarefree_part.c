@@ -65,6 +65,6 @@ int main()
 
     printf("PASS\n");
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

@@ -44,9 +44,5 @@ int renf_elem_sgn(renf_elem_t a, renf_t nf)
         renf_refine_embedding(nf, prec);
         renf_elem_set_evaluation(a, nf, prec + cond);
     } while(1);
-
-    /* we should not get here */
-    abort();
-    return -3;
 }
 

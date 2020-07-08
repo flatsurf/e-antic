@@ -12,7 +12,7 @@
 #include <e-antic/renf.h>
 #include <e-antic/poly_extra.h>
 
-void check_renf(renf_t nf)
+static void check_renf(renf_t nf)
 {
     arb_ptr a;
     arb_t b;
@@ -45,7 +45,7 @@ void check_renf(renf_t nf)
 /* set res to a ball that :            */
 /*     - contains emb +/- rad1         */
 /*     - is contained in emb +/- rad 2 */
-void randomized_embedding(arb_t res, double emb, double rad1, double rad2)
+static void randomized_embedding(arb_t res, double emb, double rad1, double rad2)
 {
     double t; /* in +/- (rad2 - rad1) / 2 */
     double r; /* in [rad1 + |t|, rad2 - |t|]*/
@@ -66,7 +66,7 @@ void randomized_embedding(arb_t res, double emb, double rad1, double rad2)
     mag_set_d(arb_radref(res), r);
 }
 
-void check_init(fmpq_poly_t p, double demb, double rad1, double rad2, slong iter, flint_rand_t state)
+static void check_init(fmpq_poly_t p, double demb, double rad1, double rad2, slong iter, flint_rand_t state)
 {
     renf_t nf;
     arb_t emb;
@@ -123,7 +123,7 @@ int main()
     check_init(p, -0.48296797364451214901, 1e-15, 3, 100, state);
 
     fmpq_poly_clear(p);
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

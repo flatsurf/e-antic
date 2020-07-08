@@ -128,6 +128,6 @@ int main(void)
         check_order(mpq_class(1,3), mpq_class(1,2), K);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

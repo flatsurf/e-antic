@@ -12,7 +12,7 @@
 
 #include <e-antic/renf_elem.h>
 
-int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
+static int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
 {
     fmpz_t n;
     int test;
@@ -34,7 +34,7 @@ int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)
 
  
  
-void test_field1(flint_rand_t state)
+static void test_field1(flint_rand_t state)
 {
     /* tests in QQ[sqrt(5)] */
     ulong iter;
@@ -82,7 +82,7 @@ void test_field1(flint_rand_t state)
 }
 
 
-void test_field2(flint_rand_t state)
+static void test_field2(flint_rand_t state)
 {
     /* test in QQ[3^(1/4)] */
     renf_t nf;
@@ -218,7 +218,7 @@ int main()
         arb_clear(e);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

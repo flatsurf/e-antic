@@ -193,8 +193,6 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
         }
     }
 
-    std::cout << s << std::endl;
-
     a = (nf == nullptr) ? mpq_class(s) : renf_elem_class(nf->shared_from_this(), s);
 
     return is;

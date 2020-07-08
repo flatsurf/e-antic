@@ -13,13 +13,19 @@
 
 #include <e-antic/renf_elem.h>
 
-int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
+static int ne(double a, double b) {
+    if (isnan(a) || isnan(b))
+        return 0;
+    return a > b || a < b;
+}
+
+static int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
 {
     int sgn;
 
-    if (renf_elem_get_d(a, nf, ARF_RND_DOWN) != down ||
-        renf_elem_get_d(a, nf, ARF_RND_UP) != up ||
-        renf_elem_get_d(a, nf, ARF_RND_NEAR) != best)
+    if (ne(renf_elem_get_d(a, nf, ARF_RND_DOWN), down) ||
+        ne(renf_elem_get_d(a, nf, ARF_RND_UP), up) ||
+        ne(renf_elem_get_d(a, nf, ARF_RND_NEAR), best))
     {
         fprintf(stderr, "wrong DOWN/UP/NEAR\n");
         fprintf(stderr, "down: got %.30f and expect %.30f\n",
@@ -39,8 +45,8 @@ int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
     sgn = renf_elem_sgn(a, nf);
     if (sgn == 0)
     {
-        if (renf_elem_get_d(a, nf, ARF_RND_FLOOR) != 0 ||
-            renf_elem_get_d(a, nf, ARF_RND_CEIL) != 0)
+        if (ne(renf_elem_get_d(a, nf, ARF_RND_FLOOR), 0) ||
+            ne(renf_elem_get_d(a, nf, ARF_RND_CEIL), 0))
         {
             fprintf(stderr, "wrong FLOOR/CEIL\n");
             return 1;
@@ -48,8 +54,8 @@ int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
     }
     else if (sgn > 0)
     {
-        if (renf_elem_get_d(a, nf, ARF_RND_FLOOR) != down ||
-            renf_elem_get_d(a, nf, ARF_RND_CEIL) != up)
+        if (ne(renf_elem_get_d(a, nf, ARF_RND_FLOOR), down) ||
+            ne(renf_elem_get_d(a, nf, ARF_RND_CEIL), up))
         {
             fprintf(stderr, "wrong FLOOR/CEIL\n");
             return 1;
@@ -57,8 +63,8 @@ int check_approx(renf_elem_t a, renf_t nf, double down, double up, double best)
     }
     else
     {
-        if (renf_elem_get_d(a, nf, ARF_RND_FLOOR) != up ||
-            renf_elem_get_d(a, nf, ARF_RND_CEIL) != down)
+        if (ne(renf_elem_get_d(a, nf, ARF_RND_FLOOR), up) ||
+            ne(renf_elem_get_d(a, nf, ARF_RND_CEIL), down))
         {
             fprintf(stderr, "wrong FLOOR/CEIL\n");
             return 1;
@@ -156,7 +162,7 @@ int main()
 
     renf_clear(nf);
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

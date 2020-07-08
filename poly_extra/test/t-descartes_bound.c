@@ -56,7 +56,7 @@ int main()
         fmpz_poly_clear(q);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

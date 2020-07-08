@@ -112,7 +112,7 @@ int main(void)
     renf_elem_clear(a, nf);
     renf_clear(nf);
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

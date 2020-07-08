@@ -52,12 +52,23 @@ main(void)
         if (!result)
         {
             flint_printf("FAIL:\n");
-            flint_printf("f(x) = "), fmpz_poly_print_pretty(f, "x"), flint_printf("\n\n");
-            flint_printf("g(x) = "), fmpz_poly_print_pretty(g, "x"), flint_printf("\n\n");
-            flint_printf("res(f, h)/div  = "), fmpz_print(b), flint_printf("\n\n");
-            flint_printf("res_mod_div(f, h) = "), fmpz_print(a), flint_printf("\n\n");
-            flint_printf("divr = "), fmpz_print(div), flint_printf("\n\n");
-            flint_printf("bitsbound = %wd", nbits), flint_printf("\n\n");
+            flint_printf("f(x) = ");
+            fmpz_poly_print_pretty(f, "x");
+            flint_printf("\n\n");
+            flint_printf("g(x) = ");
+            fmpz_poly_print_pretty(g, "x");
+            flint_printf("\n\n");
+            flint_printf("res(f, h)/div  = ");
+            fmpz_print(b);
+            flint_printf("\n\n");
+            flint_printf("res_mod_div(f, h) = ");
+            fmpz_print(a);
+            flint_printf("\n\n");
+            flint_printf("divr = ");
+            fmpz_print(div);
+            flint_printf("\n\n");
+            flint_printf("bitsbound = %wd", nbits);
+            flint_printf("\n\n");
 
             abort();
         }
@@ -110,14 +121,31 @@ main(void)
         if (!result)
         {
             flint_printf("FAIL:\n");
-            flint_printf("p(x) = "), fmpz_poly_print_pretty(p, "x"), flint_printf("\n\n");
-            flint_printf("h(x) = "), fmpz_poly_print_pretty(h, "x"), flint_printf("\n\n");
-            flint_printf("res(p, h) = "), fmpz_print(c), flint_printf("\n\n");
-            flint_printf("res(p, h) = "), fmpz_print(a), flint_printf(" * "), fmpz_print(b), flint_printf("\n\n");
-            flint_printf("supplied divisor = "), fmpz_print(b), flint_printf("\n\n");
-            flint_printf("result should be = "), fmpz_print(a), flint_printf("\n\n");
-            flint_printf("res(p, h)/div    = "), fmpz_print(d), flint_printf("\n\n");
-            flint_printf("bitsbound for result = %wd", nbits), flint_printf("\n\n");
+            flint_printf("p(x) = ");
+            fmpz_poly_print_pretty(p, "x");
+            flint_printf("\n\n");
+            flint_printf("h(x) = ");
+            fmpz_poly_print_pretty(h, "x");
+            flint_printf("\n\n");
+            flint_printf("res(p, h) = ");
+            fmpz_print(c);
+            flint_printf("\n\n");
+            flint_printf("res(p, h) = ");
+            fmpz_print(a);
+            flint_printf(" * ");
+            fmpz_print(b);
+            flint_printf("\n\n");
+            flint_printf("supplied divisor = ");
+            fmpz_print(b);
+            flint_printf("\n\n");
+            flint_printf("result should be = ");
+            fmpz_print(a);
+            flint_printf("\n\n");
+            flint_printf("res(p, h)/div    = ");
+            fmpz_print(d);
+            flint_printf("\n\n");
+            flint_printf("bitsbound for result = %wd", nbits);
+            flint_printf("\n\n");
             abort();
         }
 
@@ -131,7 +159,7 @@ main(void)
         fmpz_poly_clear(p);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     
     flint_printf("PASS\n");
     return 0;

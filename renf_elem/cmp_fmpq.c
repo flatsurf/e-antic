@@ -12,33 +12,6 @@
 
 #include <e-antic/renf_elem.h>
 
-/* TODO: move it to ANTIC? */
-int _nf_equal_fmpq(const nf_elem_t a, const fmpq_t b, const nf_t nf)
-{
-    if (nf->flag & NF_LINEAR)
-    {
-        return (fmpz_equal(LNF_ELEM_NUMREF(a), fmpq_numref(b)) &&
-                fmpz_equal(LNF_ELEM_DENREF(a), fmpq_denref(b)));
-    }
-    else if (nf->flag & NF_QUADRATIC)
-    {
-        const fmpz * const num = QNF_ELEM_NUMREF(a);
-        const fmpz * const den = QNF_ELEM_DENREF(a);
-        return (fmpz_is_zero(num + 1) &&
-                fmpz_equal(num, fmpq_numref(b)) &&
-                fmpz_equal(den, fmpq_denref(b)));
-    }
-    else
-    {
-        if (NF_ELEM(a)->length > 1) return 0;
-        else if (NF_ELEM(a)->length == 0) return fmpq_is_zero(b);
-        return (fmpz_equal(NF_ELEM_NUMREF(a), fmpq_numref(b)) &&
-                fmpz_equal(NF_ELEM_DENREF(a), fmpq_denref(b)));
-    }
-
-    return -1;
-}
-
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf)
 {
     int s;

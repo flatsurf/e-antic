@@ -12,7 +12,7 @@
 #include <e-antic/poly_extra.h>
 #include <flint/fmpq_vec.h>
 
-void _slong_vec_print(const slong * vec, slong len)
+static void _slong_vec_print(const slong * vec, slong len)
 {
     slong i;
     flint_printf("%wd", len);
@@ -21,7 +21,7 @@ void _slong_vec_print(const slong * vec, slong len)
 }
 
 
-void check_intervals(
+static void check_intervals(
       fmpq * vec, slong len,
       fmpq * exact, slong n_exact,
       fmpz * c_array, slong * k_array, slong n_interval)
@@ -131,7 +131,7 @@ void check_intervals(
     fmpq_clear(y);
 }
 
-void fmpz_poly_from_fmpq_roots(fmpz_poly_t p, const fmpq * vec, slong n)
+static void fmpz_poly_from_fmpq_roots(fmpz_poly_t p, const fmpq * vec, slong n)
 {
     fmpz_poly_t q;
     slong i;
@@ -211,7 +211,7 @@ int main(void)
         }
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     printf("PASS\n");
     return 0;
