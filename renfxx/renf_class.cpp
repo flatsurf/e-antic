@@ -10,6 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include <e-antic/renfxx.h>
 #include "external/unique-factory/unique_factory.hpp"
 
@@ -130,7 +132,7 @@ bool renf_class::operator==(const renf_class & other) const noexcept
 
 std::istream & renf_class::set_pword(std::istream & is) const noexcept
 {
-    is.pword(xalloc) = (void *) this;
+    is.pword(xalloc) = const_cast<void*>(reinterpret_cast<const void*>(this));
     return is;
 }
 
@@ -161,29 +163,34 @@ std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)
 
 std::istream & operator>>(std::istream & is, renf_elem_class & a)
 {
-    renf_class const * nf = (renf_class *) is.pword(xalloc);
+    renf_class const * nf = reinterpret_cast<renf_class *>(is.pword(xalloc));
 
     std::string s; // part of the stream to use
-    char c; // current character in the stream
 
     if (is.eof()) throw std::invalid_argument("empty stream");
 
-    c = is.peek();
-    if (c == '(' && nf != nullptr)
+    bool paren = is.peek() == std::char_traits<char>::to_int_type('(');
+    if (paren && nf != nullptr)
     {
         // read until ")"
         is.get();
-        while (!is.eof() && is.peek() != ')' && is.peek() != EOF)
-            s += is.get();
+        while (!is.eof() && is.peek() != std::char_traits<char>::to_int_type(')') && is.peek() != EOF) {
+            char c;
+            is >> c;
+            s += c;
+        }
         if (is.eof()) throw std::invalid_argument("invalid stream");
         is.get(); // remove ) from the stream
     }
     else
     {
-        if (c == '(') is.get();
+        if (paren) is.get();
         // read until space or EOF
-        while (!is.eof() && !isspace(is.peek()) && is.peek() != EOF)
-            s += is.get();
+        while (!is.eof() && !isspace(is.peek()) && is.peek() != EOF) {
+            char c;
+            is >> c;
+            s += c;
+        }
     }
 
     a = (nf == nullptr) ? mpq_class(s) : renf_elem_class(nf->shared_from_this(), s);

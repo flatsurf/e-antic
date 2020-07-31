@@ -36,7 +36,7 @@ int main()
             fmpq_randtest(b, state, 30);
         }while (fmpq_equal(a, b));
 
-        n = 1 + n_randint(state, 20);
+        n = 1 + (slong)n_randint(state, 20);
         
         v1 = _fmpq_vec_init(n);
         v2 = _fmpq_vec_init(n);
@@ -85,7 +85,7 @@ int main()
         _fmpq_vec_clear(v2, n);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

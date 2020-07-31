@@ -24,7 +24,7 @@ void save(Archive & archive, const std::shared_ptr<const renf_class> & self)
     uint32_t id = archive.registerSharedPointer(self.get());
 
     archive(cereal::make_nvp("shared", id));
-    if ( id & cereal::detail::msb_32bit )
+    if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {
         // This is the first time cereal sees this renf_class, so we actually
         // store it. Future copies only need the id to resolve to a shared_ptr
@@ -64,7 +64,7 @@ void load(Archive & archive, std::shared_ptr<const renf_class> & self)
     uint32_t id;
     archive(cereal::make_nvp("shared", id));
 
-    if ( id & cereal::detail::msb_32bit )
+    if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {
         bool rational;
         archive(rational);

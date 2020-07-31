@@ -17,7 +17,7 @@ using namespace eantic;
 int main(void)
 {
     FLINT_TEST_INIT(state);
-    int iter;
+    ulong iter;
 
     {
         renf_elem_class a(mpq_class("3/2"));
@@ -45,7 +45,7 @@ int main(void)
         fmpq_poly_set_coeff_si(p, 1, -1);
         for (iter = 1; iter < 2000; iter++)
         {
-            fmpz_fib_ui(fmpq_numref(k), iter+1);
+            fmpz_fib_ui(fmpq_numref(k), iter + 1);
             fmpz_fib_ui(fmpq_denref(k), iter);
             fmpq_poly_set_coeff_fmpq(p, 0, k);
             renf_elem_set_fmpq_poly(a.get_renf_elem(), p, K->get_renf());
@@ -63,7 +63,7 @@ int main(void)
         fmpq_poly_clear(p);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

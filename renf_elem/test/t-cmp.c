@@ -13,7 +13,7 @@
 
 #include <e-antic/renf_elem.h>
 
-void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
+static void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
 {
     int test;
 
@@ -27,7 +27,7 @@ void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
     }
 }
 
-void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
+static void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
 {
     int test;
 
@@ -76,11 +76,11 @@ void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
     renf_elem_clear(b, nf); \
     renf_clear(nf);
 
-void test_field1(flint_rand_t state)
+static void test_field1(flint_rand_t state)
 {
     /* QQ[sqrt(5)] */
 
-    int iter;
+    ulong iter;
     fmpq_t k;
     fmpq_poly_t pol;
     arb_t emb;
@@ -91,7 +91,7 @@ void test_field1(flint_rand_t state)
 
     fmpq_init(k);
     fmpq_set_si(k, 5, 1);
-    renf_init_nth_root_fmpq(nf, k, 2, 20 + n_randint(state, 10));
+    renf_init_nth_root_fmpq(nf, k, 2, 20 + (slong)n_randint(state, 10));
     renf_elem_init(a, nf);
     renf_elem_init(b, nf);
 
@@ -107,13 +107,13 @@ void test_field1(flint_rand_t state)
         fmpz_fib_ui(fmpq_numref(k), iter + 1);
         fmpz_fib_ui(fmpq_denref(k), iter);
         renf_elem_set_fmpq(b, k, nf);
-        check_cmp(a,b,nf, -1 + 2 * (iter % 2));
+        check_cmp(a, b, nf, 2 * ((int)iter % 2) - 1);
     }
 
-    TEST_CMP_CLEANUP;
+    TEST_CMP_CLEANUP
 }
 
-void test_field2(flint_rand_t state)
+static void test_field2(flint_rand_t state)
 {
     fmpq_t k;
     fmpq_poly_t pol;
@@ -152,7 +152,7 @@ void test_field2(flint_rand_t state)
     arb_init(emb);
     arb_set_d(emb, 0.02406681384217074);
     arb_add_error_2exp_si(emb, -30);
-    renf_init(nf, pol, emb, 20 + n_randint(state, 10));
+    renf_init(nf, pol, emb, 20 + (slong)n_randint(state, 10));
 
     renf_elem_init(a, nf);
     renf_elem_init(b, nf);
@@ -233,7 +233,7 @@ void test_field2(flint_rand_t state)
 
     check_cmp(a, b, nf, -1);
 
-    TEST_CMP_CLEANUP;
+    TEST_CMP_CLEANUP
 }
 
 int main()
@@ -251,8 +251,8 @@ int main()
         fmpq_t x;
 
         renf_randtest(nf, state,
-                2 + n_randint(state, 10),   /* length */
-                8 + n_randint(state, 2048), /* prec */
+                2 + (slong)n_randint(state, 10),   /* length */
+                8 + (slong)n_randint(state, 2048), /* prec */
                 10 + n_randint(state, 5)    /* bits */
                 ); 
         renf_elem_init(a, nf);
@@ -284,6 +284,6 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

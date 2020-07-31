@@ -21,7 +21,7 @@ int main()
 
     for (iter = 0; iter < 100; iter++)
     {
-        int i, n;
+        slong i, n;
         fmpz_poly_t p;
         renf nfemb[MAX_DEGREE];
 
@@ -37,7 +37,7 @@ int main()
         for (i = 0; i < n; i++) renf_clear(nfemb + i);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

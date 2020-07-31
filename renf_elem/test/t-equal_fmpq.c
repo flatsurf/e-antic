@@ -20,7 +20,7 @@ int main()
     fmpq_init(d);
 
     fmpq_set_si(d, 3, 1);
-    renf_init_nth_root_fmpq(nf, d, 4, 20 + n_randint(state, 30));
+    renf_init_nth_root_fmpq(nf, d, 4, 20 + (slong)n_randint(state, 30));
 
     {
         renf_elem_t a;
@@ -49,6 +49,6 @@ int main()
     fmpq_clear(d);
     renf_clear(nf);
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

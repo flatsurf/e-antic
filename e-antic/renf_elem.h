@@ -90,13 +90,13 @@ int renf_elem_cmp_si(renf_elem_t a, const slong b, renf_t nf)
 }
 
 static __inline__
-int renf_elem_cmp_ui(renf_elem_t a, const slong b, renf_t nf)
+int renf_elem_cmp_ui(renf_elem_t a, const ulong b, renf_t nf)
 {
     int s;
     fmpq_t bq;
 
     fmpq_init(bq);
-    fmpz_set_si(fmpq_numref(bq), b);
+    fmpz_set_ui(fmpq_numref(bq), b);
     fmpz_one(fmpq_denref(bq));
 
     s = renf_elem_cmp_fmpq(a, bq, nf);

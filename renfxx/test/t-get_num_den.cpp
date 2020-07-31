@@ -20,7 +20,7 @@
 
 using namespace eantic;
 
-void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
+static void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
 {
     renf_elem_class a(K);
     a = num;
@@ -34,7 +34,7 @@ void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
     }
 }
 
-void check_reconstruct(std::shared_ptr<const renf_class> K, renf_elem_class& a)
+static void check_reconstruct(std::shared_ptr<const renf_class> K, renf_elem_class& a)
 {
     renf_elem_class g = K->gen();
     renf_elem_class gg = 1;
@@ -42,7 +42,7 @@ void check_reconstruct(std::shared_ptr<const renf_class> K, renf_elem_class& a)
 
     std::cerr << "bx = " << b << std::endl;
     std::vector<mpz_class> num = a.get_num_vector();
-    if (num.size() != K->degree())
+    if (static_cast<slong>(num.size()) != K->degree())
         throw std::runtime_error("wrong vector length");
     for (std::vector<mpz_class>::iterator it = num.begin(); it < num.end(); it++)
     {

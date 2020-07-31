@@ -43,7 +43,6 @@ libeantic_la_SOURCES +=                         \
     poly_extra/num_real_roots_0_1_sturm.c       \
     poly_extra/fmpz_poly_positive_root_upper_bound_2exp.c \
     poly_extra/fmpz_poly_isolate_real_roots.c     \
-    poly_extra/sgn_at_half.c                      \
     poly_extra/fmpz_poly_relative_condition_number_2exp.c
 
 noinst_HEADERS +=                                    \

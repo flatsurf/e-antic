@@ -15,11 +15,10 @@
 #include <string.h>
 #include <errno.h>
 
-int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
+static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
 {
     char tmp;
     char * x = w;
-    char * xx;
     char * y;
     int sign = 1;
     int ans;
@@ -128,7 +127,7 @@ int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
     }
 }
 
-int str_is_varname(const char* var)
+static int str_is_varname(const char* var)
 {
     if (isalpha(*var) || *var == '_')
         var++;
@@ -150,7 +149,6 @@ int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var)
     if (!str_is_varname(var))
         return -1;
 
-    size_t n = strlen(var);
     char * z = (char *) flint_malloc((strlen(s) + 1) * sizeof(char));
 
     fmpq_t coeff;
@@ -176,7 +174,7 @@ int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var)
         /* jump over non sign */
         while (*end != '\0' && *end != '+' && *end != '-') end++;
 
-        strncpy(z, start, end - start);
+        strncpy(z, start, (ulong)(end - start));
         z[end - start] = '\0';
 
         ans = _monomial_set_str(coeff, &pow, var, z);
@@ -212,7 +210,6 @@ int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
     if (!str_is_varname(var))
         return -1;
 
-    size_t n = strlen(var);
     char * z = (char *) flint_malloc((strlen(s) + 1) * sizeof(char));
 
     fmpq_t coeff;
@@ -237,7 +234,7 @@ int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var)
         /* jump over non sign */
         while (*end != '\0' && *end != '+' && *end != '-') end++;
 
-        strncpy(z, start, end - start);
+        strncpy(z, start, (ulong)(end - start));
         z[end - start] = '\0';
 
         ans = _monomial_set_str(coeff, &pow, var, z);

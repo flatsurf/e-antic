@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void check_valid(char * s, char * var, char * ans)
+static void check_valid(char * s, char * var, char * ans)
 {
     fmpz_poly_t p1, p2;
     int err1, err2;
@@ -50,7 +50,7 @@ void check_valid(char * s, char * var, char * ans)
     fmpz_poly_clear(p2);
 }
 
-void check_invalid(char *w, char * var)
+static void check_invalid(char *w, char * var)
 {
     fmpz_poly_t p;
     int ans;
@@ -130,7 +130,7 @@ int main(void)
             fmpz_poly_init(a);
             fmpz_poly_init(b);
 
-            fmpz_poly_randtest(a, state, n_randint(state, 100), 200);
+            fmpz_poly_randtest(a, state, (slong)n_randint(state, 100), 200);
             for (j = 0; j < 3; j++)
             {
                 char * s = fmpz_poly_get_str_pretty(a, varname[j]);
@@ -144,7 +144,7 @@ int main(void)
             fmpz_poly_clear(b);
         }
 
-        FLINT_TEST_CLEANUP(state);
+        FLINT_TEST_CLEANUP(state)
     }
 
     return 0;

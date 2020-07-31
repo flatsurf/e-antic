@@ -18,7 +18,7 @@ int main()
     FLINT_TEST_INIT(state);
 
     {
-        ulong k;
+        slong k;
 
         arb_t a,b;
         arf_t c,d;
@@ -36,9 +36,9 @@ int main()
         fmpq_poly_set_coeff_si(p, 1, 1);
         for (iter = 0; iter < 5000; iter++)
         {
-            k = n_randint(state, 10000);
+            k = (slong)n_randint(state, 10000);
             arb_set_si(a, k);
-            fmpq_poly_evaluate_arb(b, p, a, 30 + n_randint(state, 100));
+            fmpq_poly_evaluate_arb(b, p, a, 30 + (slong)n_randint(state, 100));
             if (!arb_equal_si(b, k + 1))
             {
                 printf("FAIL (fmpq_poly_evaluate_arb):\n");
@@ -48,7 +48,7 @@ int main()
                 abort();
             }
             arf_set_si(c, k);
-            fmpq_poly_evaluate_arf(d, p, c, 30 + n_randint(state, 100));
+            fmpq_poly_evaluate_arf(d, p, c, 30 + (slong)n_randint(state, 100));
             if (!arf_equal_si(d, k + 1))
             {
                 printf("FAIL (fmpq_poly_evaluate_arf):\n");
@@ -64,10 +64,10 @@ int main()
         fmpq_poly_set_coeff_si(p, 2, 1);
         for (iter = 0; iter < 1000; iter++)
         {
-            k = n_randint(state, 10000);
+            k = (slong)n_randint(state, 10000);
 
             arb_set_si(a, k);
-            fmpq_poly_evaluate_arb(b, p, a, 30 + n_randint(state, 100));
+            fmpq_poly_evaluate_arb(b, p, a, 30 + (slong)n_randint(state, 100));
             if (!arb_equal_si(b, k * k))
             {
                 printf("Error (test_fmpq_poly_evaluate_arb):\n");
@@ -78,7 +78,7 @@ int main()
             }
 
             arf_set_si(c, k);
-            fmpq_poly_evaluate_arf(d, p, c, 30 + n_randint(state, 100));
+            fmpq_poly_evaluate_arf(d, p, c, 30 + (slong)n_randint(state, 100));
             if (!arf_equal_si(d, k * k))
             {
                 printf("Error (test_fmpq_poly_evaluate_arf):\n");
@@ -109,7 +109,7 @@ int main()
         arb_init(a);
         arb_init(b);
 
-        fmpq_poly_randtest(p, state, 1 + n_randint(state,100), 10);
+        fmpq_poly_randtest(p, state, 1 + (slong)n_randint(state, 100), 10);
         fmpq_randtest(x, state, 10);
         arb_set_fmpq(a, x, 64);
 
@@ -161,7 +161,7 @@ int main()
         arf_init(c);
         arf_init(d);
 
-        fmpq_poly_randtest(p, state, 1 + n_randint(state,100), 10);
+        fmpq_poly_randtest(p, state, 1 + (slong)n_randint(state, 100), 10);
         arb_randtest(a, state, 60, 10);
         arb_randtest(b, state, 60, 10);
         arf_randtest(c, state, 60, 10);
@@ -197,7 +197,7 @@ int main()
         arf_clear(d);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

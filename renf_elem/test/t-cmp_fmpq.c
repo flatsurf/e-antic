@@ -21,8 +21,8 @@ int main()
         int iter2;
         renf_t nf;
 
-        slong len = 2 + n_randint(state, 10);
-        slong prec = 8 + n_randint(state, 1024);
+        slong len = 2 + (slong)n_randint(state, 10);
+        slong prec = 8 + (slong)n_randint(state, 1024);
         mp_bitcnt_t bits = 30 + n_randint(state, 30);
         renf_randtest(nf, state, len, prec, bits);
 
@@ -86,6 +86,6 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

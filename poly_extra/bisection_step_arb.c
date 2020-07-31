@@ -16,6 +16,8 @@ void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len
     arb_t b, c;
     arf_t m;
 
+    (void)(sr); // unused parameter
+
     arf_init(m);
 
     /* TODO: we should do the mean operation faster */
@@ -50,7 +52,7 @@ void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * pol, slong len
 
 int _fmpz_poly_bisection_step_arb(arb_t res, fmpz * pol, slong len, arb_t a, slong prec)
 {
-    int sl, sr, ans;
+    int sl, sr;
     arb_t b, c, rres;
     arf_t l, r;
 

@@ -12,7 +12,7 @@
 #include <e-antic/poly_extra.h>
 #include <flint/fmpq_vec.h>
 
-void _slong_vec_print(const slong * vec, slong len)
+static void _slong_vec_print(const slong * vec, slong len)
 {
     slong i;
     flint_printf("%wd", len);
@@ -21,7 +21,7 @@ void _slong_vec_print(const slong * vec, slong len)
 }
 
 
-void check_intervals(
+static void check_intervals(
       fmpq * vec, slong len,
       fmpq * exact, slong n_exact,
       fmpz * c_array, slong * k_array, slong n_interval)
@@ -52,13 +52,13 @@ void check_intervals(
             fmpz_add_ui(fmpq_numref(y), fmpq_numref(y), 1);
             if (k_array[k] > 0)
             {
-                fmpq_mul_2exp(x, x, k_array[k]);
-                fmpq_mul_2exp(y, y, k_array[k]);
+                fmpq_mul_2exp(x, x, (ulong)k_array[k]);
+                fmpq_mul_2exp(y, y, (ulong)k_array[k]);
             }
             else if (k_array[k] < 0)
             {
-                fmpq_div_2exp(x, x, -k_array[k]);
-                fmpq_div_2exp(y, y, -k_array[k]);
+                fmpq_div_2exp(x, x, (ulong)-k_array[k]);
+                fmpq_div_2exp(y, y, (ulong)-k_array[k]);
             }
         }
 
@@ -131,7 +131,7 @@ void check_intervals(
     fmpq_clear(y);
 }
 
-void fmpz_poly_from_fmpq_roots(fmpz_poly_t p, const fmpq * vec, slong n)
+static void fmpz_poly_from_fmpq_roots(fmpz_poly_t p, const fmpq * vec, slong n)
 {
     fmpz_poly_t q;
     slong i;
@@ -174,8 +174,8 @@ int main(void)
         fmpq exact_array[30];
         fmpz_poly_t p,q;
 
-        slong n = n_randint(state, 30);      /* real roots            */
-        slong nc = 1 + n_randint(state, 30); /* complex roots */
+        slong n = (slong)n_randint(state, 30);      /* real roots            */
+        slong nc = 1 + (slong)n_randint(state, 30); /* complex roots */
         slong i;
         slong n_exact, n_interval;
 
@@ -211,7 +211,7 @@ int main(void)
         }
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     printf("PASS\n");
     return 0;

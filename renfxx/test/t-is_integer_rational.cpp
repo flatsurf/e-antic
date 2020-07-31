@@ -54,6 +54,6 @@ int main(void)
             throw 10;
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

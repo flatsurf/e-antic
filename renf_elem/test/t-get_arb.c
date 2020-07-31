@@ -32,20 +32,20 @@ int main(void)
     arb_init(emb);
     arb_set_d(emb, 1.61803398874989);
     arb_add_error_2exp_si(emb, -20);
-    renf_init(nf, p, emb, 20 + n_randint(state, 10));
+    renf_init(nf, p, emb, 20 + (slong)n_randint(state, 10));
     arb_clear(emb);
 
     {
         arb_t x;
-        fmpq_poly_t p;
+        fmpq_poly_t q;
         arb_init(x);
 
-        fmpq_poly_init(p);
-        fmpq_poly_set_coeff_si(p, 0, -2501);
-        fmpq_poly_set_coeff_si(p, 1, 137);
+        fmpq_poly_init(q);
+        fmpq_poly_set_coeff_si(q, 0, -2501);
+        fmpq_poly_set_coeff_si(q, 1, 137);
 
         renf_elem_init(a, nf);
-        renf_elem_set_fmpq_poly(a, p, nf);
+        renf_elem_set_fmpq_poly(a, q, nf);
 
         slong prec = 30;
         renf_elem_get_arb(x, a, nf, prec);
@@ -67,12 +67,12 @@ int main(void)
         if (prec > arb_rel_accuracy_bits(x))
             return 1;
 
-        fmpq_poly_clear(p);
+        fmpq_poly_clear(q);
         arb_clear(x);
         renf_elem_clear(a, nf);
     }
     renf_clear(nf);
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }

@@ -29,7 +29,6 @@ int main(void)
         renf_clear(nf);
 
         {
-            int c = 2;
             renf_elem_class a(K, 2);
             if (a.pow(2) != 4)
                 std::runtime_error("2^2 is wrong");

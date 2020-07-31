@@ -301,7 +301,7 @@ template <typename Coefficient>
 renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<Coefficient> & coefficients) noexcept
     : renf_elem_class(std::move(k))
 {
-    assert(coefficients.size() <= nf->degree() &&
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
     using S = std::remove_cv_t<std::remove_reference_t<Coefficient>>;
@@ -311,16 +311,16 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     for (size_t i = 0; i < coefficients.size(); i++)
     {
         if constexpr (std::is_same_v<S, mpz_class>)
-            fmpq_poly_set_coeff_mpz(p, i, coefficients[i].__get_mp());
+            fmpq_poly_set_coeff_mpz(p, static_cast<slong>(i), coefficients[i].__get_mp());
         else if constexpr (std::is_same_v<S, mpq_class>)
-            fmpq_poly_set_coeff_mpq(p, i, coefficients[i].__get_mp());
+            fmpq_poly_set_coeff_mpq(p, static_cast<slong>(i), coefficients[i].__get_mp());
         else
         {
             auto c = to_supported_integer<false>(coefficients[i]);
             if constexpr (std::is_same_v<decltype(c), slong>)
-                fmpq_poly_set_coeff_si(p, i, c);
+                fmpq_poly_set_coeff_si(p, static_cast<slong>(i), c);
             else
-                fmpq_poly_set_coeff_ui(p, i, c);
+                fmpq_poly_set_coeff_ui(p, static_cast<slong>(i), c);
         }
     }
 

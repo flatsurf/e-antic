@@ -23,15 +23,15 @@ int main()
         /* operations on two renf elements */
         int i;
         renf_t nf;
-        slong len = 2 + n_randint(state, 10);
-        slong prec = 8 + n_randint(state, 2048);
+        slong len = 2 + (slong)n_randint(state, 10);
+        slong prec = 8 + (slong)n_randint(state, 2048);
         mp_bitcnt_t bits = 10 + n_randint(state, 30);
 
         renf_randtest(nf, state, len, prec, bits);
 
         for (i = 0; i < 10; i++)
         {
-            slong exp;
+            ulong exp;
 
             /* renf renf operations */
             renf_elem_t a, b;
@@ -52,6 +52,6 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

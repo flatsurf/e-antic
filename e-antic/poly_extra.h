@@ -157,7 +157,7 @@ void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly);
 static __inline__
 void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
 {
-    return _fmpz_vec_sum(res, p, len);
+    _fmpz_vec_sum(res, p, len);
 }
 
 #ifdef __cplusplus

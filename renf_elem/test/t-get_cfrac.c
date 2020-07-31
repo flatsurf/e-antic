@@ -11,7 +11,7 @@
 
 #include <e-antic/renf_elem.h>
 
-void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const slong n, const slong num)
+static void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const slong n, const slong num)
 {
     slong iter;
 
@@ -100,12 +100,12 @@ int main()
     check_nf_cf(nf, state, 30, 100, 20);
     renf_clear(nf);
 
-    renf_randtest(nf, state, 2 + n_randint(state, 10), 64, 30);
+    renf_randtest(nf, state, 2 + (slong)n_randint(state, 10), 64, 30);
     check_nf_cf(nf, state, 30, 100, 20);
     renf_clear(nf);
 
     fmpq_clear(d);
     
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

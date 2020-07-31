@@ -16,7 +16,7 @@
 
 using namespace eantic;
 
-void check_string(const renf_elem_class& a,
+static void check_string(const renf_elem_class& a,
         const std::string& s_ALG_D,
         const std::string& s_ALG,
         const std::string& s_D)

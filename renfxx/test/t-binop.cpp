@@ -78,20 +78,20 @@ using namespace eantic;
 template <typename T>
 typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
-    CHECK_OP(a, b, K, T, +);
-    CHECK_OP(a, b, K, T, *);
+    CHECK_OP(a, b, K, T, +)
+    CHECK_OP(a, b, K, T, *)
 
-    if (b != 0) CHECK_DIV(a, b, K, T);
+    if (b != 0) CHECK_DIV(a, b, K, T)
 }
 
 template <typename T>
 typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
 {
-    CHECK_OP(a, b, K, T, +);
-    CHECK_OP(a, b, K, T, -);
-    CHECK_OP(a, b, K, T, *);
+    CHECK_OP(a, b, K, T, +)
+    CHECK_OP(a, b, K, T, -)
+    CHECK_OP(a, b, K, T, *)
 
-    if (b != 0) CHECK_DIV(a, b, K, T);
+    if (b != 0) CHECK_DIV(a, b, K, T)
 }
 
 
@@ -122,7 +122,7 @@ int main(void)
         }
         {
             unsigned long c1 = 513, c2 = 3;
-            check_binop(c2, c2, K);
+            check_binop(c1, c2, K);
         }
         {
             mpz_class c1(232);
@@ -156,7 +156,7 @@ int main(void)
             throw std::runtime_error("error with operations");
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

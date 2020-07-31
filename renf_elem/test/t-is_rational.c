@@ -25,7 +25,7 @@ int main()
         fmpq_t x;
         renf_elem_t a;
 
-        renf_randtest(nf, state, 2 + n_randint(state, 20), 16, 20 + n_randint(state, 30));
+        renf_randtest(nf, state, 2 + (slong)n_randint(state, 20), 16, 20 + n_randint(state, 30));
 
         fmpq_init(x);
         fmpq_randtest(x, state, 10 + n_randint(state, 30));
@@ -45,28 +45,28 @@ int main()
         if (!(nf->nf->flag & NF_LINEAR))
         {
             fmpq_poly_t p;
-            renf_elem_t a;
+            renf_elem_t b;
 
             fmpq_poly_init(p);
             fmpq_poly_set_coeff_si(p, 1, 1);
 
-            renf_elem_init(a, nf);
-            renf_elem_set_fmpq_poly(a, p, nf);
+            renf_elem_init(b, nf);
+            renf_elem_set_fmpq_poly(b, p, nf);
 
-            if (renf_elem_is_rational(a, nf))
+            if (renf_elem_is_rational(b, nf))
             {
                 printf("FAIL:\n");
                 abort();
             }
 
             fmpq_poly_clear(p);
-            renf_elem_clear(a, nf);
+            renf_elem_clear(b, nf);
         }
 
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }
 

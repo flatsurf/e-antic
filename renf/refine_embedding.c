@@ -23,6 +23,8 @@ void renf_refine_embedding(renf_t nf, slong prec)
     slong comp_prec;
     const char* threading_error = "An embedding cannot be safely refined in a multi-threaded environment; you should have refined as needed and called renf_set_immutable() before entering multi-threaded code. Alternatively, you might also be able to use a distinct copy of the renf_t in each thread.";
 
+    (void)threading_error;
+
     assert(!renf_set_immutable(nf, 1) && threading_error);
 
     _fmpz_poly_relative_condition_number_2exp(&cond,

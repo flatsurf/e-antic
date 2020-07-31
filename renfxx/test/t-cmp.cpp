@@ -122,12 +122,12 @@ int main(void)
         auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        check_order((int) -1, (int) 1, K);
-        check_order((long) -1, (long) 13, K);
+        check_order(-1, 1, K);
+        check_order(-1l, 13l, K);
         check_order(mpz_class(3), mpz_class(5), K);
         check_order(mpq_class(1,3), mpq_class(1,2), K);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
     return 0;
 }

@@ -15,7 +15,7 @@
 #define PASTE(X,Y) PASTE2(X,Y)
 
 #define NUM_T PASTE(NUMBER, _t)
-#define _FMPZ_POLY_EVALUATE PASTE(_fmpz_poly_evaluate_, NUMBER)
+#define EANTIC_FMPZ_POLY_EVALUATE PASTE(_fmpz_poly_evaluate_, NUMBER)
 #define FMPZ_POLY_EVALUATE PASTE(fmpz_poly_evaluate_, NUMBER)
 #define FMPQ_POLY_EVALUATE PASTE(fmpq_poly_evaluate_, NUMBER)
 
@@ -47,7 +47,7 @@
 #define CLEAR(x) PASTE(NUMBER, _clear)(x)
 #endif
 
-void _FMPZ_POLY_EVALUATE(NUM_T res, const fmpz * pol, slong len, const NUM_T a, slong prec)
+void EANTIC_FMPZ_POLY_EVALUATE(NUM_T res, const fmpz * pol, slong len, const NUM_T a, slong prec)
 {
     slong i;
 
@@ -66,7 +66,7 @@ void FMPZ_POLY_EVALUATE(NUM_T res, const fmpz_poly_t pol, const NUM_T a, slong p
     if (a == res) INIT(rres);
     else SWAP(rres, res);
 
-    _FMPZ_POLY_EVALUATE(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
+    EANTIC_FMPZ_POLY_EVALUATE(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
 
     SWAP(rres, res);
     if (a == res) CLEAR(rres);
@@ -79,7 +79,7 @@ void FMPQ_POLY_EVALUATE(NUM_T res, const fmpq_poly_t pol, const NUM_T a, slong p
     if (a == res) INIT(rres);
     else SWAP(rres, res);
 
-    _FMPZ_POLY_EVALUATE(rres, fmpq_poly_numref(pol), fmpq_poly_length(pol), a, prec);
+    EANTIC_FMPZ_POLY_EVALUATE(rres, fmpq_poly_numref(pol), fmpq_poly_length(pol), a, prec);
     DIV_FMPZ(rres, rres, fmpq_poly_denref(pol), prec);
 
     SWAP(rres, res);
@@ -89,12 +89,11 @@ void FMPQ_POLY_EVALUATE(NUM_T res, const fmpq_poly_t pol, const NUM_T a, slong p
 #undef PASTE2
 #undef PASTE
 #undef NUM_T
-#undef _FMPZ_POLY_EVALUATE
+#undef EANTIC_FMPZ_POLY_EVALUATE
 #undef FMPZ_POLY_EVALUATE
 #undef INIT
 #undef ZERO
 #undef MUL
-#undef ADD
 #undef ADD_FMPZ
 #undef DIV_FMPZ
 #undef SWAP

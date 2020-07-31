@@ -20,8 +20,8 @@ int main()
     {
         /* operations on two renf elements */
         renf_t nf;
-        slong len = 2 + n_randint(state, 10);
-        slong prec = 8 + n_randint(state, 2048);
+        slong len = 2 + (slong)n_randint(state, 10);
+        slong prec = 8 + (slong)n_randint(state, 2048);
         mp_bitcnt_t bits = 10 + n_randint(state, 30);
 
         renf_randtest(nf, state, len, prec, bits);
@@ -63,7 +63,7 @@ int main()
             renf_elem_init(c, nf);
 
             renf_elem_randtest(a, state, 10 + n_randint(state, 30), nf);
-            b = n_randtest(state);
+            b = (slong)n_randtest(state);
 
             renf_elem_add_si(c, a, b, nf);
             renf_elem_check_embedding(c, nf, 1024);
@@ -203,7 +203,7 @@ int main()
         renf_clear(nf);
     }
 
-    FLINT_TEST_CLEANUP(state);
+    FLINT_TEST_CLEANUP(state)
 
     return 0;
 }
