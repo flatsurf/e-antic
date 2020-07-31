@@ -199,3 +199,10 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
 }
 
 } // end of namespace eantic
+
+namespace std {
+size_t hash<eantic::renf_class>::operator()(const eantic::renf_class& nf) const noexcept
+{
+    return hash<eantic::renf_elem_class>()(nf.gen());
+}
+}

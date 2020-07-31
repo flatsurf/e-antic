@@ -193,7 +193,8 @@ check_PROGRAMS +=                     \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
     renfxx/test/t-stream              \
-    renfxx/test/t-cereal
+    renfxx/test/t-cereal              \
+    renfxx/test/t-hash
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -214,6 +215,8 @@ renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
 renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_pow_SOURCES = renfxx/test/t-pow.cpp
 renfxx_test_t_pow_LDADD = libeanticxx.la libeantic.la -lgmpxx
+renfxx_test_t_hash_SOURCES = renfxx/test/t-hash.cpp
+renfxx_test_t_hash_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
 renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp

@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2019-2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -429,5 +429,17 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 }
 
 } // end of namespace
+
+namespace std {
+template <>
+struct hash<eantic::renf_class> {
+  size_t operator()(const eantic::renf_class&) const noexcept;
+};
+
+template <>
+struct hash<eantic::renf_elem_class> {
+  size_t operator()(const eantic::renf_elem_class&) const noexcept;
+};
+}  // namespace std
 
 #endif
