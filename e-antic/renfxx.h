@@ -144,8 +144,8 @@ public:
     __RENFXX_construct(mpz_class&, assign_mpz_class)
     __RENFXX_construct(mpq_class&, assign_mpq_class)
     __RENFXX_construct(fmpq_poly_t, assign_fmpq_poly)
-    explicit __RENFXX_construct(std::vector<mpz_class>&, assign_mpz_vector);
-    explicit __RENFXX_construct(std::vector<mpq_class>&, assign_mpq_vector);
+    explicit __RENFXX_construct(std::vector<mpz_class>&, assign_mpz_vector)
+    explicit __RENFXX_construct(std::vector<mpq_class>&, assign_mpq_vector)
     explicit __RENFXX_construct(std::string&, assign_string)
     #undef __constructor
 
@@ -491,11 +491,11 @@ inline void renf_elem_class::assign_mpz_vector(const std::vector<mpz_class>& v)
 
     if (nf == nullptr)
         throw std::invalid_argument("renf_elem_class: can not assign from std::vector<mpz_class> if number field not set");
-    if (v.size() > nf->degree())
+    if ((long) v.size() > nf->degree())
         throw std::invalid_argument("vector too long");
 
     fmpq_poly_init(p);
-    for (slong i = 0; i < v.size(); i++)
+    for (slong i = 0; i < (long) v.size(); i++)
         fmpq_poly_set_coeff_mpz(p, i, v[i].__get_mp());
     assign_fmpq_poly(p);
     fmpq_poly_clear(p);
@@ -507,11 +507,11 @@ inline void renf_elem_class::assign_mpq_vector(const std::vector<mpq_class>& v)
 
     if (nf == nullptr)
         throw std::invalid_argument("renf_elem_class: can not assign from std::vector<mpz_class> if number field not set");
-    if (v.size() > nf->degree())
+    if ((long) v.size() > nf->degree())
         throw std::invalid_argument("vector too long");
 
     fmpq_poly_init(p);
-    for (slong i = 0; i < v.size(); i++)
+    for (slong i = 0; i < (long) v.size(); i++)
         fmpq_poly_set_coeff_mpq(p, i, v[i].__get_mp());
     assign_fmpq_poly(p);
     fmpq_poly_clear(p);
