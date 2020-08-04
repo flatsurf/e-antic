@@ -21,6 +21,8 @@ libeantic_la_SOURCES =
 check_PROGRAMS =
 dist_doc_DATA =
 
+EXTRA_DIST =
+
 LDADD = libeantic.la
 
 @VALGRIND_CHECK_RULES@
@@ -128,9 +130,18 @@ check_PROGRAMS +=                \
     renf_elem/test/t-gen         \
     renf_elem/test/t-get_cfrac   \
     renf_elem/test/t-is_rational \
-    renf_elem/test/t-get_d       \
     renf_elem/test/t-get_arb     \
     renf_elem/test/t-get_str_pretty
+
+# C tests written with catch2, a C++ testing framework
+
+check_PROGRAMS +=                  \
+    renf_elem/test/t-get_d
+
+renf_elem_test_t_get_d_SOURCES = renfxx/test/main.cpp renf_elem/test/t-get_d.cpp
+renf_elem_test_t_get_d_LDADD = libeantic.la
+
+EXTRA_DIST += renfxx/test/external/catch2/single_include/catch2/catch.hpp
 
 # C++
 
@@ -152,7 +163,7 @@ VPATH = $(srcdir) $(builddir)
 # Generate e-antic.h before performing any compilation
 BUILT_SOURCES = e-antic/e-antic.h
 # Distribute e-antic.h.in as part of the tarball, but not e-antic.h
-EXTRA_DIST = e-antic/e-antic.h.in
+EXTRA_DIST += e-antic/e-antic.h.in
 nodist_pkginclude_HEADERS = e-antic/e-antic.h
 
 # Distribute files that we might need to fill/replace from our dependencies
