@@ -59,8 +59,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
 
     ~RenfElemGenerator()
     {
-        if (has_value_for_iteration)
-            renf_elem_clear(a, nf);
+        assert(!has_value_for_iteration && "generator did not run until the end; as a result the last element can not be renf_elem_cleared since the parent renf_t has already been renf_cleared");
     }
 };
 
