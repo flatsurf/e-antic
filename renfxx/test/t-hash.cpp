@@ -9,22 +9,31 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
+#include <functional>
+
 #include <e-antic/renfxx.h>
+
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
-int main(void)
+TEST_CASE("Consistency of Hash Function", "[renf_elem_class][hash]")
 {
     auto K = renf_class::make("x^2 - x - 1", "x", "1.618 +/- 0.1");
     auto L = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
-    if (std::hash<renf_class>()(*K) == std::hash<renf_class>()(*L))
-      throw std::runtime_error("hash cannot distinguish fields");
+    SECTION("hash can distinguish fields")
+    {
+        REQUIRE(std::hash<renf_class>()(*K) != std::hash<renf_class>()(*L));
+    }
 
-    if (std::hash<renf_elem_class>()(K->gen()) == std::hash<renf_elem_class>()(L->gen()))
-      throw std::runtime_error("hash cannot distinguish elements");
+    SECTION("hash can distinguish elements")
+    {
+        REQUIRE(std::hash<renf_elem_class>()(K->gen()) != std::hash<renf_elem_class>()(L->gen()));
+    }
     
-    if (std::hash<renf_elem_class>()(mpq_class("3/2")) != std::hash<renf_elem_class>()(renf_elem_class(K, mpq_class("3/2"))))
-      throw std::runtime_error("hash is not compatible with operator==");
+    SECTION("has is compatible with operator==")
+    {
+        REQUIRE(std::hash<renf_elem_class>()(mpq_class("3/2")) == std::hash<renf_elem_class>()(renf_elem_class(K, mpq_class("3/2"))));
+    }
 }
