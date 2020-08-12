@@ -135,17 +135,16 @@ check_PROGRAMS +=                \
 
 # C tests written with catch2, a C++ testing framework
 
-check_PROGRAMS +=                  \
-    renf_elem/test/t-get_d
+check_PROGRAMS += renf_elem/test/t-get_d
 
 renf_elem_test_t_get_d_SOURCES = renfxx/test/main.cpp renf_elem/test/t-get_d.cpp
 renf_elem_test_t_get_d_LDADD = libeantic.la
 
 noinst_HEADERS +=                                               \
-		renfxx/test/external/catch2/single_include/catch2/catch.hpp \
-		renf/test/rand_generator.hpp                                \
-		renf/test/renf_generator.hpp                                \
-		renf_elem/test/renf_elem_generator.hpp
+    renfxx/test/external/catch2/single_include/catch2/catch.hpp \
+    renf/test/rand_generator.hpp                                \
+    renf/test/renf_generator.hpp                                \
+    renf_elem/test/renf_elem_generator.hpp
 
 # C++
 
