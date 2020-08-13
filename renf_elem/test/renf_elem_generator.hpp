@@ -27,13 +27,15 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
 {
     flint_rand_t& state;
     renf_t& nf;
-    slong iterations, minbits, maxbits;
+    ulong iterations, minbits, maxbits;
 
     mutable renf_elem_t a;
-    mutable slong iteration = 0;
+    mutable ulong iteration = 0;
     mutable bool has_value_for_iteration = false;
 
-    RenfElemGenerator(flint_rand_t& state, renf_t& nf, slong iterations, slong minbits, slong maxbits) : state(state), nf(nf), iterations(iterations), minbits(minbits), maxbits(maxbits) {}
+    RenfElemGenerator(flint_rand_t& state, renf_t& nf, ulong iterations, ulong minbits, ulong maxbits) : state(state), nf(nf), iterations(iterations), minbits(minbits), maxbits(maxbits) {
+      assert(maxbits > minbits);
+    }
 
     bool next() override
     {
@@ -47,7 +49,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
     {
         if (!has_value_for_iteration)
         {
-            slong bits = minbits + static_cast<slong>(n_randint(state, maxbits - minbits));
+            ulong bits = minbits + n_randint(state, maxbits - minbits);
 
             renf_elem_init(a, nf);
             renf_elem_randtest(a, state, bits, nf);
@@ -57,7 +59,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
         return a;
     }
 
-    ~RenfElemGenerator()
+    ~RenfElemGenerator() override
     {
         assert(!has_value_for_iteration && "generator did not run until the end; as a result the last element can not be renf_elem_cleared since the parent renf_t has already been renf_cleared");
     }
@@ -66,7 +68,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
 /*
  * Wrap RenfElemGenerator for use as GENERATE_REF(renf_elems(...)).
  */
-Catch::Generators::GeneratorWrapper<renf_elem_t&> renf_elems(flint_rand_t& state, renf_t& nf, slong iterations = 128, slong minbits = 10, slong maxbits = 40)
+Catch::Generators::GeneratorWrapper<renf_elem_t&> renf_elems(flint_rand_t& state, renf_t& nf, ulong iterations = 128, ulong minbits = 10, ulong maxbits = 40)
 {
     return Catch::Generators::GeneratorWrapper<renf_elem_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_elem_t&>>(new RenfElemGenerator(state, nf, iterations, minbits, maxbits)));
 }
@@ -98,9 +100,9 @@ struct StringMaker<renf_elem_t>
 {
     static std::string convert(const renf_elem_t& a)
     {
-        assert(StringMaker<renf_t>::nf != nullptr && "you must always CAPTURE(nf) before capturing a contained renf_elem_t");
+        assert(StringMaker<renf_t>::latest != nullptr && "you must always CAPTURE(nf) before capturing a contained renf_elem_t");
 
-        char * alg = renf_elem_get_str_pretty(const_cast<renf_elem_struct*>(a), "x", StringMaker<renf_t>::nf, 10, EANTIC_STR_ALG);
+        char * alg = renf_elem_get_str_pretty(const_cast<renf_elem_struct*>(a), "x", StringMaker<renf_t>::latest, 10, EANTIC_STR_ALG);
         char * emb = arb_get_str(a->emb, 10, ARB_STR_MORE);
 
         std::stringstream str;

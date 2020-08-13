@@ -26,13 +26,17 @@ namespace {
 struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 {
     flint_rand_t& state;
-    slong iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits;
+    ulong iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits;
 
     mutable renf_t nf;
-    mutable slong iteration = 0;
+    mutable ulong iteration = 0;
     mutable bool has_value_for_iteration = false;
 
-    RenfGenerator(flint_rand_t& state, slong iterations, slong minlen, slong maxlen, slong minprec, slong maxprec, slong minbits, slong maxbits) : state(state), iterations(iterations), minlen(minlen), maxlen(maxlen), minprec(minprec), maxprec(maxprec), minbits(minbits), maxbits(maxbits) {}
+    RenfGenerator(flint_rand_t& state, ulong iterations, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : state(state), iterations(iterations), minlen(minlen), maxlen(maxlen), minprec(minprec), maxprec(maxprec), minbits(minbits), maxbits(maxbits) {
+      assert(maxlen > minlen);
+      assert(maxprec > minprec);
+      assert(maxbits > minbits);
+    }
 
     bool next() override
     {
@@ -49,18 +53,18 @@ struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
             if (iteration)
                 renf_clear(nf);
 
-            slong len = minlen + static_cast<slong>(n_randint(state, maxlen - minlen));
-            slong prec = minprec + static_cast<slong>(n_randint(state, maxprec - minprec));
+            ulong len = minlen + n_randint(state, maxlen - minlen);
+            ulong prec = minprec + n_randint(state, maxprec - minprec);
             mp_bitcnt_t bits = minbits + n_randint(state, maxbits - minbits);
 
-            renf_randtest(nf, state, len, prec, bits);
+            renf_randtest(nf, state, static_cast<slong>(len), static_cast<slong>(prec), bits);
 
             has_value_for_iteration = true;
         }
         return nf;
     }
 
-    ~RenfGenerator()
+    ~RenfGenerator() override
     {
         if (iteration)
             renf_clear(nf);
@@ -71,7 +75,7 @@ struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 /*
  * Wrap RenfGenerator for use as GENERATE(renfs(...))
  */
-Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, slong iterations = 128, slong minlen = 2, slong maxlen = 32, slong minprec = 8, slong maxprec = 2048, slong minbits = 10, slong maxbits = 40)
+Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, ulong iterations = 128, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
 {
     return Catch::Generators::GeneratorWrapper<renf_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_t&>>(new RenfGenerator(state, iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
 }
@@ -86,11 +90,11 @@ namespace Catch {
 template <>
 struct StringMaker<renf_t>
 {
-    static renf* nf;
+    static renf* latest;
 
     static std::string convert(renf_t const& nf)
     {
-        StringMaker<renf_t>::nf = const_cast<renf*>(nf);
+        StringMaker<renf_t>::latest = const_cast<renf*>(nf);
 
         char * emb = arb_get_str(nf->emb, arf_bits(arb_midref(nf->emb)), 0);
         char * pol = fmpq_poly_get_str_pretty(nf->nf->pol, "x");
@@ -105,7 +109,7 @@ struct StringMaker<renf_t>
     }
 };
 
-renf* StringMaker<renf_t>::nf = nullptr;
+renf* StringMaker<renf_t>::latest = nullptr;
 
 }
 

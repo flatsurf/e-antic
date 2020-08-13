@@ -36,7 +36,7 @@ static void d_get_fmpq(double d, fmpq_t q)
     if (fmpz_cmp_si(exp, 0) > 0)
       fmpz_mul_2exp(man, man, fmpz_get_ui(exp));
     else
-      fmpz_mul_2exp(quo, quo, -fmpz_get_si(exp));
+      fmpz_mul_2exp(quo, quo, static_cast<mp_limb_t>(-fmpz_get_si(exp)));
 
     fmpq_set_fmpz_frac(q, man, quo);
 

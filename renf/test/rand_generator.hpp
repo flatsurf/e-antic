@@ -42,7 +42,7 @@ struct RandGenerator : public Catch::Generators::IGenerator<flint_rand_t&>
         return const_cast<flint_rand_t&>(state);
     }
 
-    ~RandGenerator()
+    ~RandGenerator() override
     {
         flint_randclear(state);
         flint_cleanup_master();
