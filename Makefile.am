@@ -153,7 +153,9 @@ libeanticxx_la_SOURCES =       \
     renfxx/renf_elem_class.cpp
 
 noinst_HEADERS +=                                     \
-    renfxx/external/unique-factory/unique_factory.hpp
+    renfxx/external/unique-factory/unique_factory.hpp \
+    renfxx/test/renf_class_generator.hpp              \
+    renfxx/test/renf_elem_class_generator.hpp
 
 # We generate e-antic.h in the Makefile (not in configure) as recommended by
 # autoconf to DESTDIR installs work.
@@ -213,13 +215,13 @@ check_PROGRAMS +=                     \
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
 # mix of C and C++ files.
-renfxx_test_t_constructor_SOURCES = renfxx/test/t-constructor.cpp
+renfxx_test_t_constructor_SOURCES = renfxx/test/main.cpp renfxx/test/t-constructor.cpp
 renfxx_test_t_constructor_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_get_SOURCES = renfxx/test/t-get.cpp
 renfxx_test_t_get_LDADD = libeanticxx.la libeantic.la
-renfxx_test_t_assignment_SOURCES = renfxx/test/t-assignment.cpp
+renfxx_test_t_assignment_SOURCES = renfxx/test/main.cpp renfxx/test/t-assignment.cpp
 renfxx_test_t_assignment_LDADD = libeanticxx.la libeantic.la
-renfxx_test_t_get_num_den_SOURCES = renfxx/test/t-get_num_den.cpp
+renfxx_test_t_get_num_den_SOURCES = renfxx/test/main.cpp renfxx/test/t-get_num_den.cpp
 renfxx_test_t_get_num_den_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_num_content_SOURCES = renfxx/test/t-num_content.cpp
 renfxx_test_t_num_content_LDADD = libeanticxx.la libeantic.la -lgmpxx
@@ -239,7 +241,7 @@ renfxx_test_t_ceil_SOURCES = renfxx/test/t-ceil.cpp
 renfxx_test_t_ceil_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
-renfxx_test_t_stream_SOURCES = renfxx/test/t-stream.cpp
+renfxx_test_t_stream_SOURCES = renfxx/test/main.cpp renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
 renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la

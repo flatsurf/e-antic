@@ -102,7 +102,7 @@ template <class Archive>
 void save(Archive & archive, const renf_elem_class & self, std::uint32_t)
 {
     archive(
-        cereal::make_nvp("parent", self.parent()),
+        cereal::make_nvp("parent", self.parent().shared_from_this()),
         cereal::make_nvp("value", boost::lexical_cast<std::string>(self)),
         cereal::make_nvp("double", static_cast<double>(self)));
 }

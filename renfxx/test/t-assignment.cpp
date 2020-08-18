@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2017 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -11,190 +12,68 @@
 
 #include <e-antic/renfxx.h>
 
-#include <stdexcept>
-#include <limits>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../../renf/test/rand_generator.hpp"
+#include "renf_class_generator.hpp"
 
 using namespace eantic;
 
-int main(void)
+TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class][operator=]", int, unsigned int, long, unsigned long)
 {
-    FLINT_TEST_INIT(state);
-    int iter;
+    flint_rand_t& state = GENERATE(rands());
+    auto K = GENERATE_REF(renf_classs(state));
 
-    for (iter = 0; iter < 100; iter++)
-    {
-        renf_t nf;
-        renf_randtest(nf, state, 10, 64, 10);
-        auto K = renf_class::make(nf);
+    renf_elem_class a(K);
+    renf_elem_class b(0);
+    TestType c = GENERATE(2, std::numeric_limits<TestType>::min(), std::numeric_limits<TestType>::max());
 
-        renf_clear(nf);
+    a = c;
+    b = c;
 
-        {
-            int c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from int is wrong");
-
-            renf_elem_class d(std::numeric_limits<int>::min());
-            renf_elem_class e(std::numeric_limits<int>::max());
-            if (d != std::numeric_limits<int>::min() || e != std::numeric_limits<int>::max())
-                throw std::runtime_error("constructor from INT_MIN/INT_MAX is wrong");
-        }
-
-        {
-            unsigned int c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from int is wrong");
-
-            renf_elem_class d(std::numeric_limits<unsigned int>::max());
-            if (d != std::numeric_limits<unsigned int>::max())
-                throw std::runtime_error("constructor from UINT_MAX is wrong");
-        }
-
-        {
-            long c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from long is wrong");
-
-            renf_elem_class d(std::numeric_limits<long>::min());
-            renf_elem_class e(std::numeric_limits<long>::max());
-            if (d != std::numeric_limits<long>::min() || e != std::numeric_limits<long>::max())
-                throw std::runtime_error("constructor from LONG_MIN/LONG_MAX is wrong");
-        }
-
-        {
-            unsigned long c = 2;
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from long is wrong");
-
-            renf_elem_class d(std::numeric_limits<unsigned long>::max());
-            if (d != std::numeric_limits<unsigned long>::max())
-                throw std::runtime_error("constructor from ULONG_MAX is wrong");
-        }
-
-        {
-            mpz_class c(2);
-
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from small mpz_class is wrong");
-        }
-        {
-            mpz_class c("134983749573957838576538601923480397593857698357946");
-
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-        }
-
-        {
-            mpq_class c(2);
-
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-            if (a != 2 || b != 2 || 2 != a || 2 != b)
-                throw std::runtime_error("constructor from mpq_class is wrong");
-
-        }
-
-        {
-            mpq_class c("130498349583795687209384039850478694587694856/193482794587695830598130598349851");
-
-            renf_elem_class a(K);
-            renf_elem_class b(0);
-            a = c;
-            b = c;
-        }
-
-        {
-            renf_elem_class a;
-            renf_elem_class b(2);
-            a = b;
-            if (a != 2 || 2 != a || a != b || b != a)
-                throw std::runtime_error("constructor from another renf_elem_class is wrong (1)");
-        }
-
-        {
-            renf_elem_class a;
-            renf_elem_class b(K, 2);
-            a = b;
-            if (a != 2 || 2 != a || a != b || b != a)
-                throw std::runtime_error("constructor from another renf_elem_class is wrong (2)");
-        }
-
-        {
-            renf_elem_class a(K);
-            renf_elem_class b(2);
-            a = b;
-
-            if (b != 2 || 2 != b || a != b || b != a)
-                throw std::runtime_error("constructor from another renf_elem_class is wrong (2)");
-        }
-
-        {
-            renf_elem_class a(K);
-            renf_elem_class b(K, 2);
-            a = b;
-
-            if (b != 2 || 2 != b || a != b || b != a)
-                throw std::runtime_error("constructor from another renf_elem_class is wrong (3)");
-        }
-
-        {
-            if (K->degree() >= 2)
-            {
-                std::vector<mpz_class> v;
-                v.push_back(1);
-                v.push_back(1);
-                renf_elem_class a(K, v);
-                renf_elem_class b(K);
-                b = renf_elem_class(b.parent(), v);
-
-                if (a != K->gen() + 1 || b != K->gen() + 1)
-                    throw std::runtime_error("constructor from std::vector<mpz_class> failed");
-            }
-        }
-
-        {
-            if (K->degree() >= 2)
-            {
-                std::vector<mpq_class> v;
-                v.push_back(mpq_class(1,2));
-                v.push_back(mpq_class(-2,3));
-                renf_elem_class a(K,v);
-                renf_elem_class b(K,v);
-                b = renf_elem_class(b.parent(), v);
-
-                if (a != (-2*K->gen()/3 + mpq_class(1,2)) ||
-                    b != (-2*K->gen()/3 + mpq_class(1,2)))
-                    throw std::runtime_error("constructor from std::vector<mpq_class> failed");
-            }
-        }
-
-    }
-
-    FLINT_TEST_CLEANUP(state)
-    return 0;
+    REQUIRE(a == c);
+    REQUIRE(c == a);
+    REQUIRE(b == c);
+    REQUIRE(c == b);
 }
 
+TEMPLATE_TEST_CASE("Assign renf_elem_class from GMP types", "[renf_elem_class][operator=]", mpz_class, mpq_class)
+{
+    flint_rand_t& state = GENERATE(rands());
+    auto K = GENERATE_REF(renf_classs(state));
+
+    renf_elem_class a(K);
+    renf_elem_class b(0);
+
+    SECTION("Small integer values")
+    {
+        TestType c = 2;
+        a = c;
+        b = c;
+        REQUIRE(a == c);
+        REQUIRE(b == c);
+    }
+
+    SECTION("Big integer values")
+    {
+        TestType c("134983749573957838576538601923480397593857698357946");
+        a = c;
+        b = c;
+        REQUIRE(a == c);
+        REQUIRE(b == c);
+    }
+
+}
+
+TEST_CASE("Assign renf_elem_class from another renf_elem_class", "[renf_elem_class][operator=]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    auto K = GENERATE_REF(renf_classs(state));
+
+    auto a = GENERATE_REF(renf_elem_class(), renf_elem_class(K), K->gen());
+    auto b = GENERATE_REF(renf_elem_class(), renf_elem_class(2), renf_elem_class(K), renf_elem_class(K, 2), K->gen());
+
+    a = b;
+    REQUIRE(a == b);
+    REQUIRE(b == a);
+}

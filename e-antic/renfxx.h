@@ -136,20 +136,15 @@ public:
     renf_elem_class & operator=(const renf_elem_class &) noexcept;
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
 
-    // containing number field; holds a nullptr if this is a rational number
-    const std::shared_ptr<const renf_class>& parent() const noexcept { return nf; }
+    // containing number field
+    const renf_class& parent() const noexcept { return *nf; }
 
     // testing
-    bool is_fmpq() const noexcept;
-    bool is_renf_elem() const noexcept { return !is_fmpq(); }
     bool is_zero() const noexcept;
     bool is_one() const noexcept;
     bool is_integer() const noexcept;
     bool is_rational() const noexcept;
 
-    // raw data access
-    ::fmpq_t & fmpq_t() noexcept;
-    const ::fmpq_t & fmpq_t() const noexcept;
     // We do not return a const renf_elem_t. Parts of the C API might need a
     // non-const one to refine the underlying representation even though they
     // are morally treating this as a const.
@@ -200,9 +195,26 @@ public:
     template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
     template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
 
+    // binary operations with GMP integers
+    renf_elem_class& operator+=(const mpz_class&) noexcept;
+    renf_elem_class& operator-=(const mpz_class&) noexcept;
+    renf_elem_class& operator*=(const mpz_class&) noexcept;
+    renf_elem_class& operator/=(const mpz_class&);
+    bool operator==(const mpz_class&) const noexcept;
+    bool operator<(const mpz_class&) const noexcept;
+    bool operator>(const mpz_class&) const noexcept;
+
+    // binary operations with rational numbers
+    renf_elem_class& operator+=(const mpq_class&) noexcept;
+    renf_elem_class& operator-=(const mpq_class&) noexcept;
+    renf_elem_class& operator*=(const mpq_class&) noexcept;
+    renf_elem_class& operator/=(const mpq_class&);
+    bool operator==(const mpq_class&) const noexcept;
+    bool operator<(const mpq_class&) const noexcept;
+    bool operator>(const mpq_class&) const noexcept;
+
     // deprecated pre-1.0 methods
     [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const noexcept;
-    [[deprecated("use fmpq_t() instead")]] ::fmpq * get_fmpq() const;
     [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
     [[deprecated("use num() instead")]] mpz_class get_num() const;
@@ -215,21 +227,15 @@ public:
     friend std::istream & operator>>(std::istream &, renf_elem_class &);
 
 private:
-    // The parent number field; a nullptr if the element is rational.
+    // The parent number field
     std::shared_ptr<const renf_class> nf;
-    // The underlying element when nf != nullptr.
+    // The underlying element.
     // We need mutability as calls might need to refine the precision of
     // the stored embedding.
     mutable ::renf_elem_t a;
-    // the underlying element when nf == nullptr
-    ::fmpq_t b;
 
-    // Make this->nf == nf; when this->nf != nullptr, only implemented in
-    // trivial cases
-    void promote(std::shared_ptr<const renf_class> nf) noexcept;
-    template <typename T, typename fmpq_op, typename renf_op>
-    int cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept;
-    template <typename T, typename fmpq_op, typename renf_op> void inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf);
+    // Make this->nf == nf; only implemented in trivial cases
+    renf_elem_class & promote(std::shared_ptr<const renf_class> nf) noexcept;
     // Assign value to this element without changing this->nf.
     void assign(slong) noexcept;
     void assign(ulong) noexcept;
@@ -295,7 +301,7 @@ template <bool fallback_to_string, typename Integer> auto to_supported_integer(I
 }
 
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
-renf_elem_class::renf_elem_class(Integer value) noexcept : renf_elem_class(nullptr, value) {}
+renf_elem_class::renf_elem_class(Integer value) noexcept : renf_elem_class(renf_class::make(), value) {}
 
 template <typename Coefficient>
 renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<Coefficient> & coefficients) noexcept
@@ -332,30 +338,21 @@ template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, Integer value) noexcept
 {
     nf = std::move(k);
-    if (nf)
-      renf_elem_init(a, nf->renf_t());
-    else
-      fmpq_init(b);
+    renf_elem_init(a, nf->renf_t());
 
     assign(to_supported_integer<true>(value));
 }
 
 // generic operators
 
-template <typename T, typename fmpq_op, typename renf_op>
-int renf_elem_class::cmp(T && rhs, fmpq_op fmpq, renf_op renf) const noexcept
-{
-    return is_fmpq() ? fmpq(b, std::forward<T>(rhs)) : renf(a, std::forward<T>(rhs), nf->renf_t());
-}
-
 template <typename Integer>
 std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) < 0;
+        return renf_elem_cmp_si(a, rhs, nf->renf_t()) < 0;
     else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) < 0;
+        return renf_elem_cmp_ui(a, rhs, nf->renf_t()) < 0;
 }
 
 template <typename Integer>
@@ -363,9 +360,9 @@ std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(I
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) > 0;
+        return renf_elem_cmp_si(a, rhs, nf->renf_t()) > 0;
     else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) > 0;
+        return renf_elem_cmp_ui(a, rhs, nf->renf_t()) > 0;
 }
 
 template <typename Integer>
@@ -373,15 +370,9 @@ std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        return cmp(other, fmpq_cmp_si, renf_elem_cmp_si) == 0;
+        return renf_elem_cmp_si(a, rhs, nf->renf_t()) == 0;
     else
-        return cmp(other, fmpq_cmp_ui, renf_elem_cmp_ui) == 0;
-}
-
-template <typename T, typename fmpq_op, typename renf_op>
-void renf_elem_class::inplace_binop(T && rhs, fmpq_op fmpq, renf_op renf)
-{
-    is_fmpq() ? fmpq(b, b, std::forward<T>(rhs)) : renf(a, a, std::forward<T>(rhs), nf->renf_t());
+        return renf_elem_cmp_ui(a, rhs, nf->renf_t()) == 0;
 }
 
 template <typename Integer>
@@ -389,9 +380,9 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_add_si, renf_elem_add_si);
+        renf_elem_add_si(a, a, other, nf->renf_t());
     else
-        inplace_binop(other, fmpq_add_ui, renf_elem_add_ui);
+        renf_elem_add_ui(a, a, other, nf->renf_t());
     return *this;
 }
 
@@ -400,9 +391,9 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_sub_si, renf_elem_sub_si);
+        renf_elem_sub_si(a, a, other, nf->renf_t());
     else
-        inplace_binop(other, fmpq_sub_ui, renf_elem_sub_ui);
+        renf_elem_sub_ui(a, a, other, nf->renf_t());
     return *this;
 }
 
@@ -411,9 +402,9 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_mul_si, renf_elem_mul_si);
+        renf_elem_mul_si(a, a, other, nf->renf_t());
     else
-        inplace_binop(other, fmpq_mul_ui, renf_elem_mul_ui);
+        renf_elem_mul_ui(a, a, other, nf->renf_t());
     return *this;
 }
 
@@ -422,9 +413,9 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 {
     auto other = to_supported_integer<false>(rhs);
     if constexpr (std::is_same_v<decltype(other), slong>)
-        inplace_binop(other, fmpq_div_si, renf_elem_div_si);
+        renf_elem_div_si(a, a, other, nf->renf_t());
     else
-        inplace_binop(other, fmpq_div_ui, renf_elem_div_ui);
+        renf_elem_div_ui(a, a, other, nf->renf_t());
     return *this;
 }
 

@@ -21,17 +21,7 @@ int main(void)
         renf_elem_class a(2);
 
         // should work
-        a.get_fmpq();
-
-        // should not work
-        try
-        {
-            a.get_renf_elem();
-            throw std::runtime_error("get_renf_elem worked but shouldn't!");
-        }
-        catch (std::invalid_argument)
-        {
-        }
+        a.get_renf_elem();
     }
 
     {
@@ -44,16 +34,6 @@ int main(void)
 
         // should work
         a.get_renf_elem();
-
-        // should not work
-        try
-        {
-            a.get_fmpq();
-            throw std::runtime_error("get_fmpq worked but shouldn't!");
-        }
-        catch (std::invalid_argument)
-        {
-        }
     }
 
     FLINT_TEST_CLEANUP(state)

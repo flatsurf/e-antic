@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2017 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -9,70 +10,48 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <cstdlib>
-#include <exception>
 #include <vector>
 
 #include <e-antic/renfxx.h>
 
+#include "external/catch2/single_include/catch2/catch.hpp"
+
 using namespace eantic;
 
-static void check_rational(int num, int den, std::shared_ptr<const renf_class> K)
+TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
 {
-    renf_elem_class a(K);
-    a = num;
-    a /= den;
-    if (a.get_num() != num || a.get_den() != den)
+    auto check_rational = [](int num, int den, std::shared_ptr<const renf_class> K)
     {
-        std::cerr << "num = " << num << std::endl;
-        std::cerr << "den = " << num << std::endl;
-        std::cerr << "a   = " << a << std::endl;
-        throw std::runtime_error("num pb");
-    }
-}
+        renf_elem_class a(K);
+        a = num;
+        a /= den;
+        REQUIRE(a.get_num() == num);
+        REQUIRE(a.get_den() == den);
+    };
 
-static void check_reconstruct(std::shared_ptr<const renf_class> K, renf_elem_class& a)
-{
-    renf_elem_class g = K->gen();
-    renf_elem_class gg = 1;
-    renf_elem_class b = 0;
-
-    std::cerr << "bx = " << b << std::endl;
-    std::vector<mpz_class> num = a.get_num_vector();
-    if (static_cast<slong>(num.size()) != K->degree())
-        throw std::runtime_error("wrong vector length");
-    for (std::vector<mpz_class>::iterator it = num.begin(); it < num.end(); it++)
+    auto check_reconstruct = [](std::shared_ptr<const renf_class> K, renf_elem_class& a)
     {
-        b += gg * (*it);
-        gg *= g;
-        std::cerr << "*it = " << *it << std::endl;
-        std::cerr << "bx = " << b << std::endl;
-    }
-    b /= a.get_den();
-    std::cerr << "bx = " << b << std::endl;
+        renf_elem_class g = K->gen();
+        renf_elem_class gg = 1;
+        renf_elem_class b = 0;
 
-    if (a != b)
-    {
-        std::cerr << "a = " << a << std::endl;
-        std::cerr << "b = " << b << std::endl;
-        throw std::runtime_error("a != b");
-    }
+        std::vector<mpz_class> num = a.get_num_vector();
+        REQUIRE(static_cast<slong>(num.size()) == K->degree());
 
-    if (a.is_rational() && a.get_den() * a != a.get_num())
-    {
-        std::cerr << "a = " << a << std::endl;
-        std::cerr << "b = " << b << std::endl;
-        throw std::runtime_error("rationality failed");
-    }
-}
+        for (auto n : num)
+        {
+            b += gg * n;
+            gg *= g;
+        }
+        b /= a.get_den();
 
-int main(void)
-{
+        REQUIRE(a == b);
+        if (a.is_rational())
+            REQUIRE(a.get_den() * a == a.get_num());
+    };
+
+    SECTION("A linear field")
     {
-        // linear
         auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
 
         check_rational(-12, 5, K);
@@ -84,8 +63,8 @@ int main(void)
         check_reconstruct(K, b);
     }
 
+    SECTION("A quadratic field")
     {
-        // quadratic
         auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
         check_rational(7, 12, K);
@@ -100,8 +79,8 @@ int main(void)
         check_reconstruct(K, c);
     }
 
+    SECTION("A cubic field")
     {
-        // cubic
         auto K = renf_class::make("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
         renf_elem_class a(K, 0);
@@ -116,6 +95,4 @@ int main(void)
         renf_elem_class d(K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
         check_reconstruct(K, d);
     }
-
-    return 0;
 }

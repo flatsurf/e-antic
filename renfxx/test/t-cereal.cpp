@@ -60,7 +60,7 @@ int main(void)
     test_serialization(renf_elem_class(K1, "3*A^2-1"));
 
     auto items = test_serialization(std::vector<renf_elem_class>{g1, K1->one()});
-    if (&*items[0].parent() != &*items[1].parent())
+    if (&items[0].parent() != &items[1].parent())
     {
         throw std::runtime_error("parents of elements were not deduplicated");
     }
