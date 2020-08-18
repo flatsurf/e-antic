@@ -75,7 +75,7 @@ struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 /*
  * Wrap RenfGenerator for use as GENERATE(renfs(...))
  */
-Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, ulong iterations = 128, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
+[[maybe_unused]] Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, ulong iterations = 128, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
 {
     return Catch::Generators::GeneratorWrapper<renf_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_t&>>(new RenfGenerator(state, iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
 }
