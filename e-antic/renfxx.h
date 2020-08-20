@@ -15,9 +15,9 @@
 #define E_ANTIC_RENFXX_H
 
 #include <cassert>
-#include <vector>
-#include <type_traits>
 #include <memory>
+#include <type_traits>
+#include <vector>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -104,7 +104,7 @@ public:
     renf_elem_class() noexcept;
     renf_elem_class(const renf_elem_class &) noexcept;
     renf_elem_class(renf_elem_class &&) noexcept;
-    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, int> = 0>
     renf_elem_class(Integer) noexcept;
     renf_elem_class(const mpz_class &) noexcept;
     renf_elem_class(const mpq_class &) noexcept;
@@ -120,7 +120,7 @@ public:
     // A rational in the field k
     renf_elem_class(std::shared_ptr<const renf_class> k, const fmpq_t) noexcept;
     // An integer in the field k
-    template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+    template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, int> = 0>
     renf_elem_class(std::shared_ptr<const renf_class> k, const Integer) noexcept;
     // Parse the string into an element in the field k
     renf_elem_class(std::shared_ptr<const renf_class> k, const std::string &);
@@ -185,15 +185,15 @@ public:
 
     // binary operations with primitive integer types
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator+=(Integer) noexcept;
+    std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> operator+=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator-=(Integer) noexcept;
+    std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> operator-=(Integer) noexcept;
     template <typename Integer>
-    std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator*=(Integer) noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> operator/=(Integer);
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
-    template <typename Integer> std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
+    std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> operator*=(Integer) noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> operator/=(Integer);
+    template <typename Integer> std::enable_if_t<std::is_integral<Integer>::value, bool> operator==(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral<Integer>::value, bool> operator<(Integer) const noexcept;
+    template <typename Integer> std::enable_if_t<std::is_integral<Integer>::value, bool> operator>(Integer) const noexcept;
 
     // binary operations with GMP integers
     renf_elem_class& operator+=(const mpz_class&) noexcept;
@@ -255,17 +255,16 @@ inline renf_elem_class pow(renf_elem_class x, int exp) { return x.pow(exp); }
 
 // generic construction and assignment
 
-template <auto = 0> constexpr bool false_v = false;
 template <typename = void> constexpr bool false_t = false;
 
 template <bool fallback_to_string, typename Integer> auto to_supported_integer(Integer value) noexcept
 {
     using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
 
-    static_assert(!std::is_same_v<S, mpz_class> && !std::is_same_v<S, mpq_class>,
+    static_assert(!std::is_same<S, mpz_class>::value && !std::is_same<S, mpq_class>::value,
         "Specialized operators should be used for mpz/mpq instead.");
 
-    static_assert(!std::is_same_v<bool, S>, "Cannot create renf_elem_class from bool.");
+    static_assert(!std::is_same<bool, S>::value, "Cannot create renf_elem_class from bool.");
 
     // This integer type is not natively understood, so we need to convert it
     // first
@@ -300,7 +299,7 @@ template <bool fallback_to_string, typename Integer> auto to_supported_integer(I
     }
 }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, int>>
 renf_elem_class::renf_elem_class(Integer value) noexcept : renf_elem_class(renf_class::make(), value) {}
 
 template <typename Coefficient>
@@ -316,14 +315,14 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_init(p);
     for (size_t i = 0; i < coefficients.size(); i++)
     {
-        if constexpr (std::is_same_v<S, mpz_class>)
+        if constexpr (std::is_same<S, mpz_class>::value)
             fmpq_poly_set_coeff_mpz(p, static_cast<slong>(i), coefficients[i].__get_mp());
-        else if constexpr (std::is_same_v<S, mpq_class>)
+        else if constexpr (std::is_same<S, mpq_class>::value)
             fmpq_poly_set_coeff_mpq(p, static_cast<slong>(i), coefficients[i].__get_mp());
         else
         {
             auto c = to_supported_integer<false>(coefficients[i]);
-            if constexpr (std::is_same_v<decltype(c), slong>)
+            if constexpr (std::is_same<decltype(c), slong>::value)
                 fmpq_poly_set_coeff_si(p, static_cast<slong>(i), c);
             else
                 fmpq_poly_set_coeff_ui(p, static_cast<slong>(i), c);
@@ -334,7 +333,7 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, int>>
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, Integer value) noexcept
 {
     nf = std::move(k);
@@ -346,40 +345,40 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, Integer va
 // generic operators
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator<(Integer rhs) const noexcept
+std::enable_if_t<std::is_integral<Integer>::value, bool> renf_elem_class::operator<(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         return renf_elem_cmp_si(a, rhs, nf->renf_t()) < 0;
     else
         return renf_elem_cmp_ui(a, rhs, nf->renf_t()) < 0;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator>(Integer rhs) const noexcept
+std::enable_if_t<std::is_integral<Integer>::value, bool> renf_elem_class::operator>(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         return renf_elem_cmp_si(a, rhs, nf->renf_t()) > 0;
     else
         return renf_elem_cmp_ui(a, rhs, nf->renf_t()) > 0;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> renf_elem_class::operator==(Integer rhs) const noexcept
+std::enable_if_t<std::is_integral<Integer>::value, bool> renf_elem_class::operator==(Integer rhs) const noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         return renf_elem_cmp_si(a, rhs, nf->renf_t()) == 0;
     else
         return renf_elem_cmp_ui(a, rhs, nf->renf_t()) == 0;
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator+=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> renf_elem_class::operator+=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         renf_elem_add_si(a, a, other, nf->renf_t());
     else
         renf_elem_add_ui(a, a, other, nf->renf_t());
@@ -387,10 +386,10 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator-=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> renf_elem_class::operator-=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         renf_elem_sub_si(a, a, other, nf->renf_t());
     else
         renf_elem_sub_ui(a, a, other, nf->renf_t());
@@ -398,10 +397,10 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator*=(Integer rhs) noexcept
+std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> renf_elem_class::operator*=(Integer rhs) noexcept
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         renf_elem_mul_si(a, a, other, nf->renf_t());
     else
         renf_elem_mul_ui(a, a, other, nf->renf_t());
@@ -409,10 +408,10 @@ std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, renf_elem_class &> renf_elem_class::operator/=(Integer rhs)
+std::enable_if_t<std::is_integral<Integer>::value, renf_elem_class &> renf_elem_class::operator/=(Integer rhs)
 {
     auto other = to_supported_integer<false>(rhs);
-    if constexpr (std::is_same_v<decltype(other), slong>)
+    if constexpr (std::is_same<decltype(other), slong>::value)
         renf_elem_div_si(a, a, other, nf->renf_t());
     else
         renf_elem_div_ui(a, a, other, nf->renf_t());
