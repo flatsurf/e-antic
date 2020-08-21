@@ -82,11 +82,17 @@ void load(Archive & archive, std::shared_ptr<const renf_class> & self)
             self = renf_class::make(pol, name, emb, prec);
         }
 
+        const auto reinterpret_ptr_cast = [](const auto& ptr) noexcept
+        {
+            auto p = reinterpret_cast<typename std::shared_ptr<void>::element_type*>(ptr.get());
+            return std::shared_ptr<void>(ptr, p);
+        };
+
         // Register this number field so other copies in the serialization
         // resolve to it. cereal stores shared_ptr<void> internally, so we
         // need to cast away constness and then to void*.
         archive.registerSharedPointer(id,
-            std::reinterpret_pointer_cast<void>(
+            reinterpret_ptr_cast(
             std::const_pointer_cast<renf_class>(self)));
     }
     else
