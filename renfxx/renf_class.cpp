@@ -29,7 +29,7 @@ static int xalloc = std::ios_base::xalloc();
 // value alive. Note that this means that actuall renf_class is not unique but
 // the instances visible to the user are unique.
 using Key = std::shared_ptr<const eantic::renf_class>;
-static UniqueFactory<eantic::renf_class, Key> factory;
+static unique_factory::UniqueFactory<std::weak_ptr<eantic::renf_class>, Key> factory;
 } // end of anonymous namespace
 
 namespace eantic {
