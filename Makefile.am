@@ -21,6 +21,8 @@ libeantic_la_SOURCES =
 check_PROGRAMS =
 dist_doc_DATA =
 
+EXTRA_DIST =
+
 LDADD = libeantic.la
 
 @VALGRIND_CHECK_RULES@
@@ -128,9 +130,21 @@ check_PROGRAMS +=                \
     renf_elem/test/t-gen         \
     renf_elem/test/t-get_cfrac   \
     renf_elem/test/t-is_rational \
-    renf_elem/test/t-get_d       \
     renf_elem/test/t-get_arb     \
     renf_elem/test/t-get_str_pretty
+
+# C tests written with catch2, a C++ testing framework
+
+check_PROGRAMS += renf_elem/test/t-get_d
+
+renf_elem_test_t_get_d_SOURCES = renfxx/test/main.cpp renf_elem/test/t-get_d.cpp
+renf_elem_test_t_get_d_LDADD = libeantic.la
+
+noinst_HEADERS +=                                               \
+    renfxx/test/external/catch2/single_include/catch2/catch.hpp \
+    renf/test/rand_generator.hpp                                \
+    renf/test/renf_generator.hpp                                \
+    renf_elem/test/renf_elem_generator.hpp
 
 # C++
 
@@ -152,7 +166,7 @@ VPATH = $(srcdir) $(builddir)
 # Generate e-antic.h before performing any compilation
 BUILT_SOURCES = e-antic/e-antic.h
 # Distribute e-antic.h.in as part of the tarball, but not e-antic.h
-EXTRA_DIST = e-antic/e-antic.h.in
+EXTRA_DIST += e-antic/e-antic.h.in
 nodist_pkginclude_HEADERS = e-antic/e-antic.h
 
 # Distribute files that we might need to fill/replace from our dependencies
@@ -193,7 +207,8 @@ check_PROGRAMS +=                     \
     renfxx/test/t-floor               \
     renfxx/test/t-ceil                \
     renfxx/test/t-stream              \
-    renfxx/test/t-cereal
+    renfxx/test/t-cereal              \
+    renfxx/test/t-hash
 
 # NOTE: ideally we should not provide explicit source for the
 # check programs. However, automake seems confused with the
@@ -214,6 +229,8 @@ renfxx_test_t_binop_SOURCES = renfxx/test/t-binop.cpp
 renfxx_test_t_binop_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_pow_SOURCES = renfxx/test/t-pow.cpp
 renfxx_test_t_pow_LDADD = libeanticxx.la libeantic.la -lgmpxx
+renfxx_test_t_hash_SOURCES = renfxx/test/main.cpp renfxx/test/t-hash.cpp
+renfxx_test_t_hash_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_is_integer_rational_SOURCES = renfxx/test/t-is_integer_rational.cpp
 renfxx_test_t_is_integer_rational_LDADD = libeanticxx.la libeantic.la -lgmpxx
 renfxx_test_t_floor_SOURCES = renfxx/test/t-floor.cpp

@@ -10,6 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
+
 #include <e-antic/renf_elem.h>
 
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf)
@@ -57,6 +59,9 @@ int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf)
 
     renf_elem_relative_condition_number_2exp(&cond, a, nf);
     prec = FLINT_MAX(nf->prec, arb_rel_accuracy_bits(nf->emb));
+
+    assert(prec != -cond && "prec + cond == 0 which does not make sense. In mid 2020 we found this to be the case sometimes. Unfortunately, we never managed to debug this issue. The only reproducer needed several days of computation to get here. So if this happens to you, please let us know.");
+
     renf_elem_set_evaluation(a, nf, prec + cond);
 
     arb_set_fmpq(diffball, b, prec);

@@ -31,15 +31,15 @@ int main(void)
         {
             renf_elem_class a(K, 2);
             if (a.pow(2) != 4)
-                std::runtime_error("2^2 is wrong");
+                throw std::runtime_error("2^2 is wrong");
             if (4 * a.pow(-2) != 1)
-                std::runtime_error("2^-2 is wrong");
+                throw std::runtime_error("2^-2 is wrong");
         }
 
         {
             renf_elem_class a = K->gen();
             if (a.pow(5) * a.pow(-5) != 1)
-                std::runtime_error("a^5 is wrong");
+                throw std::runtime_error("a^5 is wrong");
         }
     }
 

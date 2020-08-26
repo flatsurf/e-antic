@@ -10,3 +10,6 @@
 [submodule "upstream/flint"]
 	path = upstream/flint
 	url = https://github.com/wbhart/flint2.git
+[submodule "renfxx/test/external/catch2"]
+	path = renfxx/test/external/catch2
+	url = https://github.com/catchorg/Catch2.git

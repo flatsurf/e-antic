@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2019-2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -13,6 +13,7 @@
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
+#include <functional>
 #include <e-antic/renfxx.h>
 
 namespace eantic {
@@ -696,3 +697,10 @@ void renf_elem_class::assign(const mpq_class & value) noexcept
 }
 
 } // end of namespace eantic
+
+namespace std {
+size_t hash<eantic::renf_elem_class>::operator()(const eantic::renf_elem_class& x) const noexcept
+{
+  return hash<double>()(static_cast<double>(x));
+}
+}
