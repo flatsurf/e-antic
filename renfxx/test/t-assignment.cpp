@@ -26,7 +26,7 @@ TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class][op
 
     renf_elem_class a(K);
     renf_elem_class b(0);
-    TestType c = GENERATE(2, std::numeric_limits<TestType>::min(), std::numeric_limits<TestType>::max());
+    TestType c = GENERATE(static_cast<TestType>(2), std::numeric_limits<TestType>::min(), std::numeric_limits<TestType>::max());
 
     a = c;
     b = c;
