@@ -44,7 +44,7 @@ int main(void)
         // fmpq elements (nf reference is NULL)
         {
             renf_elem_class a(mpq_class("1/2"));
-            check_string(a, "(1/2 ~ 0.500000)", "1/2", "0.500000");
+            check_string(a, "(1/2 ~ 0.50000000)", "1/2", "0.50000000");
         }
     }
 

@@ -68,7 +68,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
 /*
  * Wrap RenfElemGenerator for use as GENERATE_REF(renf_elems(...)).
  */
-Catch::Generators::GeneratorWrapper<renf_elem_t&> renf_elems(flint_rand_t& state, renf_t& nf, ulong iterations = 128, ulong minbits = 10, ulong maxbits = 40)
+[[maybe_unused]] Catch::Generators::GeneratorWrapper<renf_elem_t&> renf_elems(flint_rand_t& state, renf_t& nf, ulong iterations = 128, ulong minbits = 10, ulong maxbits = 40)
 {
     return Catch::Generators::GeneratorWrapper<renf_elem_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_elem_t&>>(new RenfElemGenerator(state, nf, iterations, minbits, maxbits)));
 }

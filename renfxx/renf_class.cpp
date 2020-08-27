@@ -170,7 +170,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
     if (is.eof()) throw std::invalid_argument("empty stream");
 
     bool paren = is.peek() == std::char_traits<char>::to_int_type('(');
-    if (paren && nf != nullptr)
+    if (paren)
     {
         // read until ")"
         is.get();
@@ -193,7 +193,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
         }
     }
 
-    a = (nf == nullptr) ? mpq_class(s) : renf_elem_class(nf->shared_from_this(), s);
+    a = renf_elem_class(nf->shared_from_this(), s);
 
     return is;
 }

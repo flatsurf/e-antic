@@ -52,7 +52,7 @@ struct RandGenerator : public Catch::Generators::IGenerator<flint_rand_t&>
 /*
  * Wrap RandGenerator for use in GENERATE(rands())
  */
-Catch::Generators::GeneratorWrapper<flint_rand_t&> rands()
+[[maybe_unused]] Catch::Generators::GeneratorWrapper<flint_rand_t&> rands()
 {
   return Catch::Generators::GeneratorWrapper<flint_rand_t&>(std::unique_ptr<Catch::Generators::IGenerator<flint_rand_t&>>(new RandGenerator()));
 }
