@@ -129,6 +129,8 @@ public:
     renf_elem_class(std::shared_ptr<const renf_class> k, const unsigned long) noexcept;
     renf_elem_class(std::shared_ptr<const renf_class> k, const long long) noexcept;
     renf_elem_class(std::shared_ptr<const renf_class> k, const unsigned long long) noexcept;
+    // Coerce number field element to the field k. Only implemented in trivial cases.
+    renf_elem_class(std::shared_ptr<const renf_class> k, const renf_elem_class&);
     // Parse the string into an element in the field k
     renf_elem_class(std::shared_ptr<const renf_class> k, const std::string &);
     // The element Σc_i·α^i where α is the generator of the field k; the number
