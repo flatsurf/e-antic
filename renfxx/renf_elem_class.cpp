@@ -19,8 +19,148 @@
 
 namespace eantic {
 
+namespace {
+
+renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const renf_elem_t, renf_t)>& op)
+{
+    if (lhs.parent() == rhs.parent())
+        op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
+    else if (rhs.is_rational())
+        op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_class(lhs.parent().shared_from_this(), static_cast<mpq_class>(rhs)).renf_elem_t(), lhs.parent().renf_t());
+    else if (lhs.is_rational())
+    {
+        lhs = renf_elem_class(rhs.parent().shared_from_this(), static_cast<mpq_class>(lhs));
+        op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
+    }
+    else
+        throw std::logic_error("operands must be in the same number field or rational");
+
+    return lhs;
+}
+
+renf_elem_class& binop_mpz(renf_elem_class& lhs, const mpz_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, renf_t)>& op)
+{
+    ::fmpz_t r;
+    fmpz_init_set_readonly(r, rhs.get_mpz_t());
+    op(lhs.renf_elem_t(), lhs.renf_elem_t(), r, lhs.parent().renf_t());
+    fmpz_clear_readonly(r);
+    return lhs;
+}
+
+bool relop_mpz(const renf_elem_class& lhs, const mpz_class& rhs, const int cmp)
+{
+    if (cmp == 0 && !lhs.is_integer())
+        return false;
+
+    bool ret;
+
+    ::fmpz_t r;
+    fmpz_init_set_readonly(r, rhs.get_mpz_t());
+    if (cmp == 0)
+        ret = renf_elem_equal_fmpz(lhs.renf_elem_t(), r, lhs.parent().renf_t());
+    else
+        ret = renf_elem_cmp_fmpz(lhs.renf_elem_t(), r, lhs.parent().renf_t()) == cmp;
+    fmpz_clear_readonly(r);
+
+    return ret;
+}
+
+renf_elem_class& binop_mpq(renf_elem_class& lhs, const mpq_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const fmpq_t, renf_t)>& op)
+{
+    ::fmpq_t r;
+    fmpq_init_set_readonly(r, rhs.get_mpq_t());
+    op(lhs.renf_elem_t(), lhs.renf_elem_t(), r, lhs.parent().renf_t());
+    fmpq_clear_readonly(r);
+
+    return lhs;
+}
+
+bool relop_mpq(const renf_elem_class& lhs, const mpq_class& rhs, const int cmp)
+{
+    if (cmp == 0 && !lhs.is_rational())
+        return false;
+
+    bool ret;
+
+    ::fmpq_t r;
+    fmpq_init_set_readonly(r, rhs.get_mpq_t());
+    if (cmp == 0)
+        ret = renf_elem_equal_fmpq(lhs.renf_elem_t(), r, lhs.parent().renf_t());
+    else
+        ret = renf_elem_cmp_fmpq(lhs.renf_elem_t(), r, lhs.parent().renf_t()) == cmp;
+    fmpq_clear_readonly(r);
+
+    return ret;
+}
+
+template <typename Integer>
+using Supported = std::conditional_t<std::is_signed<Integer>::value, slong, ulong>;
+
+template <typename Integer>
+void maybe_fmpz(Integer value, const std::function<void(Supported<Integer>)>& op, const std::function<void(const fmpz_t)>& fmpz_op) noexcept
+{
+     try
+     {
+         op(boost::numeric_cast<Supported<Integer>>(value));
+     }
+     catch (boost::bad_numeric_cast &)
+     {
+        mpz_class vv(boost::lexical_cast<std::string>(value));
+        fmpz_t v;
+        fmpz_init_set_readonly(v, vv.get_mpz_t());
+        fmpz_op(v);
+        fmpz_clear_readonly(v);
+     }
+}
+
+template <typename Integer>
+void assign_maybe_fmpz(renf_elem_class& lhs, Integer value, const std::function<void(renf_elem_t, Supported<Integer>, const renf_t)>& op) noexcept
+{
+    maybe_fmpz(value,
+        [&](auto v) { op(lhs.renf_elem_t(), v, lhs.parent().renf_t()); },
+        [&](const fmpz_t v) { renf_elem_set_fmpz(lhs.renf_elem_t(), v, lhs.parent().renf_t()); });
+}
+
+template <typename Integer>
+renf_elem_class & binop_maybe_fmpz(renf_elem_class& lhs, Integer rhs, const std::function<void(renf_elem_t, const renf_elem_t, Supported<Integer>, const renf_t)>& op, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>& fmpz_op) noexcept
+{
+    maybe_fmpz(rhs,
+        [&](auto v) { op(lhs.renf_elem_t(), lhs.renf_elem_t(), v, lhs.parent().renf_t()); },
+        [&](const fmpz_t v) { fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), v, lhs.parent().renf_t()); });
+    return lhs;
+}
+
+template <typename Integer>
+bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op) noexcept
+{
+    if (!lhs.is_integer())
+        return false;
+
+    bool ret;
+
+    maybe_fmpz(rhs,
+        [&](auto v) { ret = op(lhs.renf_elem_t(), v, lhs.parent().renf_t()); },
+        [&](const fmpz_t v) { ret = renf_elem_equal_fmpz(lhs.renf_elem_t(), v, lhs.parent().renf_t()); });
+
+    return ret;
+}
+
+template <typename Integer>
+bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op, int cmp) noexcept
+{
+    bool ret;
+
+    maybe_fmpz(rhs,
+        [&](auto v) { ret = op(lhs.renf_elem_t(), v, lhs.parent().renf_t()) == cmp; },
+        [&](const fmpz_t v) { ret = renf_elem_cmp_fmpz(lhs.renf_elem_t(), v, lhs.parent().renf_t()) == cmp; });
+
+    return ret;
+}
+
+}
+
 renf_elem_class::renf_elem_class() noexcept
-    : renf_elem_class(0)
+    : renf_elem_class(renf_class::make())
 {
 }
 
@@ -36,46 +176,97 @@ renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
     *this = std::move(value);
 }
 
+renf_elem_class::renf_elem_class(int value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(unsigned int value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(long value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(unsigned long value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(long long value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(unsigned long long value) noexcept
+    : renf_elem_class(renf_class::make(), value) {}
+
 renf_elem_class::renf_elem_class(const mpz_class & value) noexcept
-    : renf_elem_class()
-{
-    assign(value);
-}
+    : renf_elem_class(renf_class::make(), value) {}
+
 renf_elem_class::renf_elem_class(const mpq_class & value) noexcept
-    : renf_elem_class()
-{
-    assign(value);
-}
+    : renf_elem_class(renf_class::make(), value) {}
 
 renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
-    : renf_elem_class()
-{
-    assign(value);
-}
+    : renf_elem_class(renf_class::make(), value) {}
 
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k) noexcept
-    : renf_elem_class(std::move(k), 0) {}
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_zero(a, nf->renf_t());
+}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, int value) noexcept
+    : renf_elem_class(std::move(k), static_cast<long>(value)) {}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned int value) noexcept
+    : renf_elem_class(std::move(k), static_cast<unsigned long>(value)) {}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long value) noexcept
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_si(a, value, nf->renf_t());
+}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long value) noexcept
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_ui(a, value, nf->renf_t());
+}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long long value) noexcept
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    assign_maybe_fmpz(*this, value, renf_elem_set_si);
+}
+
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long long value) noexcept
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    assign_maybe_fmpz(*this, value, renf_elem_set_ui);
+}
 
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class & value) noexcept
-    : renf_elem_class(std::move(k))
+    : nf(std::move(k))
 {
-    assign(value);
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
 }
 
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class & value) noexcept
-    : renf_elem_class(std::move(k))
+    : nf(std::move(k))
 {
-    assign(value);
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 }
 
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value) noexcept
-    : renf_elem_class(std::move(k))
+    : nf(std::move(k))
 {
-    assign(value);
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_fmpq(a, value, nf->renf_t());
 }
 
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std::string & str)
-    : renf_elem_class(std::move(k))
+    : nf(std::move(k))
 {
     const char * s = str.c_str();
 
@@ -105,6 +296,7 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std:
         fmpq_poly_clear(p);
         throw std::invalid_argument("renf_elem_class fmpq_poly_set_str_pretty");
     }
+    renf_elem_init(a, nf->renf_t());
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
 
@@ -345,50 +537,22 @@ renf_elem_class::operator bool() const noexcept
 
 renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexcept
 {
-    if (*nf == *rhs.nf)
-        renf_elem_add(a, a, rhs.a, nf->renf_t());
-    else if (is_rational())
-        promote(rhs.nf) += rhs;
-    else if (rhs.is_rational())
-        *this += static_cast<mpq_class>(rhs);
-
-    return *this;
+    return binop(*this, rhs, renf_elem_add);
 }
 
 renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs) noexcept
 {
-    if (*nf == *rhs.nf)
-        renf_elem_sub(a, a, rhs.a, nf->renf_t());
-    else if (is_rational())
-        promote(rhs.nf) -= rhs;
-    else if (rhs.is_rational())
-        *this -= static_cast<mpq_class>(rhs);
-
-    return *this;
+    return binop(*this, rhs, renf_elem_sub);
 }
 
 renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs) noexcept
 {
-    if (*nf == *rhs.nf)
-        renf_elem_mul(a, a, rhs.a, nf->renf_t());
-    else if (is_rational())
-        promote(rhs.nf) *= rhs;
-    else if (rhs.is_rational())
-        *this *= static_cast<mpq_class>(rhs);
-
-    return *this;
+    return binop(*this, rhs, renf_elem_mul);
 }
 
 renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
 {
-    if (*nf == *rhs.nf)
-        renf_elem_div(a, a, rhs.a, nf->renf_t());
-    else if (is_rational())
-        promote(rhs.nf) /= rhs;
-    else if (rhs.is_rational())
-        *this /= static_cast<mpq_class>(rhs);
-
-    return *this;
+    return binop(*this, rhs, renf_elem_div);
 }
 
 renf_elem_class renf_elem_class::pow(int exp) const noexcept
@@ -415,17 +579,20 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
 
     if (is_rational())
     {
-        mpq_class self = static_cast<mpq_class>(*this);
-        return self == other;
+        if (!other.is_rational())
+            return false;
+
+        return static_cast<mpq_class>(*this) == static_cast<mpq_class>(other);
     }
     else if (other.is_rational())
     {
-        mpq_class o = static_cast<mpq_class>(other);
-        return *this == o;
+        return false;
     }
-
-    std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
-    abort();
+    else
+    {
+        std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
+        abort();
+    }
 }
 
 bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
@@ -443,143 +610,283 @@ bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
         mpq_class o = static_cast<mpq_class>(other);
         return *this < o;
     }
+    else
+    {
+        std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
+        abort();
+    }
+}
 
-    std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
-    abort();
+renf_elem_class& renf_elem_class::operator+=(int rhs) noexcept
+{
+    return *this += static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(int rhs) noexcept
+{
+    return *this -= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(int rhs) noexcept
+{
+    return *this *= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(int rhs)
+{
+    return *this /= static_cast<long>(rhs);
+}
+
+bool renf_elem_class::operator==(int rhs) const noexcept {
+    return *this == static_cast<long>(rhs);
+}
+
+bool renf_elem_class::operator<(int rhs) const noexcept {
+    return *this < static_cast<long>(rhs);
+}
+
+bool renf_elem_class::operator>(int rhs) const noexcept {
+    return *this > static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator+=(unsigned int rhs) noexcept
+{
+    return *this += static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(unsigned int rhs) noexcept
+{
+    return *this -= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(unsigned int rhs) noexcept
+{
+    return *this *= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(unsigned int rhs)
+{
+    return *this /= static_cast<unsigned long>(rhs);
+}
+
+bool renf_elem_class::operator==(unsigned int rhs) const noexcept {
+    return *this == static_cast<unsigned long>(rhs);
+}
+
+bool renf_elem_class::operator<(unsigned int rhs) const noexcept {
+    return *this < static_cast<unsigned long>(rhs);
+}
+
+bool renf_elem_class::operator>(unsigned int rhs) const noexcept {
+    return *this > static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator+=(long rhs) noexcept
+{
+    renf_elem_add_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator-=(long rhs) noexcept
+{
+    renf_elem_sub_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator*=(long rhs) noexcept
+{
+    renf_elem_mul_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator/=(long rhs)
+{
+    renf_elem_div_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+bool renf_elem_class::operator==(long rhs) const noexcept {
+    return renf_elem_equal_si(renf_elem_t(), rhs, nf->renf_t());
+}
+
+bool renf_elem_class::operator<(long rhs) const noexcept {
+    return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == -1;
+}
+
+bool renf_elem_class::operator>(long rhs) const noexcept {
+    return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == 1;
+}
+
+renf_elem_class& renf_elem_class::operator+=(unsigned long rhs) noexcept
+{
+    renf_elem_add_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator-=(unsigned long rhs) noexcept
+{
+    renf_elem_sub_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator*=(unsigned long rhs) noexcept
+{
+    renf_elem_mul_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator/=(unsigned long rhs)
+{
+    renf_elem_div_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
+    return *this;
+}
+
+bool renf_elem_class::operator==(unsigned long rhs) const noexcept {
+    return renf_elem_equal_ui(renf_elem_t(), rhs, nf->renf_t());
+}
+
+bool renf_elem_class::operator<(unsigned long rhs) const noexcept {
+    return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == -1;
+}
+
+bool renf_elem_class::operator>(unsigned long rhs) const noexcept {
+    return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == 1;
+}
+
+renf_elem_class& renf_elem_class::operator+=(long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_add_si, renf_elem_add_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator-=(long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_sub_si, renf_elem_sub_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator*=(long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_mul_si, renf_elem_mul_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator/=(long long rhs)
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_div_si, renf_elem_div_fmpz);
+    return *this;
+}
+
+bool renf_elem_class::operator==(long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_equal_si);
+}
+
+bool renf_elem_class::operator<(long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, -1);
+}
+
+bool renf_elem_class::operator>(long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, 1);
+}
+
+renf_elem_class& renf_elem_class::operator+=(unsigned long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_add_ui, renf_elem_add_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator-=(unsigned long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_sub_ui, renf_elem_sub_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator*=(unsigned long long rhs) noexcept
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_mul_ui, renf_elem_mul_fmpz);
+    return *this;
+}
+
+renf_elem_class& renf_elem_class::operator/=(unsigned long long rhs)
+{
+    binop_maybe_fmpz(*this, rhs, renf_elem_div_ui, renf_elem_div_fmpz);
+    return *this;
+}
+
+bool renf_elem_class::operator==(unsigned long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_equal_ui);
+}
+
+bool renf_elem_class::operator<(unsigned long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, -1);
+}
+
+bool renf_elem_class::operator>(unsigned long long rhs) const noexcept {
+    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, 1);
 }
 
 renf_elem_class& renf_elem_class::operator+=(const mpz_class& rhs) noexcept
 {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    renf_elem_add_fmpz(a, a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return *this;
+    return binop_mpz(*this, rhs, renf_elem_add_fmpz);
 }
 
 renf_elem_class& renf_elem_class::operator-=(const mpz_class& rhs) noexcept
 {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    renf_elem_sub_fmpz(a, a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return *this;
+    return binop_mpz(*this, rhs, renf_elem_sub_fmpz);
 }
 
 renf_elem_class& renf_elem_class::operator*=(const mpz_class& rhs) noexcept
 {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    renf_elem_mul_fmpz(a, a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return *this;
+    return binop_mpz(*this, rhs, renf_elem_mul_fmpz);
 }
 
 renf_elem_class& renf_elem_class::operator/=(const mpz_class& rhs)
 {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    renf_elem_div_fmpz(a, a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return *this;
+    return binop_mpz(*this, rhs, renf_elem_div_fmpz);
 }
 
 bool renf_elem_class::operator==(const mpz_class& rhs) const noexcept {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    bool ret = renf_elem_equal_fmpz(a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return ret;
+    return relop_mpz(*this, rhs, 0);
 }
 
 bool renf_elem_class::operator<(const mpz_class& rhs) const noexcept {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    int ret = renf_elem_cmp_fmpz(a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return ret == -1;
+    return relop_mpz(*this, rhs, -1);
 }
 
 bool renf_elem_class::operator>(const mpz_class& rhs) const noexcept {
-    ::fmpz_t r;
-    fmpz_init_set_readonly(r, rhs.get_mpz_t());
-    int ret = renf_elem_cmp_fmpz(a, r, nf->renf_t());
-    fmpz_clear_readonly(r);
-
-    return ret == 1;
+    return relop_mpz(*this, rhs, 1);
 }
 
 renf_elem_class& renf_elem_class::operator+=(const mpq_class& rhs) noexcept
 {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    renf_elem_add_fmpq(a, a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return *this;
+    return binop_mpq(*this, rhs, renf_elem_add_fmpq);
 }
 
 renf_elem_class& renf_elem_class::operator-=(const mpq_class& rhs) noexcept
 {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    renf_elem_sub_fmpq(a, a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return *this;
+    return binop_mpq(*this, rhs, renf_elem_sub_fmpq);
 }
 
 renf_elem_class& renf_elem_class::operator*=(const mpq_class& rhs) noexcept
 {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    renf_elem_mul_fmpq(a, a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return *this;
+    return binop_mpq(*this, rhs, renf_elem_mul_fmpq);
 }
 
 renf_elem_class& renf_elem_class::operator/=(const mpq_class& rhs)
 {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    renf_elem_div_fmpq(a, a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return *this;
+    return binop_mpq(*this, rhs, renf_elem_div_fmpq);
 }
 
 bool renf_elem_class::operator==(const mpq_class& rhs) const noexcept {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    bool ret = renf_elem_equal_fmpq(a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return ret;
+    return relop_mpq(*this, rhs, 0);
 }
 
 bool renf_elem_class::operator<(const mpq_class& rhs) const noexcept {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    int ret = renf_elem_cmp_fmpq(a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return ret == -1;
+    return relop_mpq(*this, rhs, -1);
 }
 
 bool renf_elem_class::operator>(const mpq_class& rhs) const noexcept {
-    ::fmpq_t r;
-    fmpq_init_set_readonly(r, rhs.get_mpq_t());
-    int ret = renf_elem_cmp_fmpq(a, r, nf->renf_t());
-    fmpq_clear_readonly(r);
-
-    return ret == 1;
+    return relop_mpq(*this, rhs, 1);
 }
 
 std::string renf_elem_class::get_str(int flag) const noexcept { return to_string(flag); }
@@ -598,46 +905,6 @@ mpq_class renf_elem_class::get_rational(void) const { return static_cast<mpq_cla
 std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept { return num_vector(); }
 
 double renf_elem_class::get_d() const noexcept { return static_cast<double>(*this); }
-
-renf_elem_class& renf_elem_class::promote(std::shared_ptr<const renf_class> other) noexcept
-{
-    if (*this->nf == *other)
-        return *this;
-    if (is_rational())
-    {
-        renf_elem_class promoted = renf_elem_class(other);
-        promoted.assign(static_cast<mpq_class>(*this));
-        return *this = std::move(promoted);
-    }
-
-    std::cerr << "not implemented: cannot promote a renf_elem_class to a new number field" << std::endl;
-    abort();
-}
-
-void renf_elem_class::assign(slong value) noexcept
-{
-    renf_elem_set_si(a, value, nf->renf_t());
-}
-
-void renf_elem_class::assign(ulong value) noexcept
-{
-    renf_elem_set_ui(a, value, nf->renf_t());
-}
-
-void renf_elem_class::assign(const ::fmpq_t value) noexcept
-{
-    renf_elem_set_fmpq(a, value, nf->renf_t());
-}
-
-void renf_elem_class::assign(const mpz_class & value) noexcept
-{
-    renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
-}
-
-void renf_elem_class::assign(const mpq_class & value) noexcept
-{
-    renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
-}
 
 } // end of namespace eantic
 

@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -10,50 +11,43 @@
 */
 
 #include <e-antic/renfxx.h>
-#include <iostream>
+
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../../renf/test/rand_generator.hpp"
+#include "renf_class_generator.hpp"
 
 using namespace eantic;
 
-int main(void)
+TEST_CASE("Detect integer/rational elements", "[renf_elem_class][is_integer][is_rational]")
 {
-    FLINT_TEST_INIT(state);
-    int iter;
+    flint_rand_t& state = GENERATE(rands());
 
+    SECTION("Elements in the rational field")
     {
-        renf_elem_class a(4);
-        if (not a.is_integer() || not a.is_rational())
-            throw 10;
-
-        if (not (a/2).is_integer() || not (a/2).is_rational())
-            throw 10;
-
-        if ((a/3).is_integer() || not (a/3).is_rational())
-            throw 10;
+        REQUIRE(renf_elem_class().is_integer());
+        REQUIRE(renf_elem_class().is_rational());
+        REQUIRE(renf_elem_class(1).is_integer());
+        REQUIRE(renf_elem_class(1).is_rational());
+        REQUIRE(!(renf_elem_class(1)/2).is_integer());
+        REQUIRE((renf_elem_class(1)/2).is_rational());
     }
 
-    for (iter = 0; iter < 10; iter++)
+    SECTION("Elements in general number fields")
     {
-        renf_t nf;
-        renf_randtest(nf, state, 5, 32, 20);
-        auto K = renf_class::make(nf);
-        renf_clear(nf);
+        auto K = GENERATE_REF(renf_classs(state));
 
-        if (fmpq_poly_length(nf->nf->pol) <= 1)
-            continue;
+        REQUIRE(renf_elem_class(K, 0).is_integer());
+        REQUIRE(renf_elem_class(K, 0).is_rational());
 
-        renf_elem_class a(K);
-        renf_elem_gen(a.get_renf_elem(), K->get_renf());
-
-        if (a.is_integer() || a.is_rational())
-            throw 10;
-
-        if (not (a-a+1).is_integer() || not (a-a+1).is_rational())
-            throw 10;
-
-        if (((a-a+1)/2).is_integer() || not ((a-a+1)/2).is_rational())
-            throw 10;
+        if (K->degree() == 1)
+        {
+            REQUIRE(K->gen().is_rational());
+        }
+        else
+        {
+            REQUIRE(!K->gen().is_integer());
+            REQUIRE(!K->gen().is_rational());
+        }
     }
-
-    FLINT_TEST_CLEANUP(state)
-    return 0;
 }
