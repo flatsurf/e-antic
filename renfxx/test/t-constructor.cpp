@@ -53,3 +53,14 @@ TEST_CASE("Construct trivial renf_elem_class", "[renf_elem_class]")
     REQUIRE(renf_elem_class(K, "0") == 0);
     REQUIRE(renf_elem_class(K, "0*a^2 + 0") == 0);
 }
+
+TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    auto K = GENERATE_REF(renf_classs(state));
+
+    auto a = renf_elem_class(mpq_class(13, 37));
+
+    REQUIRE(renf_elem_class(K, a) == a);
+    REQUIRE(renf_elem_class(K, renf_elem_class(K, a)) == a);
+}

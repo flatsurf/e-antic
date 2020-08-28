@@ -303,6 +303,18 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std:
     flint_free(t);
 }
 
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const renf_elem_class & value)
+    : nf(std::move(k)) {
+    renf_elem_init(a, nf->renf_t());
+
+    if (value.parent() == *nf)
+        renf_elem_set(a, value.renf_elem_t(), nf->renf_t());
+    else if (value.is_rational())
+        renf_elem_set_mpq(a, static_cast<mpq_class>(value).get_mpq_t(), nf->renf_t());
+    else
+        throw std::logic_error("not implemented: coercion between these number fields");
+}
+
 renf_elem_class::~renf_elem_class() noexcept
 {
     renf_elem_clear(a, nf->renf_t());
