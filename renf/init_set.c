@@ -23,4 +23,5 @@ void renf_init_set(renf_t dest, const renf_t src)
     fmpz_poly_set(dest->der, src->der);
 
     dest->prec = src->prec;
+    dest->immutable = 0;
 }
