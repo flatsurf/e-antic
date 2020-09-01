@@ -91,8 +91,8 @@ void save(Archive & archive, const renf_elem_class & self, std::uint32_t)
 {
     archive(
         cereal::make_nvp("parent", self.parent().shared_from_this()),
-        cereal::make_nvp("value", boost::lexical_cast<std::string>(self)),
-        cereal::make_nvp("double", static_cast<double>(self)));
+        cereal::make_nvp("value", self.to_string(EANTIC_STR_ALG))
+    );
 }
 
 template <class Archive>
@@ -102,15 +102,12 @@ void load(Archive & archive, renf_elem_class & self, std::uint32_t version)
 
     std::shared_ptr<const renf_class> nf;
     std::string serialized_element;
-    double _;
-    
-    archive(nf, serialized_element, _);
 
-    std::stringstream ss(serialized_element);
+    archive(nf, serialized_element);
+
+    std::stringstream ss("(" + serialized_element + ")");
     if (nf)
-    {
         nf->set_pword(ss);
-    }
     ss >> self;
 }
 
