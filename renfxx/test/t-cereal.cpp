@@ -48,7 +48,7 @@ T test_serialization(const T& x)
     return y;
 }
 
-std::shared_ptr<const renf_class> K = nullptr;
+static std::shared_ptr<const renf_class> K = nullptr;
 
 TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 {

@@ -55,10 +55,12 @@ TEST_CASE("Converting fields to strings", "[renf_class][operator<<]")
     }
 }
 
+static std::shared_ptr<const renf_class> K = nullptr;
+
 TEST_CASE("Writing and reading elements from streams", "[renf_elem_class][operator<<][operator>>]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    K = GENERATE_REF(renf_classs(state));
     auto a = GENERATE_REF(renf_elem_classs(state, K));
 
     CAPTURE(a);
