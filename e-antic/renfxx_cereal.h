@@ -29,26 +29,17 @@ void save(Archive & archive, const std::shared_ptr<const renf_class> & self)
         // This is the first time cereal sees this renf_class, so we actually
         // store it. Future copies only need the id to resolve to a shared_ptr
         // to the same renf_class.
-        bool rational = !static_cast<bool>(self);
-        archive(cereal::make_nvp("rational", rational));
-        if (rational)
-        {
-            return;
-        }
-        else
-        {
-            char * emb = arb_get_str(self->renf_t()->emb, arf_bits(arb_midref(self->renf_t()->emb)), 0);
-            char * pol = fmpq_poly_get_str_pretty(self->renf_t()->nf->pol, self->gen_name().c_str());
+        char * emb = arb_get_str(self->renf_t()->emb, arf_bits(arb_midref(self->renf_t()->emb)), 0);
+        char * pol = fmpq_poly_get_str_pretty(self->renf_t()->nf->pol, self->gen_name().c_str());
 
-            archive(
-                cereal::make_nvp("name", self->gen_name()),
-                cereal::make_nvp("embedding", std::string(emb)),
-                cereal::make_nvp("minpoly", std::string(pol)),
-                cereal::make_nvp("precision", self->renf_t()->prec));
+        archive(
+            cereal::make_nvp("name", self->gen_name()),
+            cereal::make_nvp("embedding", std::string(emb)),
+            cereal::make_nvp("minpoly", std::string(pol)),
+            cereal::make_nvp("precision", self->renf_t()->prec));
 
-            flint_free(pol);
-            flint_free(emb);
-        }
+        flint_free(pol);
+        flint_free(emb);
     }
 }
 
@@ -66,21 +57,12 @@ void load(Archive & archive, std::shared_ptr<const renf_class> & self)
 
     if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {
-        bool rational;
-        archive(rational);
-        if (rational)
-        {
-            self = nullptr;
-        }
-        else
-        {
-            std::string name, emb, pol;
-            slong prec;
-            
-            archive(name, emb, pol, prec);
+        std::string name, emb, pol;
+        slong prec;
 
-            self = renf_class::make(pol, name, emb, prec);
-        }
+        archive(name, emb, pol, prec);
+
+        self = renf_class::make(pol, name, emb, prec);
 
         const auto reinterpret_ptr_cast = [](const auto& ptr) noexcept
         {
@@ -109,8 +91,8 @@ void save(Archive & archive, const renf_elem_class & self, std::uint32_t)
 {
     archive(
         cereal::make_nvp("parent", self.parent().shared_from_this()),
-        cereal::make_nvp("value", boost::lexical_cast<std::string>(self)),
-        cereal::make_nvp("double", static_cast<double>(self)));
+        cereal::make_nvp("value", self.to_string(EANTIC_STR_ALG))
+    );
 }
 
 template <class Archive>
@@ -120,15 +102,12 @@ void load(Archive & archive, renf_elem_class & self, std::uint32_t version)
 
     std::shared_ptr<const renf_class> nf;
     std::string serialized_element;
-    double _;
-    
-    archive(nf, serialized_element, _);
 
-    std::stringstream ss(serialized_element);
+    archive(nf, serialized_element);
+
+    std::stringstream ss("(" + serialized_element + ")");
     if (nf)
-    {
         nf->set_pword(ss);
-    }
     ss >> self;
 }
 

@@ -13,57 +13,52 @@
 #include <cereal/archives/json.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "e-antic/renfxx.h"
-#include "e-antic/renfxx_cereal.h"
+#include "../../e-antic/renfxx.h"
+#include "../../e-antic/renfxx_cereal.h"
+
+#include "../../renf/test/rand_generator.hpp"
+#include "renf_class_generator.hpp"
+#include "renf_elem_class_generator.hpp"
 
 using namespace eantic;
-using cereal::JSONOutputArchive;
-using cereal::JSONInputArchive;
 
 template <typename T>
 T test_serialization(const T& x)
 {
-    std::stringstream s;
+    CAPTURE(x);
 
+    std::stringstream s;
     {
-        JSONOutputArchive archive(s);
+        ::cereal::JSONOutputArchive archive(s);
         archive(x);
     }
 
+    CAPTURE(s.str());
+
     T y;
     {
-        JSONInputArchive archive(s);
+        ::cereal::JSONInputArchive archive(s);
         archive(y);
     }
 
-    if (x != y)
-    {
-        throw std::runtime_error("deserialization failed to reconstruct element, the original value had serialized to " + s.str());
-    }
+    CAPTURE(y);
+
+    REQUIRE(x == y);
 
     return y;
 }
 
-int main(void)
+static std::shared_ptr<const renf_class> K = nullptr;
+
+TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 {
-    auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
-    auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
-    const renf_elem_class g1 = K1->gen();
-    const renf_elem_class g2 = K2->gen();
+    flint_rand_t& state = GENERATE(rands());
+    K = GENERATE_REF(renf_classs(state));
+    auto a = GENERATE_REF(renf_elem_classs(state, K, 4));
+    auto b = GENERATE_REF(renf_elem_classs(state, K, 4));
 
-    test_serialization(renf_elem_class(mpz_class("0")));
-    test_serialization(renf_elem_class(mpq_class("2/3")));
-    test_serialization(K1->gen());
-    test_serialization(K2->gen());
-    test_serialization(renf_elem_class(K1));
-    test_serialization(renf_elem_class(K2));
-    test_serialization(renf_elem_class(K1, "3*A^2-1"));
+    CAPTURE(*K);
 
-    auto items = test_serialization(std::vector<renf_elem_class>{g1, K1->one()});
-    if (&items[0].parent() != &items[1].parent())
-    {
-        throw std::runtime_error("parents of elements were not deduplicated");
-    }
-
-    return 0;
+    test_serialization(a);
+    test_serialization(std::vector<renf_elem_class>{a, a, b});
 }

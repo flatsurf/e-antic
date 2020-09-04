@@ -243,7 +243,7 @@ renfxx_test_t_get_str_SOURCES = renfxx/test/t-get_str.cpp
 renfxx_test_t_get_str_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_stream_SOURCES = renfxx/test/main.cpp renfxx/test/t-stream.cpp
 renfxx_test_t_stream_LDADD = libeanticxx.la libeantic.la
-renfxx_test_t_cereal_SOURCES = renfxx/test/t-cereal.cpp
+renfxx_test_t_cereal_SOURCES = renfxx/test/main.cpp renfxx/test/t-cereal.cpp
 renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_cereal_CPPFLAGS = -isystem $(srcdir)/renfxx/test/external/cereal/include
 
