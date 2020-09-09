@@ -19,6 +19,22 @@ int main(void)
     FLINT_TEST_INIT(state);
     int iter;
 
+    {
+        renf_class K("b^2 - 2", "b", "1.41 +/- 0.01");
+        renf_class L;
+        L = K;
+        if (K.gen_name != L.gen_name)
+            throw std::runtime_error("gen_name not equal after assignment");
+    }
+
+    {
+        renf_class K("HellO^2 - 2", "HellO", "1.41 +/- 0.01");
+        renf_class L;
+        L = K;
+        if (K.gen_name != L.gen_name)
+            throw std::runtime_error("gen_name not equal after assignment");
+    }
+
     for (iter = 0; iter < 100; iter++)
     {
         renf_t nf;

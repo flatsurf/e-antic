@@ -49,6 +49,7 @@ public:
     {
         renf_clear(nf);
         renf_init_set(nf, k.nf);
+        gen_name = k.gen_name;
         return *this;
     }
 
