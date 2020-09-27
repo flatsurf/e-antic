@@ -254,7 +254,7 @@ if HAVE_BENCHMARK
 
 noinst_PROGRAMS += renfxx/benchmark/benchmark
 
-renfxx_benchmark_benchmark_SOURCES = renfxx/benchmark/main.cpp
+renfxx_benchmark_benchmark_SOURCES = renfxx/benchmark/main.cpp renfxx/benchmark/b-constructor.cpp
 
 renfxx_benchmark_benchmark_LDADD = $(builddir)/libeanticxx.la $(builddir)/libeantic.la
 # Include Google's libbenchmark and dependent libraries
