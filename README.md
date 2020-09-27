@@ -16,6 +16,7 @@ The dependencies are:
 If you have cloned the source directory you will need to setup the
 configure script and Makefile using autotools. That is
 
+    $ git submodule update --init
     $ ./bootstrap.sh
 
 If you obtained a tarball of the sources or if the preceding step
