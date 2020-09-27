@@ -59,6 +59,17 @@ AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(14)
 AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (GMP needs to be compiled with c++ support (--enable-cxx))])])
 AC_CHECK_HEADERS(boost/lexical_cast.hpp, , [AC_MSG_ERROR([boost headers not found])])
+
+dnl Our benchmarks use Google's C++ benchmark library.
+dnl We fail if they cannot be found but let the user disable it explicitly.
+AC_ARG_WITH([benchmark], AS_HELP_STRING([--without-benchmark], [Do not build C++ benchmarks that require google/benchmark]))
+AS_IF([test "x$with_benchmark" != "xno"],
+      [
+       with_benchmark=yes
+       AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([benchmark headers not found; run --without-benchmark to disable building of benchmark/]))
+      ], [])
+AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
+
 AC_LANG_POP([C++])
 
 AC_OUTPUT
