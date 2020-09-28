@@ -20,7 +20,7 @@ using benchmark::State;
 namespace eantic {
 namespace benchmark {
 
-void ConstructTrivialField(State& state)
+static void ConstructTrivialField(State& state)
 {
     for (auto _ : state)
     {
