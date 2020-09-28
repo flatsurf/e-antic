@@ -1,5 +1,5 @@
-E-ANTIC -- (Real Embedded) Algebraic Number Theory In C
-=======================================================
+E-ANTIC — (Real Embedded) Algebraic Number Theory
+=================================================
 
 E-ANTIC is a C/C++ library to deal with real embedded number fields built on
 top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as fast
