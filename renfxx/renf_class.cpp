@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2019-2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -88,7 +88,8 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
 
 std::shared_ptr<const renf_class> renf_class::make() noexcept
 {
-    return factory.get(Key(new renf_class()), [&]() { return new renf_class; });
+    static auto trivial = factory.get(Key(new renf_class()), [&]() { return new renf_class; });
+    return trivial;
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name) noexcept

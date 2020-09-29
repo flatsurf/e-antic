@@ -17,6 +17,7 @@ AM_CPPFLAGS = -I.
 
 # Initialize variables, to be filled below
 noinst_HEADERS =
+noinst_PROGRAMS =
 libeantic_la_SOURCES =
 check_PROGRAMS =
 dist_doc_DATA =
@@ -247,5 +248,16 @@ renfxx_test_t_cereal_SOURCES = renfxx/test/main.cpp renfxx/test/t-cereal.cpp
 renfxx_test_t_cereal_LDADD = libeanticxx.la libeantic.la
 renfxx_test_t_cereal_CPPFLAGS = -isystem $(srcdir)/renfxx/test/external/cereal/include
 
-# test suite
 TESTS = $(check_PROGRAMS)
+
+if HAVE_BENCHMARK
+
+noinst_PROGRAMS += renfxx/benchmark/benchmark
+
+renfxx_benchmark_benchmark_SOURCES = renfxx/benchmark/main.cpp renfxx/benchmark/b-constructor.cpp
+
+renfxx_benchmark_benchmark_LDADD = $(builddir)/libeanticxx.la $(builddir)/libeantic.la
+# Include Google's libbenchmark and dependent libraries
+renfxx_benchmark_benchmark_LDFLAGS = -lbenchmark -lrt -lpthread
+
+endif

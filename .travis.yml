@@ -13,7 +13,7 @@ install:
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  - conda create -q -n e-antic-build -c conda-forge python=$TRAVIS_PYTHON_VERSION antic libflint arb valgrind autoconf automake cxx-compiler c-compiler libtool boost-cpp $PACKAGES
+  - conda create -q -n e-antic-build -c conda-forge python=$TRAVIS_PYTHON_VERSION antic libflint arb valgrind autoconf automake cxx-compiler c-compiler libtool boost-cpp benchmark $PACKAGES
   - conda activate e-antic-build
   - export CC=${_CC:-$CC}
   - export CXX=${_CXX:-$CXX}
