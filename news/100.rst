@@ -60,8 +60,8 @@
   ```
 * `string renf_class::gen_name` is now a method so it needs to be called.
 * Many operations that threw an exception before when domains were mixed, now
-  abort program execution (typically through a call to `assert()`.) You can
-  identify these operations by their `noexcept` modifier.
+  abort program execution (typically through a call to `assert()`.) You are not
+  supposed to mix domains unless explicitly stated otherwise.
 * `renf_class.operator==` now also checks that the generator name is the same.
   Similarly, `renf_class.operator=` now also resets the generator name.
 

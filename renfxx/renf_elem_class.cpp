@@ -15,7 +15,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <functional>
-#include <e-antic/renfxx.h>
+
+#include "../e-antic/renfxx.h"
 
 namespace eantic {
 
@@ -97,7 +98,7 @@ template <typename Integer>
 using Supported = std::conditional_t<std::is_signed<Integer>::value, slong, ulong>;
 
 template <typename Integer>
-void maybe_fmpz(Integer value, const std::function<void(Supported<Integer>)>& op, const std::function<void(const fmpz_t)>& fmpz_op) noexcept
+void maybe_fmpz(Integer value, const std::function<void(Supported<Integer>)>& op, const std::function<void(const fmpz_t)>& fmpz_op)
 {
      try
      {
@@ -114,7 +115,7 @@ void maybe_fmpz(Integer value, const std::function<void(Supported<Integer>)>& op
 }
 
 template <typename Integer>
-void assign_maybe_fmpz(renf_elem_class& lhs, Integer value, const std::function<void(renf_elem_t, Supported<Integer>, const renf_t)>& op) noexcept
+void assign_maybe_fmpz(renf_elem_class& lhs, Integer value, const std::function<void(renf_elem_t, Supported<Integer>, const renf_t)>& op)
 {
     maybe_fmpz(value,
         [&](auto v) { op(lhs.renf_elem_t(), v, lhs.parent().renf_t()); },
@@ -122,7 +123,7 @@ void assign_maybe_fmpz(renf_elem_class& lhs, Integer value, const std::function<
 }
 
 template <typename Integer>
-renf_elem_class & binop_maybe_fmpz(renf_elem_class& lhs, Integer rhs, const std::function<void(renf_elem_t, const renf_elem_t, Supported<Integer>, const renf_t)>& op, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>& fmpz_op) noexcept
+renf_elem_class & binop_maybe_fmpz(renf_elem_class& lhs, Integer rhs, const std::function<void(renf_elem_t, const renf_elem_t, Supported<Integer>, const renf_t)>& op, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>& fmpz_op)
 {
     maybe_fmpz(rhs,
         [&](auto v) { op(lhs.renf_elem_t(), lhs.renf_elem_t(), v, lhs.parent().renf_t()); },
@@ -131,7 +132,7 @@ renf_elem_class & binop_maybe_fmpz(renf_elem_class& lhs, Integer rhs, const std:
 }
 
 template <typename Integer>
-bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op) noexcept
+bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op)
 {
     if (!lhs.is_integer())
         return false;
@@ -146,7 +147,7 @@ bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::functi
 }
 
 template <typename Integer>
-bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op, int cmp) noexcept
+bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op, int cmp)
 {
     bool ret;
 
@@ -164,101 +165,101 @@ renf_elem_class::renf_elem_class() noexcept
 {
 }
 
-renf_elem_class::renf_elem_class(const renf_elem_class & value) noexcept
+renf_elem_class::renf_elem_class(const renf_elem_class & value)
     : renf_elem_class(value.nf)
 {
     *this = value;
 }
 
 renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
-    : renf_elem_class(value.nf)
+    : nf(std::move(value.nf))
 {
-    *this = std::move(value);
+    *a = *value.a;
 }
 
-renf_elem_class::renf_elem_class(int value) noexcept
+renf_elem_class::renf_elem_class(int value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(unsigned int value) noexcept
+renf_elem_class::renf_elem_class(unsigned int value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(long value) noexcept
+renf_elem_class::renf_elem_class(long value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(unsigned long value) noexcept
+renf_elem_class::renf_elem_class(unsigned long value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(long long value) noexcept
+renf_elem_class::renf_elem_class(long long value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(unsigned long long value) noexcept
+renf_elem_class::renf_elem_class(unsigned long long value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(const mpz_class & value) noexcept
+renf_elem_class::renf_elem_class(const mpz_class & value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(const mpq_class & value) noexcept
+renf_elem_class::renf_elem_class(const mpq_class & value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(const ::fmpq_t value) noexcept
+renf_elem_class::renf_elem_class(const ::fmpq_t value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_zero(a, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, int value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, int value)
     : renf_elem_class(std::move(k), static_cast<long>(value)) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned int value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned int value)
     : renf_elem_class(std::move(k), static_cast<unsigned long>(value)) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_si(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_ui(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long long value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long long value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     assign_maybe_fmpz(*this, value, renf_elem_set_si);
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long long value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long long value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     assign_maybe_fmpz(*this, value, renf_elem_set_ui);
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class & value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class & value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class & value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class & value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value) noexcept
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value)
     : nf(std::move(k))
 {
     renf_elem_init(a, nf->renf_t());
@@ -317,10 +318,12 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const renf
 
 renf_elem_class::~renf_elem_class() noexcept
 {
-    renf_elem_clear(a, nf->renf_t());
+    // When this element has been moved out by the move-constructor, then nf is
+    // null and a points to another element's storage.
+    if (nf) renf_elem_clear(a, nf->renf_t());
 }
 
-renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value) noexcept
+renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value)
 {
     if (value.nf != nf)
     {
@@ -342,32 +345,32 @@ renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
     return *this;
 }
 
-bool renf_elem_class::is_zero() const noexcept
+bool renf_elem_class::is_zero() const
 {
     return renf_elem_is_zero(a, nf->renf_t());
 }
 
-bool renf_elem_class::is_one() const noexcept
+bool renf_elem_class::is_one() const
 {
     return renf_elem_is_one(a, nf->renf_t());
 }
 
-bool renf_elem_class::is_integer() const noexcept
+bool renf_elem_class::is_integer() const
 {
     return renf_elem_is_integer(a, nf->renf_t());
 }
 
-bool renf_elem_class::is_rational() const noexcept
+bool renf_elem_class::is_rational() const
 {
     return renf_elem_is_rational(a, nf->renf_t());
 }
 
-::renf_elem_t & renf_elem_class::renf_elem_t() const noexcept
+::renf_elem_t & renf_elem_class::renf_elem_t() const
 {
     return a;
 }
 
-mpz_class renf_elem_class::num() const noexcept {
+mpz_class renf_elem_class::num() const {
     mpz_class x;
 
     if (nf->renf_t()->nf->flag & NF_LINEAR)
@@ -391,7 +394,7 @@ mpz_class renf_elem_class::num() const noexcept {
     return x;
 }
 
-mpz_class renf_elem_class::num_content() const noexcept {
+mpz_class renf_elem_class::num_content() const {
     mpz_class x;
 
     if (nf->renf_t()->nf->flag & NF_LINEAR)
@@ -420,7 +423,7 @@ mpz_class renf_elem_class::num_content() const noexcept {
     return x;
 }
 
-mpz_class renf_elem_class::den() const noexcept {
+mpz_class renf_elem_class::den() const {
     mpz_class res;
 
     fmpz_t z;
@@ -432,7 +435,7 @@ mpz_class renf_elem_class::den() const noexcept {
     return res;
 }
 
-renf_elem_class::operator mpq_class() const noexcept
+renf_elem_class::operator mpq_class() const
 {
     mpq_class z;
 
@@ -455,7 +458,7 @@ renf_elem_class::operator mpq_class() const noexcept
     return z;
 }
 
-std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
+std::vector<mpz_class> renf_elem_class::num_vector() const
 {
     mpz_class x;
     std::vector<mpz_class> res;
@@ -476,12 +479,12 @@ std::vector<mpz_class> renf_elem_class::num_vector() const noexcept
     return res;
 }
 
-renf_elem_class::operator std::string() const noexcept
+renf_elem_class::operator std::string() const
 {
     return to_string();
 }
 
-std::string renf_elem_class::to_string(int flags) const noexcept
+std::string renf_elem_class::to_string(int flags) const
 {
     std::string s;
 
@@ -497,7 +500,7 @@ std::string renf_elem_class::to_string(int flags) const noexcept
         return s;
 }
 
-mpz_class renf_elem_class::floor() const noexcept
+mpz_class renf_elem_class::floor() const
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -510,7 +513,7 @@ mpz_class renf_elem_class::floor() const noexcept
     return z;
 }
 
-mpz_class renf_elem_class::ceil() const noexcept
+mpz_class renf_elem_class::ceil() const
 {
     fmpz_t tmp;
     fmpz_init(tmp);
@@ -523,41 +526,41 @@ mpz_class renf_elem_class::ceil() const noexcept
     return z;
 }
 
-int renf_elem_class::sgn() const noexcept
+int renf_elem_class::sgn() const
 {
     return renf_elem_sgn(a, nf->renf_t());
 }
 
-renf_elem_class::operator double() const noexcept
+renf_elem_class::operator double() const
 {
     return renf_elem_get_d(a, nf->renf_t(), ARF_RND_NEAR);
 }
 
-renf_elem_class renf_elem_class::operator-() const noexcept
+renf_elem_class renf_elem_class::operator-() const
 {
     renf_elem_class ans(*this);
     renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
     return ans;
 }
 
-renf_elem_class renf_elem_class::operator+() const noexcept { return *this; }
+renf_elem_class renf_elem_class::operator+() const { return *this; }
 
-renf_elem_class::operator bool() const noexcept
+renf_elem_class::operator bool() const
 {
     return *this != 0;
 }
 
-renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs) noexcept
+renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs)
 {
     return binop(*this, rhs, renf_elem_add);
 }
 
-renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs) noexcept
+renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs)
 {
     return binop(*this, rhs, renf_elem_sub);
 }
 
-renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs) noexcept
+renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs)
 {
     return binop(*this, rhs, renf_elem_mul);
 }
@@ -567,7 +570,7 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
     return binop(*this, rhs, renf_elem_div);
 }
 
-renf_elem_class renf_elem_class::pow(int exp) const noexcept
+renf_elem_class renf_elem_class::pow(int exp) const
 {
     renf_elem_class res(nf);
 
@@ -584,7 +587,7 @@ renf_elem_class renf_elem_class::pow(int exp) const noexcept
     return res;
 }
 
-bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
+bool renf_elem_class::operator==(const renf_elem_class & other) const
 {
     if (*nf == *other.nf)
       return renf_elem_equal(a, other.a, nf->renf_t());
@@ -607,7 +610,7 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const noexcept
     }
 }
 
-bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
+bool renf_elem_class::operator<(const renf_elem_class & other) const
 {
     if (*nf == *other.nf)
         return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
@@ -629,17 +632,17 @@ bool renf_elem_class::operator<(const renf_elem_class & other) const noexcept
     }
 }
 
-renf_elem_class& renf_elem_class::operator+=(int rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(int rhs)
 {
     return *this += static_cast<long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator-=(int rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(int rhs)
 {
     return *this -= static_cast<long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator*=(int rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(int rhs)
 {
     return *this *= static_cast<long>(rhs);
 }
@@ -649,29 +652,29 @@ renf_elem_class& renf_elem_class::operator/=(int rhs)
     return *this /= static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator==(int rhs) const noexcept {
+bool renf_elem_class::operator==(int rhs) const {
     return *this == static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator<(int rhs) const noexcept {
+bool renf_elem_class::operator<(int rhs) const {
     return *this < static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator>(int rhs) const noexcept {
+bool renf_elem_class::operator>(int rhs) const {
     return *this > static_cast<long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator+=(unsigned int rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(unsigned int rhs)
 {
     return *this += static_cast<unsigned long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator-=(unsigned int rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(unsigned int rhs)
 {
     return *this -= static_cast<unsigned long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator*=(unsigned int rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(unsigned int rhs)
 {
     return *this *= static_cast<unsigned long>(rhs);
 }
@@ -681,31 +684,31 @@ renf_elem_class& renf_elem_class::operator/=(unsigned int rhs)
     return *this /= static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator==(unsigned int rhs) const noexcept {
+bool renf_elem_class::operator==(unsigned int rhs) const {
     return *this == static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator<(unsigned int rhs) const noexcept {
+bool renf_elem_class::operator<(unsigned int rhs) const {
     return *this < static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator>(unsigned int rhs) const noexcept {
+bool renf_elem_class::operator>(unsigned int rhs) const {
     return *this > static_cast<unsigned long>(rhs);
 }
 
-renf_elem_class& renf_elem_class::operator+=(long rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(long rhs)
 {
     renf_elem_add_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator-=(long rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(long rhs)
 {
     renf_elem_sub_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator*=(long rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(long rhs)
 {
     renf_elem_mul_si(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
@@ -717,31 +720,31 @@ renf_elem_class& renf_elem_class::operator/=(long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(long rhs) const noexcept {
+bool renf_elem_class::operator==(long rhs) const {
     return renf_elem_equal_si(renf_elem_t(), rhs, nf->renf_t());
 }
 
-bool renf_elem_class::operator<(long rhs) const noexcept {
+bool renf_elem_class::operator<(long rhs) const {
     return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == -1;
 }
 
-bool renf_elem_class::operator>(long rhs) const noexcept {
+bool renf_elem_class::operator>(long rhs) const {
     return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == 1;
 }
 
-renf_elem_class& renf_elem_class::operator+=(unsigned long rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(unsigned long rhs)
 {
     renf_elem_add_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator-=(unsigned long rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(unsigned long rhs)
 {
     renf_elem_sub_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator*=(unsigned long rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(unsigned long rhs)
 {
     renf_elem_mul_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
@@ -753,31 +756,31 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(unsigned long rhs) const noexcept {
+bool renf_elem_class::operator==(unsigned long rhs) const {
     return renf_elem_equal_ui(renf_elem_t(), rhs, nf->renf_t());
 }
 
-bool renf_elem_class::operator<(unsigned long rhs) const noexcept {
+bool renf_elem_class::operator<(unsigned long rhs) const {
     return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == -1;
 }
 
-bool renf_elem_class::operator>(unsigned long rhs) const noexcept {
+bool renf_elem_class::operator>(unsigned long rhs) const {
     return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == 1;
 }
 
-renf_elem_class& renf_elem_class::operator+=(long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_add_si, renf_elem_add_fmpz);
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator-=(long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_sub_si, renf_elem_sub_fmpz);
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator*=(long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_mul_si, renf_elem_mul_fmpz);
     return *this;
@@ -789,31 +792,31 @@ renf_elem_class& renf_elem_class::operator/=(long long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(long long rhs) const noexcept {
+bool renf_elem_class::operator==(long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_equal_si);
 }
 
-bool renf_elem_class::operator<(long long rhs) const noexcept {
+bool renf_elem_class::operator<(long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, -1);
 }
 
-bool renf_elem_class::operator>(long long rhs) const noexcept {
+bool renf_elem_class::operator>(long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, 1);
 }
 
-renf_elem_class& renf_elem_class::operator+=(unsigned long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(unsigned long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_add_ui, renf_elem_add_fmpz);
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator-=(unsigned long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(unsigned long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_sub_ui, renf_elem_sub_fmpz);
     return *this;
 }
 
-renf_elem_class& renf_elem_class::operator*=(unsigned long long rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(unsigned long long rhs)
 {
     binop_maybe_fmpz(*this, rhs, renf_elem_mul_ui, renf_elem_mul_fmpz);
     return *this;
@@ -825,29 +828,29 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(unsigned long long rhs) const noexcept {
+bool renf_elem_class::operator==(unsigned long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_equal_ui);
 }
 
-bool renf_elem_class::operator<(unsigned long long rhs) const noexcept {
+bool renf_elem_class::operator<(unsigned long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, -1);
 }
 
-bool renf_elem_class::operator>(unsigned long long rhs) const noexcept {
+bool renf_elem_class::operator>(unsigned long long rhs) const {
     return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, 1);
 }
 
-renf_elem_class& renf_elem_class::operator+=(const mpz_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(const mpz_class& rhs)
 {
     return binop_mpz(*this, rhs, renf_elem_add_fmpz);
 }
 
-renf_elem_class& renf_elem_class::operator-=(const mpz_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(const mpz_class& rhs)
 {
     return binop_mpz(*this, rhs, renf_elem_sub_fmpz);
 }
 
-renf_elem_class& renf_elem_class::operator*=(const mpz_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(const mpz_class& rhs)
 {
     return binop_mpz(*this, rhs, renf_elem_mul_fmpz);
 }
@@ -857,29 +860,29 @@ renf_elem_class& renf_elem_class::operator/=(const mpz_class& rhs)
     return binop_mpz(*this, rhs, renf_elem_div_fmpz);
 }
 
-bool renf_elem_class::operator==(const mpz_class& rhs) const noexcept {
+bool renf_elem_class::operator==(const mpz_class& rhs) const {
     return relop_mpz(*this, rhs, 0);
 }
 
-bool renf_elem_class::operator<(const mpz_class& rhs) const noexcept {
+bool renf_elem_class::operator<(const mpz_class& rhs) const {
     return relop_mpz(*this, rhs, -1);
 }
 
-bool renf_elem_class::operator>(const mpz_class& rhs) const noexcept {
+bool renf_elem_class::operator>(const mpz_class& rhs) const {
     return relop_mpz(*this, rhs, 1);
 }
 
-renf_elem_class& renf_elem_class::operator+=(const mpq_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator+=(const mpq_class& rhs)
 {
     return binop_mpq(*this, rhs, renf_elem_add_fmpq);
 }
 
-renf_elem_class& renf_elem_class::operator-=(const mpq_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator-=(const mpq_class& rhs)
 {
     return binop_mpq(*this, rhs, renf_elem_sub_fmpq);
 }
 
-renf_elem_class& renf_elem_class::operator*=(const mpq_class& rhs) noexcept
+renf_elem_class& renf_elem_class::operator*=(const mpq_class& rhs)
 {
     return binop_mpq(*this, rhs, renf_elem_mul_fmpq);
 }
@@ -889,19 +892,19 @@ renf_elem_class& renf_elem_class::operator/=(const mpq_class& rhs)
     return binop_mpq(*this, rhs, renf_elem_div_fmpq);
 }
 
-bool renf_elem_class::operator==(const mpq_class& rhs) const noexcept {
+bool renf_elem_class::operator==(const mpq_class& rhs) const {
     return relop_mpq(*this, rhs, 0);
 }
 
-bool renf_elem_class::operator<(const mpq_class& rhs) const noexcept {
+bool renf_elem_class::operator<(const mpq_class& rhs) const {
     return relop_mpq(*this, rhs, -1);
 }
 
-bool renf_elem_class::operator>(const mpq_class& rhs) const noexcept {
+bool renf_elem_class::operator>(const mpq_class& rhs) const {
     return relop_mpq(*this, rhs, 1);
 }
 
-std::string renf_elem_class::get_str(int flag) const noexcept { return to_string(flag); }
+std::string renf_elem_class::get_str(int flag) const { return to_string(flag); }
 
 renf_elem_srcptr renf_elem_class::get_renf_elem(void) const
 {
@@ -914,14 +917,14 @@ mpz_class renf_elem_class::get_num(void) const { return num(); }
 
 mpq_class renf_elem_class::get_rational(void) const { return static_cast<mpq_class>(*this); }
 
-std::vector<mpz_class> renf_elem_class::get_num_vector(void) const noexcept { return num_vector(); }
+std::vector<mpz_class> renf_elem_class::get_num_vector(void) const { return num_vector(); }
 
-double renf_elem_class::get_d() const noexcept { return static_cast<double>(*this); }
+double renf_elem_class::get_d() const { return static_cast<double>(*this); }
 
 } // end of namespace eantic
 
 namespace std {
-size_t hash<eantic::renf_elem_class>::operator()(const eantic::renf_elem_class& x) const noexcept
+size_t hash<eantic::renf_elem_class>::operator()(const eantic::renf_elem_class& x) const
 {
   return hash<double>()(static_cast<double>(x));
 }
