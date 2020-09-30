@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#include <e-antic/renfxx.h>
+#include "../e-antic/renfxx.h"
 #include "external/unique-factory/unique_factory.hpp"
 
 namespace {
@@ -34,7 +34,7 @@ static unique_factory::UniqueFactory<std::weak_ptr<eantic::renf_class>, Key> fac
 
 namespace eantic {
 
-renf_class::renf_class() noexcept
+renf_class::renf_class()
 {
     fmpq_poly_t minpoly;
     arb_t emb;
@@ -54,7 +54,7 @@ renf_class::renf_class() noexcept
     name = "a";
 }
 
-renf_class::renf_class(const ::renf_t k, const std::string & gen_name) noexcept
+renf_class::renf_class(const ::renf_t k, const std::string & gen_name)
 {
     renf_init_set(nf, k);
     this->name = gen_name;
@@ -86,13 +86,13 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_clear(e);
 }
 
-std::shared_ptr<const renf_class> renf_class::make() noexcept
+std::shared_ptr<const renf_class> renf_class::make()
 {
     static auto trivial = factory.get(Key(new renf_class()), [&]() { return new renf_class; });
     return trivial;
 }
 
-std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name) noexcept
+std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name)
 {
     return factory.get(Key(new renf_class(k, gen_name)), [&]() { return new renf_class(k, gen_name); });
 }
@@ -104,42 +104,42 @@ std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, 
 
 renf_class::~renf_class() noexcept { renf_clear(nf); }
 
-slong renf_class::degree() const noexcept { return fmpq_poly_degree(nf->nf->pol); }
+slong renf_class::degree() const { return fmpq_poly_degree(nf->nf->pol); }
 
-renf_elem_class renf_class::zero() const noexcept
+renf_elem_class renf_class::zero() const
 {
     renf_elem_class a(this->shared_from_this(), 0);
     return a;
 }
 
-renf_elem_class renf_class::one() const noexcept
+renf_elem_class renf_class::one() const
 {
     renf_elem_class a(this->shared_from_this(), 1);
     return a;
 }
 
-renf_elem_class renf_class::gen() const noexcept
+renf_elem_class renf_class::gen() const
 {
     renf_elem_class a(this->shared_from_this());
     renf_elem_gen(a.renf_elem_t(), this->renf_t());
     return a;
 }
 
-bool renf_class::operator==(const renf_class & other) const noexcept
+bool renf_class::operator==(const renf_class & other) const
 {
     return (this->nf == other.nf || renf_equal(this->nf, other.nf))
       && this->name == other.name;
 }
 
-std::istream & renf_class::set_pword(std::istream & is) const noexcept
+std::istream & renf_class::set_pword(std::istream & is) const
 {
     is.pword(xalloc) = const_cast<void*>(reinterpret_cast<const void*>(this));
     return is;
 }
 
-std::istream & renf_class::set_istream(std::istream & is) const noexcept { return set_pword(is); }
+std::istream & renf_class::set_istream(std::istream & is) const { return set_pword(is); }
 
-std::string renf_class::to_string() const noexcept
+std::string renf_class::to_string() const
 {
     char * u = renf_get_str(renf_t(), gen_name().c_str(), 64);
     std::string s = u;
@@ -202,7 +202,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
 } // end of namespace eantic
 
 namespace std {
-size_t hash<eantic::renf_class>::operator()(const eantic::renf_class& nf) const noexcept
+size_t hash<eantic::renf_class>::operator()(const eantic::renf_class& nf) const
 {
     return hash<eantic::renf_elem_class>()(nf.gen());
 }
