@@ -316,6 +316,96 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const renf
         throw std::logic_error("not implemented: coercion between these number fields");
 }
 
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<int> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_si(p, static_cast<slong>(i), coefficients[i]);
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<unsigned int> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_ui(p, static_cast<slong>(i), coefficients[i]);
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<long> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_si(p, static_cast<slong>(i), coefficients[i]);
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<unsigned long> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_ui(p, static_cast<slong>(i), coefficients[i]);
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<mpz_class> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_mpz(p, static_cast<slong>(i), coefficients[i].__get_mp());
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
+renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<mpq_class> & coefficients)
+    : renf_elem_class(std::move(k))
+{
+    assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
+        "can not assign renf_elem_class from vector whose size exceeds number field degree");
+
+    fmpq_poly_t p;
+    fmpq_poly_init(p);
+    for (size_t i = 0; i < coefficients.size(); i++)
+        fmpq_poly_set_coeff_mpq(p, static_cast<slong>(i), coefficients[i].__get_mp());
+
+    renf_elem_set_fmpq_poly(a, p, nf->renf_t());
+    fmpq_poly_clear(p);
+}
+
 renf_elem_class::~renf_elem_class() noexcept
 {
     // When this element has been moved out by the move-constructor, then nf is
