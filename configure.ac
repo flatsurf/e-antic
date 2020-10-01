@@ -10,7 +10,7 @@ dnl Set to c:r+1:a if the interface is unchanged.
 AC_SUBST([libeantic_version_info], [1:0:0])
 AC_SUBST([libeanticxx_version_info], [1:0:0])
 
-AM_INIT_AUTOMAKE([-Wall -Werror])
+AM_INIT_AUTOMAKE([-Wall -Werror tar-pax])
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
 AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
