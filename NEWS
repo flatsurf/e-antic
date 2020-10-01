@@ -4,6 +4,15 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.3
+====================
+
+**Fixed:**
+
+* release tarball was missing some header files with long names
+
+
+
 v1.0.0-rc.2
 ====================
 
