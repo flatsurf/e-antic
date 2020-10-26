@@ -72,12 +72,12 @@ TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
     flint_rand_t& state = GENERATE(rands());
     auto K = GENERATE_REF(renf_classs(state));
 
-    auto a = renf_elem_class(K, std::vector<int>(K->degree(), -1));
-    auto b = renf_elem_class(K, std::vector<unsigned int>(K->degree(), 1));
-    auto c = renf_elem_class(K, std::vector<long>(K->degree(), -2l));
-    auto d = renf_elem_class(K, std::vector<unsigned long>(K->degree(), 2ul));
-    auto e = renf_elem_class(K, std::vector<mpz_class>(K->degree(), mpz_class(3)));
-    auto f = renf_elem_class(K, std::vector<mpq_class>(K->degree(), mpq_class(4)));
+    auto a = renf_elem_class(K, std::vector<int>(static_cast<size_t>(K->degree()), -1));
+    auto b = renf_elem_class(K, std::vector<unsigned int>(static_cast<size_t>(K->degree()), 1));
+    auto c = renf_elem_class(K, std::vector<long>(static_cast<size_t>(K->degree()), -2l));
+    auto d = renf_elem_class(K, std::vector<unsigned long>(static_cast<size_t>(K->degree()), 2ul));
+    auto e = renf_elem_class(K, std::vector<mpz_class>(static_cast<size_t>(K->degree()), mpz_class(3)));
+    auto f = renf_elem_class(K, std::vector<mpq_class>(static_cast<size_t>(K->degree()), mpq_class(4)));
 
     REQUIRE(std::set<renf_elem_class>{a, b, c, d, e, f}.size() == 6);
 }
