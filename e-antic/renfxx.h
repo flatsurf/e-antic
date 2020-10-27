@@ -191,8 +191,8 @@ public:
     renf_elem_class & operator-=(const renf_elem_class &);
     renf_elem_class & operator*=(const renf_elem_class &);
     renf_elem_class & operator/=(const renf_elem_class &);
-    bool operator==(const renf_elem_class &) const;
-    bool operator<(const renf_elem_class &) const;
+    friend bool operator==(const renf_elem_class &, const renf_elem_class &);
+    friend bool operator<(const renf_elem_class &, const renf_elem_class &);
 
     // powering
     renf_elem_class pow(int) const;
@@ -202,67 +202,67 @@ public:
     renf_elem_class & operator-=(int);
     renf_elem_class & operator*=(int);
     renf_elem_class & operator/=(int);
-    bool operator==(int) const;
-    bool operator<(int) const;
-    bool operator>(int) const;
+    friend bool operator==(const renf_elem_class&, int);
+    friend bool operator<(const renf_elem_class&, int);
+    friend bool operator>(const renf_elem_class&, int);
 
     renf_elem_class & operator+=(unsigned int);
     renf_elem_class & operator-=(unsigned int);
     renf_elem_class & operator*=(unsigned int);
     renf_elem_class & operator/=(unsigned int);
-    bool operator==(unsigned int) const;
-    bool operator<(unsigned int) const;
-    bool operator>(unsigned int) const;
+    friend bool operator==(const renf_elem_class&, unsigned int);
+    friend bool operator<(const renf_elem_class&, unsigned int);
+    friend bool operator>(const renf_elem_class&, unsigned int);
 
     renf_elem_class & operator+=(long);
     renf_elem_class & operator-=(long);
     renf_elem_class & operator*=(long);
     renf_elem_class & operator/=(long);
-    bool operator==(long) const;
-    bool operator<(long) const;
-    bool operator>(long) const;
+    friend bool operator==(const renf_elem_class&, long);
+    friend bool operator<(const renf_elem_class&, long);
+    friend bool operator>(const renf_elem_class&, long);
 
     renf_elem_class & operator+=(unsigned long);
     renf_elem_class & operator-=(unsigned long);
     renf_elem_class & operator*=(unsigned long);
     renf_elem_class & operator/=(unsigned long);
-    bool operator==(unsigned long) const;
-    bool operator<(unsigned long) const;
-    bool operator>(unsigned long) const;
+    friend bool operator==(const renf_elem_class&, unsigned long);
+    friend bool operator<(const renf_elem_class&, unsigned long);
+    friend bool operator>(const renf_elem_class&, unsigned long);
 
     renf_elem_class & operator+=(long long);
     renf_elem_class & operator-=(long long);
     renf_elem_class & operator*=(long long);
     renf_elem_class & operator/=(long long);
-    bool operator==(long long) const;
-    bool operator<(long long) const;
-    bool operator>(long long) const;
+    friend bool operator==(const renf_elem_class&, long long);
+    friend bool operator<(const renf_elem_class&, long long);
+    friend bool operator>(const renf_elem_class&, long long);
 
     renf_elem_class & operator+=(unsigned long long);
     renf_elem_class & operator-=(unsigned long long);
     renf_elem_class & operator*=(unsigned long long);
     renf_elem_class & operator/=(unsigned long long);
-    bool operator==(unsigned long long) const;
-    bool operator<(unsigned long long) const;
-    bool operator>(unsigned long long) const;
+    friend bool operator==(const renf_elem_class&, unsigned long long);
+    friend bool operator<(const renf_elem_class&, unsigned long long);
+    friend bool operator>(const renf_elem_class&, unsigned long long);
 
     // binary operations with GMP integers
     renf_elem_class& operator+=(const mpz_class&);
     renf_elem_class& operator-=(const mpz_class&);
     renf_elem_class& operator*=(const mpz_class&);
     renf_elem_class& operator/=(const mpz_class&);
-    bool operator==(const mpz_class&) const;
-    bool operator<(const mpz_class&) const;
-    bool operator>(const mpz_class&) const;
+    friend bool operator==(const renf_elem_class&, const mpz_class&);
+    friend bool operator<(const renf_elem_class&, const mpz_class&);
+    friend bool operator>(const renf_elem_class&, const mpz_class&);
 
     // binary operations with rational numbers
     renf_elem_class& operator+=(const mpq_class&);
     renf_elem_class& operator-=(const mpq_class&);
     renf_elem_class& operator*=(const mpq_class&);
     renf_elem_class& operator/=(const mpq_class&);
-    bool operator==(const mpq_class&) const;
-    bool operator<(const mpq_class&) const;
-    bool operator>(const mpq_class&) const;
+    friend bool operator==(const renf_elem_class&, const mpq_class&);
+    friend bool operator<(const renf_elem_class&, const mpq_class&);
+    friend bool operator>(const renf_elem_class&, const mpq_class&);
 
     // deprecated pre-1.0 methods
     [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const;
