@@ -15,6 +15,8 @@
 #include "../e-antic/renfxx.h"
 #include "external/unique-factory/unique_factory.hpp"
 
+namespace eantic {
+
 namespace {
 // An index returned from std::ios_base::xalloc() that we use to store a
 // pointer back to this number field.  We store a pointer to this number
@@ -22,17 +24,36 @@ namespace {
 // elements from it.
 static int xalloc = std::ios_base::xalloc();
 
-// Deduplicating factory so that all renf_class are guaranteed to be unique
-// parents.
-// We use a renf_class as the key and as the value here. They are equal
-// but not identical, in particular this means that the key does not keep the
-// value alive. Note that this means that actuall renf_class is not unique but
-// the instances visible to the user are unique.
-using Key = std::shared_ptr<const eantic::renf_class>;
-static unique_factory::UniqueFactory<std::weak_ptr<eantic::renf_class>, Key> factory;
+// A key identifying a renf_class for deduplication in the unique_factory.
+struct renf_class_key
+{
+    renf_class_key(std::shared_ptr<renf_class>&& key) : key(std::move(key)) {}
+    bool operator==(const renf_class_key & rhs) const {
+      return renf_equal(key->renf_t(), rhs.key->renf_t()) && key->gen_name() == rhs.key->gen_name();
+    }
+
+    std::shared_ptr<renf_class> key;
+};
+
 } // end of anonymous namespace
+} // end of namespace eantic
+
+namespace std {
+
+template <> struct hash<eantic::renf_class_key> {
+    size_t operator()(const eantic::renf_class_key &) const;
+};
+
+} // end of namespace std
 
 namespace eantic {
+namespace {
+
+// Deduplicating factory so that all renf_class are guaranteed to be unique
+// parents.
+static unique_factory::UniqueFactory<renf_class_key, renf_class> factory;
+
+} // end of anonymous namespace
 
 renf_class::renf_class()
 {
@@ -88,21 +109,25 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
 
 std::shared_ptr<const renf_class> renf_class::make()
 {
-    static auto trivial = factory.get(Key(new renf_class()), [&]() { return new renf_class; });
+    static auto trivial = factory.get(std::shared_ptr<renf_class>(new renf_class()), [&]() { return new renf_class; });
     return trivial;
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const ::renf_t k, const std::string & gen_name)
 {
-    return factory.get(Key(new renf_class(k, gen_name)), [&]() { return new renf_class(k, gen_name); });
+    return factory.get(std::shared_ptr<renf_class>(new renf_class(k, gen_name)), [&]() { return new renf_class(k, gen_name); });
 }
 
 std::shared_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
 {
-    return factory.get(Key(new renf_class(minpoly, gen, emb, prec)), [&]() { return new renf_class(minpoly, gen, emb, prec); });
+    return factory.get(
+        std::shared_ptr<renf_class>(new renf_class(minpoly, gen, emb, prec)), [&]() { return new renf_class(minpoly, gen, emb, prec); });
 }
 
-renf_class::~renf_class() noexcept { renf_clear(nf); }
+renf_class::~renf_class() noexcept
+{
+    renf_clear(nf);
+}
 
 slong renf_class::degree() const { return fmpq_poly_degree(nf->nf->pol); }
 
@@ -127,8 +152,7 @@ renf_elem_class renf_class::gen() const
 
 bool renf_class::operator==(const renf_class & other) const
 {
-    return (this->nf == other.nf || renf_equal(this->nf, other.nf))
-      && this->name == other.name;
+    return this == &other;
 }
 
 std::istream & renf_class::set_pword(std::istream & is) const
@@ -205,5 +229,10 @@ namespace std {
 size_t hash<eantic::renf_class>::operator()(const eantic::renf_class& nf) const
 {
     return hash<eantic::renf_elem_class>()(nf.gen());
+}
+
+size_t hash<eantic::renf_class_key>::operator()(const eantic::renf_class_key& nf) const
+{
+    return hash<eantic::renf_class>()(*nf.key);
 }
 }

@@ -66,6 +66,7 @@ $VERSION_BUMP_PATTERNS = [
 
 $CHANGELOG_FILENAME = 'NEWS'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
+$CHANGELOG_CATEGORIES = ('Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Performance')
 $PUSH_TAG_REMOTE = 'git@github.com:videlec/e-antic.git'
 
 $GITHUB_ORG = 'videlec'
