@@ -135,7 +135,12 @@ public:
     renf_elem_class(std::shared_ptr<const renf_class> k, const std::string &);
     // The element Σc_i·α^i where α is the generator of the field k; the number
     // of coefficients must not exceed the degree of the field.
-    template <typename C> renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<C> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<int> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<unsigned int> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<long> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<unsigned long> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<mpz_class> &);
+    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<mpq_class> &);
 
     ~renf_elem_class() noexcept;
 
