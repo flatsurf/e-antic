@@ -677,19 +677,19 @@ renf_elem_class renf_elem_class::pow(int exp) const
     return res;
 }
 
-bool renf_elem_class::operator==(const renf_elem_class & other) const
+bool operator==(const renf_elem_class & lhs, const renf_elem_class & rhs)
 {
-    if (*nf == *other.nf)
-      return renf_elem_equal(a, other.a, nf->renf_t());
+    if (*lhs.nf == *rhs.nf)
+      return renf_elem_equal(lhs.a, rhs.a, lhs.nf->renf_t());
 
-    if (is_rational())
+    if (lhs.is_rational())
     {
-        if (!other.is_rational())
+        if (!rhs.is_rational())
             return false;
 
-        return static_cast<mpq_class>(*this) == static_cast<mpq_class>(other);
+        return static_cast<mpq_class>(lhs) == static_cast<mpq_class>(rhs);
     }
-    else if (other.is_rational())
+    else if (rhs.is_rational())
     {
         return false;
     }
@@ -700,20 +700,20 @@ bool renf_elem_class::operator==(const renf_elem_class & other) const
     }
 }
 
-bool renf_elem_class::operator<(const renf_elem_class & other) const
+bool operator<(const renf_elem_class & lhs, const renf_elem_class & rhs)
 {
-    if (*nf == *other.nf)
-        return renf_elem_cmp(a, other.a, nf->renf_t()) < 0;
+    if (*lhs.nf == *rhs.nf)
+        return renf_elem_cmp(lhs.a, rhs.a, lhs.nf->renf_t()) < 0;
 
-    if (is_rational())
+    if (lhs.is_rational())
     {
-        mpq_class self = static_cast<mpq_class>(*this);
-        return self < other;
+        mpq_class self = static_cast<mpq_class>(lhs);
+        return self < rhs;
     }
-    else if (other.is_rational())
+    else if (rhs.is_rational())
     {
-        mpq_class o = static_cast<mpq_class>(other);
-        return *this < o;
+        mpq_class o = static_cast<mpq_class>(rhs);
+        return lhs < o;
     }
     else
     {
@@ -742,16 +742,16 @@ renf_elem_class& renf_elem_class::operator/=(int rhs)
     return *this /= static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator==(int rhs) const {
-    return *this == static_cast<long>(rhs);
+bool operator==(const renf_elem_class& lhs, int rhs) {
+    return lhs == static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator<(int rhs) const {
-    return *this < static_cast<long>(rhs);
+bool operator<(const renf_elem_class& lhs, int rhs) {
+    return lhs < static_cast<long>(rhs);
 }
 
-bool renf_elem_class::operator>(int rhs) const {
-    return *this > static_cast<long>(rhs);
+bool operator>(const renf_elem_class& lhs, int rhs) {
+    return lhs > static_cast<long>(rhs);
 }
 
 renf_elem_class& renf_elem_class::operator+=(unsigned int rhs)
@@ -774,16 +774,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned int rhs)
     return *this /= static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator==(unsigned int rhs) const {
-    return *this == static_cast<unsigned long>(rhs);
+bool operator==(const renf_elem_class& lhs, unsigned int rhs) {
+    return lhs == static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator<(unsigned int rhs) const {
-    return *this < static_cast<unsigned long>(rhs);
+bool operator<(const renf_elem_class& lhs, unsigned int rhs) {
+    return lhs < static_cast<unsigned long>(rhs);
 }
 
-bool renf_elem_class::operator>(unsigned int rhs) const {
-    return *this > static_cast<unsigned long>(rhs);
+bool operator>(const renf_elem_class& lhs, unsigned int rhs) {
+    return lhs > static_cast<unsigned long>(rhs);
 }
 
 renf_elem_class& renf_elem_class::operator+=(long rhs)
@@ -810,16 +810,16 @@ renf_elem_class& renf_elem_class::operator/=(long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(long rhs) const {
-    return renf_elem_equal_si(renf_elem_t(), rhs, nf->renf_t());
+bool operator==(const renf_elem_class& lhs, long rhs) {
+    return renf_elem_equal_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t());
 }
 
-bool renf_elem_class::operator<(long rhs) const {
-    return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == -1;
+bool operator<(const renf_elem_class& lhs, long rhs) {
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
 }
 
-bool renf_elem_class::operator>(long rhs) const {
-    return renf_elem_cmp_si(renf_elem_t(), rhs, nf->renf_t()) == 1;
+bool operator>(const renf_elem_class& lhs, long rhs) {
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
 }
 
 renf_elem_class& renf_elem_class::operator+=(unsigned long rhs)
@@ -846,16 +846,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(unsigned long rhs) const {
-    return renf_elem_equal_ui(renf_elem_t(), rhs, nf->renf_t());
+bool operator==(const renf_elem_class& lhs, unsigned long rhs) {
+    return renf_elem_equal_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t());
 }
 
-bool renf_elem_class::operator<(unsigned long rhs) const {
-    return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == -1;
+bool operator<(const renf_elem_class& lhs, unsigned long rhs) {
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
 }
 
-bool renf_elem_class::operator>(unsigned long rhs) const {
-    return renf_elem_cmp_ui(renf_elem_t(), rhs, nf->renf_t()) == 1;
+bool operator>(const renf_elem_class& lhs, unsigned long rhs) {
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
 }
 
 renf_elem_class& renf_elem_class::operator+=(long long rhs)
@@ -882,16 +882,16 @@ renf_elem_class& renf_elem_class::operator/=(long long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_equal_si);
+bool operator==(const renf_elem_class& lhs, long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_equal_si);
 }
 
-bool renf_elem_class::operator<(long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, -1);
+bool operator<(const renf_elem_class& lhs, long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_cmp_si, -1);
 }
 
-bool renf_elem_class::operator>(long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_si, 1);
+bool operator>(const renf_elem_class& lhs, long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_cmp_si, 1);
 }
 
 renf_elem_class& renf_elem_class::operator+=(unsigned long long rhs)
@@ -918,16 +918,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long long rhs)
     return *this;
 }
 
-bool renf_elem_class::operator==(unsigned long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_equal_ui);
+bool operator==(const renf_elem_class& lhs, unsigned long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_equal_ui);
 }
 
-bool renf_elem_class::operator<(unsigned long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, -1);
+bool operator<(const renf_elem_class& lhs, unsigned long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_cmp_ui, -1);
 }
 
-bool renf_elem_class::operator>(unsigned long long rhs) const {
-    return relop_maybe_fmpz(*this, rhs, renf_elem_cmp_ui, 1);
+bool operator>(const renf_elem_class& lhs, unsigned long long rhs) {
+    return relop_maybe_fmpz(lhs, rhs, renf_elem_cmp_ui, 1);
 }
 
 renf_elem_class& renf_elem_class::operator+=(const mpz_class& rhs)
@@ -950,16 +950,16 @@ renf_elem_class& renf_elem_class::operator/=(const mpz_class& rhs)
     return binop_mpz(*this, rhs, renf_elem_div_fmpz);
 }
 
-bool renf_elem_class::operator==(const mpz_class& rhs) const {
-    return relop_mpz(*this, rhs, 0);
+bool operator==(const renf_elem_class& lhs, const mpz_class& rhs) {
+    return relop_mpz(lhs, rhs, 0);
 }
 
-bool renf_elem_class::operator<(const mpz_class& rhs) const {
-    return relop_mpz(*this, rhs, -1);
+bool operator<(const renf_elem_class& lhs, const mpz_class& rhs) {
+    return relop_mpz(lhs, rhs, -1);
 }
 
-bool renf_elem_class::operator>(const mpz_class& rhs) const {
-    return relop_mpz(*this, rhs, 1);
+bool operator>(const renf_elem_class& lhs, const mpz_class& rhs) {
+    return relop_mpz(lhs, rhs, 1);
 }
 
 renf_elem_class& renf_elem_class::operator+=(const mpq_class& rhs)
@@ -982,16 +982,16 @@ renf_elem_class& renf_elem_class::operator/=(const mpq_class& rhs)
     return binop_mpq(*this, rhs, renf_elem_div_fmpq);
 }
 
-bool renf_elem_class::operator==(const mpq_class& rhs) const {
-    return relop_mpq(*this, rhs, 0);
+bool operator==(const renf_elem_class& lhs, const mpq_class& rhs) {
+    return relop_mpq(lhs, rhs, 0);
 }
 
-bool renf_elem_class::operator<(const mpq_class& rhs) const {
-    return relop_mpq(*this, rhs, -1);
+bool operator<(const renf_elem_class& lhs, const mpq_class& rhs) {
+    return relop_mpq(lhs, rhs, -1);
 }
 
-bool renf_elem_class::operator>(const mpq_class& rhs) const {
-    return relop_mpq(*this, rhs, 1);
+bool operator>(const renf_elem_class& lhs, const mpq_class& rhs) {
+    return relop_mpq(lhs, rhs, 1);
 }
 
 std::string renf_elem_class::get_str(int flag) const { return to_string(flag); }
