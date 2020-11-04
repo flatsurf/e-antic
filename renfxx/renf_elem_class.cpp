@@ -1011,6 +1011,21 @@ std::vector<mpz_class> renf_elem_class::get_num_vector(void) const { return num_
 
 double renf_elem_class::get_d() const { return static_cast<double>(*this); }
 
+mpz_class floor(const renf_elem_class& x)
+{
+  return x.floor();
+}
+
+mpz_class ceil(const renf_elem_class& x)
+{
+  return x.ceil();
+}
+
+renf_elem_class pow(const renf_elem_class& x, int exp)
+{
+  return x.pow(exp);
+}
+
 } // end of namespace eantic
 
 namespace std {

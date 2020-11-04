@@ -290,9 +290,9 @@ private:
 };
 
 // overloads for global functions
-mpz_class floor(renf_elem_class x);
-mpz_class ceil(renf_elem_class x);
-renf_elem_class pow(renf_elem_class x, int exp);
+mpz_class floor(const renf_elem_class& x);
+mpz_class ceil(const renf_elem_class& x);
+renf_elem_class pow(const renf_elem_class& x, int exp);
 
 } // end of namespace
 
