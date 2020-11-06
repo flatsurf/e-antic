@@ -4,6 +4,30 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.4
+====================
+
+**Added:**
+
+* added the missing implementations of free `floor`, `ceil`, and `pow` functions to the C++ library.
+
+**Changed:**
+
+* Comparison operators of `renf_elem_class` are now free so they participate in
+  implicit casts in the same way like the boost generated free operators that
+  are derived from them.
+
+**Fixed:**
+
+* Adapted to changes in unique-factory.
+* implemented `renf_elem_class(renf_class, std::vector)` constructors that went missing in 39e1215e421e128b230fb62ff88ae0ac9b6414e7.
+
+**Performance:**
+
+* Speed up `renf_class::operator==`
+
+
+
 v1.0.0-rc.3
 ====================
 
