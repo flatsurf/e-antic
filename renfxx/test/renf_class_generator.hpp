@@ -28,7 +28,7 @@ struct RenfClassGenerator : public Catch::Generators::IGenerator<std::shared_ptr
 
     mutable std::shared_ptr<const eantic::renf_class> current;
 
-    RenfClassGenerator(flint_rand_t& state, ulong iterations, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : generator(state, iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits) {}
+    RenfClassGenerator(flint_rand_t& state, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : generator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits) {}
 
     bool next() override
     {
@@ -45,9 +45,9 @@ struct RenfClassGenerator : public Catch::Generators::IGenerator<std::shared_ptr
 /*
  * Wrap RenfClassGenerator for use as GENERATE(renf_classs(...))
  */
-Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>> renf_classs(flint_rand_t& state, ulong iterations = 128, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
+Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>> renf_classs(flint_rand_t& state, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
 {
-    return Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>>(std::unique_ptr<Catch::Generators::IGenerator<std::shared_ptr<const eantic::renf_class>>>(new RenfClassGenerator(state, iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
+    return Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>>(std::unique_ptr<Catch::Generators::IGenerator<std::shared_ptr<const eantic::renf_class>>>(new RenfClassGenerator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
 }
 
 }

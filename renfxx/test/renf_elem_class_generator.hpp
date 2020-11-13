@@ -28,12 +28,11 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
 {
     flint_rand_t& state;
     std::shared_ptr<const eantic::renf_class>& nf;
-    ulong iterations, minbits, maxbits;
+    ulong minbits, maxbits;
 
     mutable boost::optional<eantic::renf_elem_class> current;
-    mutable ulong iteration = 0;
 
-    RenfElemClassGenerator(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong iterations, ulong minbits, ulong maxbits) : state(state), nf(nf), iterations(iterations), minbits(minbits), maxbits(maxbits) {
+    RenfElemClassGenerator(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong minbits, ulong maxbits) : state(state), nf(nf), minbits(minbits), maxbits(maxbits) {
       assert(maxbits > minbits);
     }
 
@@ -41,7 +40,7 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
     {
         if (current)
             current = {};
-        return ++iteration < iterations;
+        return true;
     }
 
     eantic::renf_elem_class& get() const override
@@ -61,9 +60,9 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
 /*
  * Wrap RenfElemClassGenerator for use as GENERATE(renf_elem_classs(...))
  */
-Catch::Generators::GeneratorWrapper<eantic::renf_elem_class> renf_elem_classs(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong iterations = 128, ulong minbits = 10, ulong maxbits = 40)
+Catch::Generators::GeneratorWrapper<eantic::renf_elem_class> renf_elem_classs(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong minbits = 10, ulong maxbits = 40)
 {
-    return Catch::Generators::GeneratorWrapper<eantic::renf_elem_class>(std::unique_ptr<Catch::Generators::IGenerator<eantic::renf_elem_class>>(new RenfElemClassGenerator(state, nf, iterations, minbits, maxbits)));
+    return Catch::Generators::GeneratorWrapper<eantic::renf_elem_class>(std::unique_ptr<Catch::Generators::IGenerator<eantic::renf_elem_class>>(new RenfElemClassGenerator(state, nf, minbits, maxbits)));
 }
 
 }

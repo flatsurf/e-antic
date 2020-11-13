@@ -121,7 +121,6 @@ libeantic_la_SOURCES +=            \
 
 check_PROGRAMS +=                \
     renf_elem/test/t-swap        \
-    renf_elem/test/t-binop       \
     renf_elem/test/t-pow         \
     renf_elem/test/t-ceil        \
     renf_elem/test/t-equal_fmpq  \
@@ -136,15 +135,21 @@ check_PROGRAMS +=                \
 
 # C tests written with catch2, a C++ testing framework
 
-check_PROGRAMS += renf_elem/test/t-get_d
+check_PROGRAMS +=                \
+    renf_elem/test/t-binop       \
+    renf_elem/test/t-get_d
 
 renf_elem_test_t_get_d_SOURCES = renfxx/test/main.cpp renf_elem/test/t-get_d.cpp
 renf_elem_test_t_get_d_LDADD = libeantic.la
+renf_elem_test_t_binop_SOURCES = renfxx/test/main.cpp renf_elem/test/t-binop.cpp
+renf_elem_test_t_binop_LDADD = libeantic.la
 
 noinst_HEADERS +=                                               \
     renfxx/test/external/catch2/single_include/catch2/catch.hpp \
     renf/test/rand_generator.hpp                                \
     renf/test/renf_generator.hpp                                \
+    renf_elem/test/fmpq_generator.hpp                           \
+    renf_elem/test/fmpz_generator.hpp                           \
     renf_elem/test/renf_elem_generator.hpp
 
 # C++

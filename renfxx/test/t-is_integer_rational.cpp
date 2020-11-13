@@ -35,7 +35,7 @@ TEST_CASE("Detect integer/rational elements", "[renf_elem_class][is_integer][is_
 
     SECTION("Elements in general number fields")
     {
-        auto K = GENERATE_REF(renf_classs(state));
+        auto K = GENERATE_REF(take(128, renf_classs(state)));
 
         REQUIRE(renf_elem_class(K, 0).is_integer());
         REQUIRE(renf_elem_class(K, 0).is_rational());

@@ -22,7 +22,7 @@ using namespace eantic;
 TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class][operator=]", int, unsigned int, long, unsigned long)
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     renf_elem_class a(K);
     renf_elem_class b(0);
@@ -40,7 +40,7 @@ TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class][op
 TEMPLATE_TEST_CASE("Assign renf_elem_class from GMP types", "[renf_elem_class][operator=]", mpz_class, mpq_class)
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     renf_elem_class a(K);
     renf_elem_class b(0);
@@ -68,7 +68,7 @@ TEMPLATE_TEST_CASE("Assign renf_elem_class from GMP types", "[renf_elem_class][o
 TEST_CASE("Assign renf_elem_class from another renf_elem_class", "[renf_elem_class][operator=]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     auto a = GENERATE_REF(renf_elem_class(), renf_elem_class(K), K->gen());
     auto b = GENERATE_REF(renf_elem_class(), renf_elem_class(2), renf_elem_class(K), renf_elem_class(K, 2), K->gen());
