@@ -60,6 +60,70 @@ TEST_CASE("Arithmetic with renf_elem", "[renf_elem][binop]")
     renf_elem_clear(c, nf);
 }
 
+TEST_CASE("Floor Division of renf_elem", "[renf_elem][binop][fdiv]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    renf_t& nf = GENERATE_REF(take(16, renfs(state)));
+    renf_elem_t& a = GENERATE_REF(take(64, renf_elems(state, nf)));
+
+    SECTION("The quotient a // b for random numbers")
+    {
+        renf_elem_t& b = GENERATE_REF(take(4, renf_elems(state, nf)));
+
+        if (!renf_elem_is_zero(b, nf))
+        {
+            CAPTURE(nf, a, b);
+
+            fmpz_t fdiv;
+            fmpz_init(fdiv);
+
+            renf_elem_fdiv(fdiv, a, b, nf);
+
+            renf_elem_t quotient;
+            renf_elem_init(quotient, nf);
+
+            fmpz_t fquotient;
+            fmpz_init(fquotient);
+
+            renf_elem_div(quotient, a, b, nf);
+            renf_elem_floor(fquotient, quotient, nf);
+
+            CAPTURE(fdiv, fquotient);
+            REQUIRE(fmpz_equal(fdiv, fquotient));
+
+            fmpz_clear(fquotient);
+            fmpz_clear(fdiv);
+            renf_elem_clear(quotient, nf);
+        }
+    }
+
+    SECTION("The quotient (a * n) // a for random integers n")
+    {
+        fmpz_t& n = GENERATE_REF(take(4, fmpzs(state)));
+
+        if (!fmpz_is_zero(n)) {
+            renf_elem_t b;
+            renf_elem_init(b, nf);
+            renf_elem_mul_fmpz(b, a, n, nf);
+
+            fmpz_t fdiv;
+            fmpz_init(fdiv);
+
+            CAPTURE(a, b);
+            renf_elem_fdiv(fdiv, b, a, nf);
+
+            CAPTURE(fdiv, n);
+            if (renf_elem_is_zero(a, nf))
+                REQUIRE(fmpz_is_zero(fdiv));
+            else
+                REQUIRE(fmpz_equal(fdiv, n));
+
+            fmpz_clear(fdiv);
+            renf_elem_clear(b, nf);
+        }
+    }
+}
+
 TEST_CASE("Arithmetic with renf_elem and int", "[renf_elem][binop]")
 {
     flint_rand_t& state = GENERATE(rands());

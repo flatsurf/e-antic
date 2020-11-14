@@ -111,5 +111,3 @@ RENF_ELEM_INT(fmpz_t a, renf_elem_t b, renf_t nf)
         renf_refine_embedding(nf, prec);
     } while (1);
 }
-
-
