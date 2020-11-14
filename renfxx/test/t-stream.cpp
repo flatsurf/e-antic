@@ -60,8 +60,8 @@ static std::shared_ptr<const renf_class> K = nullptr;
 TEST_CASE("Writing and reading elements from streams", "[renf_elem_class][operator<<][operator>>]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(renf_classs(state));
-    auto a = GENERATE_REF(renf_elem_classs(state, K));
+    K = GENERATE_REF(take(128, renf_classs(state)));
+    auto a = GENERATE_REF(take(128, renf_elem_classs(state, K)));
 
     CAPTURE(a);
 

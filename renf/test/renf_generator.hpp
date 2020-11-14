@@ -26,33 +26,35 @@ namespace {
 struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 {
     flint_rand_t& state;
-    ulong iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits;
+    ulong minlen, maxlen, minprec, maxprec, minbits, maxbits;
 
     mutable renf_t nf;
-    mutable ulong iteration = 0;
     mutable bool has_value_for_iteration = false;
 
-    RenfGenerator(flint_rand_t& state, ulong iterations, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : state(state), iterations(iterations), minlen(minlen), maxlen(maxlen), minprec(minprec), maxprec(maxprec), minbits(minbits), maxbits(maxbits) {
-      assert(maxlen > minlen);
-      assert(maxprec > minprec);
-      assert(maxbits > minbits);
+    RenfGenerator(flint_rand_t& state, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : state(state), minlen(minlen), maxlen(maxlen), minprec(minprec), maxprec(maxprec), minbits(minbits), maxbits(maxbits)
+    {
+        assert(maxlen > minlen);
+        assert(maxprec > minprec);
+        assert(maxbits > minbits);
+    }
+
+    void clear()
+    {
+        if (has_value_for_iteration)
+            renf_clear(nf);
+        has_value_for_iteration = false;
     }
 
     bool next() override
     {
-        has_value_for_iteration = false;
-        return ++iteration < iterations;
+        clear();
+        return true;
     }
 
     renf_t& get() const override
     {
         if (!has_value_for_iteration)
         {
-            assert(iteration < iterations);
-
-            if (iteration)
-                renf_clear(nf);
-
             ulong len = minlen + n_randint(state, maxlen - minlen);
             ulong prec = minprec + n_randint(state, maxprec - minprec);
             mp_bitcnt_t bits = minbits + n_randint(state, maxbits - minbits);
@@ -66,8 +68,7 @@ struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 
     ~RenfGenerator() override
     {
-        if (iteration)
-            renf_clear(nf);
+        clear();
     }
 };
 
@@ -75,9 +76,9 @@ struct RenfGenerator : public Catch::Generators::IGenerator<renf_t&>
 /*
  * Wrap RenfGenerator for use as GENERATE(renfs(...))
  */
-[[maybe_unused]] Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, ulong iterations = 128, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
+[[maybe_unused]] Catch::Generators::GeneratorWrapper<renf_t&> renfs(flint_rand_t& state, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
 {
-    return Catch::Generators::GeneratorWrapper<renf_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_t&>>(new RenfGenerator(state, iterations, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
+    return Catch::Generators::GeneratorWrapper<renf_t&>(std::unique_ptr<Catch::Generators::IGenerator<renf_t&>>(new RenfGenerator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
 }
 
 }

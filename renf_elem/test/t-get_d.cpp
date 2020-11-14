@@ -46,10 +46,11 @@ static void d_get_fmpq(double d, fmpq_t q)
     arf_clear(a);
 }
 
-TEST_CASE("Convert renf_elem to double", "[renf_elem][get_d]") {
+TEST_CASE("Convert renf_elem to double", "[renf_elem][get_d]")
+{
     flint_rand_t& state = GENERATE(rands());
-    renf_t& nf = GENERATE_REF(renfs(state));
-    renf_elem_t& a = GENERATE_REF(renf_elems(state, nf));
+    renf_t& nf = GENERATE_REF(take(64, renfs(state)));
+    renf_elem_t& a = GENERATE_REF(take(128, renf_elems(state, nf)));
 
     CAPTURE(nf);
     CAPTURE(a);

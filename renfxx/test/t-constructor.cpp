@@ -44,7 +44,7 @@ TEST_CASE("Construct renf_elem_class from string", "[renf_elem_class]")
 TEST_CASE("Construct trivial renf_elem_class", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     auto a = renf_elem_class(K);
 
@@ -59,7 +59,7 @@ TEST_CASE("Construct trivial renf_elem_class", "[renf_elem_class]")
 TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     auto a = renf_elem_class(mpq_class(13, 37));
 
@@ -70,7 +70,7 @@ TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
 TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = GENERATE_REF(renf_classs(state));
+    auto K = GENERATE_REF(take(128, renf_classs(state)));
 
     auto a = renf_elem_class(K, std::vector<int>(static_cast<size_t>(K->degree()), -1));
     auto b = renf_elem_class(K, std::vector<unsigned int>(static_cast<size_t>(K->degree()), 1));
