@@ -26,14 +26,23 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
         renf_elem_relative_condition_number_2exp(&ccond, c, nf);
 
         renf_elem_set_evaluation(b, nf, prec + bcond);
-        renf_elem_set_evaluation(c, nf, prec + bcond);
 
-        /* ensure that the encolsure is not infinite */
+        /* ensure that the enclosure of the divident is not infinite */
         while (!arb_is_finite(b->emb))
         {
             prec *= 2;
             renf_refine_embedding(nf, prec);
             renf_elem_set_evaluation(b, nf, prec + bcond);
+        }
+
+        renf_elem_set_evaluation(c, nf, prec + ccond);
+
+        /* ensure that the enclosure of the divisor does not contain zero */
+        while (!arb_is_nonzero(c->emb))
+        {
+            prec *= 2;
+            renf_refine_embedding(nf, prec);
+            renf_elem_set_evaluation(c, nf, prec + ccond);
         }
 
         arb_t quotient;
