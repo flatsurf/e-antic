@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([e-antic], [1.0.0-rc.3], [vincent.delecroix@math.cnrs.fr])
+AC_INIT([e-antic], [1.0.0-rc.5], [vincent.delecroix@math.cnrs.fr])
 
 dnl Version number of the library c:r:a.
 dnl Set to c+1:0:0 on a non-backwards-compatible change.
