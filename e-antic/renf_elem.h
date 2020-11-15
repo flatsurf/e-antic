@@ -446,6 +446,8 @@ void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, cons
     arb_div(a->emb, b->emb, c->emb, nf->prec);
 }
 
+void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf);
+
 static __inline__
 void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, const renf_t nf)
 {

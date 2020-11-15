@@ -105,6 +105,7 @@ libeantic_la_SOURCES +=            \
     renf_elem/clear.c              \
     renf_elem/cmp.c                \
     renf_elem/cmp_fmpq.c           \
+    renf_elem/fdiv.c               \
     renf_elem/floor_ceil.c         \
     renf_elem/gen.c                \
     renf_elem/get_cfrac.c          \
