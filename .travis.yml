@@ -1,7 +1,7 @@
 language: python
 env:
   - EXTRA_CFLAGS="-O0 -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal --coverage" EXTRA_CXXFLAGS="-O0 -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel --coverage"
-  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES="clangdev" EXTRA_CFLAGS="-O0 -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal --coverage" EXTRA_CXXFLAGS="-O0 -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor --coverage"
+  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES="clangdev" EXTRA_CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal" EXTRA_CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor"
 services:
   - docker
 install:
