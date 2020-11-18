@@ -1,7 +1,7 @@
 language: python
 env:
-  - EXTRA_CFLAGS="-Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal" EXTRA_CXXFLAGS="-Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel"
-  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES=clangxx EXTRA_CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal" EXTRA_CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor"
+  - EXTRA_CFLAGS="-O0 -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal --coverage" EXTRA_CXXFLAGS="-O0 -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel --coverage"
+  - _CC=clang _CXX=clang++ _CPP=clang-cpp PACKAGES="clangdev" EXTRA_CFLAGS="-O0 -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal --coverage" EXTRA_CXXFLAGS="-O0 -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor --coverage"
 services:
   - docker
 install:
@@ -25,5 +25,10 @@ script:
   - make CFLAGS="$CFLAGS $EXTRA_CFLAGS" CXXFLAGS="$CXXFLAGS $EXTRA_CFLAGS $EXTRA_CXXFLAGS"
   - ldd .libs/libeantic.so
   - make check CFLAGS="$CFLAGS $EXTRA_CFLAGS" CXXFLAGS="$CXXFLAGS $EXTRA_CFLAGS $EXTRA_CXXFLAGS" || (cat `find test-suite.log` /dev/null; false)
+  - curl -s https://codecov.io/bash > codecov
+  - chmod +x codecov
+  # Delete yaml files that confuse codecov
+  - rm -rf **/*.yaml .**/*.yaml || true
+  - ./codecov -R `pwd` -x `which gcov` -g '**/external/**' -g '**/test/**' -g '**/benchmark/**' -g '**/recipe/**' -a '\-lrp' -p .
   - make check-valgrind || (cat `find test-suite-memcheck.log` /dev/null; false)
   - make distcheck
