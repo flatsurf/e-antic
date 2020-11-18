@@ -32,6 +32,7 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
     mutable renf_t _nf;
     mutable renf_elem_t a;
     mutable bool has_value_for_iteration = false;
+    mutable bool initial = true;
 
     RenfElemGenerator(flint_rand_t& state, renf_t& nf, ulong minbits, ulong maxbits) : state(state), nf(nf), minbits(minbits), maxbits(maxbits)
     {
@@ -57,11 +58,20 @@ struct RenfElemGenerator : public Catch::Generators::IGenerator<renf_elem_t&>
     {
         if (!has_value_for_iteration)
         {
-            ulong bits = minbits + n_randint(state, maxbits - minbits);
-
             renf_init_set(_nf, nf);
             renf_elem_init(a, _nf);
-            renf_elem_randtest(a, state, bits, _nf);
+
+            if (initial)
+            {
+                initial = false;
+                renf_elem_zero(a, nf);
+            }
+            else
+            {
+                ulong bits = minbits + n_randint(state, maxbits - minbits);
+
+                renf_elem_randtest(a, state, bits, _nf);
+            }
 
             has_value_for_iteration = true;
         }

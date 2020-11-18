@@ -34,6 +34,7 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
 
     RenfElemClassGenerator(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong minbits, ulong maxbits) : state(state), nf(nf), minbits(minbits), maxbits(maxbits) {
       assert(maxbits > minbits);
+      current = nf->zero();
     }
 
     bool next() override
