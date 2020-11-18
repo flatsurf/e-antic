@@ -194,6 +194,8 @@ public:
     friend bool operator==(const renf_elem_class &, const renf_elem_class &);
     friend bool operator<(const renf_elem_class &, const renf_elem_class &);
 
+    mpz_class floordiv(const renf_elem_class &) const;
+
     // powering
     renf_elem_class pow(int) const;
 

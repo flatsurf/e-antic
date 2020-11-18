@@ -69,7 +69,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
             renf_elem_init(ac, nf);
             renf_elem_mul_fmpz(ac, c, a, nf);
 
-            if (renf_elem_cmp(b, ac, nf) == renf_elem_sgn(c, nf))
+            if (renf_elem_cmp(ac, b, nf) == renf_elem_sgn(c, nf))
                 fmpz_add_si(a, a, -1);
 
             renf_elem_clear(ac, nf);
