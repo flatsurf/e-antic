@@ -50,7 +50,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
 
         /* Refine until the approximation of the quotient contains at most one integer. */
         arb_div(quotient, b->emb, c->emb, nf->prec);
-        while (mag_cmp_2exp_si(arb_radref(quotient), 0) >= 0)
+        while (mag_cmp_2exp_si(arb_radref(quotient), -1) >= 0)
         {
             prec *= 2;
             renf_refine_embedding(nf, prec);
@@ -84,7 +84,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
         }
         else
         {
-          arf_get_fmpz(a, arb_midref(quotient), ARF_RND_FLOOR);
+            arf_get_fmpz(a, arb_midref(quotient), ARF_RND_FLOOR);
         }
 
         arb_clear(quotient);
