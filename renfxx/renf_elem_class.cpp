@@ -660,6 +660,28 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
     return binop(*this, rhs, renf_elem_div);
 }
 
+mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
+{
+    if (parent() != rhs.parent())
+    {
+        if (rhs.is_rational())
+            return (*this / rhs).floor();
+        throw std::logic_error("not implemented: cannot perform floor division of elements in different number fields");
+    }
+
+    mpz_class ret;
+    fmpz_t floor;
+
+    fmpz_init(floor);
+
+    renf_elem_fdiv(floor, a, rhs.a, nf->renf_t());
+    fmpz_get_mpz(ret.get_mpz_t(), floor);
+
+    fmpz_clear(floor);
+
+    return ret;
+}
+
 renf_elem_class renf_elem_class::pow(int exp) const
 {
     renf_elem_class res(nf);

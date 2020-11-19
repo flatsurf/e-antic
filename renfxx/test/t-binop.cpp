@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2017 Vincent Delecroix
+                  2020 Julian Rüth
 
     This file is part of e-antic
 
@@ -9,154 +10,118 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <e-antic/renfxx.h>
+#include "../../e-antic/renfxx.h"
+
+#include "../../renf/test/rand_generator.hpp"
+#include "renf_class_generator.hpp"
+#include "renf_elem_class_generator.hpp"
+
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
-#define CHECK_OP(a, b, K, T, OP)  \
-{                                 \
-    T res = a OP b;               \
-{                                 \
-    renf_elem_class ca(a);        \
-    renf_elem_class cb(b);        \
-    if (ca OP cb != res ||        \
-        ca OP b != res  ||        \
-        a OP cb != res)           \
-        throw std::runtime_error("wrong result in binary operation"); \
-}                                 \
-{                                 \
-    renf_elem_class ca(K, a);     \
-    renf_elem_class cb(b);        \
-    if (ca OP cb != res ||        \
-        ca OP b != res  ||        \
-        a OP cb != res)           \
-        throw std::runtime_error("wrong result in binary operation"); \
-}                                 \
-{                                 \
-    renf_elem_class ca(K);        \
-    ca = a;                       \
-    renf_elem_class cb(K);        \
-    cb = b;                       \
-    if (ca OP cb != res ||        \
-        ca OP b != res ||         \
-        a OP cb != res)           \
-        throw std::runtime_error("wrong result in binary operation"); \
-}                                 \
-}
+static std::shared_ptr<const renf_class> K = nullptr;
 
-#define CHECK_DIV(a, b, K, T)     \
-{                                 \
-{                                 \
-    renf_elem_class ca(a);        \
-    renf_elem_class cb(b);        \
-    if (b * (ca / cb) != a ||     \
-        b * (ca / b) != a  ||     \
-        b * (a / cb) != a)        \
-    {                             \
-        std::cerr << "a = " << a << std::endl; \
-        std::cerr << "b = " << b << std::endl; \
-        throw std::runtime_error("wrong result in division"); \
-    }                             \
-}                                 \
-{                                 \
-    renf_elem_class ca(K);        \
-    ca = a;                       \
-    renf_elem_class cb(K);        \
-    cb = b;                       \
-    if (b * (ca / cb) != a ||     \
-        b * (ca / b) != a ||      \
-        b * (a / cb) != a)        \
-    {                             \
-        std::cerr << "a = " << a << std::endl; \
-        std::cerr << "b = " << b << std::endl; \
-        throw std::runtime_error("wrong result in division"); \
-    }                             \
-}                                 \
-}
-
-template <typename T>
-typename std::enable_if<std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
+TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 {
-    CHECK_OP(a, b, K, T, +)
-    CHECK_OP(a, b, K, T, *)
+    flint_rand_t& state = GENERATE(rands());
+    K = GENERATE_REF(take(16, renf_classs(state)));
+    auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
-    if (b != 0) CHECK_DIV(a, b, K, T)
-}
+    CAPTURE(*K, a);
 
-template <typename T>
-typename std::enable_if<!std::is_unsigned<T>::value, void>::type check_binop(T a, T b, std::shared_ptr<const renf_class> K)
-{
-    CHECK_OP(a, b, K, T, +)
-    CHECK_OP(a, b, K, T, -)
-    CHECK_OP(a, b, K, T, *)
-
-    if (b != 0) CHECK_DIV(a, b, K, T)
-}
-
-
-int main(void)
-{
-    int iter;
-    FLINT_TEST_INIT(state);
-
-
-    for (iter=0; iter<100; iter++)
+    SECTION("Addition and Subtraction")
     {
-        renf_t nf;
-        renf_randtest(nf, state, 10, 32, 50);
-        auto K = renf_class::make(nf);
-        renf_clear(nf);
+        auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
+        CAPTURE(b);
+
+        auto c = a + b;
+
+        if (a > 0) REQUIRE(c > b);
+        if (a < 0) REQUIRE(c < b);
+
+        c -= a;
+        REQUIRE(c == b);
+
+        c -= b;
+        REQUIRE(!c);
+    }
+
+    SECTION("Multiplication and Division")
+    {
+        auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
+
+        CAPTURE(b);
+
+        auto c = a * b;
+
+        if (a == 0 || b == 0)
         {
-            int c1 = -1123, c2 = 142;
-            check_binop(c1, c2, K);
+            REQUIRE(!c);
         }
+        else
         {
-            unsigned int c1 = 2223, c2 = 123;
-            check_binop(c1, c2, K);
-        }
-        {
-            long c1 = 134, c2 = -1111;
-            check_binop(c1, c2, K);
-        }
-        {
-            unsigned long c1 = 513, c2 = 3;
-            check_binop(c1, c2, K);
-        }
-        {
-            mpz_class c1(232);
-            mpz_class c2(12);
-            check_binop(c1, c2, K);
-        }
-        {
-            mpq_class c1(211561);
-            mpq_class c2(13);
-            check_binop(c1, c2, K);
+            c /= a;
+
+            REQUIRE(c == b);
+
+            c /= b;
+
+            REQUIRE(c == 1);
         }
     }
 
+    SECTION("Build Element as Sum of Terms")
     {
-        auto K1 = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
-        auto K2 = renf_class::make("x^2 - 3", "x", "1.73 +/- 0.01");
+        auto c = K->zero();
+        auto g = K->one();
 
-        renf_elem_class a1(K1);
-        renf_elem_class a2(K2);
+        auto coeffs = a.num_vector();
+        for (size_t i = 0; i < coeffs.size(); i++)
+        {
+            c += coeffs[i] * g;
+            g *= K->gen();
+        }
+
+        c /= a.den();
+
+        REQUIRE(a == c);
     }
 
+    SECTION("Floor Divisions")
     {
-        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.01");
+        auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
-        renf_elem_class a(K, "1/3 + 3/5*x");
-        renf_elem_class b = mpq_class(1,3) + mpq_class(3,5) * K->gen();
-        renf_elem_class c = mpq_class(1,3) + mpz_class(3) * K->gen() / mpz_class(5);
-        renf_elem_class d = mpq_class(1,3) + 3 * K->gen() / 5;
+        CAPTURE(b);
 
-        if (a != b || a != c || a != d)
-            throw std::runtime_error("error with operations");
+        if (b)
+        {
+            auto c = a.floordiv(b);
+
+            REQUIRE(c == (a / b).floor());
+        }
     }
-
-    FLINT_TEST_CLEANUP(state)
-    return 0;
 }
 
+TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
+{
+    const auto L = renf_class::make("a^2 - 2", "a", "1.4 +/- 1", 32);
+    const auto M = renf_class::make("b^2 - 3", "b", "1.7 +/- 1", 32);
+
+    const auto a = L->gen();
+    auto b = M->gen();
+
+    REQUIRE_THROWS(a + b);
+
+    SECTION("Rational Elements can be Mixed")
+    {
+        b = M->one();
+
+        REQUIRE((a + b - a).is_one());
+
+        b = M->zero();
+
+        REQUIRE((a + b - a).is_zero());
+    }
+}

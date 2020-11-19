@@ -10,6 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <limits>
 #include <set>
 
 #include <e-antic/renfxx.h>
@@ -23,10 +24,84 @@ using namespace eantic;
 
 TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_class]")
 {
-    REQUIRE(renf_elem_class() == 0);
-    REQUIRE(renf_elem_class(1) == 1);
-    REQUIRE(renf_elem_class(mpz_class(2)) == 2);
-    REQUIRE(renf_elem_class(mpq_class(3)) == 3);
+    SECTION("Assign from small values")
+    {
+        REQUIRE(renf_elem_class() == 0);
+        REQUIRE(renf_elem_class(1) == 1);
+        REQUIRE(renf_elem_class(mpz_class(2)) == 2);
+        REQUIRE(renf_elem_class(mpq_class(3)) == 3);
+    }
+
+    SECTION("Assign from extreme integers")
+    {
+        REQUIRE(renf_elem_class(std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned int>::min()) == std::numeric_limits<unsigned int>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned int>::max()) == std::numeric_limits<unsigned int>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<long>::min()) == std::numeric_limits<long>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<long>::max()) == std::numeric_limits<long>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned long>::min()) == std::numeric_limits<unsigned long>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned long>::max()) == std::numeric_limits<unsigned long>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<long long>::min()) == std::numeric_limits<long long>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned long long>::min()) == std::numeric_limits<unsigned long long>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
+    }
+
+    SECTION("Assign from FLINT rational")
+    {
+        fmpq_t q;
+        fmpq_init(q);
+        fmpq_set_str(q, "13/37", 10);
+        REQUIRE(renf_elem_class(q) == mpq_class(13, 37));
+        fmpq_clear(q);
+    }
+
+    auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 128);
+
+    SECTION("Assign from small values with a given field")
+    {
+        REQUIRE(renf_elem_class(K) == 0);
+        REQUIRE(renf_elem_class(K, 1) == 1);
+        REQUIRE(renf_elem_class(K, mpz_class(2)) == 2);
+        REQUIRE(renf_elem_class(K, mpq_class(3)) == 3);
+    }
+
+    SECTION("Assign from extreme integers with a given field")
+    {
+        REQUIRE(renf_elem_class(K, std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned int>::min()) == std::numeric_limits<unsigned int>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned int>::max()) == std::numeric_limits<unsigned int>::max());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<long>::min()) == std::numeric_limits<long>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<long>::max()) == std::numeric_limits<long>::max());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned long>::min()) == std::numeric_limits<unsigned long>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned long>::max()) == std::numeric_limits<unsigned long>::max());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<long long>::min()) == std::numeric_limits<long long>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned long long>::min()) == std::numeric_limits<unsigned long long>::min());
+        REQUIRE(renf_elem_class(K, std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
+    }
+
+    SECTION("Assign from FLINT rational with a given field")
+    {
+        fmpq_t q;
+        fmpq_init(q);
+        fmpq_set_str(q, "13/37", 10);
+        REQUIRE(renf_elem_class(K, q) == mpq_class(13, 37));
+        fmpq_clear(q);
+    }
+
+    SECTION("Cannot set from a different number field for most values")
+    {
+
+      auto L = renf_class::make("a^2 - 3", "a", "1.7 +/- 1", 128);
+
+      REQUIRE_THROWS(renf_elem_class(L, K->gen()));
+
+      REQUIRE(renf_elem_class(L, K->one()) == 1);
+      REQUIRE(renf_elem_class(L, K->zero()) == 0);
+    }
 }
 
 TEST_CASE("Construct renf_elem_class from string", "[renf_elem_class]")

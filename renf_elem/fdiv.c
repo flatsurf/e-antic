@@ -49,7 +49,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
         arb_init(quotient);
 
         /* Refine until the approximation of the quotient contains at most one integer. */
-        arb_div(quotient, b->emb, c->emb, nf->prec);
+        arb_div(quotient, b->emb, c->emb, prec);
         while (mag_cmp_2exp_si(arb_radref(quotient), -1) >= 0)
         {
             prec *= 2;
@@ -58,7 +58,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
             renf_elem_set_evaluation(b, nf, prec + bcond);
             renf_elem_set_evaluation(c, nf, prec + ccond);
             
-            arb_div(quotient, b->emb, c->emb, nf->prec);
+            arb_div(quotient, b->emb, c->emb, prec);
         }
 
         if (arb_contains_int(quotient))
@@ -69,7 +69,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
             renf_elem_init(ac, nf);
             renf_elem_mul_fmpz(ac, c, a, nf);
 
-            if (renf_elem_cmp(b, ac, nf) == renf_elem_sgn(c, nf))
+            if (renf_elem_cmp(ac, b, nf) == renf_elem_sgn(c, nf))
                 fmpz_add_si(a, a, -1);
 
             renf_elem_clear(ac, nf);
