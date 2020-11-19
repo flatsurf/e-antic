@@ -80,6 +80,7 @@ dist_doc_DATA +=                   \
 
 # renf
 libeantic_la_SOURCES +=               \
+    renf/clear.c                      \
     renf/fmpz_poly_real_embeddings.c  \
     renf/init.c                       \
     renf/init_set.c                   \

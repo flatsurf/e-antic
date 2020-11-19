@@ -21,7 +21,7 @@
 #include <arb_poly.h>
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 typedef struct
@@ -42,13 +42,8 @@ void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
 
 void renf_init_set(renf_t dest, const renf_t src);
 
-static __inline__
-void renf_clear(renf_t nf)
-{
-    nf_clear(nf->nf);
-    fmpz_poly_clear(nf->der);
-    arb_clear(nf->emb);
-}
+void renf_clear(renf_t nf);
+
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
 void renf_refine_embedding(renf_t nf, slong prec);
