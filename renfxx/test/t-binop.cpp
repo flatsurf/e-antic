@@ -78,7 +78,7 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         auto g = K->one();
 
         auto coeffs = a.num_vector();
-        for (int i = 0; i < coeffs.size(); i++)
+        for (size_t i = 0; i < coeffs.size(); i++)
         {
             c += coeffs[i] * g;
             g *= K->gen();
@@ -106,21 +106,21 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
 TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
 {
-    const auto K = renf_class::make("a^2 - 2", "a", "1.4 +/- 1", 32);
-    const auto L = renf_class::make("b^2 - 3", "b", "1.7 +/- 1", 32);
+    const auto L = renf_class::make("a^2 - 2", "a", "1.4 +/- 1", 32);
+    const auto M = renf_class::make("b^2 - 3", "b", "1.7 +/- 1", 32);
 
-    const auto a = K->gen();
-    auto b = L->gen();
+    const auto a = L->gen();
+    auto b = M->gen();
 
     REQUIRE_THROWS(a + b);
 
     SECTION("Rational Elements can be Mixed")
     {
-        b = L->one();
+        b = M->one();
 
         REQUIRE((a + b - a).is_one());
 
-        b = L->zero();
+        b = M->zero();
 
         REQUIRE((a + b - a).is_zero());
     }
