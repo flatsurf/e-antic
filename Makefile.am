@@ -94,7 +94,9 @@ libeantic_la_SOURCES +=               \
     renf/get_str.c                    \
     renf/randtest.c                   \
     renf/refine_embedding.c           \
-    renf/set_immutable.c
+    renf/set_immutable.c              \
+    renf/degree.c                     \
+    renf/equal.c
 
 check_PROGRAMS +=                  \
     renf/test/t-init               \
