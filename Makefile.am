@@ -30,7 +30,6 @@ LDADD = libeantic.la
 
 # poly_extra/
 libeantic_la_SOURCES +=                                   \
-    poly_extra/arb_add_fmpq.c                             \
     poly_extra/bisection_step_arb.c                       \
     poly_extra/check_unique_real_root.c                   \
     poly_extra/descartes_bound.c                          \

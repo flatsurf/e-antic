@@ -11,6 +11,15 @@
 
 #include "../e-antic/renf_elem.h"
 
+static void arb_fmpq_sub(arb_t a, const fmpq_t c, const arb_t b, slong prec)
+{
+    arb_t x;
+    arb_init(x);
+    arb_set_fmpq(x, c, prec);
+    arb_sub(a, x, b, prec);
+    arb_clear(x);
+}
+
 void renf_elem_fmpq_sub(renf_elem_t a, const fmpq_t c, const renf_elem_t b, const renf_t nf)
 {
     nf_elem_fmpq_sub(a->elem, c, b->elem, nf->nf);

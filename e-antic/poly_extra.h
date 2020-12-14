@@ -60,13 +60,6 @@ void fmpz_poly_abs(fmpz_poly_t res, fmpz_poly_t p);
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
 
-void arb_add_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
-void arb_sub_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
-void arb_fmpq_sub(arb_t a, const fmpq_t c, const arb_t b, slong prec);
-void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
-void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
-void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
-
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
 
 void fmpz_poly_evaluate_arb(arb_t b, const fmpz_poly_t pol, const arb_t a, slong prec);
