@@ -9,8 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FMPQ_POLY_EXTRA_H
-#define FMPQ_POLY_EXTRA_H
+#ifndef E_ANTIC_POLY_EXTRA_H
+#define E_ANTIC_POLY_EXTRA_H
 
 #include <e-antic/e-antic.h>
 
@@ -19,7 +19,7 @@
 #include <arb.h>
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /**********************************************************************/
@@ -35,11 +35,7 @@ int _fmpz_poly_has_real_root(fmpz * pol, slong len);
 
 int fmpz_poly_has_complex_root(fmpz_poly_t pol);
 
-static __inline__
-int fmpz_poly_has_real_root(fmpz_poly_t pol)
-{
-    return _fmpz_poly_has_real_root(pol->coeffs, pol->length);
-}
+int fmpz_poly_has_real_root(fmpz_poly_t pol);
 
 slong fmpz_poly_positive_root_upper_bound_2exp(const fmpz_poly_t pol);
 slong _fmpz_poly_positive_root_upper_bound_2exp(const fmpz * pol, slong len);
@@ -53,42 +49,13 @@ void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_r
 
 void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_array, slong * k_array, slong * n_interval, fmpz_poly_t pol);
 
-static __inline__
-slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)
-{
-    slong n_exact=0, n_interval=0;
-    fmpz_poly_isolate_real_roots(NULL, &n_exact, NULL, NULL, &n_interval, pol);
-    return n_exact + n_interval;
-}
+slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
 
 slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol);
 slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol);
-static __inline__
-slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol)
-{
-    return fmpz_poly_num_real_roots_0_1_vca(pol);
-}
+slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol);
 
-static __inline__
-void _fmpz_vec_abs(fmpz * res, fmpz * p, slong len)
-{
-    slong i;
-    for (i = 0; i < len; i++)
-        fmpz_abs(res + i, p + i);
-}
-
-static __inline__
-void fmpz_poly_abs(fmpz_poly_t res, fmpz_poly_t p)
-{
-    slong len = fmpz_poly_length(p);
-
-    if (res != p)
-    {
-        fmpz_poly_fit_length(res, len);
-        _fmpz_poly_set_length(res, len);
-    }
-    _fmpz_vec_abs(res->coeffs, p->coeffs, len);
-}
+void fmpz_poly_abs(fmpz_poly_t res, fmpz_poly_t p);
 
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
@@ -99,27 +66,6 @@ void arb_fmpq_sub(arb_t a, const fmpq_t c, const arb_t b, slong prec);
 void arb_mul_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec);
 void arb_fmpq_div(arb_t a, const fmpq_t c, const arb_t b, slong prec);
-
-static __inline__
-void fmpq_div_si(fmpq_t a, const fmpq_t b, slong c)
-{
-    fmpz_t tmp;
-    fmpz_init(tmp);
-    fmpz_set_si(tmp, c);
-    fmpq_div_fmpz(a, b, tmp);
-    fmpz_clear(tmp);
-}
-
-static __inline__
-void fmpq_div_ui(fmpq_t a, const fmpq_t b, ulong c)
-{
-    fmpz_t tmp;
-    fmpz_init(tmp);
-    fmpz_set_ui(tmp, c);
-    fmpq_div_fmpz(a, b, tmp);
-    fmpz_clear(tmp);
-}
-
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, slong len, const arb_t a, slong prec);
 
@@ -154,14 +100,10 @@ int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slon
 void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly);
 
 
-static __inline__
-void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
-{
-    _fmpz_vec_sum(res, p, len);
-}
+void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len);
 
 #ifdef __cplusplus
- }
+}
 #endif
 
 #endif

@@ -28,25 +28,30 @@ LDADD = libeantic.la
 
 @VALGRIND_CHECK_RULES@
 
-# poly_extra
-libeantic_la_SOURCES +=                         \
-    poly_extra/arb_add_fmpq.c                   \
-    poly_extra/bisection_step_arb.c             \
-    poly_extra/check_unique_real_root.c         \
-    poly_extra/descartes_bound.c                \
-    poly_extra/descartes_bound_0_1.c            \
-    poly_extra/evaluate.c                       \
-    poly_extra/fmpz_poly_randtest_irreducible.c \
-    poly_extra/fmpz_poly_scale_0_1_fmpq.c       \
-    poly_extra/fmpz_poly_squarefree_part.c      \
-    poly_extra/fmpq_poly_set_str_pretty.c       \
-    poly_extra/has_real_root.c                  \
-    poly_extra/newton_step_arb.c                \
-    poly_extra/num_real_roots_0_1.c             \
-    poly_extra/num_real_roots_0_1_sturm.c       \
+# poly_extra/
+libeantic_la_SOURCES +=                                   \
+    poly_extra/arb_add_fmpq.c                             \
+    poly_extra/bisection_step_arb.c                       \
+    poly_extra/check_unique_real_root.c                   \
+    poly_extra/descartes_bound.c                          \
+    poly_extra/descartes_bound_0_1.c                      \
+    poly_extra/evaluate.c                                 \
+    poly_extra/fmpz_poly_randtest_irreducible.c           \
+    poly_extra/fmpz_poly_scale_0_1_fmpq.c                 \
+    poly_extra/fmpz_poly_squarefree_part.c                \
+    poly_extra/fmpq_poly_set_str_pretty.c                 \
+    poly_extra/has_real_root.c                            \
+    poly_extra/newton_step_arb.c                          \
+    poly_extra/num_real_roots_0_1.c                       \
+    poly_extra/num_real_roots_0_1_sturm.c                 \
     poly_extra/fmpz_poly_positive_root_upper_bound_2exp.c \
-    poly_extra/fmpz_poly_isolate_real_roots.c     \
-    poly_extra/fmpz_poly_relative_condition_number_2exp.c
+    poly_extra/fmpz_poly_isolate_real_roots.c             \
+    poly_extra/fmpz_poly_relative_condition_number_2exp.c \
+    poly_extra/fmpz_poly_abs.c                            \
+    poly_extra/fmpz_poly_evaluate_at_one.c                \
+    poly_extra/fmpz_poly_has_real_root.c                  \
+    poly_extra/fmpz_poly_num_real_roots_0_1.c             \
+    poly_extra/fmpz_poly_num_real_roots_vca.c
 
 noinst_HEADERS +=                                    \
     poly_extra/poly_evaluate_template.h              \
