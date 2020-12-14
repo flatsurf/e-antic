@@ -50,19 +50,15 @@ libeantic_la_SOURCES +=                              \
 
 check_PROGRAMS +=                                         \
     fmpz_poly_extra/test/t-check_unique_real_root         \
-    fmpz_poly_extra/test/t-descartes_bound                \
     fmpz_poly_extra/test/t-has_real_root                  \
     fmpz_poly_extra/test/t-isolate_real_roots             \
     fmpz_poly_extra/test/t-num_real_roots                 \
     fmpz_poly_extra/test/t-num_real_roots_0_1             \
-    fmpz_poly_extra/test/t-num_real_roots_sturm           \
+    fmpz_poly_extra/test/t-num_real_roots_upper_bound     \
     fmpz_poly_extra/test/t-num_real_roots_vca             \
     fmpz_poly_extra/test/t-positive_root_upper_bound_2exp \
     fmpz_poly_extra/test/t-randtest_irreducible           \
-    fmpz_poly_extra/test/t-real_root_isolation            \
-    fmpz_poly_extra/test/t-resultant_modular_div          \
     fmpz_poly_extra/test/t-scale_0_1_fmpq                 \
-    fmpz_poly_extra/test/t-scale_2exp                     \
     fmpz_poly_extra/test/t-set_str_pretty                 \
     fmpz_poly_extra/test/t-squarefree_part
 

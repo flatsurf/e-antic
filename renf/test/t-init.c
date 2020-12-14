@@ -11,6 +11,7 @@
 
 #include "../../e-antic/renf.h"
 #include "../../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/fmpq_poly_extra.h"
 
 static void check_renf(renf_t nf)
 {
