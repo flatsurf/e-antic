@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
+   Copyright (C) 2016 Vincent Delecroix
 
     This file is part of e-antic
 
@@ -9,14 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include "../e-antic/fmpz_poly_extra.h"
 
-#include "../e-antic/renf_elem.h"
-#include "../e-antic/fmpq_poly_extra.h"
-
-void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf)
+slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol)
 {
-    nf_elem_set_fmpq_poly(a->elem, pol, nf->nf);
-    fmpq_poly_evaluate_arb(a->emb, pol, nf->emb, nf->prec);
+    slong n_exact=0, n_interval=0;
+    fmpz_poly_isolate_real_roots(NULL, &n_exact, NULL, NULL, &n_interval, pol);
+    return n_exact + n_interval;
 }
-
 

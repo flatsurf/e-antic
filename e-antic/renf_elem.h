@@ -19,7 +19,6 @@
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
 #include <e-antic/e-antic.h>
-#include <e-antic/poly_extra.h>
 #include <e-antic/renf.h>
 
 #ifdef __cplusplus

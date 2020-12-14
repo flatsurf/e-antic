@@ -17,6 +17,7 @@
 #include <functional>
 
 #include "../e-antic/renfxx.h"
+#include "../e-antic/fmpq_poly_extra.h"
 
 namespace eantic {
 

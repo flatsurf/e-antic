@@ -10,10 +10,10 @@
 */
 
 #include <assert.h>
-
 #include <flint/fmpz_vec.h>
-#include <e-antic/renf.h>
-#include <e-antic/poly_extra.h>
+
+#include "../e-antic/renf.h"
+#include "../e-antic/fmpz_poly_extra.h"
 
 static void arb_from_interval(arb_t x, const fmpz_t c, const slong k, const slong prec)
 {

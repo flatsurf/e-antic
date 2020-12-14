@@ -13,8 +13,9 @@
 #include <assert.h>
 #include <config.h>
 #include <err.h>
-#include <e-antic/poly_extra.h>
-#include <e-antic/renf.h>
+
+#include "../e-antic/fmpz_poly_extra.h"
+#include "../e-antic/renf.h"
 
 void renf_refine_embedding(renf_t nf, slong prec)
 {
