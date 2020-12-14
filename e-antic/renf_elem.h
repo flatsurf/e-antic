@@ -13,13 +13,15 @@
 #ifndef E_ANTIC_RENF_ELEM_H
 #define E_ANTIC_RENF_ELEM_H
 
+#include <e-antic/e-antic.h>
+
 #include <flint/fmpq_poly.h>
 #include <arb.h>
 #include <arb_poly.h>
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
-#include <e-antic/e-antic.h>
-#include <e-antic/renf.h>
+
+#include "renf.h"
 
 #ifdef __cplusplus
 extern "C" {

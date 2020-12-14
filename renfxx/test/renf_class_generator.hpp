@@ -14,7 +14,7 @@
 
 #include <memory>
 
-#include <e-antic/renfxx.h>
+#include "../../e-antic/renfxx.h"
 
 #include "../../renf/test/renf_generator.hpp"
 

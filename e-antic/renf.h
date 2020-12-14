@@ -13,10 +13,11 @@
 #ifndef E_ANTIC_RENF_H
 #define E_ANTIC_RENF_H
 
+#include <e-antic/e-antic.h>
+
 #include <flint/fmpq_poly.h>
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
-#include <e-antic/e-antic.h>
 #include <arb.h>
 #include <arb_poly.h>
 

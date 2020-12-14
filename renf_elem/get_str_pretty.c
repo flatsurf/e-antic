@@ -10,8 +10,9 @@
 */
 
 #include <arb.h>
-#include <e-antic/renf_elem.h>
 #include <string.h>
+
+#include "../e-antic/renf_elem.h"
 
 char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {

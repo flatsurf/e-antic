@@ -10,7 +10,7 @@
 */
 
 
-#include <e-antic/renf.h>
+#include "../e-antic/renf.h"
 
 int renf_set_immutable(renf_t nf, int immutable)
 {

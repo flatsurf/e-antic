@@ -12,7 +12,7 @@
 
 #include <assert.h>
 
-#include <e-antic/renf_elem.h>
+#include "../e-antic/renf_elem.h"
 
 int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf)
 {

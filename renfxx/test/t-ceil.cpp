@@ -10,7 +10,8 @@
 */
 
 #include <iostream>
-#include <e-antic/renfxx.h>
+
+#include "../../e-antic/renfxx.h"
 
 using namespace eantic;
 
