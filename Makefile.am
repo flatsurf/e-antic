@@ -126,19 +126,66 @@ libeantic_la_SOURCES +=            \
     renf_elem/get_arb.c            \
     renf_elem/relative_condition_number_2exp.c
 
-check_PROGRAMS +=                \
-    renf_elem/test/t-swap        \
-    renf_elem/test/t-pow         \
-    renf_elem/test/t-ceil        \
-    renf_elem/test/t-equal_fmpq  \
-    renf_elem/test/t-cmp         \
-    renf_elem/test/t-cmp_fmpq    \
-    renf_elem/test/t-floor       \
-    renf_elem/test/t-gen         \
-    renf_elem/test/t-get_cfrac   \
-    renf_elem/test/t-is_rational \
-    renf_elem/test/t-get_arb     \
-    renf_elem/test/t-get_str_pretty
+check_PROGRAMS +=                    \
+    renf_elem/test/t-swap            \
+    renf_elem/test/t-pow             \
+    renf_elem/test/t-ceil            \
+    renf_elem/test/t-equal_fmpq      \
+    renf_elem/test/t-cmp             \
+    renf_elem/test/t-cmp_fmpq        \
+    renf_elem/test/t-floor           \
+    renf_elem/test/t-gen             \
+    renf_elem/test/t-get_cfrac       \
+    renf_elem/test/t-is_rational     \
+    renf_elem/test/t-get_arb         \
+    renf_elem/test/t-get_str_pretty  \
+    renf_elem/add.c                  \
+    renf_elem/add_fmpq.c             \
+    renf_elem/add_fmpz.c             \
+    renf_elem/add_si.c               \
+    renf_elem/add_ui.c               \
+    renf_elem/cmp_fmpz.c             \
+    renf_elem/cmp_si.c               \
+    renf_elem/cmp_ui.c               \
+    renf_elem/div.c                  \
+    renf_elem/div_fmpq.c             \
+    renf_elem/div_fmpz.c             \
+    renf_elem/div_si.c               \
+    renf_elem/div_ui.c               \
+    renf_elem/equal.c                \
+    renf_elem/equal_fmpq.c           \
+    renf_elem/equal_fmpz.c           \
+    renf_elem/equal_si.c             \
+    renf_elem/equal_ui.c             \
+    renf_elem/fmpq_div.c             \
+    renf_elem/fmpq_sub.c             \
+    renf_elem/inv.c                  \
+    renf_elem/is_integer.c           \
+    renf_elem/is_one.c               \
+    renf_elem/is_rational.c          \
+    renf_elem/is_zero.c              \
+    renf_elem/mul.c                  \
+    renf_elem/mul_fmpq.c             \
+    renf_elem/mul_fmpz.c             \
+    renf_elem/mul_si.c               \
+    renf_elem/mul_ui.c               \
+    renf_elem/neg.c                  \
+    renf_elem/one.c                  \
+    renf_elem/pow.c                  \
+    renf_elem/set.c                  \
+    renf_elem/set_fmpq.c             \
+    renf_elem/set_fmpz.c             \
+    renf_elem/set_mpq.c              \
+    renf_elem/set_mpz.c              \
+    renf_elem/set_nf_elem.c          \
+    renf_elem/set_si.c               \
+    renf_elem/set_ui.c               \
+    renf_elem/sub.c                  \
+    renf_elem/sub_fmpq.c             \
+    renf_elem/sub_fmpz.c             \
+    renf_elem/sub_si.c               \
+    renf_elem/sub_ui.c               \
+    renf_elem/zero.c
 
 # C tests written with catch2, a C++ testing framework
 
