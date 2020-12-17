@@ -666,7 +666,8 @@ mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
     {
         if (rhs.is_rational())
             return (*this / rhs).floor();
-        throw std::logic_error("not implemented: cannot perform floor division of elements in different number fields");
+        if (this->is_rational())
+            return renf_elem_class(rhs.parent().shared_from_this(), static_cast<mpq_class>(*this)).floordiv(rhs);
     }
 
     mpz_class ret;

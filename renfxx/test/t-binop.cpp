@@ -91,15 +91,35 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
     SECTION("Floor Divisions")
     {
-        auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
-
-        CAPTURE(b);
-
-        if (b)
+        SECTION("Floor Division With Rationals")
         {
-            auto c = a.floordiv(b);
+            auto b = renf_elem_class(mpq_class(1));
 
-            REQUIRE(c == (a / b).floor());
+            if (b) {
+                auto c = a.floordiv(b);
+
+                REQUIRE(c == (a / b).floor());
+            }
+
+            if (a) {
+                auto c = b.floordiv(a);
+
+                REQUIRE(c == (b / a).floor());
+            }
+        }
+
+        SECTION("Floor Division With Number Field Elements")
+        {
+            auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
+
+            CAPTURE(b);
+
+            if (b)
+            {
+                auto c = a.floordiv(b);
+
+                REQUIRE(c == (a / b).floor());
+            }
         }
     }
 }
