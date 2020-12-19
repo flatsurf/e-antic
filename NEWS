@@ -4,6 +4,21 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.9
+====================
+
+**Changed:**
+
+* Split the header `e-antic/poly_extra.h` into `e-antic/fmpz_poly_extra.h` and
+  `e-antic/fmpq_poly_extra.h`. Typically, you do not want to include either of
+  those as they are mostly meant to be used internally.
+
+**Fixed:**
+
+* Either side of a floor division may now be rational.
+
+
+
 v1.0.0-rc.8
 ====================
 
