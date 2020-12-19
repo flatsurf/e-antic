@@ -10,8 +10,8 @@
 */
 
 
-#include <e-antic/renf_elem.h>
-#include <e-antic/poly_extra.h>
+#include "../e-antic/renf_elem.h"
+#include "../e-antic/fmpz_poly_extra.h"
 
 void renf_elem_gen(renf_elem_t a, const renf_t nf)
 {

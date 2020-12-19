@@ -13,15 +13,16 @@
 #ifndef E_ANTIC_RENF_H
 #define E_ANTIC_RENF_H
 
+#include <e-antic/e-antic.h>
+
 #include <flint/fmpq_poly.h>
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
-#include <e-antic/e-antic.h>
 #include <arb.h>
 #include <arb_poly.h>
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 typedef struct
@@ -42,36 +43,17 @@ void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
 
 void renf_init_set(renf_t dest, const renf_t src);
 
-static __inline__
-void renf_clear(renf_t nf)
-{
-    nf_clear(nf->nf);
-    fmpz_poly_clear(nf->der);
-    arb_clear(nf->emb);
-}
+void renf_clear(renf_t nf);
+
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
 void renf_refine_embedding(renf_t nf, slong prec);
 
 int renf_set_immutable(renf_t nf, int immutable);
 
-static __inline__
-int nf_equal(const nf_t nf1, const nf_t nf2)
-{
-    return fmpq_poly_equal(nf1->pol, nf2->pol);
-}
+int renf_equal(const renf_t nf1, const renf_t nf2);
 
-static __inline__
-int renf_equal(const renf_t nf1, const renf_t nf2)
-{
-    return nf_equal(nf1->nf, nf2->nf) && arb_overlaps(nf1->emb, nf2->emb);
-}
-
-static __inline__
-slong renf_degree(renf_t nf)
-{
-    return fmpq_poly_degree(nf->nf->pol);
-}
+slong renf_degree(renf_t nf);
 
 /* Randomisation */
 

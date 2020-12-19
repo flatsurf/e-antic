@@ -10,7 +10,8 @@
 */
 
 
-#include <e-antic/renf_elem.h>
+#include "../e-antic/renf_elem.h"
+#include "../e-antic/fmpz_poly_extra.h"
 
 int renf_elem_relative_condition_number_2exp(slong * cond, renf_elem_t a, renf_t nf)
 {

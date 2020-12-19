@@ -10,8 +10,9 @@
 */
 
 #include <flint/flint.h>
-#include <e-antic/renf.h>
-#include <e-antic/renf_elem.h>
+
+#include "../../e-antic/renf.h"
+#include "../../e-antic/renf_elem.h"
 
 int main(void)
 {

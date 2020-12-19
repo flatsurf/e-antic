@@ -10,7 +10,7 @@
 */
 
 
-#include <e-antic/renf.h>
+#include "../e-antic/renf.h"
 
 void renf_init_set(renf_t dest, const renf_t src)
 {

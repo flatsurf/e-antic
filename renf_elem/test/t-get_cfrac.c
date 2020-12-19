@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <e-antic/renf_elem.h>
+#include "../../e-antic/renf_elem.h"
 
 static void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const slong n, const slong num)
 {
