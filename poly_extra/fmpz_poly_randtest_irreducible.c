@@ -17,14 +17,16 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
     slong i;
     fmpz_t c;
     fmpz_mod_poly_t q;
+    fmpz_mod_ctx_t ctx;
 
     fmpz_init(c);
 
     fmpz_randprime(c, state, bits, 0);
-    fmpz_mod_poly_init(q, c);
-    fmpz_mod_poly_randtest_irreducible(q, state, len);
+    fmpz_mod_ctx_init(ctx, c);
+    fmpz_mod_poly_init(q, ctx);
+    fmpz_mod_poly_randtest_irreducible(q, state, len, ctx);
 
-    fmpz_mod_poly_get_fmpz_poly(p, q);
+    fmpz_mod_poly_get_fmpz_poly(p, q, ctx);
 
     /* After lifting, the coefficients belong to {0, ..., c-1}. We now  */
     /* randomly subtract c so that some of them become negative.        */
@@ -37,6 +39,7 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
                 c);
     }
 
-    fmpz_mod_poly_clear(q);
+    fmpz_mod_poly_clear(q, ctx);
+    fmpz_mod_ctx_clear(ctx);
     fmpz_clear(c);
 }
