@@ -1,0 +1,25 @@
+name: Publish to Anaconda
+on:
+  push: { branches: [ "master" ] }
+  pull_request: { branches: [ "master" ] }
+
+jobs:
+  conda-build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with: { submodules: "recursive" }
+    - run: docker pull condaforge/linux-anvil-comp7
+    - name: Build e-antic
+      uses: flatsurf/actions/conda-forge-build@main
+      with:
+        recipe: recipe
+        channels: flatsurf
+    - uses: actions/upload-artifact@v2
+      with:
+        name: conda-packages
+        path: conda-build/
+    - uses: flatsurf/actions/anaconda-upload@main
+      with:
+        user: flatsurf
+        token: ${{ secrets.BINSTAR_TOKEN }}

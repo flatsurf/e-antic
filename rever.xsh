@@ -62,6 +62,8 @@ $VERSION_BUMP_PATTERNS = [
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
+    ('recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
+    ('recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
 
 $CHANGELOG_FILENAME = 'NEWS'
