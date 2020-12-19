@@ -43,7 +43,7 @@ void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, mp_limb_signed_t len, 
     arf_zero(res);
     for (i = len - 1; i >= 0; i--)
     {
-        ((4 == 0) ? arf_mul_rnd_down(res, res, a, prec) : arf_mul_rnd_any(res, res, a, prec, 4));
+        arf_mul_rnd_any(res, res, a, prec, 4);
         arf_add_fmpz(res,res,pol+i,prec,4);
     }
 }
