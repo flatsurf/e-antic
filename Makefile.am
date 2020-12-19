@@ -46,7 +46,8 @@ libeantic_la_SOURCES +=                              \
     fmpz_poly_extra/abs.c                            \
     fmpz_poly_extra/evaluate_at_one.c                \
     fmpz_poly_extra/num_real_roots_0_1_vca.c         \
-    fmpz_poly_extra/num_real_roots_vca.c
+    fmpz_poly_extra/num_real_roots_vca.c             \
+    fmpz_poly_extra/set_str_pretty.c
 
 check_PROGRAMS +=                                         \
     fmpz_poly_extra/test/t-check_unique_real_root         \
