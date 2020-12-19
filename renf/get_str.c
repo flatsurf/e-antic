@@ -10,8 +10,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <e-antic/renf.h>
 #include <string.h>
+
+#include "../e-antic/renf.h"
 
 char * renf_get_str(const renf_t nf, const char * var, slong prec)
 {

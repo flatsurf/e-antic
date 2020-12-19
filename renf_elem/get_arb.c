@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <e-antic/renf_elem.h>
+#include "../e-antic/renf_elem.h"
 
 void
 renf_elem_get_arb(arb_t x, renf_elem_t a, renf_t nf, slong prec)

@@ -25,9 +25,9 @@
 #include <boost/variant.hpp>
 #include <gmpxx.h>
 
-#include <e-antic/renf.h>
-#include <e-antic/renf_elem.h>
-#include <e-antic/renfxx_fwd.h>
+#include "renf.h"
+#include "renf_elem.h"
+#include "renfxx_fwd.h"
 
 namespace eantic {
 

@@ -12,7 +12,7 @@
 #include <float.h>
 #include <assert.h>
 
-#include <e-antic/renf_elem.h>
+#include "../e-antic/renf_elem.h"
 
 #if FLT_RADIX != 2
 #error "not implemented: doubles that are not binary internally"

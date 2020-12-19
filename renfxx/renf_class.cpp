@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "../e-antic/renfxx.h"
+#include "../e-antic/fmpq_poly_extra.h"
 #include "external/unique-factory/unique_factory.hpp"
 
 namespace eantic {

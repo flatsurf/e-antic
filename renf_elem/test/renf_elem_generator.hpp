@@ -12,7 +12,7 @@
 #ifndef E_ANTIC_TEST_RENF_ELEM_GENERATOR_HPP
 #define E_ANTIC_TEST_RENF_ELEM_GENERATOR_HPP
 
-#include <e-antic/renf_elem.h>
+#include "../../e-antic/renf_elem.h"
 
 #include "../../renf/test/renf_generator.hpp"
 

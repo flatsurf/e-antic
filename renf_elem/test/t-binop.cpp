@@ -10,8 +10,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <e-antic/renf_elem.h>
 #include <limits>
+
+#include "../../e-antic/renf_elem.h"
 
 #include "../../renf/test/rand_generator.hpp"
 #include "../../renf/test/renf_generator.hpp"

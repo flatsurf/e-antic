@@ -14,7 +14,7 @@
 
 #include <sstream>
 
-#include <e-antic/renf.h>
+#include "../../e-antic/renf.h"
 
 #include "../../renfxx/test/external/catch2/single_include/catch2/catch.hpp"
 

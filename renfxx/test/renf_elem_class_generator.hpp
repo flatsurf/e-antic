@@ -16,7 +16,7 @@
 
 #include <boost/optional.hpp>
 
-#include <e-antic/renfxx.h>
+#include "../../e-antic/renfxx.h"
 
 #include "../../renf_elem/test/renf_elem_generator.hpp"
 

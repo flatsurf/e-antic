@@ -16,7 +16,7 @@
 #include <exception>
 #include <vector>
 
-#include <e-antic/renfxx.h>
+#include "../../e-antic/renfxx.h"
 
 using namespace eantic;
 

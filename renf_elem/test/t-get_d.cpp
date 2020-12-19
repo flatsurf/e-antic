@@ -15,7 +15,7 @@
 #include "../../renf/test/renf_generator.hpp"
 #include "renf_elem_generator.hpp"
 
-#include <e-antic/renf_elem.h>
+#include "../../e-antic/renf_elem.h"
 
 static void d_get_fmpq(double d, fmpq_t q)
 {
