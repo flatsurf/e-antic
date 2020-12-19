@@ -208,7 +208,7 @@ static void test_field2(flint_rand_t state)
     check_cmp(a, b, nf, 1);
 
     /* comparison with rational zero without coefficients, see
-     * https://github.com/videlec/e-antic/pull/75 */
+     * https://github.com/flatsurf/e-antic/pull/75 */
     fmpq_set_si(k, 1, 1);
     /* Set a to a small integer that is not stored as an MPZ; the following
      * renf_elem_zero() does not reset its storage but only changes the
@@ -223,7 +223,7 @@ static void test_field2(flint_rand_t state)
     check_cmp_fmpq(a, k, nf, 1);
 
     /* comparison with non-fmpq zero without coefficients, see
-     * https://github.com/videlec/e-antic/pull/75 */
+     * https://github.com/flatsurf/e-antic/pull/75 */
     /* We create a non-zero b with an embedding that contains zero */
     fmpq_set_si(k, 1, 3);
     renf_elem_set_fmpq(b, k, nf);
