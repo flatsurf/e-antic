@@ -1,0 +1,48 @@
+{% set version = '1.0.0-rc.8' %}
+{% set build_number = '0' %}
+
+package:
+  name: e-antic
+  version: {{ version | replace("-", "") | replace("rc.", "rc") | replace("beta.", "beta") }}
+
+source:
+  path: ../
+
+build:
+  number: {{ build_number }}
+  # dependency antic is not available for Windows on conda-forge
+  skip: True  # [win]
+  run_exports:
+    - {{ pin_subpackage("e-antic") }}
+
+requirements:
+  build:
+    - libtool
+    - automake
+    - {{ compiler('cxx') }}
+  host:
+    - antic
+    - boost-cpp
+    - gmp
+    - arb
+    - libflint 2.6.*
+
+test:
+  commands:
+    - test -f $PREFIX/include/e-antic/e-antic.h  # [linux or osx]
+    - test -f $PREFIX/lib/libeantic.so           # [linux]
+    - test -f $PREFIX/lib/libeanticxx.so         # [linux]
+    - test -f $PREFIX/lib/libeantic.dylib        # [osx]
+    - test -f $PREFIX/lib/libeanticxx.dylib      # [osx]
+
+about:
+  home: https://github.com/flatsurf/e-antic
+  license: GPL-3.0
+  license_family: GPL
+  license_file: COPYING
+  summary: 'embedded algebraic number fields'
+  description: |
+    E-ANTIC is a C/C++ library to deal with real embedded number fields built
+    on top of ANTIC. Its aim is to have as fast as possible exact arithmetic
+    operations and comparisons.
+  dev_url: https://github.com/flatsurf/e-antic

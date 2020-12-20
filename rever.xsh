@@ -62,14 +62,16 @@ $VERSION_BUMP_PATTERNS = [
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
     ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
+    ('recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
+    ('recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
 
 $CHANGELOG_FILENAME = 'NEWS'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $CHANGELOG_CATEGORIES = ('Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Performance')
-$PUSH_TAG_REMOTE = 'git@github.com:videlec/e-antic.git'
+$PUSH_TAG_REMOTE = 'git@github.com:flatsurf/e-antic.git'
 
-$GITHUB_ORG = 'videlec'
+$GITHUB_ORG = 'flatsurf'
 $GITHUB_REPO = 'e-antic'
 
 $GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz']
