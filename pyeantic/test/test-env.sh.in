@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
+# resolve #include "e-antic.h" relative to e-antic/e-antic in the build tree.
+export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libeantic -I@abs_builddir@/../../libeantic/e-antic $EXTRA_CLING_ARGS"
+export LD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$LD_LIBRARY_PATH"
+export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
