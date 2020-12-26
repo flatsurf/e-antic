@@ -65,6 +65,7 @@ $VERSION_BUMP_PATTERNS = [
     ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
     ('libeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('libeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
+    ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('pyeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
