@@ -10,10 +10,15 @@ jobs:
     - uses: actions/checkout@v2
       with: { submodules: "recursive" }
     - run: docker pull condaforge/linux-anvil-comp7
-    - name: Build e-antic
+    - name: Build libeantic
       uses: flatsurf/actions/conda-forge-build@main
       with:
-        recipe: recipe
+        recipe: libeantic/recipe
+        channels: flatsurf
+    - name: Build pyeantic
+      uses: flatsurf/actions/conda-forge-build@main
+      with:
+        recipe: pyeantic/recipe
         channels: flatsurf
     - uses: actions/upload-artifact@v2
       with:
