@@ -4,6 +4,16 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.10
+====================
+
+**Added:**
+
+* Conda packages are now uploaded automatically to the flatsurf channel with every release.
+* integrated pyeantic into the e-antic repository
+
+
+
 v1.0.0-rc.9
 ====================
 
