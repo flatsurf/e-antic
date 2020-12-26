@@ -35,7 +35,7 @@ def dist():
     from tempfile import TemporaryDirectory
     from xonsh.dirstack import DIRSTACK
     with TemporaryDirectory() as tmp:
-        ./bootstrap.sh
+        ./bootstrap
         pushd @(tmp)
         @(DIRSTACK[-1])/configure
         make dist
