@@ -1,5 +1,5 @@
-{% set version = '1.0.0-rc.9' %}
-{% set build_number = '1' %}
+{% set version = '1.0.0-rc.11' %}
+{% set build_number = '0' %}
 
 package:
   name: e-antic

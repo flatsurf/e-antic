@@ -22,7 +22,7 @@ extern "C" {
 #define E_ANTIC_VERSION_MAJOR 1
 #define E_ANTIC_VERSION_MINOR 0
 #define E_ANTIC_VERSION_PATCHLEVEL 0
-#define E_ANTIC_VERSION "1.0.0-rc.9"
+#define E_ANTIC_VERSION "1.0.0-rc.11"
 #define E_ANTIC_RELEASE (E_ANTIC_VERSION * 10000 + \
                            E_ANTIC_VERSION_MINOR * 100 + \
                            E_ANTIC_VERSION_PATCHLEVEL)
