@@ -4,6 +4,15 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.11
+====================
+
+**Fixed:**
+
+* fixed pyeantic version bump in rever script
+
+
+
 v1.0.0-rc.10
 ====================
 
