@@ -1,31 +1,36 @@
-# e-antic
+# e-antic : computing with real embedded number fields
 
 ## Overview
 
-e-antic is a C library for computing with real embedded algebraic numbers
-with exact comparisons. It follows [flint](flintlib.org/),
-[arb](https://fredrikj.net/arb/) and [antic](https://github.com/wbhart/antic)
-naming conventions.
+e-antic is a C library for exact computation with real embedded algebraic
+numbers. It also offers C++ and Python interfaces.
 
-e-antic also offers C++ and Python interfaces.
+The C library is built on top of [flint](flintlib.org/),
+[arb](https://fredrikj.net/arb/) and [antic](https://github.com/wbhart/antic)
+and follows the same naming conventions.
+
+The main focus of e-antic is on efficiency. For a more versatile C
+library for exact real numbers computations we recommand
+[calcium](https://fredrikj.net/calcium/) by Fredrik Johansson.
+
+The development of e-antic is coordinated on [github](https://github.com/flatsurf/e-antic).
 
 ## C library
 
-* installation details
-* tour of the C interface
-* index of library documentation
+* C installation specifics
+* [tour of the C interface](overview_c.md)
+* index of the C library
 
 ## C++ interface
 
-* installation details
-* tour of the C++ interface
-* index of library documentation
+* C++ installation specifics
+* [tour of the C++ interface](overview_cpp.md)
+* index of the C++ interface
 
 ## Python interface
 
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
-that provides automatic bindings to the C++ interface.
+that provides automatic bindings to the C++ interface. The documentation is
+currently independent of the C/C++ documentation and can be found at
+[pyeantic documentation](LINK_TO_PYEANTIC_DOCUMENTATION).
 
-* installation details
-* tour of the Python interface
-* index of library documentation
