@@ -9,7 +9,7 @@ source:
   path: ../../
 
 build:
-  number: 0
+  number: {{ build_number }}
   # dependency antic is not available for Windows on conda-forge
   skip: True  # [win]
 
