@@ -666,7 +666,7 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K(b)
             b
         """
-        rational_coefficients = [ZZ(c.get_str()) / ZZ(x.renf_elem.den().get_str()) for c in x.renf_elem.num_vector()]
+        rational_coefficients = [ZZ(str(c.get_str())) / ZZ(str(x.renf_elem.den().get_str())) for c in x.renf_elem.num_vector()]
         while len(rational_coefficients) < self.domain().number_field.degree():
             rational_coefficients.append(QQ.zero())
         return self.codomain()(rational_coefficients)
