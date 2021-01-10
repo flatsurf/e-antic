@@ -12,8 +12,8 @@ dependencies:
   - benchmark
   - boost-cpp
   - coreutils
-  - cppyy
-  - cppyythonizations
+  - cppyy>=1.9.2
+  - cppyythonizations>=1.1.2
   - cxx-compiler
   - gmp
   - ipywidgets
