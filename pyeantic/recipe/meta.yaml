@@ -1,0 +1,41 @@
+{% set version = '1.0.0-rc.11' %}
+{% set build_number = '0' %}
+
+package:
+  name: pyeantic
+  version: {{ version | replace("-", "") | replace("rc.", "rc") | replace("beta.", "beta") }}
+
+source:
+  path: ../../
+
+build:
+  number: 0
+  # dependency antic is not available for Windows on conda-forge
+  skip: True  # [win]
+
+requirements:
+  build:
+    - libtool
+    - automake
+    - coreutils
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - setuptools
+    - cppyythonizations
+    - e-antic
+  run:
+    - python
+    - cppyy
+    - cppyythonizations
+    - boost-cpp
+
+test:
+  imports:
+    - pyeantic
+
+about:
+  home: https://github.com/flatsurf/e-eantic
+  license: GPL-3.0-or-later
+  license_file: COPYING
+  summary: embedded algebraic number fields

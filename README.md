@@ -5,7 +5,7 @@ E-ANTIC is a C/C++ library to deal with real embedded number fields built on
 top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as fast
 as possible exact arithmetic operations and comparisons.
 
-Source tarballs can be downloaded at https://github.com/videlec/e-antic/releases.
+Source tarballs can be downloaded at https://github.com/flatsurf/e-antic/releases.
 
 The dependencies are:
 
@@ -17,7 +17,7 @@ If you have cloned the source directory you will need to setup the
 configure script and Makefile using autotools. That is
 
     $ git submodule update --init
-    $ ./bootstrap.sh
+    $ ./bootstrap
 
 If you obtained a tarball of the sources or if the preceding step
 worked, you just have to do

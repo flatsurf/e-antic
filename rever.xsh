@@ -35,7 +35,7 @@ def dist():
     from tempfile import TemporaryDirectory
     from xonsh.dirstack import DIRSTACK
     with TemporaryDirectory() as tmp:
-        ./bootstrap.sh
+        ./bootstrap
         pushd @(tmp)
         @(DIRSTACK[-1])/configure
         make dist
@@ -58,18 +58,25 @@ MAJOR, MINOR, PATCH = version.parse($VERSION).release
 
 $VERSION_BUMP_PATTERNS = [
     ('configure.ac', r'AC_INIT', r'AC_INIT([e-antic], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
-    ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION ', r'#define E_ANTIC_VERSION "$VERSION"'),
-    ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
-    ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
-    ('e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
+    ('libeantic/configure.ac', r'AC_INIT', r'AC_INIT([libeantic], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
+    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION ', r'#define E_ANTIC_VERSION "$VERSION"'),
+    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
+    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
+    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
+    ('libeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
+    ('libeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
+    ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
+    ('pyeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
+    ('pyeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
 
-$CHANGELOG_FILENAME = 'NEWS'
+$CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
+$CHANGELOG_NEWS = 'doc/news'
 $CHANGELOG_CATEGORIES = ('Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Performance')
-$PUSH_TAG_REMOTE = 'git@github.com:videlec/e-antic.git'
+$PUSH_TAG_REMOTE = 'git@github.com:flatsurf/e-antic.git'
 
-$GITHUB_ORG = 'videlec'
+$GITHUB_ORG = 'flatsurf'
 $GITHUB_REPO = 'e-antic'
 
 $GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz']
