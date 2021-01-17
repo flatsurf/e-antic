@@ -27,7 +27,16 @@ jobs:
       - name: show logs
         run: grep "" /dev/null `find -name '*.log'` || true
         if: ${{ always() }}
-      - uses: codecov/codecov-action@v1
+      - name: create & post coverage report
+        shell: bash -l {0}
+        run: |
+          pushd libeantic/test
+          find -type f -name '*.gcda' -exec gcov -pbs ../../../e-antic '{}' ';'
+          popd
+          pushd libeantic/src
+          find -type f -name '*.gcda' -exec gcov -pbs ../../../e-antic '{}' ';'
+          popd
+          curl -s https://codecov.io/bash | bash -s - -X gcov -R `pwd` .
 
 env:
   MAKEFLAGS: -j2
