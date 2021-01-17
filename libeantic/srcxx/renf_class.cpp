@@ -151,9 +151,9 @@ renf_elem_class renf_class::gen() const
     return a;
 }
 
-bool renf_class::operator==(const renf_class & other) const
+bool operator==(const renf_class & self, const renf_class & other)
 {
-    return this == &other;
+    return &self == &other;
 }
 
 std::istream & renf_class::set_pword(std::istream & is) const

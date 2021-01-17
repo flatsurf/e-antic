@@ -58,7 +58,7 @@ public:
     renf_elem_class one() const;
     renf_elem_class gen() const;
 
-    bool operator==(const renf_class &) const;
+    friend bool operator==(const renf_class &, const renf_class &);
 
     const std::string & gen_name() const { return name; }
 
