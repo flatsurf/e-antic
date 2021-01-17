@@ -45,12 +45,14 @@ TEST_CASE("Converting fields to strings", "[renf_class][operator<<]")
     {
         auto s = boost::lexical_cast<std::string>(*K1);
         CAPTURE(s);
+        REQUIRE(s == K1->to_string());
         REQUIRE(std::regex_match(s, std::regex("NumberField\\(A\\^3 \\- 2, \\[1.2599210498948731" + numerical_noise)));
     }
 
     {
         auto s = boost::lexical_cast<std::string>(*K2);
         CAPTURE(s);
+        REQUIRE(s == K2->to_string());
         REQUIRE(std::regex_match(s, std::regex("NumberField\\(2\\*abc\\^4 \\- 5\\*abc \\+ 1, \\[0.2006483391818005" + numerical_noise)));
     }
 }

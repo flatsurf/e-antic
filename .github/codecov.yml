@@ -1,0 +1,4 @@
+ignore:
+  - "usr"
+  - "libeantic/test"
+  - "external"
