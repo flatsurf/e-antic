@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2016 Vincent Delecroix
-                  2020 Julian Rüth
+    Copyright (C)        2016 Vincent Delecroix
+                  2020 - 2021Julian Rüth
 
     This file is part of e-antic
 
@@ -25,7 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct
+typedef struct LIBEANTIC_API
 {
   nf_t nf;
   fmpz_poly_t der;   /* derivative (without denominator)                   */
@@ -38,30 +38,30 @@ typedef renf * renf_ptr;
 typedef const renf * renf_srcptr;
 typedef renf renf_t[1];
 
-void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
-void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
+LIBEANTIC_API void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
+LIBEANTIC_API void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
 
-void renf_init_set(renf_t dest, const renf_t src);
+LIBEANTIC_API void renf_init_set(renf_t dest, const renf_t src);
 
-void renf_clear(renf_t nf);
+LIBEANTIC_API void renf_clear(renf_t nf);
 
-slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
+LIBEANTIC_API slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
-void renf_refine_embedding(renf_t nf, slong prec);
+LIBEANTIC_API void renf_refine_embedding(renf_t nf, slong prec);
 
-int renf_set_immutable(renf_t nf, int immutable);
+LIBEANTIC_API int renf_set_immutable(renf_t nf, int immutable);
 
-int renf_equal(const renf_t nf1, const renf_t nf2);
+LIBEANTIC_API int renf_equal(const renf_t nf1, const renf_t nf2);
 
-slong renf_degree(renf_t nf);
+LIBEANTIC_API slong renf_degree(renf_t nf);
 
 /* Randomisation */
 
-void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
+LIBEANTIC_API void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
 /* Printing */
-char * renf_get_str(const renf_t nf, const char * var, slong prec);
-void renf_print(const renf_t nf);
+LIBEANTIC_API char * renf_get_str(const renf_t nf, const char * var, slong prec);
+LIBEANTIC_API void renf_print(const renf_t nf);
 
 #ifdef __cplusplus
 }

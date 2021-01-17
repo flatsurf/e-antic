@@ -9,6 +9,10 @@ libeantic_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libeantic.map
 EXTRA_libeantic_la_DEPENDENCIES = $(srcdir)/libeantic.map
 endif
 
+# We are building the libexactreal library so visibility attributes should be
+# set, see https://gcc.gnu.org/wiki/Visibility
+AM_CPPFLAGS = -DBUILD_LIBEANTIC
+
 # Linked-against libraries
 libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 
