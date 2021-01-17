@@ -45,14 +45,14 @@ does not hurt performance but gives a better debugging experience. For the best
 debugging experience, you might want to replace `-O3` with `-Og` or even `-O0`
 but the latter results in poor performance.
 
-If your compiler supports it, you could add `-fvisibility=hidden
--fvisibility-inlines-hidden` to `CFLAGS` and `CXXFLAGS0`. This hides internal
-bits in the resulting library which have lead to crashes in the past due to
-conflicting header-only libraries.
+If your compiler supports it, you can try to add `-fvisibility=hidden
+-fvisibility-inlines-hidden` to your `CXXFLAGS`. This hides internal bits in
+the resulting library which have lead to crashes in the past due to conflicting
+header-only libraries.
 
-If your linker supports it, you can also run `./configure
---with-version-script` to shrink the resulting shared library to a curated list
-of versioned symbols.
+If your linker supports it, you should use `./configure --with-version-script`
+to shrink the resulting shared library to an exact curated list of versioned
+symbols.
 
 perf works well to profile when you make sure that `CFLAGS` and `CXXFLAGS`
 contain `-fno-omit-framepointer`. You can then for example run our test suite

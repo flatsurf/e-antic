@@ -3,6 +3,12 @@ lib_LTLIBRARIES = libeantic.la
 
 libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
 
+if HAVE_VERSION_SCRIPT
+libeantic_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libeantic.map
+
+EXTRA_libeantic_la_DEPENDENCIES = $(srcdir)/libeantic.map
+endif
+
 # Linked-against libraries
 libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 
