@@ -22,6 +22,9 @@ TEST_CASE("Consistency of Hash Function", "[renf_elem_class][hash]")
     auto K = renf_class::make("x^2 - x - 1", "x", "1.618 +/- 0.1");
     auto L = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
+    REQUIRE(*K != *L);
+    REQUIRE(!(*K == *L));
+
     SECTION("hash can distinguish fields")
     {
         REQUIRE(std::hash<renf_class>()(*K) != std::hash<renf_class>()(*L));
