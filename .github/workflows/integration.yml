@@ -26,7 +26,7 @@ jobs:
           pushd libeantic
           export CFLAGS="$CFLAGS -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --prefix="$PREFIX" --without-benchmark --with-version-script
+          ./configure --prefix="$CONDA_PREFIX" --without-benchmark --with-version-script
           make
           make install
           popd
@@ -36,7 +36,7 @@ jobs:
           pushd normaliz
           autoreconf --install
           chmod +x configure
-          ./configure --prefix="$PREFIX" --with-e-antic="$PREFIX" --with-nauty="$PREFIX" --with-flint="$PREFIX" --with-gmp="$PREFIX"
+          ./configure --prefix="$CONDA_PREFIX" --with-e-antic="$CONDA_PREFIX" --with-nauty="$CONDA_PREFIX" --with-flint="$CONDA_PREFIX" --with-gmp="$CONDA_PREFIX"
           make
           make check
           popd

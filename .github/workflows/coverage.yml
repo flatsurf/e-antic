@@ -23,7 +23,7 @@ jobs:
           ./bootstrap
           export CFLAGS="$CFLAGS --coverage -O0 -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG"
-          ./configure --prefix="$PREFIX"
+          ./configure
           make check
       - name: show logs
         run: grep "" /dev/null `find -name '*.log'` || true
