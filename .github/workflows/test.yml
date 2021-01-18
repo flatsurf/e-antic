@@ -89,9 +89,9 @@ jobs:
         run: |
           echo "::group::bootstrap"
           ./bootstrap
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG"
 
           echo "::group::configure"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
