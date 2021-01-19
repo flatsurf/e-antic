@@ -25,7 +25,7 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ matrix.on }} == ubuntu* ]] && echo "--with-version-script"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install dependencies
@@ -75,7 +75,7 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ matrix.on }} == ubuntu* ]] && echo "--with-version-script"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install dependencies
