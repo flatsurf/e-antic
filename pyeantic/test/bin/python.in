@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Run Python 3 with environment variables set so that local headers and
+# libraries in this repository are used when running tests.
+
+# Usually, one would do this setup as part of test-env.sh, i.e.,
+# AM_TESTS_ENVIRONMENT. However, macOS drops DYLD_LIBRARY_PATH whenever a
+# shebang is followed, so we actually need to execute the Python binary
+# directly and pass a script to it as a parameter to keep DYLD_LIBRARY_PATH
+# alive.
+
+# Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
+# resolve #include "e-antic.h" relative to e-antic/e-antic in the build tree.
+export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libeantic -I@abs_builddir@/../../libeantic/e-antic $EXTRA_CLING_ARGS"
+
+# Load libeantic.so and libeanticxx.so from our build tree.
+export LD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$LD_LIBRARY_PATH"
+
+# Load libeantic.dylib and libeanticxx.dylib from our build tree.
+export DYLD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$DYLD_LIBRARY_PATH"
+
+# Load pyeantic from our source tree.
+export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
+
+exec python3 $@
