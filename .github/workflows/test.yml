@@ -10,7 +10,7 @@ jobs:
       matrix:
         on:
           - ubuntu-20.04
-          - macos-11.0
+          - macos-10.15
         target:
           - check
         include:
@@ -59,7 +59,7 @@ jobs:
         python: ["3.6", "3.7", "3.8", "3.9"]
         on:
           - ubuntu-20.04
-          - macos-11.0
+          - macos-10.15
         target:
           - check
         include:
@@ -108,7 +108,7 @@ jobs:
       matrix:
         on:
           - ubuntu-20.04
-          - macos-11.0
+          - macos-10.15
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
