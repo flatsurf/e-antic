@@ -103,7 +103,12 @@ jobs:
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   distcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.on }}
+    strategy:
+      matrix:
+        on:
+          - ubuntu-20.04
+          - macos-11.0
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
