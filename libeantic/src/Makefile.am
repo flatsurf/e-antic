@@ -1,7 +1,7 @@
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la
 
-libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
+libeantic_la_LDFLAGS = -version-info $(libeantic_version_info) -no-undefined
 
 if HAVE_VERSION_SCRIPT
 libeantic_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libeantic.map

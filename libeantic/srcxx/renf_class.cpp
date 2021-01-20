@@ -11,6 +11,7 @@
 */
 
 #include <iostream>
+#include <stdexcept>
 
 #include "../e-antic/renfxx.h"
 #include "../e-antic/fmpq_poly_extra.h"
@@ -98,8 +99,16 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_init(e);
     if (arb_set_str(e, emb.c_str(), prec))
     {
+        fmpq_poly_clear(p);
         arb_clear(e);
         throw std::invalid_argument("renf_class: can not read ball from string");
+    }
+
+    if (!fmpq_poly_check_unique_real_root(p, e, prec))
+    {
+        fmpq_poly_clear(p);
+        arb_clear(e);
+        throw std::invalid_argument("the given polynomial does not have a unique such root");
     }
 
     renf_init(nf, p, e, prec);

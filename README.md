@@ -76,7 +76,7 @@ The latest (experimental) versions for conda are:
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
-| [![Build](https://img.shields.io/badge/recipe-libeantic-green.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) |
+| [![Build](https://img.shields.io/badge/recipe-e-antic-green.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) |
 | [![Build](https://img.shields.io/badge/recipe-pyeantic-green.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) |
 
 ## Install with your Distribution Tools
