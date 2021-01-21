@@ -67,6 +67,10 @@ public:
     [[deprecated("use renfxx_cereal.h instead.")]]
     std::istream & set_pword(std::istream &) const;
 
+    // Extract the number field stored with set_pword from an input stream.
+    [[deprecated("use renfxx_cereal.h instead.")]]
+    static std::shared_ptr<const renf_class> get_pword(std::istream &);
+
     std::string to_string() const;
     friend std::ostream & operator<<(std::ostream &, const renf_class &);
 
