@@ -173,6 +173,11 @@ std::istream & renf_class::set_pword(std::istream & is) const
 
 std::istream & renf_class::set_istream(std::istream & is) const { return set_pword(is); }
 
+std::shared_ptr<const renf_class> renf_class::get_pword(std::istream& is)
+{
+    return reinterpret_cast<renf_class *>(is.pword(xalloc))->shared_from_this();
+}
+
 std::string renf_class::to_string() const
 {
     char * u = renf_get_str(renf_t(), gen_name().c_str(), 64);
@@ -198,7 +203,7 @@ std::ostream & operator<<(std::ostream & os, const renf_elem_class & a)
 
 std::istream & operator>>(std::istream & is, renf_elem_class & a)
 {
-    renf_class const * nf = reinterpret_cast<renf_class *>(is.pword(xalloc));
+    auto nf = renf_class::get_pword(is);
 
     std::string s; // part of the stream to use
 
@@ -228,7 +233,7 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
         }
     }
 
-    a = renf_elem_class(nf->shared_from_this(), s);
+    a = renf_elem_class(nf, s);
 
     return is;
 }

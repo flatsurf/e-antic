@@ -72,7 +72,10 @@ TEST_CASE("Writing and reading elements from streams", "[renf_elem_class][operat
     CAPTURE(s);
 
     std::stringstream in(s);
+
     K->set_pword(in);
+    REQUIRE(*renf_class::get_pword(in) == *K);
+
     renf_elem_class b;
     in >> b;
 
