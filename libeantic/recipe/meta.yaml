@@ -1,4 +1,4 @@
-{% set version = '1.0.0-rc.11' %}
+{% set version = '1.0.0-rc.12' %}
 {% set build_number = '0' %}
 
 package:
