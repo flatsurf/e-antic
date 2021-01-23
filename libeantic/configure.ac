@@ -22,6 +22,9 @@ AC_CANONICAL_HOST
 dnl Find C++ Compiler
 AC_PROG_CXX
 
+dnl Link with libtool
+AC_PROG_LIBTOOL
+
 dnl Set INSTALL or use install-sh.
 AC_PROG_INSTALL
 

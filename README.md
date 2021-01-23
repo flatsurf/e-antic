@@ -13,7 +13,7 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6](http://flintlib.org)
+ - [FLINT 2.6 or 2.7](http://flintlib.org)
  - [Arb](http://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
 
