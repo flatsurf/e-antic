@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-    Copyright (C) 2019-2020 Julian Rüth
+                  2019-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -33,7 +33,7 @@ namespace eantic {
 
 // A Real Embedded Number Field
 // This class provides C++ memory management for the underlying renf_t.
-class renf_class : public std::enable_shared_from_this<renf_class>, boost::equality_comparable<renf_class> {
+class LIBEANTIC_API renf_class : public std::enable_shared_from_this<renf_class>, boost::equality_comparable<renf_class> {
     // The trivial number field adjoining a root of (x - 1) to the rationals
     renf_class();
     renf_class(const ::renf_t, const std::string &);
@@ -58,14 +58,18 @@ public:
     renf_elem_class one() const;
     renf_elem_class gen() const;
 
-    bool operator==(const renf_class &) const;
+    friend bool operator==(const renf_class &, const renf_class &);
 
     const std::string & gen_name() const { return name; }
 
     // Prepare an input stream to read elements living in this number field
     // from it.
-    [[deprecated("use renfxx_cereal.h instead.")]]
+    [[deprecated("use renfxx_cereal.h or renf_elem_class's constructor taking a string instead.")]]
     std::istream & set_pword(std::istream &) const;
+
+    // Extract the number field stored with set_pword from an input stream.
+    [[deprecated("use renfxx_cereal.h or renf_elem_class's constructor taking a string instead.")]]
+    static std::shared_ptr<const renf_class> get_pword(std::istream &);
 
     std::string to_string() const;
     friend std::ostream & operator<<(std::ostream &, const renf_class &);
@@ -89,7 +93,7 @@ private:
     friend cereal::access;
 };
 
-class renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
+class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
                         boost::ordered_field_operators<renf_elem_class, int>,
                         boost::ordered_field_operators<renf_elem_class, unsigned int>,
                         boost::ordered_field_operators<renf_elem_class, long>,
@@ -292,20 +296,20 @@ private:
 };
 
 // overloads for global functions
-mpz_class floor(const renf_elem_class& x);
-mpz_class ceil(const renf_elem_class& x);
-renf_elem_class pow(const renf_elem_class& x, int exp);
+LIBEANTIC_API mpz_class floor(const renf_elem_class& x);
+LIBEANTIC_API mpz_class ceil(const renf_elem_class& x);
+LIBEANTIC_API renf_elem_class pow(const renf_elem_class& x, int exp);
 
 } // end of namespace
 
 namespace std {
 template <>
-struct hash<eantic::renf_class> {
+struct LIBEANTIC_API hash<eantic::renf_class> {
   size_t operator()(const eantic::renf_class&) const;
 };
 
 template <>
-struct hash<eantic::renf_elem_class> {
+struct LIBEANTIC_API hash<eantic::renf_elem_class> {
   size_t operator()(const eantic::renf_elem_class&) const;
 };
 }  // namespace std

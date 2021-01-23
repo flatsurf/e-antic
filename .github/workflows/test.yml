@@ -5,16 +5,20 @@ on:
 
 jobs:
   test-libeantic:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.on }}
     strategy:
       matrix:
-        target:
-          - check
+        on:
+          - ubuntu-20.04
+          - macos-10.15
         libflint:
           - 2.6
           - 2.7
+        target:
+          - check
         include:
-          - libflint: 2.7
+          - on: ubuntu-20.04
+            libflint: 2.7
             target: check-valgrind
     steps:
       - uses: actions/checkout@v2
@@ -22,6 +26,10 @@ jobs:
       - name: install valgrind and libc debug symbols
         run: sudo apt install libc6-dbg valgrind
         if: ${{ matrix.target == 'check-valgrind' }}
+      - name: build flags
+        id: flags
+        run: |
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install dependencies
@@ -33,25 +41,35 @@ jobs:
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
+          echo "::group::bootstrap"
           ./bootstrap
+
+          echo "::group::configure"
           cd libeantic
           export CFLAGS="$CFLAGS -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --prefix="$PREFIX" --without-benchmark
-          make
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+
+          echo "::group::make"
+          make V=1
+
+          echo "::group::make ${{ matrix.target }}"
           make V=1 ${{ matrix.target }}
-      - name: show logs
-        run: grep "" /dev/null `find -name '*.log'` || true
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   test-pyeantic:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.on }}
     strategy:
       matrix:
         python: ["3.6", "3.7", "3.8", "3.9"]
+        on:
+          - ubuntu-20.04
+          - macos-10.15
         target:
           - check
         include:
           - python: 3.9
+            on: ubuntu-20.04
             target: check-valgrind
     steps:
       - uses: actions/checkout@v2
@@ -59,6 +77,10 @@ jobs:
       - name: install valgrind and libc debug symbols
         run: sudo apt install libc6-dbg valgrind
         if: ${{ matrix.target == 'check-valgrind' }}
+      - name: build flags
+        id: flags
+        run: |
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install dependencies
@@ -70,17 +92,28 @@ jobs:
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
+          echo "::group::bootstrap"
           ./bootstrap
+
+          echo "::group::configure"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --prefix="$PREFIX" --without-benchmark
-          make
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+
+          echo "::group::make"
+          make V=1
+
+          echo "::group::make ${{ matrix.target }}"
           cd pyeantic
           make V=1 ${{ matrix.target }}
-      - name: show logs
-        run: grep "" /dev/null `find -name '*.log'` || true
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   distcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.on }}
+    strategy:
+      matrix:
+        on:
+          - ubuntu-20.04
+          - macos-10.15
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -95,11 +128,15 @@ jobs:
       - name: make distcheck
         shell: bash -l {0}
         run: |
+          echo "::group::bootstrap"
           ./bootstrap
-          ./configure --prefix="$PREFIX" --without-benchmark
+
+          echo "::group::configure"
+          ./configure --without-benchmark
+
+          echo "::group::make distcheck"
           make distcheck
-      - name: show logs
-        run: grep "" /dev/null `find -name '*.log'` || true
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 
 env:

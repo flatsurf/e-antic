@@ -13,7 +13,6 @@ dependencies:
   - boost-cpp
   - coreutils
   - cppyy>=1.9.2
-  - cppyythonizations>=1.1.2
   - cxx-compiler
   - gmp
   - ipywidgets
@@ -27,3 +26,4 @@ dependencies:
   - pip
   - pip:
     - realalg
+    - cppyythonizations

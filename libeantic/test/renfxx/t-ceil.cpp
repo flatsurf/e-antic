@@ -10,6 +10,7 @@
 */
 
 #include <iostream>
+#include <stdexcept>
 
 #include "../../e-antic/renfxx.h"
 
@@ -24,11 +25,19 @@ int main(void)
         renf_elem_class a(mpq_class("3/2"));
         if (a.ceil() != 2)
             throw std::runtime_error("pb with ceil");
+        if (static_cast<double>(a) != 1.5)
+            throw std::runtime_error("double cast wrong");
+        if (a.get_d() != 1.5)
+            throw std::runtime_error("double cast wrong");
     }
     {
         renf_elem_class a(mpq_class("-3/2"));
         if (a.ceil() != -1)
             throw std::runtime_error("pb with ceil");
+        if (static_cast<double>(a) != -1.5)
+            throw std::runtime_error("double cast wrong");
+        if (a.get_d() != -1.5)
+            throw std::runtime_error("double cast wrong");
     }
 
     {
@@ -51,6 +60,8 @@ int main(void)
             fmpq_poly_set_coeff_fmpq(p, 0, k);
             renf_elem_set_fmpq_poly(a.get_renf_elem(), p, K->get_renf());
 
+            if (a.ceil() != ceil(a))
+                throw std::runtime_error("a.ceil() and ceil() disagree");
             if (a.ceil() != 1 - iter % 2)
             {
                 std::cerr << "pb with Fibonacci ceil" << std::endl;

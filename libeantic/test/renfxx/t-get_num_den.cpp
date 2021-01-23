@@ -26,7 +26,9 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
         a = num;
         a /= den;
         REQUIRE(a.get_num() == num);
+        REQUIRE(a.num() == num);
         REQUIRE(a.get_den() == den);
+        REQUIRE(a.den() == den);
     };
 
     auto check_reconstruct = [](std::shared_ptr<const renf_class> K, renf_elem_class& a)

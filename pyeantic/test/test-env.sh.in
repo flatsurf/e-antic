@@ -1,7 +1,16 @@
 #!/bin/sh
 
-# Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
-# resolve #include "e-antic.h" relative to e-antic/e-antic in the build tree.
-export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libeantic -I@abs_builddir@/../../libeantic/e-antic $EXTRA_CLING_ARGS"
-export LD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$LD_LIBRARY_PATH"
-export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
+# Source this file to put our "python" script on the PATH.
+# This python script runs python3 with environment variables set up so that we
+# pick up our local libeantic(xx) libraries when testing.
+
+# This is a hack. But note that we cannot simply put the contents of
+# bin/python.in into this environment file since security measures on macOS
+# sanitize DYLD_LIBRARY_PATH before following shebangs. Why DYLD_LIBRARY_PATH
+# is absolutely necessary to make things work on macOS is still unclear to us.
+# Without it, i.e., when just telling cppyy/cling with `#pragma cling
+# add_library_path` where `libeantic.dylib` and `libeanticxx.dylib` live
+# locally, the libraries load but some symbols in these libraries fail to
+# resolve mysteriously later.
+
+export PATH="@abs_builddir@/bin:$PATH"

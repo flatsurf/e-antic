@@ -16,6 +16,7 @@
 
 #include "rand_generator.hpp"
 #include "renf_class_generator.hpp"
+#include "renf_elem_class_generator.hpp"
 
 using namespace eantic;
 
@@ -48,6 +49,19 @@ TEST_CASE("Detect integer/rational elements", "[renf_elem_class][is_integer][is_
         {
             REQUIRE(!K->gen().is_integer());
             REQUIRE(!K->gen().is_rational());
+        }
+    }
+
+    SECTION("Random Elements")
+    {
+        auto K = GENERATE_REF(take(16, renf_classs(state)));
+        auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
+        
+        if (a.is_rational())
+        {
+            REQUIRE(static_cast<mpq_class>(a) == a);
+            REQUIRE(a == static_cast<mpq_class>(a));
+            REQUIRE(static_cast<mpq_class>(a) == a.get_rational());
         }
     }
 }

@@ -24,17 +24,17 @@ extern "C" {
 /**********************************************************************/
 /* Real root isolation for integer polynomials (to be moved to FLINT) */
 
-int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
+LIBEANTIC_API int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
 /****************************************************************************/
 /* FLINT/ARB extra                                                          */
 
-void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
+LIBEANTIC_API void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
 
-void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec);
+LIBEANTIC_API void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec);
 
 /* root refinement */
-int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);
+LIBEANTIC_API int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);
 
 #ifdef __cplusplus
 }

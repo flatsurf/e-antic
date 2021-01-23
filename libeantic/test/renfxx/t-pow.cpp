@@ -38,6 +38,8 @@ int main(void)
 
         {
             renf_elem_class a = K->gen();
+            if (a.pow(5) != pow(a, 5))
+                throw std::runtime_error("a.pow() and pow(a) disagree");
             if (a.pow(5) * a.pow(-5) != 1)
                 throw std::runtime_error("a^5 is wrong");
         }

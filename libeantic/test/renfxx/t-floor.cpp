@@ -22,6 +22,8 @@ int main(void)
     }
     {
         renf_elem_class a(mpq_class("-3/2"));
+        if (a.floor() != floor(a))
+            throw std::runtime_error("a.floor() and floor(a) disagree");
         if (a.floor() != -2)
             throw std::runtime_error("pb with floor");
     }
