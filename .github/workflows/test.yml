@@ -11,10 +11,14 @@ jobs:
         on:
           - ubuntu-20.04
           - macos-10.15
+        libflint:
+          - 2.6
+          - 2.7
         target:
           - check
         include:
           - on: ubuntu-20.04
+            libflint: 2.7
             target: check-valgrind
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +36,7 @@ jobs:
         shell: bash -l {0}
         run: |
           mamba env update --quiet -n test -f libeantic/environment.yml
+          mamba install libflint=${{ matrix.libflint }}
           conda list
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
