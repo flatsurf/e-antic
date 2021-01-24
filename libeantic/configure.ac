@@ -22,9 +22,6 @@ AC_CANONICAL_HOST
 dnl Find C++ Compiler
 AC_PROG_CXX
 
-dnl Link with libtool
-AC_PROG_LIBTOOL
-
 dnl Set INSTALL or use install-sh.
 AC_PROG_INSTALL
 
@@ -43,8 +40,10 @@ AX_VALGRIND_CHECK
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([GMP header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
+AC_CHECK_LIB(mpfr, mpfr_init, [], [AC_MSG_WARN([libmpfr not found which FLINT needs])])
+
 AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([FLINT headers not found])])
-AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])], [-lmpfr])
+AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
 
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <flint/flint.h>
@@ -54,7 +53,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 ])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
 
 AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
-AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])], [-lflint])
+AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
 
 # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
 AC_REPLACE_FUNCS(nf_init_randtest)
@@ -66,7 +65,7 @@ AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
 AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
-AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
+AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(14)
