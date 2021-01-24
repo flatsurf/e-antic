@@ -17,6 +17,7 @@ The dependencies are:
  - [Arb](http://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
  - [Boost](https://www.boost.org/) for the C++ library
+ - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
 ## Build from the Source Code Repository or a Tarball
 
