@@ -16,6 +16,7 @@ The dependencies are:
  - [FLINT 2.6 or 2.7](http://flintlib.org)
  - [Arb](http://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
+ - [Boost](https://www.boost.org/) for the C++ library
 
 ## Build from the Source Code Repository or a Tarball
 
