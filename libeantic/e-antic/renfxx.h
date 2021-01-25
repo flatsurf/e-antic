@@ -61,11 +61,11 @@ public:
 
     // Prepare an input stream to read elements living in this number field
     // from it.
-    [[deprecated("use renfxx_cereal.h or renf_elem_class's constructor taking a string instead.")]]
+    [[deprecated("use renfxx_cereal.h or the renf_elem_class constructor taking a string instead.")]]
     std::istream & set_pword(std::istream &) const;
 
     // Extract the number field stored with set_pword from an input stream.
-    [[deprecated("use renfxx_cereal.h or renf_elem_class's constructor taking a string instead.")]]
+    [[deprecated("use renfxx_cereal.h or the renf_elem_class constructor taking a string instead.")]]
     static std::shared_ptr<const renf_class> get_pword(std::istream &);
 
     std::string to_string() const;
