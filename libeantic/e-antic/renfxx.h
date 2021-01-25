@@ -19,10 +19,7 @@
 #include <type_traits>
 #include <vector>
 
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <boost/operators.hpp>
-#include <boost/variant.hpp>
 #include <gmpxx.h>
 
 #include "renf.h"
