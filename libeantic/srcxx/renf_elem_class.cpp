@@ -16,6 +16,9 @@
 #include <cstdlib>
 #include <functional>
 
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/convert/lexical_cast.hpp>
+
 #include "../e-antic/renfxx.h"
 #include "../e-antic/fmpq_poly_extra.h"
 
