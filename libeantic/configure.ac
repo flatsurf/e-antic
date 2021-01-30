@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl We need at least autoconf 2.69 for this configure.ac to work.
 AC_PREREQ([2.69])
-AC_INIT([libeantic], [1.0.0-rc.11], [vincent.delecroix@math.cnrs.fr])
+AC_INIT([libeantic], [1.0.0-rc.12], [vincent.delecroix@math.cnrs.fr])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
@@ -40,8 +40,10 @@ AX_VALGRIND_CHECK
 AC_CHECK_HEADER(gmp.h, , [AC_MSG_ERROR([GMP header not found])])
 AC_CHECK_LIB(gmp, __gmpz_add, [], [AC_MSG_ERROR([libgmp not found])])
 
+AC_CHECK_LIB(mpfr, mpfr_init, [], [AC_MSG_WARN([libmpfr not found which FLINT needs])])
+
 AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([FLINT headers not found])])
-AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])], [-lmpfr])
+AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
 
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <flint/flint.h>
@@ -51,7 +53,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 ])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
 
 AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
-AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])], [-lflint])
+AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
 
 # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
 AC_REPLACE_FUNCS(nf_init_randtest)
@@ -63,7 +65,7 @@ AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
 AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
 
 AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([arb header not found])])
-AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])], [-lmpfr])
+AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(14)
@@ -81,6 +83,9 @@ AS_IF([test "x$with_benchmark" != "xno"],
 AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
 
 AC_LANG_POP([C++])
+
+AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only export a curated list of symbols in the shared library.]))
+AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
 
 AC_CONFIG_HEADERS([e-antic/config.h])
 AC_CONFIG_FILES([Makefile src/Makefile srcxx/Makefile test/Makefile benchmark/Makefile])

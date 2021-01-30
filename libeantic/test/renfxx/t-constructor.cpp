@@ -156,3 +156,10 @@ TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
 
     REQUIRE(std::set<renf_elem_class>{a, b, c, d, e, f}.size() == 6);
 }
+
+TEST_CASE("Construct trivial field", "[renf_class]")
+{
+    auto K = renf_class::make();
+
+    REQUIRE(K->degree() == 1);
+}

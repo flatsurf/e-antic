@@ -30,6 +30,12 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
     CAPTURE(*K, a);
 
+    SECTION("Unary Operators")
+    {
+        REQUIRE(-(-a) == a);
+        REQUIRE(+a == a);
+    }
+
     SECTION("Addition and Subtraction")
     {
         auto b = GENERATE_REF(take(16, renf_elem_classs(state, K)));
@@ -38,13 +44,61 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
         auto c = a + b;
 
-        if (a > 0) REQUIRE(c > b);
-        if (a < 0) REQUIRE(c < b);
+        if (a.sgn() > 0) REQUIRE(c > b);
+        if (a.sgn() < 0) REQUIRE(c < b);
 
         c -= a;
         REQUIRE(c == b);
 
         c -= b;
+        REQUIRE(!c);
+
+        c += 1;
+        REQUIRE(c);
+
+        c -= 1;
+        REQUIRE(!c);
+
+        c += 1u;
+        REQUIRE(c);
+
+        c -= 1u;
+        REQUIRE(!c);
+
+        c += 1l;
+        REQUIRE(c);
+
+        c -= 1l;
+        REQUIRE(!c);
+
+        c += 1ul;
+        REQUIRE(c);
+
+        c -= 1ul;
+        REQUIRE(!c);
+
+        c += 1ll;
+        REQUIRE(c);
+
+        c -= 1ll;
+        REQUIRE(!c);
+
+        c += 1ull;
+        REQUIRE(c);
+
+        c -= 1ll;
+        REQUIRE(!c);
+
+        c += mpz_class(1);
+        REQUIRE(c);
+
+        c -= mpz_class(1);
+        REQUIRE(!c);
+
+        c += mpq_class(1);
+        REQUIRE(c);
+
+        c -= mpq_class(1);
         REQUIRE(!c);
     }
 
@@ -63,11 +117,57 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         else
         {
             c /= a;
-
             REQUIRE(c == b);
 
             c /= b;
+            REQUIRE(c == 1);
 
+            c *= 2;
+            REQUIRE(c == 2);
+
+            c /= 2;
+            REQUIRE(c == 1);
+
+            c *= 2u;
+            REQUIRE(c == 2);
+
+            c /= 2u;
+            REQUIRE(c == 1);
+
+            c *= 2l;
+            REQUIRE(c == 2);
+
+            c /= 2l;
+            REQUIRE(c == 1);
+
+            c *= 2ul;
+            REQUIRE(c == 2);
+
+            c /= 2ul;
+            REQUIRE(c == 1);
+
+            c *= 2ll;
+            REQUIRE(c == 2);
+
+            c /= 2ll;
+            REQUIRE(c == 1);
+
+            c *= 2ull;
+            REQUIRE(c == 2);
+
+            c /= 2ull;
+            REQUIRE(c == 1);
+
+            c *= mpz_class(2);;
+            REQUIRE(c == 2);
+
+            c /= mpz_class(2);
+            REQUIRE(c == 1);
+
+            c *= mpq_class(2);
+            REQUIRE(c == 2);
+
+            c /= mpq_class(2);
             REQUIRE(c == 1);
         }
     }

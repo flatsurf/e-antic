@@ -37,7 +37,7 @@ TEST_CASE("Converting elements to strings", "[renf_elem_class][operator<<]")
 
 TEST_CASE("Converting fields to strings", "[renf_class][operator<<]")
 {
-    const std::string numerical_noise = "\\d+ \\+\\/\\- \\d+\\.\\d+\\e\\-\\d+\\]\\)";
+    const std::string numerical_noise = "\\d+ \\+/- \\d+\\.\\d+e-\\d+\\]\\)";
 
     const auto K1 = renf_class::make("A^3 - 2", "A", "1.25 +/- 0.1");
     const auto K2 = renf_class::make("2*abc^4 - 5*abc + 1", "abc", "0.2 +/- 0.1");
@@ -45,13 +45,15 @@ TEST_CASE("Converting fields to strings", "[renf_class][operator<<]")
     {
         auto s = boost::lexical_cast<std::string>(*K1);
         CAPTURE(s);
-        REQUIRE(std::regex_match(s, std::regex("NumberField\\(A\\^3 \\- 2, \\[1.2599210498948731" + numerical_noise)));
+        REQUIRE(s == K1->to_string());
+        REQUIRE(std::regex_match(s, std::regex("NumberField\\(A\\^3 - 2, \\[1\\.2599210498948731" + numerical_noise)));
     }
 
     {
         auto s = boost::lexical_cast<std::string>(*K2);
         CAPTURE(s);
-        REQUIRE(std::regex_match(s, std::regex("NumberField\\(2\\*abc\\^4 \\- 5\\*abc \\+ 1, \\[0.2006483391818005" + numerical_noise)));
+        REQUIRE(s == K2->to_string());
+        REQUIRE(std::regex_match(s, std::regex("NumberField\\(2\\*abc\\^4 - 5\\*abc \\+ 1, \\[0\\.2006483391818005" + numerical_noise)));
     }
 }
 
@@ -70,7 +72,10 @@ TEST_CASE("Writing and reading elements from streams", "[renf_elem_class][operat
     CAPTURE(s);
 
     std::stringstream in(s);
+
     K->set_pword(in);
+    REQUIRE(*renf_class::get_pword(in) == *K);
+
     renf_elem_class b;
     in >> b;
 

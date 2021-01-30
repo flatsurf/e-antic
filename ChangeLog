@@ -4,6 +4,24 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.12
+====================
+
+**Added:**
+
+* run CI on macOS & Linux
+* added `renf_class::get_pword` to extract the number field set with `renf_class::set_pword` to ease migration of legacy code.
+* added `.map` files so only API symbols get exported when running `./configure --with-version-script`.
++ added visibility attributes to header files; this will be necessary on Windows and allows compilation with `-fvisibility=hidden`
+
+**Fixed:**
+
+* set pins in conda packages as they are in https://github.com/conda-forge/conda-forge-pinning-feedstock
+* adapt to changes in cppyy 1.9.0
+* `E_ANTIC_RELEASE` now reports the correct version number, i.e., 10000.
+
+
+
 v1.0.0-rc.11
 ====================
 

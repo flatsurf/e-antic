@@ -1,7 +1,7 @@
 /// Real embedded number fields
 /*
-    Copyright (C) 2016 Vincent Delecroix
-                  2020 Julian Rüth
+    Copyright (C)        2016 Vincent Delecroix
+                  2020 - 2021Julian Rüth
 
     This file is part of e-antic
 
@@ -31,7 +31,7 @@ extern "C" {
 /// the provided methods. The datastructure contains an immutability
 /// flag that, when set, forbid any refinement of the floating point
 /// embedding.
-typedef struct
+typedef struct LIBEANTIC_API
 {
   nf_t nf;
   fmpz_poly_t der;   /* derivative (without denominator)                   */
@@ -48,46 +48,45 @@ typedef renf renf_t[1];
 /// Set `nf` to be the real embedded number field define by the minimal polynomial `pol`
 /// and the (approximate) embedding `emb`. The parameter `prec` is used as the default
 /// precision used for binary operations on enclosures.
-void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
+LIBEANTIC_API void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec);
 
 /// Set `nf` to be the real embedded number field define as the `n`-th root of the rational
 /// number `d`. `prec` is the default precision.
-void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
+LIBEANTIC_API void renf_init_nth_root_fmpq(renf_t nf, fmpq_t d, ulong n, slong prec);
 
 /// Set `dest` to `src`
-void renf_init_set(renf_t dest, const renf_t src);
+LIBEANTIC_API void renf_init_set(renf_t dest, const renf_t src);
 
 /// Deallocate `nf`.
-void renf_clear(renf_t nf);
+LIBEANTIC_API void renf_clear(renf_t nf);
 
 /// Set the `lim` first elements of the array `nf` to the real embeddings
 /// of the irreducible polynomial `pol`. Each number field is initialized
 /// with a default `prec` of bit precision for binary operation.
-slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
+LIBEANTIC_API slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
 /// Refine the embedding to `prec` bits of precision.
-void renf_refine_embedding(renf_t nf, slong prec);
+LIBEANTIC_API void renf_refine_embedding(renf_t nf, slong prec);
 
 /// Make the number field immutable. Once called, it is not possible to refine
 /// further the embedding.
-int renf_set_immutable(renf_t nf, int immutable);
+LIBEANTIC_API int renf_set_immutable(renf_t nf, int immutable);
 
 /// Return whether `nf1` and `nf2` are equal. Two embedded number field are
 /// considered equal if they define the same subfield of the real numbers.
 /// The precision of the embedding or the precision of bit operations do not
 /// matter in this comparison.
-int renf_equal(const renf_t nf1, const renf_t nf2);
+LIBEANTIC_API int renf_equal(const renf_t nf1, const renf_t nf2);
 
 /// Return the degree of the number field.
-slong renf_degree(renf_t nf);
+LIBEANTIC_API slong renf_degree(renf_t nf);
 
 /// === Randomisation ===
-
-void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
+LIBEANTIC_API void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
 /// === Printing ===
-char * renf_get_str(const renf_t nf, const char * var, slong prec);
-void renf_print(const renf_t nf);
+LIBEANTIC_API char * renf_get_str(const renf_t nf, const char * var, slong prec);
+LIBEANTIC_API void renf_print(const renf_t nf);
 
 #ifdef __cplusplus
 }

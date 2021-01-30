@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ######################################################################
 #  This file is part of e-antic.
@@ -20,6 +20,21 @@
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
 
-set -ex
+set -e
 
-sage -tp --long --force-lib @abs_srcdir@/../src/pyeantic
+# On macOS we cannot run `sage -tp` directly to run tests since that's a shell
+# script and macOS will sanitize our DYLD_LIBRARY_PATH then. So we need to
+# invoke the Python script `sage-runtests` with our `bin/python` script that
+# sets up that variable properly.
+
+# `sage-runtests` assumes that `sage-env-config` and `sage-env` have been
+# sourced by the `sage` script already. However, not all systems (ArchLinux)
+# ship `sage-env` and `sage-env-config`. So instead, we start sage directly,
+# record the set environment variables and set them locally. This is a hack,
+# but we could not find any better way to work around the paranoic measures in
+# macOS.
+OLD_PATH=$PATH
+source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"'"%(key, value) for (key, value) in os.environ.items()]))')
+export PATH=$OLD_PATH
+
+python `which sage-runtests` -p --long --force-lib @abs_srcdir@/../src/pyeantic

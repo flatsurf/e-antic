@@ -22,6 +22,10 @@ static void check_string(const renf_elem_class& a,
         const std::string& s_D)
 {
     {
+        if (a.to_string() != static_cast<std::string>(a))
+            throw std::runtime_error("to_string() and operator<string> disagree");
+    }
+    {
         std::string t = a.get_str(EANTIC_STR_ALG | EANTIC_STR_D);
         if (t != s_ALG_D)
             throw std::runtime_error("error with ALG | D, expected " + s_ALG_D + " got " + t);

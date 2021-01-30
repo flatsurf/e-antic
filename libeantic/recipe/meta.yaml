@@ -1,4 +1,4 @@
-{% set version = '1.0.0-rc.11' %}
+{% set version = '1.0.0-rc.12' %}
 {% set build_number = '0' %}
 
 package:
@@ -6,7 +6,7 @@ package:
   version: {{ version | replace("-", "") | replace("rc.", "rc") | replace("beta.", "beta") }}
 
 source:
-  path: ../
+  path: ../../
 
 build:
   number: {{ build_number }}
@@ -22,9 +22,9 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - antic
-    - boost-cpp
-    - gmp
-    - arb
+    - boost-cpp {{ boost_cpp }}
+    - gmp {{ gmp }}
+    - arb {{ arb }}
     - libflint 2.6.*
 
 test:
