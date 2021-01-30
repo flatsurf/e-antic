@@ -1,0 +1,24 @@
+# This file lists the dependencies needed to build the documentation of
+# e-antic.
+# Create a conda environment with these dependencies preinstalled with:
+# conda env create -f environment.yml
+name: doc-eantic-build
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - antic
+  - arb
+  - boost-cpp
+  - coreutils
+  - cppyy>=1.9.2
+  - cxx-compiler
+  - gmp
+  - libflint
+  - sagelib
+  - standardese
+  - pip
+  - pip:
+    - realalg
+    - cppyythonizations
+    - sphinx_rtd_theme
