@@ -13,6 +13,11 @@
 #ifndef E_ANTIC_RENFXX_CEREAL_H
 #define E_ANTIC_RENFXX_CEREAL_H
 
+#include <string>
+#include <memory>
+#include <stdexcept>
+#include <sstream>
+
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 
