@@ -140,8 +140,6 @@ LIBEANTIC_API int renf_elem_equal(const renf_elem_t a, const renf_elem_t b, cons
 
 LIBEANTIC_API int renf_elem_equal_si(const renf_elem_t a, const slong b, const renf_t nf);
 
-LIBEANTIC_API int renf_elem_equal_si(const renf_elem_t a, const slong b, const renf_t nf);
-
 LIBEANTIC_API int renf_elem_equal_ui(const renf_elem_t a, const ulong b, const renf_t nf);
 
 LIBEANTIC_API int renf_elem_equal_fmpz(const renf_elem_t a, const fmpz_t b, const renf_t nf);
