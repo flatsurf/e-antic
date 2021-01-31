@@ -74,7 +74,7 @@ public:
     // Raw access to the underlying renf_t; we do not return a const renf_t
     // since calls in the C API might need to modify it (e.g., to refine the
     // stored embedding) even though they are morally const.
-    std::add_lvalue_reference_t<renf_t> renf_t() const { return nf; }
+    std::add_lvalue_reference_t<::renf_t> renf_t() const { return nf; }
 
     [[deprecated("Use renf_t() instead.")]] renf * get_renf() const { return nf; }
     [[deprecated("Use set_pword() instead.")]] std::istream & set_istream(std::istream &) const;
