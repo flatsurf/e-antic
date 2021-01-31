@@ -1,0 +1,11 @@
+site_name: e-antic
+docs_dir: markdown
+theme: readthedocs
+pages:
+- Home: index.md
+- libeantic:
+  - Overview: overview_c.md
+  - renf: libeantic/doc_renf.md
+  - renf_elem: libeantic/doc_renf_elem.md
+- libeanticxx:
+  - Overview: overview_cxx.md

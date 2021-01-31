@@ -24,11 +24,11 @@ The development of e-antic is coordinated on [github](https://github.com/flatsur
 ## C++ interface
 
 * C++ installation specifics
-* [tour of the C++ interface](overview_cpp.md)
+* [tour of the C++ interface](overview_cxx.md)
 * index of the C++ interface
 
 ## Python interface
 
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
 that provides automatic bindings to the C++ interface. The documentation of the
-Python interface can be found [here](pyeantic/index.html).
+Python interface can be found [here](pyeantic/html/index.html).

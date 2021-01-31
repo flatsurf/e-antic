@@ -45,6 +45,7 @@ tmp/
 compile_commands.json
 compile_flags.txt
 .ccls-cache/
+*~
 
 # Test binaries (but not their sources!)
 t-*
