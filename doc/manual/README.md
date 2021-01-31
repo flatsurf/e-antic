@@ -13,8 +13,8 @@ Our reference manual is built from three parts:
 Build the Reference Manual
 --------------------------
 
-Running `make` in the toplevel directory builds the documentation by invoking
-the Makefile here.
+Running `make html` builds the documentation. You can then run `make serve`
+here to see the generated documentation on http://localhost:8080.
 
 The underlying process is somewhat complicated by the links between the C/C++
 and Python documentation. The idea is that both sides build a [sphinx
