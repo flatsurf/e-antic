@@ -109,5 +109,5 @@ dependencies with conda. Download and install
     ./bootstrap
     ./configure --prefix="$CONDA_PREFIX"
     make
-    make check| [![Build](https://img.shields.io/badge/recipe-libeantic-green.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) |
-
+    make check
+    make html # to build the documentation
