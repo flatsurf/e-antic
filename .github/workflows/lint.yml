@@ -47,7 +47,7 @@ jobs:
 
           cd libeantic
 
-          ./configure --prefix="$PREFIX"
+          ./configure --prefix="$PREFIX" --without-doc
 
           # Build library and its tests (but do not run any tests.)
           make check TESTS= CFLAGS="$CFLAGS ${{ matrix.debug }} ${{ matrix.cflags }}" CXXFLAGS="$CXXFLAGS ${{ matrix.debug }} ${{ matrix.cxxflags }}"

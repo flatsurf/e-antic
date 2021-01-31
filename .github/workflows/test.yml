@@ -50,7 +50,7 @@ jobs:
           cd libeantic
           export CFLAGS="$CFLAGS -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
@@ -101,7 +101,7 @@ jobs:
 
           echo "::group::configure"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
@@ -136,7 +136,7 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          ./configure --without-benchmark
+          ./configure --without-benchmark --without-doc
 
           echo "::group::make distcheck"
           make distcheck
