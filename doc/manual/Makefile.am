@@ -24,16 +24,17 @@ BUILT_SOURCES = mkdocs.yml markdown/index.md markdown/overview_c.md markdown/ove
 $(builddir)/mkdocs.yml: $(srcdir)/mkdocs.yml.in Makefile
 	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
 
-$(builddir)/markdown/index.md: $(srcdir)/index.md
-$(builddir)/markdown/overview_c.md: $(srcdir)/overview_c.md
-$(builddir)/markdown/overview_cxx.md: $(srcdir)/overview_cxx.md
+$(builddir)/markdown/index.md: $(srcdir)/index.md Makefile
+$(builddir)/markdown/overview_c.md: $(srcdir)/overview_c.md Makefile
+$(builddir)/markdown/overview_cxx.md: $(srcdir)/overview_cxx.md Makefile
 
-$(builddir)/markdown/pyeantic:
-	mkdir -p $(builddir)/markdown
+$(builddir)/markdown/pyeantic: Makefile
+	@mkdir -p $(builddir)/markdown
+	@rm -f $(builddir)/markdown/pyeantic
 	ln -s ../html/pyeantic $(builddir)/markdown/pyeantic
 
 $(MARKDOWN):
-	mkdir -p $(builddir)/markdown
+	@mkdir -p $(builddir)/markdown
 	cp $< $@
 
 .PHONY: serve
