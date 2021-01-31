@@ -97,6 +97,7 @@ dependencies with conda. Download and install
     conda create -n e-antic-build ccache
     conda env update -n e-antic-build -f libeantic/environment.yml
     conda env update -n e-antic-build -f pyeantic/environment.yml
+    conda env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
     export CPPFLAGS="-isystem $CONDA_PREFIX/include"
     export CFLAGS="$CPPFLAGS"
