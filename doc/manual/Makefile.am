@@ -9,7 +9,7 @@ html: $(builddir)/mkdocs.yml $(builddir)/markdown/pyeantic $(MARKDOWN)
 	python $(SPHINXBUILD) -M json $(srcdir)/pyeantic $(builddir)/json/pyeantic
 	@# Build markdown files and inventory from e-antic C/C++ headers
 	mkdir -p $(builddir)/markdown/libeantic
-	$(STANDARDESE) -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/markdown/libeantic/ --compilation.standard=c++17 `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'`
+	$(STANDARDESE) -U__cplusplus -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/markdown/libeantic/ --compilation.standard=c++17 `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'`
 	@# Create html documentation for pyeantic
 	source $(builddir)/../../pyeantic/test/test-env.sh && \
 	python $(SPHINXBUILD) -M html $(srcdir)/pyeantic $(builddir)/html/pyeantic
