@@ -29,6 +29,8 @@ jobs:
 
           echo "::group::make distcheck"
           make
+      # TODO: Remove debug
+      - uses: mxschmitt/action-tmate@v3
       - name: build documentation
         shell: bash -l {0}
         run: |
