@@ -160,6 +160,18 @@ renf_elem_class renf_class::gen() const
     return a;
 }
 
+std::tuple<std::string, std::string, std::string, slong> renf_class::construction() const {
+  char * emb = arb_get_str(renf_t()->emb, arf_bits(arb_midref(renf_t()->emb)), 0);
+  char * pol = fmpq_poly_get_str_pretty(renf_t()->nf->pol, gen_name().c_str());
+
+  const auto construction = std::make_tuple(std::string(pol), gen_name(), std::string(emb), renf_t()->prec);
+
+  flint_free(pol);
+  flint_free(emb);
+
+  return construction;
+}
+
 bool operator==(const renf_class & self, const renf_class & other)
 {
     return &self == &other;

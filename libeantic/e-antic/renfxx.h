@@ -58,6 +58,10 @@ public:
     renf_elem_class one() const;
     renf_elem_class gen() const;
 
+    // Return the parameters (minpoly, gen, emb, prec) that can be used to
+    // construct this field with renf_class::make().
+    std::tuple<std::string, std::string, std::string, slong> construction() const;
+
     friend bool operator==(const renf_class &, const renf_class &);
 
     const std::string & gen_name() const { return name; }
