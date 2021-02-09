@@ -45,6 +45,7 @@ typedef const renf * renf_srcptr;
 typedef renf renf_t[1];
 
 /// === Initialization, allocation, deallocation ===
+
 /// Set `nf` to be the real embedded number field define by the minimal polynomial `pol`
 /// and the (approximate) embedding `emb`. The parameter `prec` is used as the default
 /// precision used for binary operations on enclosures.
@@ -82,10 +83,13 @@ LIBEANTIC_API int renf_equal(const renf_t nf1, const renf_t nf2);
 LIBEANTIC_API slong renf_degree(renf_t nf);
 
 /// === Randomisation ===
+
 LIBEANTIC_API void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
 /// === Printing ===
+
 LIBEANTIC_API char * renf_get_str(const renf_t nf, const char * var, slong prec);
+
 LIBEANTIC_API void renf_print(const renf_t nf);
 
 #ifdef __cplusplus
