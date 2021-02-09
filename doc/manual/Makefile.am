@@ -1,6 +1,6 @@
 EXTRA_DIST = README.md
 
-MARKDOWN=$(builddir)/markdown/index.md $(builddir)/markdown/overview_c.md $(builddir)/markdown/overview_cxx.md
+MARKDOWN=$(builddir)/markdown/index.md $(builddir)/markdown/overview_c.md $(builddir)/markdown/overview_cxx.md $(builddir)/markdown/build.md $(builddir)/markdown/build_in_conda.md $(builddir)/markdown/install_in_conda.md
 
 html: $(builddir)/mkdocs.yml $(builddir)/markdown/pyeantic $(MARKDOWN)
 	@# Create inventory of pyeantic (using the test-env scripts which set all
@@ -19,7 +19,7 @@ html: $(builddir)/mkdocs.yml $(builddir)/markdown/pyeantic $(MARKDOWN)
 serve: html
 	python -m http.server 8080 --bind 127.0.0.1 --directory html
 
-BUILT_SOURCES = mkdocs.yml markdown/index.md markdown/overview_c.md markdown/overview_cxx.md
+BUILT_SOURCES = mkdocs.yml markdown/index.md markdown/overview_c.md markdown/overview_cxx.md markdown/build.md markdown/build_in_conda.md markdown/install_in_conda.md
 
 $(builddir)/mkdocs.yml: $(srcdir)/mkdocs.yml.in Makefile
 	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
@@ -27,6 +27,12 @@ $(builddir)/mkdocs.yml: $(srcdir)/mkdocs.yml.in Makefile
 $(builddir)/markdown/index.md: $(srcdir)/index.md Makefile
 $(builddir)/markdown/overview_c.md: $(srcdir)/overview_c.md Makefile
 $(builddir)/markdown/overview_cxx.md: $(srcdir)/overview_cxx.md Makefile
+$(builddir)/markdown/build.md: $(srcdir)/build.md Makefile
+$(builddir)/markdown/build_in_conda.md: $(srcdir)/build_in_conda.md Makefile
+$(builddir)/markdown/install_in_conda.md: $(srcdir)/install_in_conda.md Makefile
+
+
+
 
 $(builddir)/markdown/pyeantic: Makefile
 	@mkdir -p $(builddir)/markdown
