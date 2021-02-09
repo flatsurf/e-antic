@@ -31,9 +31,6 @@ LIBEANTIC_API void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t st
 LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var);
 
 LIBEANTIC_API int _fmpz_poly_has_real_root(fmpz * pol, slong len);
-
-LIBEANTIC_API int fmpz_poly_has_complex_root(fmpz_poly_t pol);
-
 LIBEANTIC_API int fmpz_poly_has_real_root(fmpz_poly_t pol);
 
 // Gives an upper bound on the bitsize of largest real root of \code{pol}. 
