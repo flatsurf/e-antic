@@ -40,8 +40,13 @@ typedef struct LIBEANTIC_API
   int immutable;     /* whether emb cannot be refined currently            */
 } renf;
 
+/// Pointer to a renf structure
 typedef renf * renf_ptr;
+
+/// Constant pointer to a renf structure
 typedef const renf * renf_srcptr;
+
+/// Array of size one
 typedef renf renf_t[1];
 
 /// === Initialization, allocation, deallocation ===
@@ -88,8 +93,12 @@ LIBEANTIC_API void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong
 
 /// === Printing ===
 
+/// Return a C string which represent the number field `nf` where `var` is used for variable
+/// name of the polynomial and `prec` for the precision of the embedding
+/// The returned string has to be deallocated with flint_free after usage.
 LIBEANTIC_API char * renf_get_str(const renf_t nf, const char * var, slong prec);
 
+/// Print the number field `nf` on stdout
 LIBEANTIC_API void renf_print(const renf_t nf);
 
 #ifdef __cplusplus
