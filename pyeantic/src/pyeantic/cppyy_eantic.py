@@ -62,7 +62,7 @@ from cppyythonizations.util import filtered
 
 cppyy.py.add_pythonization(enable_pretty_printing, "eantic")
 cppyy.py.add_pythonization(filtered('renf_elem_class')(enable_total_order), "eantic")
-cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["e-antic/renfxx_cereal.h"]), "eantic")
+cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["e-antic/cereal.hpp"]), "eantic")
 
 def enable_arithmetic(proxy, name):
     if name in ["renf_elem_class"]:
