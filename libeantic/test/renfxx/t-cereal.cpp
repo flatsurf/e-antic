@@ -14,7 +14,7 @@
 #include <cereal/types/vector.hpp>
 
 #include "../../e-antic/renfxx.h"
-#include "../../e-antic/renfxx_cereal.h"
+#include "../../e-antic/cereal.hpp"
 
 #include "../rand_generator.hpp"
 #include "../renf_class_generator.hpp"
