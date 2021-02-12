@@ -1,3 +1,4 @@
+/// Flint rational polynomials utilities
 /*
    Copyright (C) 2016 Vincent Delecroix
 
@@ -21,19 +22,19 @@
 extern "C" {
 #endif
 
-/**********************************************************************/
-/* Real root isolation for integer polynomials (to be moved to FLINT) */
+/// === flint, arb extra ===
 
+/// Set the polynomial `p` from the string `s` using `var` as variable name
 LIBEANTIC_API int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 
-/****************************************************************************/
-/* FLINT/ARB extra                                                          */
-
+/// Evaluate the polynomial `pol` at the ball `b`
 LIBEANTIC_API void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec);
 
+/// Evaluate the polynomial `pol` at the ball `b`
 LIBEANTIC_API void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec);
 
-/* root refinement */
+/// Return 1 if it is possible to check with precision `prec` whether the
+/// interval `a` encloses a unique root of `pol`
 LIBEANTIC_API int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec);
 
 #ifdef __cplusplus

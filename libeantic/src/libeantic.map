@@ -102,7 +102,6 @@ LIBEANTIC_1.0.0 {
     fmpz_poly_evaluate_arb;
     fmpz_poly_evaluate_arf;
     fmpz_poly_evaluate_at_one;
-    fmpz_poly_has_complex_root;
     fmpz_poly_has_real_root;
     fmpz_poly_isolate_real_roots;
     fmpz_poly_newton_step_arb;
