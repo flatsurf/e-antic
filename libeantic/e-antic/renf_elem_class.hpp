@@ -224,7 +224,7 @@ private:
     // the stored embedding.
     mutable ::renf_elem_t a;
 
-    // Serialization, see renfxx_cereal.h
+    // Serialization, see cereal.hpp
     friend cereal::access;
 };
 
