@@ -15,6 +15,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <functional>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/optional.hpp>
+#include <boost/convert/lexical_cast.hpp>
 
 #include <boost/optional.hpp>
 #include <boost/numeric/conversion/cast.hpp>

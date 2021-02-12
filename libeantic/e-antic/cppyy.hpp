@@ -47,7 +47,7 @@ auto make_renf_elem_class_with_parent(const std::shared_ptr<renf_class> K, const
     return renf_elem_class(K, t);
 }
 
-mpq_class rational(const renf_elem_class& x) {
+inline mpq_class rational(const renf_elem_class& x) {
     return static_cast<mpq_class>(x);
 }
 

@@ -16,11 +16,13 @@ AM_CPPFLAGS = -DBUILD_LIBEANTIC
 libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint -lantic
 
 # Installed headers
-nobase_pkginclude_HEADERS =       \
-    ../e-antic/cppyy.h         \
-    ../e-antic/renfxx.h        \
-    ../e-antic/renfxx_fwd.h    \
-    ../e-antic/renfxx_cereal.h
+nobase_pkginclude_HEADERS =        \
+    ../e-antic/cppyy.hpp           \
+    ../e-antic/renfxx.h            \
+    ../e-antic/renf_class.hpp      \
+    ../e-antic/renf_elem_class.hpp \
+    ../e-antic/renfxx_fwd.hpp      \
+    ../e-antic/cereal.hpp
 
 libeanticxx_la_SOURCES = \
     renf_class.cpp       \

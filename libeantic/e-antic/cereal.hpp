@@ -35,17 +35,13 @@ void save(Archive & archive, const std::shared_ptr<const renf_class> & self)
         // This is the first time cereal sees this renf_class, so we actually
         // store it. Future copies only need the id to resolve to a shared_ptr
         // to the same renf_class.
-        char * emb = arb_get_str(self->renf_t()->emb, arf_bits(arb_midref(self->renf_t()->emb)), 0);
-        char * pol = fmpq_poly_get_str_pretty(self->renf_t()->nf->pol, self->gen_name().c_str());
+        auto construction = self->construction();
 
         archive(
-            cereal::make_nvp("name", self->gen_name()),
-            cereal::make_nvp("embedding", std::string(emb)),
-            cereal::make_nvp("minpoly", std::string(pol)),
-            cereal::make_nvp("precision", self->renf_t()->prec));
-
-        flint_free(pol);
-        flint_free(emb);
+            cereal::make_nvp("name", std::get<1>(construction)),
+            cereal::make_nvp("embedding", std::get<2>(construction)),
+            cereal::make_nvp("minpoly", std::get<0>(construction)),
+            cereal::make_nvp("precision", std::get<3>(construction)));
     }
 }
 

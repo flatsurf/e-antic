@@ -89,7 +89,7 @@ cppyy.py.add_pythonization(enable_arithmetic, "eantic")
 for path in os.environ.get('PYEANTIC_INCLUDE','').split(':'):
     if path: cppyy.add_include_path(path)
 
-cppyy.include("e-antic/cppyy.h")
+cppyy.include("e-antic/cppyy.hpp")
 
 from cppyy.gbl import eantic
 
