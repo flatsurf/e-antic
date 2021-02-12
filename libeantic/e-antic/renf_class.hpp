@@ -16,6 +16,7 @@
 
 #include <memory>
 #include <boost/operators.hpp>
+#include <string>
 
 #include "e-antic.h"
 #include "renfxx_fwd.hpp"
