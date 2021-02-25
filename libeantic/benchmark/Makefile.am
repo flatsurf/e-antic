@@ -1,6 +1,6 @@
 noinst_PROGRAMS = benchmark
 
-benchmark_SOURCES = main.cpp renfxx/b-constructor.cpp
+benchmark_SOURCES = main.cpp renfxx/b-constructor.cpp renfxx/b-arithmetic.cpp
 
 benchmark_LDADD = $(builddir)/../srcxx/libeanticxx.la $(builddir)/../src/libeantic.la
 

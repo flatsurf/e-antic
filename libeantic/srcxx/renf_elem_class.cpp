@@ -26,7 +26,8 @@ namespace eantic {
 
 namespace {
 
-renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const renf_elem_t, renf_t)>& op)
+template <void op(renf_elem_t, const renf_elem_t, const renf_elem_t, const renf_t)>
+renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs)
 {
     if (lhs.parent() == rhs.parent())
         op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
@@ -43,7 +44,8 @@ renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs, const s
     return lhs;
 }
 
-renf_elem_class& binop_mpz(renf_elem_class& lhs, const mpz_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, renf_t)>& op)
+template <void op(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>
+renf_elem_class& binop_mpz(renf_elem_class& lhs, const mpz_class& rhs)
 {
     ::fmpz_t r;
     fmpz_init_set_readonly(r, rhs.get_mpz_t());
@@ -70,7 +72,8 @@ bool relop_mpz(const renf_elem_class& lhs, const mpz_class& rhs, const int cmp)
     return ret;
 }
 
-renf_elem_class& binop_mpq(renf_elem_class& lhs, const mpq_class& rhs, const std::function<void(renf_elem_t, const renf_elem_t, const fmpq_t, renf_t)>& op)
+template <void op(renf_elem_t, const renf_elem_t, const fmpq_t, const renf_t)>
+renf_elem_class& binop_mpq(renf_elem_class& lhs, const mpq_class& rhs)
 {
     ::fmpq_t r;
     fmpq_init_set_readonly(r, rhs.get_mpq_t());
@@ -646,22 +649,22 @@ renf_elem_class::operator bool() const
 
 renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs)
 {
-    return binop(*this, rhs, renf_elem_add);
+    return binop<renf_elem_add>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs)
 {
-    return binop(*this, rhs, renf_elem_sub);
+    return binop<renf_elem_sub>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs)
 {
-    return binop(*this, rhs, renf_elem_mul);
+    return binop<renf_elem_mul>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
 {
-    return binop(*this, rhs, renf_elem_div);
+    return binop<renf_elem_div>(*this, rhs);
 }
 
 mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
@@ -959,22 +962,22 @@ bool operator>(const renf_elem_class& lhs, unsigned long long rhs) {
 
 renf_elem_class& renf_elem_class::operator+=(const mpz_class& rhs)
 {
-    return binop_mpz(*this, rhs, renf_elem_add_fmpz);
+    return binop_mpz<renf_elem_add_fmpz>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator-=(const mpz_class& rhs)
 {
-    return binop_mpz(*this, rhs, renf_elem_sub_fmpz);
+    return binop_mpz<renf_elem_sub_fmpz>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator*=(const mpz_class& rhs)
 {
-    return binop_mpz(*this, rhs, renf_elem_mul_fmpz);
+    return binop_mpz<renf_elem_mul_fmpz>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator/=(const mpz_class& rhs)
 {
-    return binop_mpz(*this, rhs, renf_elem_div_fmpz);
+    return binop_mpz<renf_elem_div_fmpz>(*this, rhs);
 }
 
 bool operator==(const renf_elem_class& lhs, const mpz_class& rhs) {
@@ -991,22 +994,22 @@ bool operator>(const renf_elem_class& lhs, const mpz_class& rhs) {
 
 renf_elem_class& renf_elem_class::operator+=(const mpq_class& rhs)
 {
-    return binop_mpq(*this, rhs, renf_elem_add_fmpq);
+    return binop_mpq<renf_elem_add_fmpq>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator-=(const mpq_class& rhs)
 {
-    return binop_mpq(*this, rhs, renf_elem_sub_fmpq);
+    return binop_mpq<renf_elem_sub_fmpq>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator*=(const mpq_class& rhs)
 {
-    return binop_mpq(*this, rhs, renf_elem_mul_fmpq);
+    return binop_mpq<renf_elem_mul_fmpq>(*this, rhs);
 }
 
 renf_elem_class& renf_elem_class::operator/=(const mpq_class& rhs)
 {
-    return binop_mpq(*this, rhs, renf_elem_div_fmpq);
+    return binop_mpq<renf_elem_div_fmpq>(*this, rhs);
 }
 
 bool operator==(const renf_elem_class& lhs, const mpq_class& rhs) {
