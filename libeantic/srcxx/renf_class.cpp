@@ -53,7 +53,7 @@ namespace {
 
 // Deduplicating factory so that all renf_class are guaranteed to be unique
 // parents.
-static unique_factory::UniqueFactory<renf_class_key, renf_class> factory;
+static unique_factory::UniqueFactory<renf_class_key, const renf_class> factory;
 
 } // end of anonymous namespace
 
@@ -117,9 +117,16 @@ renf_class::renf_class(const std::string & minpoly, const std::string & gen, con
     arb_clear(e);
 }
 
-std::shared_ptr<const renf_class> renf_class::make()
+const std::shared_ptr<const renf_class>& renf_class::make()
 {
-    static auto trivial = factory.get(std::shared_ptr<renf_class>(new renf_class()), [&]() { return new renf_class; });
+    // We cache our standard rational field in a static variable.
+    // Note that the destructor of this shared pointer gets called before the
+    // destructor of the factory, i.e., the factory does not complain about a
+    // pending object, because in C++ static objects are destructed in the
+    // reverse order of their construction:
+    // https://stackoverflow.com/questions/469597/destruction-order-of-static-objects-in-c
+    static const std::shared_ptr<const renf_class> trivial = factory.get(std::shared_ptr<renf_class>(new renf_class()), [&]() { return new renf_class; });
+
     return trivial;
 }
 

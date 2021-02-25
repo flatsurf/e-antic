@@ -34,7 +34,7 @@ class LIBEANTIC_API renf_class : public std::enable_shared_from_this<renf_class>
 
 public:
     // The trivial number field adjoining a root of (x - 1) to the rationals
-    static std::shared_ptr<const renf_class> make();
+    static const std::shared_ptr<const renf_class>& make();
     static std::shared_ptr<const renf_class> make(const ::renf_t, const std::string & gen = "a");
     static std::shared_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, const slong prec = 64);
 
