@@ -48,6 +48,7 @@ public:
     renf_elem_class(unsigned long long);
     renf_elem_class(const mpz_class &);
     renf_elem_class(const mpq_class &);
+    renf_elem_class(const fmpz_t);
     renf_elem_class(const fmpq_t);
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
@@ -57,6 +58,8 @@ public:
     renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class &);
     // A rational in the field k
     renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class &);
+    // An integer in the field k
+    renf_elem_class(std::shared_ptr<const renf_class> k, const fmpz_t);
     // A rational in the field k
     renf_elem_class(std::shared_ptr<const renf_class> k, const fmpq_t);
     // An integer in the field k
@@ -81,11 +84,21 @@ public:
 
     ~renf_elem_class() noexcept;
 
-    // Note that we do not implement any operator= for other types explicitly
-    // but funnel everything through the implicit constructors above and the
-    // move assignment here.
+    renf_elem_class & operator=(int);
+    renf_elem_class & operator=(unsigned int);
+    renf_elem_class & operator=(long);
+    renf_elem_class & operator=(unsigned long);
+    renf_elem_class & operator=(long long);
+    renf_elem_class & operator=(unsigned long long);
+    renf_elem_class & operator=(const mpz_class &);
+    renf_elem_class & operator=(const mpq_class &);
+    renf_elem_class & operator=(const fmpz_t);
+    renf_elem_class & operator=(const fmpq_t);
     renf_elem_class & operator=(const renf_elem_class &);
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
+
+    renf_elem_class & reset(std::shared_ptr<const renf_class>&&);
+    renf_elem_class & reset(const std::shared_ptr<const renf_class>&);
 
     // containing number field
     const renf_class& parent() const { return *nf; }
@@ -104,6 +117,7 @@ public:
     // data conversion
     mpz_class num() const;
     mpz_class den() const;
+    explicit operator mpz_class() const;
     explicit operator mpq_class() const;
     std::vector<mpz_class> num_vector() const;
     explicit operator std::string() const;

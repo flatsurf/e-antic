@@ -40,6 +40,7 @@ LIBEANTICXX_1.0.0 {
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, fmpq const*)";
+      "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, fmpz const*)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, std::vector<int, std::allocator<int> > const&)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, std::vector<unsigned int, std::allocator<unsigned int> > const&)";
@@ -48,8 +49,20 @@ LIBEANTICXX_1.0.0 {
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, std::vector<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, std::allocator<__gmp_expr<__mpz_struct [1], __mpz_struct [1]> > > const&)";
       "eantic::renf_elem_class::renf_elem_class(std::shared_ptr<eantic::renf_class const>, std::vector<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, std::allocator<__gmp_expr<__mpq_struct [1], __mpq_struct [1]> > > const&)";
       "eantic::renf_elem_class::~renf_elem_class()";
+      "eantic::renf_elem_class::operator=(int)";
+      "eantic::renf_elem_class::operator=(unsigned int)";
+      "eantic::renf_elem_class::operator=(long)";
+      "eantic::renf_elem_class::operator=(unsigned long)";
+      "eantic::renf_elem_class::operator=(long long)";
+      "eantic::renf_elem_class::operator=(unsigned long long)";
+      "eantic::renf_elem_class::operator=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "eantic::renf_elem_class::operator=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "eantic::renf_elem_class::operator=(fmpq const*)";
+      "eantic::renf_elem_class::operator=(fmpz const*)";
       "eantic::renf_elem_class::operator=(eantic::renf_elem_class const&)";
       "eantic::renf_elem_class::operator=(eantic::renf_elem_class&&)";
+      "eantic::renf_elem_class::reset(std::shared_ptr<eantic::renf_class const>&&)";
+      "eantic::renf_elem_class::reset(std::shared_ptr<eantic::renf_class const> const&)";
       "eantic::renf_elem_class::is_zero() const";
       "eantic::renf_elem_class::is_one() const";
       "eantic::renf_elem_class::is_integer() const";

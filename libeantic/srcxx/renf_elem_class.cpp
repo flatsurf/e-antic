@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019-2020 Julian Rüth
+    Copyright (C) 2019-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -26,20 +26,82 @@ namespace eantic {
 
 namespace {
 
-template <void op(renf_elem_t, const renf_elem_t, const renf_elem_t, const renf_t)>
+const fmpz_t& renf_elem_get_fmpz(const renf_elem_t a, const renf_t nf)
+{
+    static fmpz_t zero = {0};
+
+    if (nf->nf->flag & NF_LINEAR)
+        return LNF_ELEM_NUMREF(a->elem);
+    else if (nf->nf->flag & NF_QUADRATIC)
+        return reinterpret_cast<const fmpz_t&>(QNF_ELEM_NUMREF(a->elem));
+    else if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
+        return zero;
+    else
+        return reinterpret_cast<const fmpz_t&>(NF_ELEM_NUMREF(a->elem));
+}
+
+const fmpq_t& renf_elem_get_fmpq(fmpq_t buffer, const renf_elem_t a, const renf_t nf)
+{
+    if (nf->nf->flag & NF_LINEAR)
+        return reinterpret_cast<const fmpq_t&>(LNF_ELEM(a->elem));
+    else {
+        nf_elem_get_coeff_fmpq(buffer, a->elem, 0, nf->nf);
+        return reinterpret_cast<const fmpq_t&>(buffer[0]);
+    }
+}
+
+void coerce(renf_elem_class& self, const renf_class& parent)
+{
+    if (parent == self.parent())
+        return;
+
+    if (self.is_zero())
+    {
+        self.reset(parent.shared_from_this());
+        renf_elem_zero(self.renf_elem_t(), self.parent().renf_t());
+    }
+    else if (self.is_integer())
+    {
+        fmpz_t value;
+        fmpz_init_set(value, renf_elem_get_fmpz(self.renf_elem_t(), parent.renf_t()));
+
+        self.reset(parent.shared_from_this());
+
+        renf_elem_set_fmpz(self.renf_elem_t(), value, self.parent().renf_t());
+
+        fmpz_clear(value);
+    }
+    else if (self.is_rational())
+    {
+        self = renf_elem_class(parent.shared_from_this(), self);
+    }
+    else
+        throw std::logic_error("not implemented: promotion of non-rational elements");
+}
+
+template <
+  void renf_op(renf_elem_t, const renf_elem_t, const renf_elem_t, const renf_t),
+  void fmpz_op(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t),
+  void fmpq_op(renf_elem_t, const renf_elem_t, const fmpq_t, const renf_t)
+>
 renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs)
 {
     if (lhs.parent() == rhs.parent())
-        op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
+        renf_op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
+    else if (rhs.is_integer())
+        fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpz(rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
     else if (rhs.is_rational())
-        op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_class(lhs.parent().shared_from_this(), static_cast<mpq_class>(rhs)).renf_elem_t(), lhs.parent().renf_t());
-    else if (lhs.is_rational())
     {
-        lhs = renf_elem_class(rhs.parent().shared_from_this(), static_cast<mpq_class>(lhs));
-        op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
+        fmpq_t value;
+        fmpq_init(value);
+        fmpq_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpq(value, rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
+        fmpq_clear(value);
     }
     else
-        throw std::logic_error("operands must be in the same number field or rational");
+    {
+        coerce(lhs, rhs.parent());
+        binop<renf_op, fmpz_op, fmpq_op>(lhs, rhs);
+    }
 
     return lhs;
 }
@@ -266,6 +328,13 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_
     renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 }
 
+renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpz_t value)
+    : nf(std::move(k))
+{
+    renf_elem_init(a, nf->renf_t());
+    renf_elem_set_fmpz(a, value, nf->renf_t());
+}
+
 renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value)
     : nf(std::move(k))
 {
@@ -420,15 +489,103 @@ renf_elem_class::~renf_elem_class() noexcept
     if (nf) renf_elem_clear(a, nf->renf_t());
 }
 
+renf_elem_class & renf_elem_class::reset(std::shared_ptr<const renf_class>&& parent)
+{
+    if (nf != parent) {
+        renf_elem_clear(a, nf->renf_t());
+        nf = std::move(parent);
+        renf_elem_init(a, nf->renf_t());
+    }
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::reset(const std::shared_ptr<const renf_class>& parent)
+{
+    if (nf != parent) {
+        renf_elem_clear(a, nf->renf_t());
+        nf = parent;
+        renf_elem_init(a, nf->renf_t());
+    }
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(int value)
+{
+    return *this = static_cast<long>(value);
+}
+
+renf_elem_class & renf_elem_class::operator=(unsigned int value)
+{
+    return *this = static_cast<unsigned long>(value);
+}
+
+renf_elem_class & renf_elem_class::operator=(long value)
+{
+    reset(renf_class::make());
+    renf_elem_set_si(a, value, nf->renf_t());
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(unsigned long value)
+{
+    reset(renf_class::make());
+    renf_elem_set_ui(a, value, nf->renf_t());
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(long long value)
+{
+    reset(renf_class::make());
+    assign_maybe_fmpz(*this, value, renf_elem_set_si);
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(unsigned long long value)
+{
+    reset(renf_class::make());
+    assign_maybe_fmpz(*this, value, renf_elem_set_ui);
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(const mpz_class& value)
+{
+    reset(renf_class::make());
+    renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(const mpq_class& value)
+{
+    reset(renf_class::make());
+    renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(const fmpz_t value)
+{
+    reset(renf_class::make());
+    renf_elem_set_fmpz(a, value, nf->renf_t());
+
+    return *this;
+}
+
+renf_elem_class & renf_elem_class::operator=(const fmpq_t value)
+{
+    reset(renf_class::make());
+    renf_elem_set_fmpq(a, value, nf->renf_t());
+
+    return *this;
+}
+
 renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value)
 {
-    if (value.nf != nf)
-    {
-        renf_elem_clear(a, nf->renf_t());
-        renf_elem_init(a, value.nf->renf_t());
-        nf = value.nf;
-    }
-
+    reset(value.nf);
     renf_elem_set(a, value.a, nf->renf_t());
 
     return *this;
@@ -436,8 +593,9 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value)
 
 renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
 {
-    std::swap(nf, value.nf);
-    renf_elem_swap(a, value.a);
+    renf_elem_clear(a, nf->renf_t());
+    *a = *value.a;
+    nf = std::move(value.nf);
 
     return *this;
 }
@@ -534,14 +692,14 @@ mpz_class renf_elem_class::den() const {
 
 renf_elem_class::operator mpq_class() const
 {
-    mpq_class z;
-
     if (is_zero())
     {
         return 0;
     }
     else
     {
+        mpq_class z;
+
         assert(is_rational() && "renf_elem_class not a rational");
 
         fmpq_poly_t f;
@@ -550,9 +708,9 @@ renf_elem_class::operator mpq_class() const
         fmpz_get_mpz(z.get_num_mpz_t(), fmpq_poly_numref(f));
         fmpz_get_mpz(z.get_den_mpz_t(), fmpq_poly_denref(f));
         fmpq_poly_clear(f);
-    }
 
-    return z;
+        return z;
+    }
 }
 
 std::vector<mpz_class> renf_elem_class::num_vector() const
@@ -649,22 +807,22 @@ renf_elem_class::operator bool() const
 
 renf_elem_class & renf_elem_class::operator+=(const renf_elem_class & rhs)
 {
-    return binop<renf_elem_add>(*this, rhs);
+    return binop<renf_elem_add, renf_elem_add_fmpz, renf_elem_add_fmpq>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator-=(const renf_elem_class & rhs)
 {
-    return binop<renf_elem_sub>(*this, rhs);
+    return binop<renf_elem_sub, renf_elem_sub_fmpz, renf_elem_sub_fmpq>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator*=(const renf_elem_class & rhs)
 {
-    return binop<renf_elem_mul>(*this, rhs);
+    return binop<renf_elem_mul, renf_elem_mul_fmpz, renf_elem_mul_fmpq>(*this, rhs);
 }
 
 renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
 {
-    return binop<renf_elem_div>(*this, rhs);
+    return binop<renf_elem_div, renf_elem_div_fmpz, renf_elem_div_fmpq>(*this, rhs);
 }
 
 mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
@@ -724,10 +882,7 @@ bool operator==(const renf_elem_class & lhs, const renf_elem_class & rhs)
         return false;
     }
     else
-    {
-        std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
-        abort();
-    }
+        throw std::logic_error("not implemented: cannot compare renf_elem_class from different number fields");
 }
 
 bool operator<(const renf_elem_class & lhs, const renf_elem_class & rhs)
@@ -746,10 +901,7 @@ bool operator<(const renf_elem_class & lhs, const renf_elem_class & rhs)
         return lhs < o;
     }
     else
-    {
-        std::cerr << "not implemented: cannot compare renf_elem_class from different number fields" << std::endl;
-        abort();
-    }
+        throw std::logic_error("not implemented: cannot compare renf_elem_class from different number fields");
 }
 
 renf_elem_class& renf_elem_class::operator+=(int rhs)
@@ -773,6 +925,8 @@ renf_elem_class& renf_elem_class::operator/=(int rhs)
 }
 
 bool operator==(const renf_elem_class& lhs, int rhs) {
+    if (rhs == 0)
+        return lhs.is_zero();
     return lhs == static_cast<long>(rhs);
 }
 
