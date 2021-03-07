@@ -27,6 +27,3 @@ nobase_pkginclude_HEADERS =        \
 libeanticxx_la_SOURCES = \
     renf_class.cpp       \
     renf_elem_class.cpp
-
-noinst_HEADERS =                               \
-    external/unique-factory/unique_factory.hpp

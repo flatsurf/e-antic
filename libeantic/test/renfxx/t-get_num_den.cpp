@@ -14,13 +14,13 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
 TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
 {
-    auto check_rational = [](int num, int den, std::shared_ptr<const renf_class> K)
+    auto check_rational = [](int num, int den, const renf_class& K)
     {
         renf_elem_class a(K);
         a = num;
@@ -31,14 +31,14 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
         REQUIRE(a.den() == den);
     };
 
-    auto check_reconstruct = [](std::shared_ptr<const renf_class> K, renf_elem_class& a)
+    auto check_reconstruct = [](const renf_class& K, renf_elem_class& a)
     {
-        renf_elem_class g = K->gen();
+        renf_elem_class g = K.gen();
         renf_elem_class gg = 1;
         renf_elem_class b = 0;
 
         std::vector<mpz_class> num = a.get_num_vector();
-        REQUIRE(static_cast<slong>(num.size()) == K->degree());
+        REQUIRE(static_cast<slong>(num.size()) == K.degree());
 
         for (auto n : num)
         {
@@ -56,45 +56,45 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
     {
         auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
 
-        check_rational(-12, 5, K);
+        check_rational(-12, 5, *K);
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "2/3");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "2/3");
+        check_reconstruct(*K, b);
     }
 
     SECTION("A quadratic field")
     {
         auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
-        check_rational(7, 12, K);
+        check_rational(7, 12, *K);
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "1/2");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "1/2");
+        check_reconstruct(*K, b);
 
-        renf_elem_class c(K, "-3/7x + 1");
-        check_reconstruct(K, c);
+        renf_elem_class c(*K, "-3/7x + 1");
+        check_reconstruct(*K, c);
     }
 
     SECTION("A cubic field")
     {
         auto K = renf_class::make("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
-        renf_elem_class a(K, 0);
-        check_reconstruct(K, a);
+        renf_elem_class a(*K, 0);
+        check_reconstruct(*K, a);
 
-        renf_elem_class b(K, "53/22");
-        check_reconstruct(K, b);
+        renf_elem_class b(*K, "53/22");
+        check_reconstruct(*K, b);
 
-        renf_elem_class c(K, "222/317 -75/22*ZT");
-        check_reconstruct(K, c);
+        renf_elem_class c(*K, "222/317 -75/22*ZT");
+        check_reconstruct(*K, c);
 
-        renf_elem_class d(K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
-        check_reconstruct(K, d);
+        renf_elem_class d(*K, "-23/5 + 17/32 * ZT + 255/37 * ZT^2");
+        check_reconstruct(*K, d);
     }
 }

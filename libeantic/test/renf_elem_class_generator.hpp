@@ -27,12 +27,12 @@ namespace {
 struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::renf_elem_class>
 {
     flint_rand_t& state;
-    std::shared_ptr<const eantic::renf_class>& nf;
+    boost::intrusive_ptr<const eantic::renf_class> nf;
     ulong minbits, maxbits;
 
     mutable boost::optional<eantic::renf_elem_class> current;
 
-    RenfElemClassGenerator(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong minbits, ulong maxbits) : state(state), nf(nf), minbits(minbits), maxbits(maxbits) {
+    RenfElemClassGenerator(flint_rand_t& state, const eantic::renf_class* nf, ulong minbits, ulong maxbits) : state(state), nf(nf), minbits(minbits), maxbits(maxbits) {
       assert(maxbits > minbits);
       current = nf->zero();
     }
@@ -50,7 +50,7 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
         {
             ulong bits = minbits + n_randint(state, maxbits - minbits);
 
-            current = eantic::renf_elem_class(nf);
+            current = eantic::renf_elem_class(*nf);
 
             renf_elem_randtest(current->renf_elem_t(), state, bits, nf->renf_t());
         }
@@ -61,7 +61,7 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
 /*
  * Wrap RenfElemClassGenerator for use as GENERATE(renf_elem_classs(...))
  */
-Catch::Generators::GeneratorWrapper<eantic::renf_elem_class> renf_elem_classs(flint_rand_t& state, std::shared_ptr<const eantic::renf_class>& nf, ulong minbits = 10, ulong maxbits = 40)
+inline Catch::Generators::GeneratorWrapper<eantic::renf_elem_class> renf_elem_classs(flint_rand_t& state, const eantic::renf_class* nf, ulong minbits = 10, ulong maxbits = 40)
 {
     return Catch::Generators::GeneratorWrapper<eantic::renf_elem_class>(std::unique_ptr<Catch::Generators::IGenerator<eantic::renf_elem_class>>(new RenfElemClassGenerator(state, nf, minbits, maxbits)));
 }

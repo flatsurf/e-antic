@@ -57,15 +57,14 @@ void coerce(renf_elem_class& self, const renf_class& parent)
 
     if (self.is_zero())
     {
-        self.reset(parent.shared_from_this());
-        renf_elem_zero(self.renf_elem_t(), self.parent().renf_t());
+        self = parent.zero();
     }
     else if (self.is_integer())
     {
         fmpz_t value;
         fmpz_init_set(value, renf_elem_get_fmpz(self.renf_elem_t(), parent.renf_t()));
 
-        self.reset(parent.shared_from_this());
+        self = parent.zero();
 
         renf_elem_set_fmpz(self.renf_elem_t(), value, self.parent().renf_t());
 
@@ -73,7 +72,7 @@ void coerce(renf_elem_class& self, const renf_class& parent)
     }
     else if (self.is_rational())
     {
-        self = renf_elem_class(parent.shared_from_this(), self);
+        self = renf_elem_class(parent, self);
     }
     else
         throw std::logic_error("not implemented: promotion of non-rational elements");
@@ -235,10 +234,7 @@ renf_elem_class::renf_elem_class() noexcept
 }
 
 renf_elem_class::renf_elem_class(const renf_elem_class & value)
-    : renf_elem_class(value.nf)
-{
-    *this = value;
-}
+    : renf_elem_class(value.parent(), value) {}
 
 renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
     : nf(std::move(value.nf))
@@ -273,77 +269,77 @@ renf_elem_class::renf_elem_class(const mpq_class & value)
 renf_elem_class::renf_elem_class(const ::fmpq_t value)
     : renf_elem_class(renf_class::make(), value) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_zero(a, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, int value)
-    : renf_elem_class(std::move(k), static_cast<long>(value)) {}
+renf_elem_class::renf_elem_class(const renf_class& k, int value)
+    : renf_elem_class(k, static_cast<long>(value)) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned int value)
-    : renf_elem_class(std::move(k), static_cast<unsigned long>(value)) {}
+renf_elem_class::renf_elem_class(const renf_class& k, unsigned int value)
+    : renf_elem_class(k, static_cast<unsigned long>(value)) {}
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, long value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_si(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, unsigned long value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_ui(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, long long value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, long long value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     assign_maybe_fmpz(*this, value, renf_elem_set_si);
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, unsigned long long value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, unsigned long long value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     assign_maybe_fmpz(*this, value, renf_elem_set_ui);
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class & value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const mpz_class & value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class & value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const mpq_class & value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpz_t value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const ::fmpz_t value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_fmpz(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const ::fmpq_t value)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const ::fmpq_t value)
+    : nf(&k)
 {
     renf_elem_init(a, nf->renf_t());
     renf_elem_set_fmpq(a, value, nf->renf_t());
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std::string & str)
-    : nf(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::string & str)
+    : nf(&k)
 {
     const char * s = str.c_str();
 
@@ -380,11 +376,11 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const std:
     flint_free(t);
 }
 
-renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const renf_elem_class & value)
-    : nf(std::move(k)) {
+renf_elem_class::renf_elem_class(const renf_class& k, const renf_elem_class & value)
+    : nf(&k) {
     renf_elem_init(a, nf->renf_t());
 
-    if (value.parent() == *nf)
+    if (value.parent() == parent())
         renf_elem_set(a, value.renf_elem_t(), nf->renf_t());
     else if (value.is_rational())
         renf_elem_set_mpq(a, static_cast<mpq_class>(value).get_mpq_t(), nf->renf_t());
@@ -392,8 +388,8 @@ renf_elem_class::renf_elem_class(std::shared_ptr<const renf_class> k, const renf
         throw std::logic_error("not implemented: coercion between these number fields");
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<int> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<int> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -407,8 +403,8 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<unsigned int> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<unsigned int> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -422,8 +418,8 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<long> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<long> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -437,8 +433,8 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<unsigned long> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<unsigned long> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -452,8 +448,8 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<mpz_class> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpz_class> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -467,8 +463,8 @@ renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, cons
     fmpq_poly_clear(p);
 }
 
-renf_elem_class::renf_elem_class(const std::shared_ptr<const renf_class> k, const std::vector<mpq_class> & coefficients)
-    : renf_elem_class(std::move(k))
+renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpq_class> & coefficients)
+    : renf_elem_class(k)
 {
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
@@ -489,26 +485,6 @@ renf_elem_class::~renf_elem_class() noexcept
     if (nf) renf_elem_clear(a, nf->renf_t());
 }
 
-renf_elem_class & renf_elem_class::reset(std::shared_ptr<const renf_class>&& parent)
-{
-    if (nf != parent) {
-        renf_elem_clear(a, nf->renf_t());
-        nf = std::move(parent);
-        renf_elem_init(a, nf->renf_t());
-    }
-    return *this;
-}
-
-renf_elem_class & renf_elem_class::reset(const std::shared_ptr<const renf_class>& parent)
-{
-    if (nf != parent) {
-        renf_elem_clear(a, nf->renf_t());
-        nf = parent;
-        renf_elem_init(a, nf->renf_t());
-    }
-    return *this;
-}
-
 renf_elem_class & renf_elem_class::operator=(int value)
 {
     return *this = static_cast<long>(value);
@@ -521,7 +497,11 @@ renf_elem_class & renf_elem_class::operator=(unsigned int value)
 
 renf_elem_class & renf_elem_class::operator=(long value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_si(a, value, nf->renf_t());
 
     return *this;
@@ -529,7 +509,11 @@ renf_elem_class & renf_elem_class::operator=(long value)
 
 renf_elem_class & renf_elem_class::operator=(unsigned long value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_ui(a, value, nf->renf_t());
 
     return *this;
@@ -537,7 +521,11 @@ renf_elem_class & renf_elem_class::operator=(unsigned long value)
 
 renf_elem_class & renf_elem_class::operator=(long long value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     assign_maybe_fmpz(*this, value, renf_elem_set_si);
 
     return *this;
@@ -545,7 +533,11 @@ renf_elem_class & renf_elem_class::operator=(long long value)
 
 renf_elem_class & renf_elem_class::operator=(unsigned long long value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     assign_maybe_fmpz(*this, value, renf_elem_set_ui);
 
     return *this;
@@ -553,7 +545,11 @@ renf_elem_class & renf_elem_class::operator=(unsigned long long value)
 
 renf_elem_class & renf_elem_class::operator=(const mpz_class& value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_mpz(a, value.get_mpz_t(), nf->renf_t());
 
     return *this;
@@ -561,7 +557,11 @@ renf_elem_class & renf_elem_class::operator=(const mpz_class& value)
 
 renf_elem_class & renf_elem_class::operator=(const mpq_class& value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_mpq(a, value.get_mpq_t(), nf->renf_t());
 
     return *this;
@@ -569,7 +569,11 @@ renf_elem_class & renf_elem_class::operator=(const mpq_class& value)
 
 renf_elem_class & renf_elem_class::operator=(const fmpz_t value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_fmpz(a, value, nf->renf_t());
 
     return *this;
@@ -577,7 +581,11 @@ renf_elem_class & renf_elem_class::operator=(const fmpz_t value)
 
 renf_elem_class & renf_elem_class::operator=(const fmpq_t value)
 {
-    reset(renf_class::make());
+    if (nf != &renf_class::make()) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = &renf_class::make();
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set_fmpq(a, value, nf->renf_t());
 
     return *this;
@@ -585,7 +593,11 @@ renf_elem_class & renf_elem_class::operator=(const fmpq_t value)
 
 renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value)
 {
-    reset(value.nf);
+    if (nf != value.nf) {
+        if (nf) renf_elem_clear(a, nf->renf_t());
+        nf = value.nf;
+        renf_elem_init(a, nf->renf_t());
+    }
     renf_elem_set(a, value.a, nf->renf_t());
 
     return *this;
@@ -593,9 +605,13 @@ renf_elem_class & renf_elem_class::operator=(const renf_elem_class & value)
 
 renf_elem_class & renf_elem_class::operator=(renf_elem_class && value) noexcept
 {
-    renf_elem_clear(a, nf->renf_t());
-    *a = *value.a;
-    nf = std::move(value.nf);
+    if (nf) {
+        using std::swap;
+        swap(*this, value);
+    } else {
+        *a = *value.a;
+        nf = std::move(value.nf);
+    }
 
     return *this;
 }
@@ -832,7 +848,7 @@ mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
         if (rhs.is_rational())
             return (*this / rhs).floor();
         if (this->is_rational())
-            return renf_elem_class(rhs.parent().shared_from_this(), static_cast<mpq_class>(*this)).floordiv(rhs);
+            return renf_elem_class(rhs.parent(), static_cast<mpq_class>(*this)).floordiv(rhs);
     }
 
     mpz_class ret;
@@ -850,7 +866,7 @@ mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
 
 renf_elem_class renf_elem_class::pow(int exp) const
 {
-    renf_elem_class res(nf);
+    renf_elem_class res(parent());
 
     if (exp < 0)
     {
@@ -1197,17 +1213,24 @@ double renf_elem_class::get_d() const { return static_cast<double>(*this); }
 
 mpz_class floor(const renf_elem_class& x)
 {
-  return x.floor();
+    return x.floor();
 }
 
 mpz_class ceil(const renf_elem_class& x)
 {
-  return x.ceil();
+    return x.ceil();
 }
 
 renf_elem_class pow(const renf_elem_class& x, int exp)
 {
-  return x.pow(exp);
+    return x.pow(exp);
+}
+
+void swap(renf_elem_class& lhs, renf_elem_class& rhs) noexcept
+{
+    using std::swap;
+    swap(lhs.nf, rhs.nf);
+    renf_elem_swap(lhs.a, rhs.a);
 }
 
 } // end of namespace eantic

@@ -13,6 +13,7 @@
 #define E_ANTIC_BENCHMARK_RENFXX_NUMBER_FIELDS_HPP
 
 #include "../../e-antic/renf_class.hpp"
+#include <boost/smart_ptr/intrusive_ptr.hpp>
 
 namespace eantic {
 namespace benchmark {
@@ -20,7 +21,7 @@ namespace benchmark {
 inline auto make_number_field(size_t degree)
 {
     if (degree == 1)
-        return renf_class::make();
+        return boost::intrusive_ptr<const renf_class>(&renf_class::make());
     if (degree == 2)
         return renf_class::make("x^2 - 2", "x", "1 +/- 1", 64);
     if (degree == 4)

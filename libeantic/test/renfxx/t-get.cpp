@@ -30,7 +30,7 @@ int main(void)
         auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        renf_elem_class a(K);
+        renf_elem_class a(*K);
 
         // should work
         a.get_renf_elem();

@@ -11,16 +11,16 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 #include <string>
 #include <regex>
 
 #include <boost/lexical_cast.hpp>
 
-#include "rand_generator.hpp"
-#include "renf_class_generator.hpp"
-#include "renf_elem_class_generator.hpp"
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
 
 using namespace eantic;
 
@@ -57,12 +57,12 @@ TEST_CASE("Converting fields to strings", "[renf_class][operator<<]")
     }
 }
 
-static std::shared_ptr<const renf_class> K = nullptr;
+static const renf_class* K = nullptr;
 
 TEST_CASE("Writing and reading elements from streams", "[renf_elem_class][operator<<][operator>>]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(take(128, renf_classs(state)));
+    K = &GENERATE_REF(take(128, renf_classs(state)));
     auto a = GENERATE_REF(take(128, renf_elem_classs(state, K)));
 
     CAPTURE(a);

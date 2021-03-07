@@ -12,11 +12,11 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
-#include "rand_generator.hpp"
-#include "renf_class_generator.hpp"
-#include "renf_elem_class_generator.hpp"
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
 
 using namespace eantic;
 
@@ -36,25 +36,25 @@ TEST_CASE("Detect integer/rational elements", "[renf_elem_class][is_integer][is_
 
     SECTION("Elements in general number fields")
     {
-        auto K = GENERATE_REF(take(128, renf_classs(state)));
+        auto& K = GENERATE_REF(take(128, renf_classs(state)));
 
         REQUIRE(renf_elem_class(K, 0).is_integer());
         REQUIRE(renf_elem_class(K, 0).is_rational());
 
-        if (K->degree() == 1)
+        if (K.degree() == 1)
         {
-            REQUIRE(K->gen().is_rational());
+            REQUIRE(K.gen().is_rational());
         }
         else
         {
-            REQUIRE(!K->gen().is_integer());
-            REQUIRE(!K->gen().is_rational());
+            REQUIRE(!K.gen().is_integer());
+            REQUIRE(!K.gen().is_rational());
         }
     }
 
     SECTION("Random Elements")
     {
-        auto K = GENERATE_REF(take(16, renf_classs(state)));
+        const auto* K = &GENERATE_REF(take(16, renf_classs(state)));
         auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
         
         if (a.is_rational())

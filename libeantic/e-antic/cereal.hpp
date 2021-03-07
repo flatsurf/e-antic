@@ -20,16 +20,17 @@
 
 namespace eantic {
 template <class Archive>
-void save(Archive & archive, const std::shared_ptr<const renf_class> & self)
+void save(Archive & archive, const boost::intrusive_ptr<const renf_class> & self)
 {
-    uint32_t id = archive.registerSharedPointer(self.get());
+   uint32_t id = archive.registerSharedPointer(self.get());
 
-    archive(cereal::make_nvp("shared", id));
-    if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
-    {
+   archive(cereal::make_nvp("id", id));
+
+   if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
+   {
         // This is the first time cereal sees this renf_class, so we actually
-        // store it. Future copies only need the id to resolve to a shared_ptr
-        // to the same renf_class.
+        // store it. Future copies only need the id to resolve to a pointer to
+        // the same renf_class.
         auto construction = self->construction();
 
         archive(
@@ -37,20 +38,14 @@ void save(Archive & archive, const std::shared_ptr<const renf_class> & self)
             cereal::make_nvp("embedding", std::get<2>(construction)),
             cereal::make_nvp("minpoly", std::get<0>(construction)),
             cereal::make_nvp("precision", std::get<3>(construction)));
-    }
+   }
 }
 
 template <class Archive>
-void load(Archive & archive, std::shared_ptr<const renf_class> & self)
+void load(Archive & archive, boost::intrusive_ptr<const renf_class> & self)
 {
-    // cereal insists on creating a new instance of T when deserializing a
-    // shared_ptr<T>. However this is not compatible with our uniqueness of
-    // renf_class (if the field already exists, we do not create a new one but
-    // just return a shared_ptr to the existing one.) Therefore, we hook into
-    // cereal's deduplication logic for a compact output format but do not rely
-    // on its deserialization for renf_class.
     uint32_t id;
-    archive(cereal::make_nvp("shared", id));
+    archive(cereal::make_nvp("id", id));
 
     if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {
@@ -59,53 +54,44 @@ void load(Archive & archive, std::shared_ptr<const renf_class> & self)
 
         archive(name, emb, pol, prec);
 
+        // Restore this embedded number field.
         self = renf_class::make(pol, name, emb, prec);
 
-        const auto reinterpret_ptr_cast = [](const auto& ptr) noexcept
-        {
-            auto p = reinterpret_cast<typename std::shared_ptr<void>::element_type*>(ptr.get());
-            return std::shared_ptr<void>(ptr, p);
-        };
+        // We store a reference to this field with cereal's shared pointer machinery.
+        // This shared pointer will be kept alive by cereal until the
+        // deserialization of the whole file is complete. So we new an
+        // intrusive pointer into this shared pointer to keep our number field
+        // alive during that time.
+        const std::shared_ptr<boost::intrusive_ptr<const renf_class>> shared(new boost::intrusive_ptr<const renf_class>(self));
 
-        // Register this number field so other copies in the serialization
-        // resolve to it. cereal stores shared_ptr<void> internally, so we
-        // need to cast away constness and then to void*.
-        archive.registerSharedPointer(id,
-            reinterpret_ptr_cast(
-            std::const_pointer_cast<renf_class>(self)));
+        archive.registerSharedPointer(id, shared);
     }
     else
     {
-        // Resolve to a copy that was previously defined in the serialization.
-        // Since cereal stores that copy as a void pointer, we have to cast it
-        // to a shared_ptr of the correct type first.
-        self = std::static_pointer_cast<renf_class>(archive.getSharedPointer(id));
+        // Pull the number field that we stored in the `if` block out of
+        // cereal's shared pointer machinery.
+        self = *std::static_pointer_cast<boost::intrusive_ptr<const renf_class>>(archive.getSharedPointer(id));
     }
 }
 
 template <class Archive>
-void save(Archive & archive, const renf_elem_class & self, std::uint32_t)
+void save(Archive & archive, const renf_elem_class & self)
 {
     archive(
-        cereal::make_nvp("parent", self.parent().shared_from_this()),
+        cereal::make_nvp("parent", boost::intrusive_ptr<const renf_class>(&self.parent())),
         cereal::make_nvp("value", self.to_string(EANTIC_STR_ALG))
     );
 }
 
 template <class Archive>
-void load(Archive & archive, renf_elem_class & self, std::uint32_t version)
+void load(Archive & archive, renf_elem_class & self)
 {
-    if (version != 0) throw std::logic_error("unknown serialization from the future");
-
-    std::shared_ptr<const renf_class> nf;
+    boost::intrusive_ptr<const renf_class> nf;
     std::string serialized_element;
 
     archive(nf, serialized_element);
 
-    std::stringstream ss("(" + serialized_element + ")");
-    if (nf)
-        nf->set_pword(ss);
-    ss >> self;
+    self = renf_elem_class(*nf, serialized_element);
 }
 
 }

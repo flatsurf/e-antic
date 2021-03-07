@@ -14,11 +14,14 @@
 #ifndef E_ANTIC_RENF_CLASS_HPP
 #define E_ANTIC_RENF_CLASS_HPP
 
-#include <memory>
 #include <boost/operators.hpp>
+#include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <string>
+#include <atomic>
+#include <stack>
 
 #include "e-antic.h"
+#include "renf_elem.h"
 #include "renfxx_fwd.hpp"
 #include "renf.h"
 
@@ -26,30 +29,23 @@ namespace eantic {
 
 // A Real Embedded Number Field
 // This class provides C++ memory management for the underlying renf_t.
-class LIBEANTIC_API renf_class : public std::enable_shared_from_this<renf_class>, boost::equality_comparable<renf_class> {
-    // The trivial number field adjoining a root of (x - 1) to the rationals
-    renf_class();
+class LIBEANTIC_API renf_class : boost::equality_comparable<renf_class> {
     renf_class(const ::renf_t, const std::string &);
-    renf_class(const std::string &, const std::string &, const std::string &, const slong);
 
 public:
     // The trivial number field adjoining a root of (x - 1) to the rationals
-    static const std::shared_ptr<const renf_class>& make();
-    static std::shared_ptr<const renf_class> make(const ::renf_t, const std::string & gen = "a");
-    static std::shared_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, const slong prec = 64);
+    static const renf_class& make();
+    static boost::intrusive_ptr<const renf_class> make(const ::renf_t, const std::string & gen = "a");
+    static boost::intrusive_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, const slong prec = 64);
 
     ~renf_class() noexcept;
-
-    // Assignment is not possible since one renf_class uniquely corresponds to
-    // an embedded number field.
-    renf_class & operator=(const renf_class &) = delete;
 
     slong degree() const;
 
     // standard elements
-    renf_elem_class zero() const;
-    renf_elem_class one() const;
-    renf_elem_class gen() const;
+    const renf_elem_class& zero() const;
+    const renf_elem_class& one() const;
+    const renf_elem_class& gen() const;
 
     // Return the parameters (minpoly, gen, emb, prec) that can be used to
     // construct this field with renf_class::make().
@@ -66,7 +62,7 @@ public:
 
     // Extract the number field stored with set_pword from an input stream.
     [[deprecated("use cereal.hpp or the renf_elem_class constructor taking a string instead.")]]
-    static std::shared_ptr<const renf_class> get_pword(std::istream &);
+    static boost::intrusive_ptr<const renf_class> get_pword(std::istream &);
 
     std::string to_string() const;
     friend std::ostream & operator<<(std::ostream &, const renf_class &);
@@ -86,9 +82,17 @@ private:
     // The actual underlying renf_t
     mutable ::renf_t nf;
 
+    mutable std::atomic<size_t> refcount;
+
+    renf_elem_class* cache;
+
     // Serialization, see cereal.hpp
     friend cereal::access;
+
+    friend void intrusive_ptr_add_ref(const renf_class*);
+    friend void intrusive_ptr_release(const renf_class*);
 };
+
 
 } // end of namespace
 
@@ -100,4 +104,3 @@ struct LIBEANTIC_API hash<eantic::renf_class> {
 }  // namespace std
 
 #endif
-

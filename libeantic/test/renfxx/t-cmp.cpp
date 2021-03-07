@@ -14,7 +14,7 @@
 using namespace eantic;
 
 template<typename T>
-void check_eq_ne(T t, std::shared_ptr<const renf_class> K)
+void check_eq_ne(T t, const renf_class& K)
 {
     renf_elem_class a;
     a = t;
@@ -26,8 +26,8 @@ void check_eq_ne(T t, std::shared_ptr<const renf_class> K)
 
     renf_elem_class d(K, t);
 
-    auto L = K;
-    renf_elem_class e(L, t);
+    auto L = renf_class::make(K.renf_t());
+    renf_elem_class e(*L, t);
 
     #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
     if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) || test_neq(t, e) ||
@@ -50,10 +50,10 @@ void check_eq_ne(T t, std::shared_ptr<const renf_class> K)
 }
 
 template<typename T>
-void check_not_gen(T t, std::shared_ptr<const renf_class> K)
+void check_not_gen(T t, const renf_class& K)
 {
     renf_elem_class a(K);
-    renf_elem_gen(a.get_renf_elem(), K->get_renf());
+    renf_elem_gen(a.renf_elem_t(), K.renf_t());
 
     if (a == t || t == a ||
         not (a != t) || not (t != a) ||
@@ -67,7 +67,7 @@ void check_not_gen(T t, std::shared_ptr<const renf_class> K)
 }
 
 template<typename T>
-void check_order(T c1, T c2, std::shared_ptr<const renf_class> K)
+void check_order(T c1, T c2, const renf_class& K)
 {
     renf_elem_class a1(K, c1);
     renf_elem_class a2(K, c2);
@@ -102,17 +102,17 @@ int main(void)
         auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        check_eq_ne(c1, K);
-        check_not_gen(c1, K);
+        check_eq_ne(c1, *K);
+        check_not_gen(c1, *K);
 
-        check_eq_ne(c2, K);
-        check_not_gen(c2, K);
+        check_eq_ne(c2, *K);
+        check_not_gen(c2, *K);
 
-        check_eq_ne(c3, K);
-        check_not_gen(c3, K);
+        check_eq_ne(c3, *K);
+        check_not_gen(c3, *K);
 
-        check_eq_ne(c4, K);
-        check_not_gen(c4, K);
+        check_eq_ne(c4, *K);
+        check_not_gen(c4, *K);
     }
 
     for (iter = 0; iter < 10; iter++)
@@ -122,10 +122,10 @@ int main(void)
         auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        check_order(-1, 1, K);
-        check_order(-1l, 13l, K);
-        check_order(mpz_class(3), mpz_class(5), K);
-        check_order(mpq_class(1,3), mpq_class(1,2), K);
+        check_order(-1, 1, *K);
+        check_order(-1l, 13l, *K);
+        check_order(mpz_class(3), mpz_class(5), *K);
+        check_order(mpq_class(1,3), mpq_class(1,2), *K);
     }
 
     FLINT_TEST_CLEANUP(state)

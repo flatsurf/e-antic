@@ -12,20 +12,20 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "rand_generator.hpp"
-#include "renf_class_generator.hpp"
-#include "renf_elem_class_generator.hpp"
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
-static std::shared_ptr<const renf_class> K = nullptr;
+static const renf_class* K = nullptr;
 
 TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(take(16, renf_classs(state)));
+    K = &GENERATE_REF(take(16, renf_classs(state)));
     auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
     CAPTURE(*K, a);

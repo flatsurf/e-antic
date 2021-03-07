@@ -13,7 +13,7 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
@@ -37,6 +37,6 @@ TEST_CASE("Consistency of Hash Function", "[renf_elem_class][hash]")
     
     SECTION("has is compatible with operator==")
     {
-        REQUIRE(std::hash<renf_elem_class>()(mpq_class("3/2")) == std::hash<renf_elem_class>()(renf_elem_class(K, mpq_class("3/2"))));
+        REQUIRE(std::hash<renf_elem_class>()(mpq_class("3/2")) == std::hash<renf_elem_class>()(renf_elem_class(*K, mpq_class("3/2"))));
     }
 }

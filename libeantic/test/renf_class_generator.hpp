@@ -22,11 +22,11 @@
 
 namespace {
 
-struct RenfClassGenerator : public Catch::Generators::IGenerator<std::shared_ptr<const eantic::renf_class>>
+struct RenfClassGenerator : public Catch::Generators::IGenerator<const eantic::renf_class&>
 {
     RenfGenerator generator;
 
-    mutable std::shared_ptr<const eantic::renf_class> current;
+    mutable boost::intrusive_ptr<const eantic::renf_class> current;
 
     RenfClassGenerator(flint_rand_t& state, ulong minlen, ulong maxlen, ulong minprec, ulong maxprec, ulong minbits, ulong maxbits) : generator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits) {}
 
@@ -35,19 +35,19 @@ struct RenfClassGenerator : public Catch::Generators::IGenerator<std::shared_ptr
         return generator.next();
     }
 
-    std::shared_ptr<const eantic::renf_class>& get() const override
+    const eantic::renf_class& get() const override
     {
         current = eantic::renf_class::make(generator.get());        
-        return current;
+        return *current;
     }
 };
 
 /*
  * Wrap RenfClassGenerator for use as GENERATE(renf_classs(...))
  */
-Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>> renf_classs(flint_rand_t& state, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
+inline Catch::Generators::GeneratorWrapper<const eantic::renf_class&> renf_classs(flint_rand_t& state, ulong minlen = 2, ulong maxlen = 32, ulong minprec = 8, ulong maxprec = 2048, ulong minbits = 10, ulong maxbits = 40)
 {
-    return Catch::Generators::GeneratorWrapper<std::shared_ptr<const eantic::renf_class>>(std::unique_ptr<Catch::Generators::IGenerator<std::shared_ptr<const eantic::renf_class>>>(new RenfClassGenerator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
+    return Catch::Generators::GeneratorWrapper<const eantic::renf_class&>(std::unique_ptr<Catch::Generators::IGenerator<const eantic::renf_class&>>(new RenfClassGenerator(state, minlen, maxlen, minprec, maxprec, minbits, maxbits)));
 }
 
 }

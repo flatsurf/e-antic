@@ -20,7 +20,7 @@
 
 using namespace eantic;
 
-static void test_rational_content(std::shared_ptr<const renf_class> K)
+static void test_rational_content(const renf_class& K)
 {
     if (renf_elem_class(K, 0).num_content() != 0)
         throw std::runtime_error("content of 0 should be 0");
@@ -34,7 +34,7 @@ static void test_rational_content(std::shared_ptr<const renf_class> K)
         throw std::runtime_error("content of -2/3 should be 2");
 }
 
-static void test_degree_one_content(std::shared_ptr<const renf_class> K)
+static void test_degree_one_content(const renf_class& K)
 {
 
     if (renf_elem_class(K, "x").num_content() != 1)
@@ -47,7 +47,7 @@ static void test_degree_one_content(std::shared_ptr<const renf_class> K)
         throw std::runtime_error("content of -3*x+6 should be 3");
 }
 
-static void test_degree_two_content(std::shared_ptr<const renf_class> K)
+static void test_degree_two_content(const renf_class& K)
 {
     if (renf_elem_class(K, "x^2").num_content() != 1)
         throw std::runtime_error("content of x^2 should be 1");
@@ -76,22 +76,22 @@ int main(void)
     {
         // linear
         auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
-        test_rational_content(K);
+        test_rational_content(*K);
     }
 
     {
         // quadratic
         auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
-        test_rational_content(K);
-        test_degree_one_content(K);
+        test_rational_content(*K);
+        test_degree_one_content(*K);
     }
 
     {
         // cubic
         auto K = renf_class::make("x^3 - 2/5", "x", "0.74 +/- 0.1");
-        test_rational_content(K);
-        test_degree_one_content(K);
-        test_degree_two_content(K);
+        test_rational_content(*K);
+        test_degree_one_content(*K);
+        test_degree_two_content(*K);
     }
 
 }
