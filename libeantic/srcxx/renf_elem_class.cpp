@@ -286,6 +286,9 @@ renf_elem_class::renf_elem_class(const mpz_class & value)
 renf_elem_class::renf_elem_class(const mpq_class & value)
     : renf_elem_class(renf_class::make(), value) {}
 
+renf_elem_class::renf_elem_class(const ::fmpz_t value)
+    : renf_elem_class(renf_class::make(), value) {}
+
 renf_elem_class::renf_elem_class(const ::fmpq_t value)
     : renf_elem_class(renf_class::make(), value) {}
 
