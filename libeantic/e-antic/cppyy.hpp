@@ -16,12 +16,6 @@
 
 #include "renfxx.h"
 
-// See https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator
-namespace eantic {
-std::ostream &operator<<(std::ostream &, const renf_class &);
-std::ostream &operator<<(std::ostream &, const renf_elem_class &);
-}  // namespace eantic
-
 namespace eantic {
 namespace cppyy {
 
