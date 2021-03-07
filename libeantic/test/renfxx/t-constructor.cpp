@@ -77,7 +77,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         fmpq_init(q);
         fmpq_set_str(q, "13/37", 10);
         REQUIRE(renf_elem_class(q) == mpq_class(13, 37));
-        REQUIRE((renf_elem_class() = q) == 1337);
+        REQUIRE((renf_elem_class() = q) == mpq_class(13, 37));
         fmpq_clear(q);
     }
 

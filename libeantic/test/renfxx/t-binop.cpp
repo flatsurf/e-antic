@@ -248,19 +248,19 @@ TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
         REQUIRE((b + a - a) == b);
         REQUIRE((a - b + b) == a);
         REQUIRE((b - a + a) == b);
-        REQUIRE((a * b - a) == -a);
+        REQUIRE((a * b / b) == a);
         REQUIRE((b * a / a) == b);
         REQUIRE((b / a * a) == b);
-        REQUIRE((a / b * b) == b);
+        REQUIRE((a / b * b) == a);
 
         b = renf_elem_class(*M, "1/2");
         REQUIRE((a + b - b) == a);
         REQUIRE((b + a - a) == b);
         REQUIRE((a - b + b) == a);
         REQUIRE((b - a + a) == b);
-        REQUIRE((a * b - a) == -a);
+        REQUIRE((a * b / b) == a);
         REQUIRE((b * a / a) == b);
         REQUIRE((b / a * a) == b);
-        REQUIRE((a / b * b) == b);
+        REQUIRE((a / b * b) == a);
     }
 }
