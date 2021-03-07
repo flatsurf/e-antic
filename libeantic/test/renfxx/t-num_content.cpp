@@ -75,20 +75,20 @@ int main(void)
 
     {
         // linear
-        auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
+        const auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
         test_rational_content(*K);
     }
 
     {
         // quadratic
-        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
+        const auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
         test_rational_content(*K);
         test_degree_one_content(*K);
     }
 
     {
         // cubic
-        auto K = renf_class::make("x^3 - 2/5", "x", "0.74 +/- 0.1");
+        const auto K = renf_class::make("x^3 - 2/5", "x", "0.74 +/- 0.1");
         test_rational_content(*K);
         test_degree_one_content(*K);
         test_degree_two_content(*K);

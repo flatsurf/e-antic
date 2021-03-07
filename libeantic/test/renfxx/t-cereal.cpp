@@ -48,16 +48,14 @@ T test_serialization(const T& x)
     return y;
 }
 
-static const renf_class* K = nullptr;
-
 TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = &GENERATE_REF(take(128, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
     auto a = GENERATE_REF(take(4, renf_elem_classs(state, K)));
     auto b = GENERATE_REF(take(4, renf_elem_classs(state, K)));
 
-    CAPTURE(*K);
+    CAPTURE(K);
 
     test_serialization(a);
     test_serialization(std::vector<renf_elem_class>{a, a, b});

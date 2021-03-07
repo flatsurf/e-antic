@@ -18,6 +18,7 @@
 namespace eantic {
 namespace benchmark {
 
+/// Return a typical number field of degree `degree`.
 inline auto make_number_field(size_t degree)
 {
     if (degree == 1)

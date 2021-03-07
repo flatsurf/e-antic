@@ -54,7 +54,7 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
 
     SECTION("A linear field")
     {
-        auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
+        const auto K = renf_class::make("x - 2/3", "x", "0.66 +/- 0.1");
 
         check_rational(-12, 5, *K);
 
@@ -67,7 +67,7 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
 
     SECTION("A quadratic field")
     {
-        auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
+        const auto K = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
         check_rational(7, 12, *K);
 
@@ -83,7 +83,7 @@ TEST_CASE("Numerator and denominator", "[renf_elem_class][get_num][get_den]")
 
     SECTION("A cubic field")
     {
-        auto K = renf_class::make("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
+        const auto K = renf_class::make("ZT^3 - 2/5", "ZT", "0.74 +/- 0.1");
 
         renf_elem_class a(*K, 0);
         check_reconstruct(*K, a);

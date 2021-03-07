@@ -152,7 +152,7 @@ boost::intrusive_ptr<const renf_class> renf_class::make(const std::string & minp
 renf_class::~renf_class() noexcept
 {
     delete[] cache;
-    assert(refcount == 0);
+    assert(refcount == 0 && "All references to this number field must have been destroyed when this field is deleted. There seems to be an error in the reference counting.");
     renf_clear(nf);
 }
 
@@ -263,7 +263,8 @@ std::istream & operator>>(std::istream & is, renf_elem_class & a)
     return is;
 }
 
-// Track another pointer to the field `nf`.
+// Track a pointer to the field `nf` (and keep the field alive until this
+// pointer is around.)
 void intrusive_ptr_add_ref(const renf_class* nf) {
     nf->refcount.fetch_add(1, std::memory_order_relaxed);
 }

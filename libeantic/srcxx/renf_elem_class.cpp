@@ -26,25 +26,45 @@ namespace eantic {
 
 namespace {
 
+// Return the value of `a` as an integer (without allocating any memory.)
 const fmpz_t& renf_elem_get_fmpz(const renf_elem_t a, const renf_t nf)
 {
-    static fmpz_t zero = {0};
-
     if (nf->nf->flag & NF_LINEAR)
         return LNF_ELEM_NUMREF(a->elem);
     else if (nf->nf->flag & NF_QUADRATIC)
+    {
+        // Elements in a quadratic number field are stored as a denominator and
+        // two (actually three) coefficients for the numerator. The first
+        // coefficient of the numerator is the degree 0 entry (the denominator
+        // is 1 for integers.)
         return reinterpret_cast<const fmpz_t&>(QNF_ELEM_NUMREF(a->elem));
+    }
     else if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
+    {
+        // The zero element in a general number field is stored as a degree 0
+        // polynomial, so we cannot reference any fmpz_t in that case.
+        static fmpz_t zero = {0};
         return zero;
+    }
     else
+    {
+        // As in the quadratic case, we return the degree 0 entry.
         return reinterpret_cast<const fmpz_t&>(NF_ELEM_NUMREF(a->elem));
+    }
 }
 
+// Return the value of `a` as a rational (without allocating any memory.)
 const fmpq_t& renf_elem_get_fmpq(fmpq_t buffer, const renf_elem_t a, const renf_t nf)
 {
     if (nf->nf->flag & NF_LINEAR)
+    {
+        // A linear element is a pair (fmpz_t, fmpz_t) exactly like an fmpq_t.
         return reinterpret_cast<const fmpq_t&>(LNF_ELEM(a->elem));
-    else {
+    }
+    else
+    {
+        // In the general case, we use an external `buffer` to store the value
+        // as an fmpq_t.
         nf_elem_get_coeff_fmpq(buffer, a->elem, 0, nf->nf);
         return reinterpret_cast<const fmpq_t&>(buffer[0]);
     }
@@ -91,10 +111,10 @@ renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs)
         fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpz(rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
     else if (rhs.is_rational())
     {
-        fmpq_t value;
-        fmpq_init(value);
-        fmpq_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpq(value, rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
-        fmpq_clear(value);
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        fmpq_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpq(buffer, rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
+        fmpq_clear(buffer);
     }
     else
     {

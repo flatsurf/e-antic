@@ -20,7 +20,6 @@
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <vector>
 
-#include "e-antic.h"
 #include "renfxx_fwd.hpp"
 #include "renf_elem.h"
 

@@ -95,7 +95,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
     SECTION("Cannot set from a different number field for most values")
     {
 
-      auto L = renf_class::make("a^2 - 3", "a", "1.7 +/- 1", 128);
+      const auto L = renf_class::make("a^2 - 3", "a", "1.7 +/- 1", 128);
 
       REQUIRE_THROWS(renf_elem_class(*L, K->gen()));
 
@@ -107,8 +107,8 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
 TEST_CASE("Construct renf_elem_class from string", "[renf_elem_class]")
 {
     // operator = for renf_class
-    auto K1 = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 128);
-    auto K2 = K1;
+    const auto K1 = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 128);
+    const auto K2 = K1;
   
     renf_elem_class a(*K1, "a + 1");
     renf_elem_class b(*K2, "a + 1");
@@ -119,47 +119,47 @@ TEST_CASE("Construct renf_elem_class from string", "[renf_elem_class]")
 TEST_CASE("Construct trivial renf_elem_class", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = &GENERATE_REF(take(128, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
 
-    auto a = renf_elem_class(*K);
+    auto a = renf_elem_class(K);
 
     REQUIRE(a == 0);
     REQUIRE(renf_elem_class(a) == 0);
-    REQUIRE(K->zero() == 0);
-    REQUIRE(renf_elem_class(*K, 0) == 0);
-    REQUIRE(renf_elem_class(*K, "0") == 0);
-    REQUIRE(renf_elem_class(*K, "0*a^2 + 0") == 0);
+    REQUIRE(K.zero() == 0);
+    REQUIRE(renf_elem_class(K, 0) == 0);
+    REQUIRE(renf_elem_class(K, "0") == 0);
+    REQUIRE(renf_elem_class(K, "0*a^2 + 0") == 0);
 }
 
 TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = &GENERATE_REF(take(128, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
 
     auto a = renf_elem_class(mpq_class(13, 37));
 
-    REQUIRE(renf_elem_class(*K, a) == a);
-    REQUIRE(renf_elem_class(*K, renf_elem_class(*K, a)) == a);
+    REQUIRE(renf_elem_class(K, a) == a);
+    REQUIRE(renf_elem_class(K, renf_elem_class(K, a)) == a);
 }
 
 TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    auto K = &GENERATE_REF(take(128, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
 
-    auto a = renf_elem_class(*K, std::vector<int>(static_cast<size_t>(K->degree()), -1));
-    auto b = renf_elem_class(*K, std::vector<unsigned int>(static_cast<size_t>(K->degree()), 1));
-    auto c = renf_elem_class(*K, std::vector<long>(static_cast<size_t>(K->degree()), -2l));
-    auto d = renf_elem_class(*K, std::vector<unsigned long>(static_cast<size_t>(K->degree()), 2ul));
-    auto e = renf_elem_class(*K, std::vector<mpz_class>(static_cast<size_t>(K->degree()), mpz_class(3)));
-    auto f = renf_elem_class(*K, std::vector<mpq_class>(static_cast<size_t>(K->degree()), mpq_class(4)));
+    auto a = renf_elem_class(K, std::vector<int>(static_cast<size_t>(K.degree()), -1));
+    auto b = renf_elem_class(K, std::vector<unsigned int>(static_cast<size_t>(K.degree()), 1));
+    auto c = renf_elem_class(K, std::vector<long>(static_cast<size_t>(K.degree()), -2l));
+    auto d = renf_elem_class(K, std::vector<unsigned long>(static_cast<size_t>(K.degree()), 2ul));
+    auto e = renf_elem_class(K, std::vector<mpz_class>(static_cast<size_t>(K.degree()), mpz_class(3)));
+    auto f = renf_elem_class(K, std::vector<mpq_class>(static_cast<size_t>(K.degree()), mpq_class(4)));
 
     REQUIRE(std::set<renf_elem_class>{a, b, c, d, e, f}.size() == 6);
 }
 
 TEST_CASE("Construct trivial field", "[renf_class]")
 {
-    auto& K = renf_class::make();
+    const auto& K = renf_class::make();
 
     REQUIRE(K.degree() == 1);
 }

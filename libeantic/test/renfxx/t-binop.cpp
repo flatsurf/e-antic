@@ -20,15 +20,13 @@
 
 using namespace eantic;
 
-static const renf_class* K = nullptr;
-
 TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = &GENERATE_REF(take(16, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
     auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
-    CAPTURE(*K, a);
+    CAPTURE(K, a);
 
     SECTION("Unary Operators")
     {
@@ -174,14 +172,14 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
     SECTION("Build Element as Sum of Terms")
     {
-        auto c = K->zero();
-        auto g = K->one();
+        auto c = K.zero();
+        auto g = K.one();
 
         auto coeffs = a.num_vector();
         for (size_t i = 0; i < coeffs.size(); i++)
         {
             c += coeffs[i] * g;
-            g *= K->gen();
+            g *= K.gen();
         }
 
         c /= a.den();

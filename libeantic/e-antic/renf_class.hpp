@@ -18,10 +18,7 @@
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <string>
 #include <atomic>
-#include <stack>
 
-#include "e-antic.h"
-#include "renf_elem.h"
 #include "renfxx_fwd.hpp"
 #include "renf.h"
 
@@ -89,8 +86,8 @@ private:
     // Serialization, see cereal.hpp
     friend cereal::access;
 
-    friend void intrusive_ptr_add_ref(const renf_class*);
-    friend void intrusive_ptr_release(const renf_class*);
+    LIBEANTIC_API friend void intrusive_ptr_add_ref(const renf_class*);
+    LIBEANTIC_API friend void intrusive_ptr_release(const renf_class*);
 };
 
 

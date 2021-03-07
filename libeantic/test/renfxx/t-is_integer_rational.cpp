@@ -54,7 +54,7 @@ TEST_CASE("Detect integer/rational elements", "[renf_elem_class][is_integer][is_
 
     SECTION("Random Elements")
     {
-        const auto* K = &GENERATE_REF(take(16, renf_classs(state)));
+        const auto& K = GENERATE_REF(take(16, renf_classs(state)));
         auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
         
         if (a.is_rational())

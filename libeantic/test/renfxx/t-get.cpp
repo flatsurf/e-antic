@@ -27,7 +27,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 50);
-        auto K = renf_class::make(nf);
+        const auto K = renf_class::make(nf);
         renf_clear(nf);
 
         renf_elem_class a(*K);

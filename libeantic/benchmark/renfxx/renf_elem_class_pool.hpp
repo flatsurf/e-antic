@@ -19,6 +19,8 @@
 namespace eantic {
 namespace benchmark {
 
+/// A pool of identical renf_elem_class elments.
+/// This is used in benchmarks to not distort measurements by the cost of initializing elements.
 class renf_elem_class_pool
 {
   public:

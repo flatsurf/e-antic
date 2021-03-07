@@ -26,7 +26,7 @@ void check_eq_ne(T t, const renf_class& K)
 
     renf_elem_class d(K, t);
 
-    auto L = renf_class::make(K.renf_t());
+    const auto L = renf_class::make(K.renf_t());
     renf_elem_class e(*L, t);
 
     #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
@@ -99,7 +99,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 10);
-        auto K = renf_class::make(nf);
+        const auto K = renf_class::make(nf);
         renf_clear(nf);
 
         check_eq_ne(c1, *K);
@@ -119,7 +119,7 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 10);
-        auto K = renf_class::make(nf);
+        const auto K = renf_class::make(nf);
         renf_clear(nf);
 
         check_order(-1, 1, *K);
