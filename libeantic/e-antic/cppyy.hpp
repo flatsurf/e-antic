@@ -43,8 +43,8 @@ auto make_renf_elem_class(const T& t) {
 }
 
 template <typename T>
-auto make_renf_elem_class_with_parent(const std::shared_ptr<renf_class> K, const T& t) {
-    return renf_elem_class(K, t);
+auto make_renf_elem_class_with_parent(const boost::intrusive_ptr<const renf_class> K, const T& t) {
+    return renf_elem_class(*K, t);
 }
 
 inline mpq_class rational(const renf_elem_class& x) {

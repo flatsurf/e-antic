@@ -62,39 +62,58 @@ from cppyythonizations.util import filtered
 
 cppyy.py.add_pythonization(enable_pretty_printing, "eantic")
 cppyy.py.add_pythonization(filtered('renf_elem_class')(enable_total_order), "eantic")
-cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["e-antic/cereal.hpp"]), "eantic")
+cppyy.py.add_pythonization(filtered('renf_elem_class')(lambda proxy, name: enable_cereal(proxy, name, ["e-antic/cereal.hpp"])), "eantic")
+cppyy.py.add_pythonization(filtered('intrusive_ptr<const eantic::renf_class>')(lambda proxy, name: enable_cereal(proxy, name, ["e-antic/cereal.hpp"])), "boost")
 
 def enable_arithmetic(proxy, name):
-    if name in ["renf_elem_class"]:
-        for (op, infix) in [('add', '+'), ('sub', '-'), ('mul', '*'), ('truediv', '/')]:
-            python_op = "__%s__" % (op,)
-            python_rop = "__r%s__" % (op,)
+    for (op, infix) in [('add', '+'), ('sub', '-'), ('mul', '*'), ('truediv', '/')]:
+        python_op = "__%s__" % (op,)
+        python_rop = "__r%s__" % (op,)
 
-            implementation = getattr(cppyy.gbl.eantic.cppyy, op)
-            def binary(lhs, rhs, implementation=implementation):
-                lhs, rhs = for_eantic(lhs), for_eantic(rhs)
-                return implementation[type(lhs), type(rhs)](lhs, rhs)
-            def rbinary(rhs, lhs, implementation=implementation):
-                lhs, rhs = for_eantic(lhs), for_eantic(rhs)
-                return implementation[type(lhs), type(rhs)](lhs, rhs)
+        implementation = getattr(cppyy.gbl.eantic.cppyy, op)
+        def binary(lhs, rhs, implementation=implementation):
+            lhs, rhs = for_eantic(lhs), for_eantic(rhs)
+            return implementation[type(lhs), type(rhs)](lhs, rhs)
+        def rbinary(rhs, lhs, implementation=implementation):
+            lhs, rhs = for_eantic(lhs), for_eantic(rhs)
+            return implementation[type(lhs), type(rhs)](lhs, rhs)
 
-            setattr(proxy, python_op, binary)
-            setattr(proxy, python_rop, rbinary)
+        setattr(proxy, python_op, binary)
+        setattr(proxy, python_rop, rbinary)
 
-        setattr(proxy, "__neg__", lambda self: cppyy.gbl.eantic.cppyy.neg(self))
-        setattr(proxy, "__pow__", lambda self, n: cppyy.gbl.eantic.pow(self, n))
+    setattr(proxy, "__neg__", lambda self: cppyy.gbl.eantic.cppyy.neg(self))
+    setattr(proxy, "__pow__", lambda self, n: cppyy.gbl.eantic.pow(self, n))
 
-cppyy.py.add_pythonization(enable_arithmetic, "eantic")
+cppyy.py.add_pythonization(filtered("renf_elem_class")(enable_arithmetic), "eantic")
+
+def enable_intrusive_serialization(proxy, name):
+    def reduce(self):
+        cppyy.include('e-antic/cereal.hpp')
+        return (extract, (cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class'](self),))
+    proxy.__reduce__ = reduce
+
+def extract(ptr):
+    return ptr.get()
+
+cppyy.py.add_pythonization(filtered("renf_class")(enable_intrusive_serialization), "eantic")
+
+def enable_intrusive_printing(proxy, name):
+    setattr(proxy, "__str__", lambda self: str(self.get()))
+    setattr(proxy, "__repr__", lambda self: str(self.get()))
+
+cppyy.py.add_pythonization(filtered('intrusive_ptr<const eantic::renf_class>')(enable_intrusive_printing), "boost")
 
 for path in os.environ.get('PYEANTIC_INCLUDE','').split(':'):
     if path: cppyy.add_include_path(path)
 
 cppyy.include("e-antic/cppyy.hpp")
 
-from cppyy.gbl import eantic
+from cppyy.gbl import eantic, boost
 
 eantic.renf = eantic.renf_class.make
 eantic.renf.__sig2exc__ = True
+
+eantic.intrusive_ptr = cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']
 
 # cppyy is confused by template resolution, see
 # https://bitbucket.org/wlav/cppyy/issues/119/templatized-constructor-is-ignored
@@ -102,6 +121,8 @@ eantic.renf.__sig2exc__ = True
 def make_renf_elem_class(*args):
     if len(args) == 1:
         v = args[0]
+        if isinstance(v, eantic.intrusive_ptr):
+            v = v.get()
         if isinstance(v, eantic.renf_class):
             return eantic.renf_elem_class(v)
         else:

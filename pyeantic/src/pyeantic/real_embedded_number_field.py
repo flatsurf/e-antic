@@ -363,6 +363,8 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             True
 
         """
+        if isinstance(embed, eantic.intrusive_ptr):
+            embed = embed.get()
         if isinstance(embed, eantic.renf_class):
             # Since it is quite annoying to convert an fmpz polynomial, we parse
             # the printed representation of the renf_class. This is of course
