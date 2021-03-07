@@ -46,6 +46,29 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         REQUIRE(renf_elem_class(std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max());
         REQUIRE(renf_elem_class(std::numeric_limits<unsigned long long>::min()) == std::numeric_limits<unsigned long long>::min());
         REQUIRE(renf_elem_class(std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
+
+        REQUIRE((renf_elem_class() = std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned int>::min()) == std::numeric_limits<unsigned int>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned int>::max()) == std::numeric_limits<unsigned int>::max());
+        REQUIRE((renf_elem_class() = std::numeric_limits<long>::min()) == std::numeric_limits<long>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<long>::max()) == std::numeric_limits<long>::max());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned long>::min()) == std::numeric_limits<unsigned long>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned long>::max()) == std::numeric_limits<unsigned long>::max());
+        REQUIRE((renf_elem_class() = std::numeric_limits<long long>::min()) == std::numeric_limits<long long>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned long long>::min()) == std::numeric_limits<unsigned long long>::min());
+        REQUIRE((renf_elem_class() = std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
+    }
+
+    SECTION("Assign from FLINT integer")
+    {
+        fmpz_t n;
+        fmpz_init(n);
+        fmpz_set_str(n, "1337", 10);
+        REQUIRE(renf_elem_class(n) == 1337);
+        REQUIRE((renf_elem_class() = n) == 1337);
+        fmpz_clear(n);
     }
 
     SECTION("Assign from FLINT rational")
@@ -54,6 +77,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         fmpq_init(q);
         fmpq_set_str(q, "13/37", 10);
         REQUIRE(renf_elem_class(q) == mpq_class(13, 37));
+        REQUIRE((renf_elem_class() = q) == 1337);
         fmpq_clear(q);
     }
 
@@ -140,6 +164,20 @@ TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
 
     REQUIRE(renf_elem_class(K, a) == a);
     REQUIRE(renf_elem_class(K, renf_elem_class(K, a)) == a);
+}
+
+TEST_CASE("Move Assignment", "[renf_elem_class]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
+
+    auto a = renf_elem_class(1337);
+    auto b = renf_elem_class();
+
+    b = std::move(a);
+    a = std::move(b);
+
+    REQUIRE(a == 1337);
 }
 
 TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")

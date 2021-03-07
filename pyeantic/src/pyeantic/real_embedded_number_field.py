@@ -355,7 +355,7 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = RealEmbeddedNumberField(K)
             sage: L = NumberField(x**2 - 2, 'a')
             sage: L = RealEmbeddedNumberField(L.embeddings(AA)[1])
-            sage: M = eantic.renf_class.make("a^2 - 2", "a", "1.4 +/- .1")
+            sage: M = eantic.renf("a^2 - 2", "a", "1.4 +/- .1")
             sage: M = RealEmbeddedNumberField(M)
             sage: K is L
             True
@@ -363,8 +363,6 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             True
 
         """
-        if isinstance(embed, eantic.intrusive_ptr):
-            embed = embed.get()
         if isinstance(embed, eantic.renf_class):
             # Since it is quite annoying to convert an fmpz polynomial, we parse
             # the printed representation of the renf_class. This is of course

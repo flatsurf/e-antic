@@ -24,6 +24,7 @@ std::ostream &operator<<(std::ostream &, const renf_elem_class &);
 
 namespace eantic {
 namespace cppyy {
+
 // cppyy does not see the operators provided by boost::operators so we provide
 // something to make them explicit here:
 template <typename S, typename T>
@@ -36,16 +37,6 @@ template <typename S, typename T>
 auto truediv(const S& lhs, const T& rhs) { return lhs / rhs; }
 template <typename T>
 auto neg(const T& value) { return -value; }
-
-template <typename T>
-auto make_renf_elem_class(const T& t) {
-    return renf_elem_class(t);
-}
-
-template <typename T>
-auto make_renf_elem_class_with_parent(const boost::intrusive_ptr<const renf_class> K, const T& t) {
-    return renf_elem_class(*K, t);
-}
 
 inline mpq_class rational(const renf_elem_class& x) {
     return static_cast<mpq_class>(x);

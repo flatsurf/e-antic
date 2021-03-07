@@ -53,7 +53,7 @@ def RealEmbeddedNumberField(*args, **kwargs):
     From a ``renf_class``::
 
         sage: from pyeantic import eantic
-        sage: K = eantic.renf_class.make("a^2 - 2", "a", "1.4 +/- .1")
+        sage: K = eantic.renf("a^2 - 2", "a", "1.4 +/- .1")
         sage: RealEmbeddedNumberField(K)
         Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 
