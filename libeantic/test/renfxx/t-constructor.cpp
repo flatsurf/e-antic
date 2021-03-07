@@ -171,13 +171,13 @@ TEST_CASE("Move Assignment", "[renf_elem_class]")
     flint_rand_t& state = GENERATE(rands());
     const auto& K = GENERATE_REF(take(128, renf_classs(state)));
 
-    auto a = renf_elem_class(1337);
+    auto a = K.gen();
     auto b = renf_elem_class();
 
     b = std::move(a);
     a = std::move(b);
 
-    REQUIRE(a == 1337);
+    REQUIRE(a == K.gen());
 }
 
 TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
