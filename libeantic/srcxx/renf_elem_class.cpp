@@ -82,7 +82,7 @@ void coerce(renf_elem_class& self, const renf_class& parent)
     else if (self.is_integer())
     {
         fmpz_t value;
-        fmpz_init_set(value, renf_elem_get_fmpz(self.renf_elem_t(), parent.renf_t()));
+        fmpz_init_set(value, renf_elem_get_fmpz(self.renf_elem_t(), self.parent().renf_t()));
 
         self = parent.zero();
 
