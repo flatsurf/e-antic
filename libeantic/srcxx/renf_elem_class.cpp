@@ -729,6 +729,17 @@ mpz_class renf_elem_class::den() const {
     return res;
 }
 
+renf_elem_class::operator mpz_class() const
+{
+    mpz_class z;
+
+    assert(is_integer() && "renf_elem_class not an integer");
+
+    fmpz_get_mpz(z.get_mpz_t(), renf_elem_get_fmpz(a, nf->renf_t()));
+
+    return z;
+}
+
 renf_elem_class::operator mpq_class() const
 {
     if (is_zero())
