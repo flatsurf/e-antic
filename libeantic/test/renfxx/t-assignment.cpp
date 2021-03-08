@@ -140,6 +140,9 @@ TEST_CASE("Move Assignment", "[renf_elem_class]")
     b = std::move(a);
     a = std::move(b);
 
+    b = renf_elem_class(std::move(a));
+    a = std::move(b);
+
     REQUIRE(a == K.gen());
 }
 
