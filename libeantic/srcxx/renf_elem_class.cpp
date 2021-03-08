@@ -95,7 +95,7 @@ void coerce(renf_elem_class& self, const renf_class& parent)
         self = renf_elem_class(parent, self);
     }
     else
-        throw std::logic_error("not implemented: promotion of non-rational elements");
+        throw std::logic_error("not implemented: coercion of non-rational elements");
 }
 
 template <

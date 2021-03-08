@@ -37,7 +37,7 @@ struct RenfClassGenerator : public Catch::Generators::IGenerator<const eantic::r
 
     const eantic::renf_class& get() const override
     {
-        current = eantic::renf_class::make(generator.get());        
+        current = eantic::renf_class::make(generator.get());
         return *current;
     }
 };

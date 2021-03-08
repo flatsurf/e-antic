@@ -44,7 +44,7 @@ struct fields_hasher {
 // faster.
 struct fields_equality {
     bool operator()(const renf_class* lhs, const renf_class* rhs) const {
-        return renf_equal(lhs->renf_t(), rhs->renf_t()), lhs->gen_name() == rhs->gen_name();
+        return renf_equal(lhs->renf_t(), rhs->renf_t()) && lhs->gen_name() == rhs->gen_name();
     }
 };
 
