@@ -69,6 +69,7 @@ LIBEANTICXX_1.0.0 {
       "eantic::renf_elem_class::renf_elem_t() const";
       "eantic::renf_elem_class::num() const";
       "eantic::renf_elem_class::den() const";
+      "eantic::renf_elem_class::operator __gmp_expr<__mpz_struct [1], __mpz_struct [1]>() const";
       "eantic::renf_elem_class::operator __gmp_expr<__mpq_struct [1], __mpq_struct [1]>() const";
       "eantic::renf_elem_class::num_vector() const";
       "eantic::renf_elem_class::operator std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >() const";

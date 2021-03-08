@@ -48,7 +48,7 @@ check_PROGRAMS =                                     \
     renfxx/t-get_num_den                             \
     renfxx/t-get_str                                 \
     renfxx/t-hash                                    \
-    renfxx/t-is_integer_rational                     \
+    renfxx/t-predicates                              \
     renfxx/t-num_content                             \
     renfxx/t-pow                                     \
     renfxx/t-stream
@@ -106,7 +106,7 @@ renfxx_t_get_SOURCES = renfxx/t-get.cpp
 renfxx_t_get_num_den_SOURCES = renfxx/t-get_num_den.cpp main.cpp
 renfxx_t_get_str_SOURCES = renfxx/t-get_str.cpp
 renfxx_t_hash_SOURCES = renfxx/t-hash.cpp main.cpp
-renfxx_t_is_integer_rational_SOURCES = renfxx/t-is_integer_rational.cpp main.cpp
+renfxx_t_predicates_SOURCES = renfxx/t-predicates.cpp main.cpp
 renfxx_t_num_content_SOURCES = renfxx/t-num_content.cpp
 renfxx_t_pow_SOURCES = renfxx/t-pow.cpp
 renfxx_t_stream_SOURCES = renfxx/t-stream.cpp main.cpp
