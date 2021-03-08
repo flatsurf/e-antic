@@ -16,6 +16,13 @@
 
 #include "renfxx.h"
 
+// On macOS/clang we get "error: cannot take the address of an rvalue of type 'std::__1::basic_ostream<char>'"
+// Probably, https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator is not fixed there.
+namespace eantic {
+std::ostream &operator<<(std::ostream &, const renf_class &);
+std::ostream &operator<<(std::ostream &, const renf_elem_class &);
+}  // namespace eantic
+
 namespace eantic {
 namespace cppyy {
 
