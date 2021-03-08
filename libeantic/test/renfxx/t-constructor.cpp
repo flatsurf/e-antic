@@ -24,7 +24,7 @@ using namespace eantic;
 
 TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_class]")
 {
-    SECTION("Assign from small values")
+    SECTION("Construct from small values")
     {
         REQUIRE(renf_elem_class() == 0);
         REQUIRE(renf_elem_class(1) == 1);
@@ -32,7 +32,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         REQUIRE(renf_elem_class(mpq_class(3)) == 3);
     }
 
-    SECTION("Assign from extreme integers")
+    SECTION("Construct from extreme integers")
     {
         REQUIRE(renf_elem_class(std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
         REQUIRE(renf_elem_class(std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
@@ -61,7 +61,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         REQUIRE((renf_elem_class() = std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
     }
 
-    SECTION("Assign from FLINT integer")
+    SECTION("Construct from FLINT integer")
     {
         fmpz_t n;
         fmpz_init(n);
@@ -71,7 +71,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         fmpz_clear(n);
     }
 
-    SECTION("Assign from FLINT rational")
+    SECTION("Construct from FLINT rational")
     {
         fmpq_t q;
         fmpq_init(q);
@@ -83,7 +83,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
 
     auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 128);
 
-    SECTION("Assign from small values with a given field")
+    SECTION("Construct from small values with a given field")
     {
         REQUIRE(renf_elem_class(*K) == 0);
         REQUIRE(renf_elem_class(*K, 1) == 1);
@@ -91,7 +91,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         REQUIRE(renf_elem_class(*K, mpq_class(3)) == 3);
     }
 
-    SECTION("Assign from extreme integers with a given field")
+    SECTION("Construct from extreme integers with a given field")
     {
         REQUIRE(renf_elem_class(*K, std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
         REQUIRE(renf_elem_class(*K, std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
@@ -107,7 +107,7 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
         REQUIRE(renf_elem_class(*K, std::numeric_limits<unsigned long long>::max()) == std::numeric_limits<unsigned long long>::max());
     }
 
-    SECTION("Assign from FLINT rational with a given field")
+    SECTION("Construct from FLINT rational with a given field")
     {
         fmpq_t q;
         fmpq_init(q);
@@ -164,20 +164,6 @@ TEST_CASE("Construct renf_elem_class from renf_elem_class", "[renf_elem_class]")
 
     REQUIRE(renf_elem_class(K, a) == a);
     REQUIRE(renf_elem_class(K, renf_elem_class(K, a)) == a);
-}
-
-TEST_CASE("Move Assignment", "[renf_elem_class]")
-{
-    flint_rand_t& state = GENERATE(rands());
-    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
-
-    auto a = K.gen();
-    auto b = renf_elem_class();
-
-    b = std::move(a);
-    a = std::move(b);
-
-    REQUIRE(a == K.gen());
 }
 
 TEST_CASE("Construct renf_elem_class from vector", "[renf_elem_class]")
