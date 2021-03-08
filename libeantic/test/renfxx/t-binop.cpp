@@ -84,7 +84,7 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         c += 1ull;
         REQUIRE(c);
 
-        c -= 1ll;
+        c -= 1ull;
         REQUIRE(!c);
 
         c += mpz_class(1);
