@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2020 Julian Rüth
+    Copyright (C) 2020-2021 Julian Rüth
 
     This file is part of e-antic
 

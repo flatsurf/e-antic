@@ -35,8 +35,8 @@ easier to test this in a SageMath doctest.)::
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2019 Vincent Delecroix
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C)      2019 Vincent Delecroix
+#                      2019-2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by

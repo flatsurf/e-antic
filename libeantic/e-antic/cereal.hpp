@@ -1,6 +1,6 @@
 /*  This is a -*- C++ -*- header file.
 
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2019-2021 Julian Rüth
 
     This file is part of e-antic
 

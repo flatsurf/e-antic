@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-    Copyright (C) 2019-2020 Julian Rüth
+    Copyright (C) 2019-2021 Julian Rüth
 
     This file is part of e-antic
 

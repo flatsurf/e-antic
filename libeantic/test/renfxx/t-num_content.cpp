@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2019 Vincent Delecroix
+                  2021 Julian Rüth
 
     This file is part of e-antic
 

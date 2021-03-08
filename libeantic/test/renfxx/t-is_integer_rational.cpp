@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2018 Vincent Delecroix
-                  2020 Julian Rüth
+    Copyright (C)      2018 Vincent Delecroix
+                  2020-2021 Julian Rüth
 
     This file is part of e-antic
 
