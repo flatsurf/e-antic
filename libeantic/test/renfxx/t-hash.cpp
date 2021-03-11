@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2020 Julian Rüth
+    Copyright (C) 2020-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -13,14 +13,14 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
 
 TEST_CASE("Consistency of Hash Function", "[renf_elem_class][hash]")
 {
-    auto K = renf_class::make("x^2 - x - 1", "x", "1.618 +/- 0.1");
-    auto L = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
+    const auto K = renf_class::make("x^2 - x - 1", "x", "1.618 +/- 0.1");
+    const auto L = renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
 
     REQUIRE(*K != *L);
     REQUIRE(!(*K == *L));
@@ -37,6 +37,6 @@ TEST_CASE("Consistency of Hash Function", "[renf_elem_class][hash]")
     
     SECTION("has is compatible with operator==")
     {
-        REQUIRE(std::hash<renf_elem_class>()(mpq_class("3/2")) == std::hash<renf_elem_class>()(renf_elem_class(K, mpq_class("3/2"))));
+        REQUIRE(std::hash<renf_elem_class>()(mpq_class("3/2")) == std::hash<renf_elem_class>()(renf_elem_class(*K, mpq_class("3/2"))));
     }
 }

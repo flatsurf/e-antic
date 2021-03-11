@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
+                  2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -27,10 +28,10 @@ int main(void)
     {
         renf_t nf;
         renf_randtest(nf, state, 5, 64, 50);
-        auto K = renf_class::make(nf);
+        const auto K = renf_class::make(nf);
         renf_clear(nf);
 
-        renf_elem_class a(K);
+        renf_elem_class a(*K);
 
         // should work
         a.get_renf_elem();

@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
+                  2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -11,123 +12,139 @@
 
 #include "../../e-antic/renfxx.h"
 
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
+
+#include "../external/catch2/single_include/catch2/catch.hpp"
+
 using namespace eantic;
 
-template<typename T>
-void check_eq_ne(T t, std::shared_ptr<const renf_class> K)
+template <typename S, typename T>
+void check_relop(const S& a, const T& b)
 {
-    renf_elem_class a;
-    a = t;
-
-    renf_elem_class b(t);
-
-    renf_elem_class c(K);
-    c = t;
-
-    renf_elem_class d(K, t);
-
-    auto L = K;
-    renf_elem_class e(L, t);
-
-    #define test_neq(x,y) (x != y) || (y != x) || not (x == y) || not (y == x)
-    if (test_neq(t, a) || test_neq(t, b) || test_neq(t, c) || test_neq(t, d) || test_neq(t, e) ||
-        test_neq(a, b) || test_neq(a, c) || test_neq(a, d) || test_neq(t, e) || test_neq(b, c) ||
-        test_neq(b, d) || test_neq(b, e) || test_neq(c, d) || test_neq(c, e) || test_neq(d, e))
-        throw std::runtime_error("== and != not coherent on renf_elem_class (1)");
-    #undef test_neq
-
-    a += 1;
-    b += 2;
-    c += 3;
-    d += 4;
-    e += 5;
-    #define test_eq(x,y) (x == y) || (y == x) || not (x != y) || not (y != x)
-    if (test_eq(t, a) || test_eq(t, b) || test_eq(t, c) || test_eq(t, d) || test_eq(t, e) ||
-        test_eq(a, b) || test_eq(a, c) || test_eq(a, d) || test_eq(t, e) || test_eq(b, c) ||
-        test_eq(b, d) || test_eq(b, e) || test_eq(c, d) || test_eq(c, e) || test_eq(d, e))
-        throw std::runtime_error("== and != not coherent on renf_elem_class (2)");
-    #undef test_eq
-}
-
-template<typename T>
-void check_not_gen(T t, std::shared_ptr<const renf_class> K)
-{
-    renf_elem_class a(K);
-    renf_elem_gen(a.get_renf_elem(), K->get_renf());
-
-    if (a == t || t == a ||
-        not (a != t) || not (t != a) ||
-        (a < t) != (t > a) ||
-        (a <= t) != (t >= a) ||
-        (a > t) != (t < a) ||
-        (a >= t) != (t <= a) ||
-        (a < t) != not (a >= t) ||
-        (a > t) != not (a <= t))
-        throw std::runtime_error("comparison problem");
-}
-
-template<typename T>
-void check_order(T c1, T c2, std::shared_ptr<const renf_class> K)
-{
-    renf_elem_class a1(K, c1);
-    renf_elem_class a2(K, c2);
-
-    if (a1 == a2 || not (a1 != a2))
-        throw std::runtime_error("should not be equal");
-
-    if (a1 >= a2 || a1 > a2)
-        throw std::runtime_error("a1 > a2, a1 >= a2 issue");
-    if (not (a1 <= a2) || not (a1 < a2))
-        throw std::runtime_error("a1 < a2, a1 <= a2 issue");
-    if (a2 <= a1 || a2 < a1)
-        throw std::runtime_error("a2 <= a1, a2 < a1 issue");
-    if (not (a2 >= a1) || not (a2 > a1))
-        throw std::runtime_error("a2 >= a1, a2 > a1 issue");
-}
-
-
-int main(void)
-{
-    int c1 = -1123;
-    long c2 = 134;
-    mpz_class c3(232);
-    mpq_class c4(211561);
-    int iter;
-    FLINT_TEST_INIT(state);
-
-    for (iter = 0; iter < 10; iter++)
+    SECTION("Reflexivness")
     {
-        renf_t nf;
-        renf_randtest(nf, state, 5, 64, 10);
-        auto K = renf_class::make(nf);
-        renf_clear(nf);
+        REQUIRE(a == a);
+        REQUIRE(not (a != a));
 
-        check_eq_ne(c1, K);
-        check_not_gen(c1, K);
+        REQUIRE(a <= a);
+        REQUIRE(not (a < a));
 
-        check_eq_ne(c2, K);
-        check_not_gen(c2, K);
-
-        check_eq_ne(c3, K);
-        check_not_gen(c3, K);
-
-        check_eq_ne(c4, K);
-        check_not_gen(c4, K);
+        REQUIRE(a >= a);
+        REQUIRE(not (a > a));
     }
 
-    for (iter = 0; iter < 10; iter++)
+    SECTION("Symmetries")
     {
-        renf_t nf;
-        renf_randtest(nf, state, 5, 64, 10);
-        auto K = renf_class::make(nf);
-        renf_clear(nf);
-
-        check_order(-1, 1, K);
-        check_order(-1l, 13l, K);
-        check_order(mpz_class(3), mpz_class(5), K);
-        check_order(mpq_class(1,3), mpq_class(1,2), K);
+        REQUIRE((a == b) == (b == a));
+        REQUIRE((a != b) == (b != a));
+        REQUIRE((a < b) == (b > a));
+        REQUIRE((a > b) == (b < a));
+        REQUIRE((a <= b) == (b >= a));
+        REQUIRE((a <= b) == (b >= a));
     }
 
-    FLINT_TEST_CLEANUP(state)
-    return 0;
+    SECTION("Implications")
+    {
+        if (a == b)
+        {
+            REQUIRE(a <= b);
+            REQUIRE(a >= b);
+            REQUIRE(b <= a);
+            REQUIRE(b >= a);
+            REQUIRE(not (a < b));
+            REQUIRE(not (a > b));
+            REQUIRE(not (b < a));
+            REQUIRE(not (b > a));
+            REQUIRE(not (a != b));
+        }
+        else if (a < b)
+        {
+            REQUIRE(a <= b);
+            REQUIRE(not (a >= b));
+            REQUIRE(not (b <= a));
+            REQUIRE(b >= a);
+            REQUIRE(not (a > b));
+            REQUIRE(not (b < a));
+            REQUIRE(b > a);
+            REQUIRE(a != b);
+        }
+        else
+        {
+            
+            REQUIRE(not (a <= b));
+            REQUIRE(a >= b);
+            REQUIRE(b <= a);
+            REQUIRE(not (b >= a));
+            REQUIRE(not (a < b));
+            REQUIRE(a > b);
+            REQUIRE(b < a);
+            REQUIRE(not (b > a));
+            REQUIRE(a != b);
+        }
+    }
+}
+
+TEMPLATE_TEST_CASE("Relational Operators with Integers", "[renf_elem_class]", int, unsigned int, long, unsigned long, long long, unsigned long long)
+{
+    using T = TestType;
+
+    flint_rand_t& state = GENERATE(rands());
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
+    
+    auto a = GENERATE_REF(take(8, renf_elem_classs(state, K)));
+    T b = GENERATE(0, std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+
+    check_relop(a, b);
+}
+
+TEST_CASE("Relational Operators with mpz", "[renf_elem_class]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
+    
+    auto a = GENERATE_REF(take(8, renf_elem_classs(state, K)));
+    mpz_class b = GENERATE(0, 1337, -1);
+
+    check_relop(a, b);
+}
+
+TEST_CASE("Relational Operators with mpq", "[renf_elem_class]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
+    
+    auto a = GENERATE_REF(take(8, renf_elem_classs(state, K)));
+    mpq_class b = GENERATE(mpq_class(13, 37), mpq_class(0), mpq_class(-1));;
+
+    check_relop(a, b);
+}
+
+TEST_CASE("Relational Operators with renf_elem_class", "[renf_elem_class]")
+{
+    flint_rand_t& state = GENERATE(rands());
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
+    
+    auto a = GENERATE_REF(take(8, renf_elem_classs(state, K)));
+
+    SECTION("Identical Operands")
+    {
+        check_relop(a, a);
+    }
+
+    SECTION("Operands in same Field")
+    {
+        auto b = GENERATE_REF(take(4, renf_elem_classs(state, K)));
+
+        check_relop(a, b);
+    }
+
+    SECTION("Operands in Different Fields")
+    {
+        const auto& L = GENERATE_REF(take(4, renf_classs(state)));
+        auto b = GENERATE_REF(L.zero(), L.one());
+
+        check_relop(a, b);
+    }
 }

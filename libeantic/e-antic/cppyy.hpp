@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-    Copyright (C) 2019-2020 Julian Rüth
+    Copyright (C) 2019-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -16,7 +16,8 @@
 
 #include "renfxx.h"
 
-// See https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator
+// On macOS/clang we get "error: cannot take the address of an rvalue of type 'std::__1::basic_ostream<char>'"
+// Probably, https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator is not fixed there.
 namespace eantic {
 std::ostream &operator<<(std::ostream &, const renf_class &);
 std::ostream &operator<<(std::ostream &, const renf_elem_class &);
@@ -24,6 +25,7 @@ std::ostream &operator<<(std::ostream &, const renf_elem_class &);
 
 namespace eantic {
 namespace cppyy {
+
 // cppyy does not see the operators provided by boost::operators so we provide
 // something to make them explicit here:
 template <typename S, typename T>
@@ -36,16 +38,6 @@ template <typename S, typename T>
 auto truediv(const S& lhs, const T& rhs) { return lhs / rhs; }
 template <typename T>
 auto neg(const T& value) { return -value; }
-
-template <typename T>
-auto make_renf_elem_class(const T& t) {
-    return renf_elem_class(t);
-}
-
-template <typename T>
-auto make_renf_elem_class_with_parent(const std::shared_ptr<renf_class> K, const T& t) {
-    return renf_elem_class(K, t);
-}
 
 inline mpq_class rational(const renf_elem_class& x) {
     return static_cast<mpq_class>(x);
