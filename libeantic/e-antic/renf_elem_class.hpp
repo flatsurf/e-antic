@@ -17,10 +17,9 @@
 #include <gmpxx.h>
 #include <boost/operators.hpp>
 #include <flint/fmpq.h>
-#include <memory>
+#include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <vector>
 
-#include "e-antic.h"
 #include "renfxx_fwd.hpp"
 #include "renf_elem.h"
 
@@ -48,42 +47,52 @@ public:
     renf_elem_class(unsigned long long);
     renf_elem_class(const mpz_class &);
     renf_elem_class(const mpq_class &);
+    renf_elem_class(const fmpz_t);
     renf_elem_class(const fmpq_t);
     // The zero element in k; note that all overloads that take the field as a
     // parameter hold a non-owning reference to the field, i.e., the element is
     // only valid while that reference is.
-    explicit renf_elem_class(std::shared_ptr<const renf_class> k);
+    explicit renf_elem_class(const renf_class& k);
     // An integer in the field k
-    renf_elem_class(std::shared_ptr<const renf_class> k, const mpz_class &);
+    renf_elem_class(const renf_class& k, const mpz_class &);
     // A rational in the field k
-    renf_elem_class(std::shared_ptr<const renf_class> k, const mpq_class &);
-    // A rational in the field k
-    renf_elem_class(std::shared_ptr<const renf_class> k, const fmpq_t);
+    renf_elem_class(const renf_class& k, const mpq_class &);
     // An integer in the field k
-    renf_elem_class(std::shared_ptr<const renf_class> k, const int);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const unsigned int);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const long);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const unsigned long);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const long long);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const unsigned long long);
+    renf_elem_class(const renf_class& k, const fmpz_t);
+    // A rational in the field k
+    renf_elem_class(const renf_class& k, const fmpq_t);
+    // An integer in the field k
+    renf_elem_class(const renf_class& k, int);
+    renf_elem_class(const renf_class& k, unsigned int);
+    renf_elem_class(const renf_class& k, long);
+    renf_elem_class(const renf_class& k, unsigned long);
+    renf_elem_class(const renf_class& k, long long);
+    renf_elem_class(const renf_class& k, unsigned long long);
     // Coerce number field element to the field k. Only implemented in trivial cases.
-    renf_elem_class(std::shared_ptr<const renf_class> k, const renf_elem_class&);
+    renf_elem_class(const renf_class& k, const renf_elem_class&);
     // Parse the string into an element in the field k
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::string &);
+    renf_elem_class(const renf_class& k, const std::string &);
     // The element Σc_i·α^i where α is the generator of the field k; the number
     // of coefficients must not exceed the degree of the field.
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<int> &);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<unsigned int> &);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<long> &);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<unsigned long> &);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<mpz_class> &);
-    renf_elem_class(std::shared_ptr<const renf_class> k, const std::vector<mpq_class> &);
+    renf_elem_class(const renf_class& k, const std::vector<int> &);
+    renf_elem_class(const renf_class& k, const std::vector<unsigned int> &);
+    renf_elem_class(const renf_class& k, const std::vector<long> &);
+    renf_elem_class(const renf_class& k, const std::vector<unsigned long> &);
+    renf_elem_class(const renf_class& k, const std::vector<mpz_class> &);
+    renf_elem_class(const renf_class& k, const std::vector<mpq_class> &);
 
     ~renf_elem_class() noexcept;
 
-    // Note that we do not implement any operator= for other types explicitly
-    // but funnel everything through the implicit constructors above and the
-    // move assignment here.
+    renf_elem_class & operator=(int);
+    renf_elem_class & operator=(unsigned int);
+    renf_elem_class & operator=(long);
+    renf_elem_class & operator=(unsigned long);
+    renf_elem_class & operator=(long long);
+    renf_elem_class & operator=(unsigned long long);
+    renf_elem_class & operator=(const mpz_class &);
+    renf_elem_class & operator=(const mpq_class &);
+    renf_elem_class & operator=(const fmpz_t);
+    renf_elem_class & operator=(const fmpq_t);
     renf_elem_class & operator=(const renf_elem_class &);
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
 
@@ -104,6 +113,7 @@ public:
     // data conversion
     mpz_class num() const;
     mpz_class den() const;
+    explicit operator mpz_class() const;
     explicit operator mpq_class() const;
     std::vector<mpz_class> num_vector() const;
     explicit operator std::string() const;
@@ -218,7 +228,7 @@ public:
 
 private:
     // The parent number field.
-    std::shared_ptr<const renf_class> nf;
+    boost::intrusive_ptr<const renf_class> nf;
     // The underlying element.
     // We need mutability as calls might need to refine the precision of
     // the stored embedding.
@@ -226,6 +236,8 @@ private:
 
     // Serialization, see cereal.hpp
     friend cereal::access;
+
+    LIBEANTIC_API friend void swap(renf_elem_class& lhs, renf_elem_class& rhs) noexcept;
 };
 
 // overloads for global functions

@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2017 Vincent Delecroix
-                  2020 Julian Rüth
+    Copyright (C)      2017 Vincent Delecroix
+                  2020-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -12,23 +12,21 @@
 
 #include "../../e-antic/renfxx.h"
 
-#include "rand_generator.hpp"
-#include "renf_class_generator.hpp"
-#include "renf_elem_class_generator.hpp"
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
-
-static std::shared_ptr<const renf_class> K = nullptr;
 
 TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(take(16, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
     auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
-    CAPTURE(*K, a);
+    CAPTURE(K, a);
 
     SECTION("Unary Operators")
     {
@@ -86,7 +84,7 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         c += 1ull;
         REQUIRE(c);
 
-        c -= 1ll;
+        c -= 1ull;
         REQUIRE(!c);
 
         c += mpz_class(1);
@@ -174,14 +172,14 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
     SECTION("Build Element as Sum of Terms")
     {
-        auto c = K->zero();
-        auto g = K->one();
+        auto c = K.zero();
+        auto g = K.one();
 
         auto coeffs = a.num_vector();
         for (size_t i = 0; i < coeffs.size(); i++)
         {
             c += coeffs[i] * g;
-            g *= K->gen();
+            g *= K.gen();
         }
 
         c /= a.den();
@@ -236,12 +234,33 @@ TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
 
     SECTION("Rational Elements can be Mixed")
     {
-        b = M->one();
-
-        REQUIRE((a + b - a).is_one());
-
         b = M->zero();
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b - a) == -a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
 
-        REQUIRE((a + b - a).is_zero());
+        b = M->one();
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b / b) == a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
+        REQUIRE((a / b * b) == a);
+
+        b = renf_elem_class(*M, "1/2");
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b / b) == a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
+        REQUIRE((a / b * b) == a);
     }
 }

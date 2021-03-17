@@ -10,7 +10,7 @@ required for classical geometry.
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2020 Julian Rüth
+#                      2019-2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -355,7 +355,7 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = RealEmbeddedNumberField(K)
             sage: L = NumberField(x**2 - 2, 'a')
             sage: L = RealEmbeddedNumberField(L.embeddings(AA)[1])
-            sage: M = eantic.renf_class.make("a^2 - 2", "a", "1.4 +/- .1")
+            sage: M = eantic.renf("a^2 - 2", "a", "1.4 +/- .1")
             sage: M = RealEmbeddedNumberField(M)
             sage: K is L
             True
