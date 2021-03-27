@@ -1,7 +1,7 @@
 /// Real embedded number fields
 /*
     Copyright (C)        2016 Vincent Delecroix
-                  2020 - 2021Julian Rüth
+                  2020 - 2021 Julian Rüth
 
     This file is part of e-antic
 
