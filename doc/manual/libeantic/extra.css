@@ -1,0 +1,24 @@
+.section > * {
+  margin-left: 20px;
+}
+
+.section > h1, .section > h2, .section > h3, .section > h4, .section > h5, .section > h6 {
+  margin-left: 0;
+}
+
+.rst-content h1 code, .rst-content h2 code, .rst-content h3 code, .rst-content h4 code, .rst-content h5 code, .rst-content h6 code {
+  border: 0;
+  padding: 0;
+  color: #343431;
+  background-color: transparent;
+}
+
+:target {
+  background-color: #fbe54e;
+}
+
+a code {
+  color: #2980B9 !important;
+}
+
+.wy-nav-content { max-width: 1080px; }

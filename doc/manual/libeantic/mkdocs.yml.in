@@ -1,11 +1,18 @@
 site_name: e-antic
-docs_dir: markdown
-theme: readthedocs
-pages:
+docs_dir: .
+theme:
+  name: readthedocs
+  navigation_depth: 2
+extra_css:
+  - extra.css
+nav:
 - Home: index.md
 - libeantic:
   - Overview: overview_c.md
-  - renf: libeantic/doc_renf.md
-  - renf_elem: libeantic/doc_renf_elem.md
+  - "renf — real embedded number fields": doc_renf_h.md
+  - "renf_elem — number field elements": doc_renf_elem_h.md
 - libeanticxx:
   - Overview: overview_cxx.md
+markdown_extensions:
+  - toc:
+      permalink: True
