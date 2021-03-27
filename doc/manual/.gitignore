@@ -1,5 +1,2 @@
 .gitignore
-html
-json
-markdown
-mkdocs.yml
+/generated

@@ -1,46 +1,50 @@
 EXTRA_DIST = README.md
 
-MARKDOWN=$(builddir)/markdown/index.md $(builddir)/markdown/overview_c.md $(builddir)/markdown/overview_cxx.md $(builddir)/markdown/build.md $(builddir)/markdown/build_in_conda.md $(builddir)/markdown/install_in_conda.md
+# TODO: Set warn-as-error for most invocations.
 
-html: $(builddir)/mkdocs.yml $(builddir)/markdown/pyeantic $(MARKDOWN)
-	@# Create inventory of pyeantic (using the test-env scripts which set all
-	@# paths so that we can 'import pyeantic' from the build tree.)
+$(builddir)/generated/pyeantic/source:
+	@# Create a copy of the source dir with some generated assets since Sphinx cannot read from more than one directory.
+	mkdir -p $(builddir)/generated/pyeantic
+	rsync -r $(srcdir)/pyeantic/ $(builddir)/generated/pyeantic/source
+
+$(builddir)/generated/pyeantic/inventory: $(builddir)/generated/pyeantic/source
+	@# Create an inventory of pyeantic so standardese can link against it.
 	source $(builddir)/../../pyeantic/test/test-env.sh && \
-	python $(SPHINXBUILD) -M json $(srcdir)/pyeantic $(builddir)/json/pyeantic
-	@# Build markdown files and inventory from e-antic C/C++ headers
-	mkdir -p $(builddir)/markdown/libeantic
-	$(STANDARDESE) -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/markdown/libeantic/ --compilation.standard=c++17 `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'`
-	@# Create html documentation for pyeantic
+	python $(SPHINXBUILD) -b json $(builddir)/generated/pyeantic/source $(builddir)/build/pyeantic/inventory -Q
+
+$(builddir)/generated/pyeantic/html: $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/source
+	@# Create HTML pages for pyeantic with sphinx
 	source $(builddir)/../../pyeantic/test/test-env.sh && \
-	python $(SPHINXBUILD) -M html $(srcdir)/pyeantic $(builddir)/html/pyeantic
+	python $(SPHINXBUILD) -b html -n $(builddir)/generated/pyeantic/source $(builddir)/generated/pyeantic/html --color -a -E -W
+
+$(builddir)/generated/libeantic/inventory:
+	@# Create an inventory of libeantic so sphinx can link against it.
+	## TODO: Only generated inventory
+	mkdir -p $(builddir)/generated/libeantic/inventory
+	$(STANDARDESE) --free-file-comments -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'`
+
+$(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory
+	@# Build markdown files from e-antic C/C++ headers
+	##TODO: Have standardese parse CPPFLAGS instead.
+	mkdir -p $(builddir)/generated/libeantic/
+	rsync -r $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
+	$(STANDARDESE) --warn-as-error --free-file-comments -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'`
+
+$(builddir)/generated/libeantic/html: $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/markdown/mkdocs.yml
 	@# Create html documentation from markdown files
-	$(MKDOCS) build --dirty --config-file $(builddir)/mkdocs.yml --site-dir $(builddir)/html/
+	cd $(builddir)/generated/libeantic/markdown &&\
+	$(MKDOCS) build --config-file mkdocs.yml --site-dir $(abs_builddir)/generated/libeantic/html/
 
-serve: html
-	python -m http.server 8080 --bind 127.0.0.1 --directory html
-
-BUILT_SOURCES = mkdocs.yml markdown/index.md markdown/overview_c.md markdown/overview_cxx.md markdown/build.md markdown/build_in_conda.md markdown/install_in_conda.md
-
-$(builddir)/mkdocs.yml: $(srcdir)/mkdocs.yml.in Makefile
+$(builddir)/generated/libeantic/markdown/mkdocs.yml: $(srcdir)/libeantic/mkdocs.yml.in Makefile
+	mkdir -p $(builddir)/generated/libeantic/markdown
 	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
 
-$(builddir)/markdown/index.md: $(srcdir)/index.md Makefile
-$(builddir)/markdown/overview_c.md: $(srcdir)/overview_c.md Makefile
-$(builddir)/markdown/overview_cxx.md: $(srcdir)/overview_cxx.md Makefile
-$(builddir)/markdown/build.md: $(srcdir)/build.md Makefile
-$(builddir)/markdown/build_in_conda.md: $(srcdir)/build_in_conda.md Makefile
-$(builddir)/markdown/install_in_conda.md: $(srcdir)/install_in_conda.md Makefile
+html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
+	mkdir -p $(builddir)/generated/e-antic/html
+	rsync -r $(builddir)/generated/libeantic/html/ $(builddir)/generated/e-antic/html/libeantic
+	rsync -r $(builddir)/generated/pyeantic/html/ $(builddir)/generated/e-antic/html/pyeantic
 
+serve: html
+	python -m http.server 8080 --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
 
-
-
-$(builddir)/markdown/pyeantic: Makefile
-	@mkdir -p $(builddir)/markdown
-	@rm -f $(builddir)/markdown/pyeantic
-	ln -s ../html/pyeantic $(builddir)/markdown/pyeantic
-
-$(MARKDOWN):
-	@mkdir -p $(builddir)/markdown
-	cp $< $@
-
-.PHONY: serve
+.PHONY: serve $(builddir)/generated/libeantic/html $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/html $(builddir)/generated/pyeantic/inventory $(builddir)/generated/pyeantic/source
