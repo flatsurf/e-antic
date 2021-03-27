@@ -38,7 +38,7 @@ from pyeantic import eantic
 class RealEmbeddedNumberFieldElement(FieldElement):
     r"""
     An element of a :class:`RealEmbeddedNumberField`, i.e., a wrapper of
-    e-antic's ``renf_elem_class`.
+    e-antic's ``renf_elem_class``.
 
     ..NOTES:
 
@@ -59,8 +59,6 @@ class RealEmbeddedNumberFieldElement(FieldElement):
         sage: TestSuite(a).run()
 
     """
-    renf_elem_class = cppyy.gbl.eantic.renf_elem_class
-
     def __init__(self, parent, value):
         r"""
         TESTS::
