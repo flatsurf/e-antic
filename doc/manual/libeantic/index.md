@@ -29,9 +29,9 @@ The following describe alternative ways of installing e-antic
 
 ## C library
 
-* [tour of the C interface](overview_c.md)
-* [number fields `renf.h`](libeantic/doc_renf)
-* [number field elements `renf_elem.h`](libeantic/doc_renf_elem)
+* [tour of the C interface](overview_c)
+* [number fields `renf.h`](doc_renf_h)
+* [number field elements `renf_elem.h`](doc_renf_elem_h)
 
 The following headers extend [flint](http://flintlib.org/). They should not
 be considered as part of the e-antic API and will be ported to flint in the
@@ -43,7 +43,7 @@ near future.
 ## C++ interface
 
 * [tour of the C++ interface](overview_cxx.md)
-* [C++ interface `renfxx.h` BROKEN LINK](libeantic/doc_renfxx)
+* [C++ interface `renfxx.h`](doc_renfxx_h)
 
 ## Python interface
 

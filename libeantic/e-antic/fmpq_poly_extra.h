@@ -22,8 +22,6 @@
 extern "C" {
 #endif
 
-/// === flint, arb extra ===
-
 /// Set the polynomial `p` from the string `s` using `var` as variable name
 LIBEANTIC_API int fmpq_poly_set_str_pretty(fmpq_poly_t p, const char * s, const char * var);
 

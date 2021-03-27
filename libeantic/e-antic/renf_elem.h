@@ -42,7 +42,7 @@ LIBEANTIC_API void EANTIC_nf_elem_add_fmpq(nf_elem_t a, const nf_elem_t b, const
 /// === Datastructures ===
 
 /// A real embedded number field element
-typedef struct LIBEANTIC_API
+typedef struct LIBEANTIC_API renf_elem_struct
 {
     nf_elem_t elem;    /* ANTIC number field element */
     arb_t emb;         /* the embedded real ball    */
@@ -55,7 +55,7 @@ typedef renf_elem_struct renf_elem_t[1];
 
 /// Initialize the number field element `a`. This function has to be called prior
 /// to any code using `a` as it performs allocation. Once done with `a` the
-/// memory must be freed with [renf_elem_clear].
+/// memory must be freed with [renf_elem_clear]().
 LIBEANTIC_API void renf_elem_init(renf_elem_t a, const renf_t nf);
 
 /// Deallocate the memory for `a` that was allocated with [renf_elem_init].

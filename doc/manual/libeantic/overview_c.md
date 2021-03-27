@@ -1,20 +1,18 @@
 # Overview of the C interface
 
 The main structures for number field and number field elements are respectively
-[renf_t BROKEN LINK](renf_t) and [renf_elem_t BROKEN LINK](renf_elem_t). These are
-pointers to C struct and can be safely used as function arguments.
-Functions that operate on them respectively start by
-`renf_` and `renf_elem_`.
+[renf_t]() and [renf_elem_t](). These are pointers to C struct and can be
+safely used as function arguments.  Functions that operate on them respectively
+start by `renf_` and `renf_elem_`.
 
 To initialize a number field, the most generic function is
-[renf_init BROKEN LINK](renf_init) which requires number fields a [rational
-flint polynomial (`fmpq_poly_t`)](http://flintlib.org/sphinx/fmpq_poly.html)
-and a [arb real ball (`arb_t`)](https://fredrikj.net/arb/arb.html). To
-deallocate use [renf_free BROKEN LINK](renf_free).
+[renf_init]() which requires number fields a [rational flint polynomial
+(`fmpq_poly_t`)](http://flintlib.org/sphinx/fmpq_poly.html) and a [arb real
+ball (`arb_t`)](https://fredrikj.net/arb/arb.html). To deallocate use
+[renf_clear]().
 
 For initialization and deallocation of number field elements use
-[renf_elem_init BROKEN LINK](renf_elem_init) and
-[renf_elem_free BROKEN LINK](renf_elem_free).
+[renf_elem_init]() and [renf_elem_clear]().
 ```c
 #include <e-antic.h>
 
@@ -48,11 +46,11 @@ int main() {
   renf_elem_print_pretty(b, "a", nf, 32, EANTIC_STR_ALG);
 
   /* deallocation */
-  fmpq_poly_free(p);
-  arb_free(emb);
-  renf_elem_free(a);
-  renf_elem_free(b);
-  renf_free(nf);
+  fmpq_poly_clear(p);
+  arb_clear(emb);
+  renf_elem_clear(a);
+  renf_elem_clear(b);
+  renf_clear(nf);
 
   return 0;
 }

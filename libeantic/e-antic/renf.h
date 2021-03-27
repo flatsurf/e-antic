@@ -26,20 +26,22 @@
 extern "C" {
 #endif
 
-/// Datastructure for real embedded number field
+/// === Memory Layout ===
+/// Data structure for real embedded number field.
 /// The attributes are not part of the API and should be accessed via
 /// the provided methods. The datastructure contains an immutability
 /// flag that, when set, forbid any refinement of the floating point
 /// embedding.
-typedef struct LIBEANTIC_API
+typedef struct LIBEANTIC_API renf_struct
 {
   nf_t nf;
-  fmpz_poly_t der;   /* derivative (without denominator)                   */
-  slong prec;        /* precision used for binary operations on enclosures */
-  arb_t emb;         /* embedding of generator as a real ball              */
-  int immutable;     /* whether emb cannot be refined currently            */
+  fmpz_poly_t der;   //< derivative (without denominator)
+  slong prec;        //< precision used for binary operations on enclosures
+  arb_t emb;         //< embedding of generator as a real ball
+  int immutable;     //< whether emb cannot be refined currently
 } renf;
 
+/// === Type Aliases ===
 /// Pointer to a renf structure
 typedef renf * renf_ptr;
 
@@ -50,7 +52,6 @@ typedef const renf * renf_srcptr;
 typedef renf renf_t[1];
 
 /// === Initialization, allocation, deallocation ===
-
 /// Set `nf` to be the real embedded number field define by the minimal polynomial `pol`
 /// and the (approximate) embedding `emb`. The parameter `prec` is used as the default
 /// precision used for binary operations on enclosures.
@@ -88,11 +89,9 @@ LIBEANTIC_API int renf_equal(const renf_t nf1, const renf_t nf2);
 LIBEANTIC_API slong renf_degree(renf_t nf);
 
 /// === Randomisation ===
-
 LIBEANTIC_API void renf_randtest(renf_t nf, flint_rand_t state, slong len, slong prec, mp_bitcnt_t bits);
 
 /// === Printing ===
-
 /// Return a C string which represent the number field `nf` where `var` is used for variable
 /// name of the polynomial and `prec` for the precision of the embedding
 /// The returned string has to be deallocated with flint_free after usage.
