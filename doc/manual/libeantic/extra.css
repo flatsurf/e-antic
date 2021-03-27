@@ -21,4 +21,16 @@ a code {
   color: #2980B9 !important;
 }
 
+a[href^="/"]:after, a[href^="https://"]:after {
+  /* MIT licensed octicon */
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC42MDQgMWg0LjE0NmEuMjUuMjUgMCAwMS4yNS4yNXY0LjE0NmEuMjUuMjUgMCAwMS0uNDI3LjE3N0wxMy4wMyA0LjAzIDkuMjggNy43OGEuNzUuNzUgMCAwMS0xLjA2LTEuMDZsMy43NS0zLjc1LTEuNTQzLTEuNTQzQS4yNS4yNSAwIDAxMTAuNjA0IDF6TTMuNzUgMkExLjc1IDEuNzUgMCAwMDIgMy43NXY4LjVjMCAuOTY2Ljc4NCAxLjc1IDEuNzUgMS43NWg4LjVBMS43NSAxLjc1IDAgMDAxNCAxMi4yNXYtMy41YS43NS43NSAwIDAwLTEuNSAwdjMuNWEuMjUuMjUgMCAwMS0uMjUuMjVoLTguNWEuMjUuMjUgMCAwMS0uMjUtLjI1di04LjVhLjI1LjI1IDAgMDEuMjUtLjI1aDMuNWEuNzUuNzUgMCAwMDAtMS41aC0zLjV6Ij48L3BhdGg+PC9zdmc+") center right no-repeat;
+  content: "";
+  padding-left: 2ex;
+  background-size: .8em;
+}
+
+.wy-side-scroll a:after {
+  filter: invert(100%);
+}
+
 .wy-nav-content { max-width: 1080px; }

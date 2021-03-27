@@ -5,7 +5,7 @@
 e-antic is a C library for exact computation with real embedded algebraic
 numbers. It also offers C++ and Python interfaces.
 
-The C library is built on top of [flint](flintlib.org/),
+The C library is built on top of [flint](https://flintlib.org/),
 [arb](https://fredrikj.net/arb/) and [antic](https://github.com/wbhart/antic)
 and follows the same naming conventions.
 
@@ -49,7 +49,7 @@ near future.
 
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
 that provides automatic bindings to the C++ interface. The documentation of the
-Python interface can be found [here](pyeantic/html/index.html).
+Python interface can be found [here](/pyeantic).
 
 ## Indices
 

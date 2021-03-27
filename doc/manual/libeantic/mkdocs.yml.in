@@ -1,5 +1,6 @@
 site_name: e-antic
 docs_dir: .
+strict: true
 theme:
   name: readthedocs
   navigation_depth: 2
@@ -13,6 +14,8 @@ nav:
   - "renf_elem — number field elements": doc_renf_elem_h.md
 - libeanticxx:
   - Overview: overview_cxx.md
+- pyeantic:
+  - 'Manual': '/pyeantic'
 markdown_extensions:
   - toc:
       permalink: True
