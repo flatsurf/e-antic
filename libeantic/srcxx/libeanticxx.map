@@ -4,7 +4,7 @@ LIBEANTICXX_1.0.0 {
     extern "C++" {
       "eantic::renf_class::~renf_class()";
       "eantic::renf_class::make()";
-      "eantic::renf_class::make(renf const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)";
+      "eantic::renf_class::make(renf_struct const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)";
       "eantic::renf_class::make(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long)";
       "eantic::renf_class::degree() const";
       "eantic::renf_class::zero() const";
