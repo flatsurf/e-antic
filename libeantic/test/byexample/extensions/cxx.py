@@ -49,7 +49,7 @@ class MarkdownCxxDelimiter(ZoneDelimiter):
             # Begin with a markdown fenced-code marker
             ^[ ]*
                 (?:
-                    (?P<marker>```(?:``)*)[ ]*(c|c\+\+|cpp)?  # fenced-code marker (backticks + language)
+                    (?P<marker>```(?:``)*)[ ]*(c|c\+\+|cpp)\b # fenced-code marker (backticks + language)
                 )
             # then, grab everything until the first end marker
             (?P<zone>.*?)
@@ -74,7 +74,7 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # Begin with a markdown fenced-code marker
             ^[ ]*
                 (?:
-                    (?P<marker>///[ ]```(?:``)*)[ ]*(c|c\+\+|cpp)  # fenced-code marker (backticks + language)
+                    (?P<marker>///[ ]```(?:``)*)[ ]*(c|c\+\+|cpp)\b  # fenced-code marker (backticks + language)
                 )
             # then, grab everything until the first end marker
             (?P<zone>.*?)

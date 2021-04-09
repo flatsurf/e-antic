@@ -82,12 +82,24 @@ AS_IF([test "x$with_benchmark" != "xno"],
       ], [])
 AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
 
+dnl We test C/C++ code snippets with byexample which requires cling.
+dnl We fail if byexample cannot be found but let the user disable it explicitly.
+AC_ARG_WITH([byexample], AS_HELP_STRING([--without-byexample], [Do not test C/C++ code snippets with byexample]))
+AS_IF([test "x$with_byexample" != "xno"],
+      [
+       with_byexample=yes
+       AC_MSG_CHECKING([for byexample])
+       AS_IF([byexample --version 2> /dev/null], , AC_MSG_ERROR([byexample for make check not found; run --without-byexample to disable byexample tests in make check]))
+       AC_MSG_RESULT([yes])
+      ], [])
+AM_CONDITIONAL([HAVE_BYEXAMPLE], [test "x$with_byexample" = "xyes"])
+
 AC_LANG_POP([C++])
 
 AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only export a curated list of symbols in the shared library.]))
 AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
 
 AC_CONFIG_HEADERS([e-antic/config.h])
-AC_CONFIG_FILES([Makefile src/Makefile srcxx/Makefile test/Makefile benchmark/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile srcxx/Makefile test/Makefile benchmark/Makefile test/byexample/Makefile])
 
 AC_OUTPUT
