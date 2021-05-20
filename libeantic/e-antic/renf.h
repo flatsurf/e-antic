@@ -48,7 +48,7 @@ typedef renf * renf_ptr;
 /// Constant pointer to a renf structure
 typedef const renf * renf_srcptr;
 
-/// Array of size one
+/// Array of size one (TODO)
 typedef renf renf_t[1];
 
 /// === Initialization, allocation, deallocation ===

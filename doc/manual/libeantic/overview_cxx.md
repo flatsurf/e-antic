@@ -14,5 +14,5 @@ const auto b = a * a - 2;
 #include <iostream>
 
 std::cout << b;
-// -> (a^2 - 2 ~ -1.8793852)t
+// -> (a^2 - 2 ~ -1.8793852)
 ```

@@ -54,8 +54,8 @@ class MarkdownCxxDelimiter(ZoneDelimiter):
             # then, grab everything until the first end marker
             (?P<zone>.*?)
             # finally, the end marker
-            (?(marker)    # if we matched a fenced-code maker previously
-                  ^[ ]*(?P=marker) # then we must match the same amount of backticks
+            (?(marker)
+                  ^[ ]*(?P=marker) # we must match the same amount of backticks
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
@@ -74,17 +74,17 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # Begin with a markdown fenced-code marker
             ^[ ]*
                 (?:
-                    (?P<marker>///[ ]```(?:``)*)[ ]*(c|c\+\+|cpp)\b  # fenced-code marker (backticks + language)
+                    (?P<marker>///[ ]```(?:``)*)$ # fenced-code marker (backticks)
                 )
             # then, grab everything until the first end marker
             (?P<zone>.*?)
             # finally, the end marker
-            (?(marker)    # if we matched a fenced-code maker previously
-                  ^[ ]*(?P=marker) # then we must match the same amount of backticks
+            (?(marker)    
+                  ^[ ]*(?P=marker) # we must match the same amount of backticks
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
-    def __repr__(self): return "/// ```c++ ... ``` or /// ```cpp ... ``` or /// ```c ... ```"
+    def __repr__(self): return "/// ``` ... ```"
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     r"""
@@ -119,6 +119,7 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     def get_snippet_and_expected(self, match, where):
         snippet, expected = super(CxxPromptFinder, self).get_snippet_and_expected(match, where)
         expected = self._remove_expected(expected)
+
         return snippet, expected
 
     def _remove_prompts(self, snippet):
@@ -145,3 +146,7 @@ class CxxInterpreter(byexample.modules.cpp.CPPInterpreter):
         return ret
 
     def __repr__(self): return "C++ Interpreter"
+
+    def initialize(self, options):
+        super().initialize(options)
+        self._sendline("#include <iostream>")

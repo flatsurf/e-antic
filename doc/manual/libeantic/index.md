@@ -43,7 +43,8 @@ near future.
 ## C++ interface
 
 * [tour of the C++ interface](overview_cxx.md)
-* [C++ interface `renfxx.h`](doc_renfxx_h)
+* [number fields `renf_class.hpp`](doc_renf_class_hpp)
+* [number field elements `renf_elem_class.hpp`](doc_renf_elem_class_hpp)
 
 ## Python interface
 

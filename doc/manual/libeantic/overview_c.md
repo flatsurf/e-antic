@@ -1,57 +1,87 @@
 # Overview of the C interface
 
-The main structures for number field and number field elements are respectively
-[renf_t]() and [renf_elem_t](). These are pointers to C struct and can be
-safely used as function arguments.  Functions that operate on them respectively
-start by `renf_` and `renf_elem_`.
+There are two main object in e-antic. Number fields, which are represented by a
+[renf_t](), and their elements, represented by a [renf_elem_t](). Functions
+that operate on number fields are defined in the header [e-antic/renf.h]() and
+have the prefix `renf_`. Functions that operate on elements of number fields
+are defined in the header [e-antic/renf_elem.h]() and have the prefix
+`renf_elem_`.
 
-To initialize a number field, the most generic function is
-[renf_init]() which requires number fields a [rational flint polynomial
-(`fmpq_poly_t`)](http://flintlib.org/sphinx/fmpq_poly.html) and a [arb real
-ball (`arb_t`)](https://fredrikj.net/arb/arb.html). To deallocate use
-[renf_clear]().
+To work with e-antic, you first need to create a number field. Typically, you
+will use the function [renf_init]() to create a number field from its defining
+rational polynomial as a FLINT [fmpq_poly_t]() and an
+approximation of one of its real roots as an [arb_t]().
 
-For initialization and deallocation of number field elements use
-[renf_elem_init]() and [renf_elem_clear]().
+Once a [renf_t]() has been initialized, its elements can be created with
+[renf_elem_init](). Eventually, the memory taken by these elements should be
+freed again with [renf_elem_clear]() and finally, the memory taken by the
+number field itself should also be freed with [renf_clear]().
+
+## Example
+
+We want to construct a totally real field with minimal polynomial $x^3 - 3x +
+1$, represented by an `fmpq_poly_t`.
+
 ```c
-#include <e-antic.h>
+#include <e-antic/fmpq_poly_extra.h>
 
-int main() {
-  fmpq_poly_t poly;
-  arb_t emb;
-  renf_t nf;
-  renf_elem_t a, b;
+fmpq_poly_t poly;
+fmpq_poly_init(poly);
+fmpq_poly_set_str_pretty(poly, "a^3 - 3*a + 1", "a");
+```
 
-  /* initialize and set the polynomial poly to x^3 - 4x + 1 */
-  fmpq_poly_init(poly);
-  fmpq_poly_set_str_pretty(poly, "a^3 - 3*a + 1", "a");
+We fix one of its root which is approximately 0.34.
 
-  /* initialize and set the real ball emb to approximately 0.34 */
-  arb_init(emb);
-  arb_set_str(emb, "0.34 +/- 0.01", 32);
+```c
+#include <arb.h>
 
-  /* initialize the number field nf with poly and emb */
-  renf_init(nf, poly, emb, 64);
+arb_t emb;
+arb_init(emb);
+arb_set_str(emb, "0.34 +/- 0.01", 32);
+```
 
-  /* initialize a and b */
-  renf_elem_init(a, nf);
-  renf_elem_init(b, nf);
+We construct the embedded number field and let $a$ be its generator.
 
-  /* sets a to the generator and b to a^2 - 2 */
-  renf_elem_gen(a, nf);
-  renf_elem_mul(b, a, a, nf);
-  renf_elem_sub_ui(b, b, 2, nf);
+```c
+#include <e-antic/renf.h>
+#include <e-antic/renf_elem.h>
 
-  /* prints b */
-  renf_elem_print_pretty(b, "a", nf, 32, EANTIC_STR_ALG);
+renf_t nf;
+renf_elem_t a, b;
 
-  /* deallocation */
-  fmpq_poly_clear(p);
-  arb_clear(emb);
-  renf_elem_clear(a);
-  renf_elem_clear(b);
-  renf_clear(nf);
+/* initialize and set the real ball emb to approximately 0.34 */
+arb_init(emb);
+arb_set_str(emb, "0.34 +/- 0.01", 32);
 
-  return 0;
-}
+renf_init(nf, poly, emb, 64);
+
+renf_elem_init(a, nf);
+renf_elem_gen(a, nf);
+```
+
+We can deallocate the embedding and the defining polynomial, we won't need them anymore.
+
+```c
+fmpq_poly_clear(poly);
+arb_clear(emb);
+```
+
+We compute $b = a^2 - 2$ and print its value.
+
+```c
+renf_elem_init(b, nf);
+
+renf_elem_mul(b, a, a, nf);
+renf_elem_sub_ui(b, b, 2, nf);
+
+renf_elem_print_pretty(b, "a", nf, 32, EANTIC_STR_ALG);
+// -> a^2 - 2
+```
+
+Finally, we deallocate the number field and its elements.
+
+```c
+renf_elem_clear(a, nf);
+renf_elem_clear(b, nf);
+renf_clear(nf);
 ```

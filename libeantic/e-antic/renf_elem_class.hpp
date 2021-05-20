@@ -11,6 +11,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+/// Elements of Real Embedded Number Fields
+
 #ifndef E_ANTIC_RENF_ELEM_CLASS_HPP
 #define E_ANTIC_RENF_ELEM_CLASS_HPP
 
@@ -25,6 +27,35 @@
 
 namespace eantic {
 
+/// An element of a Real Embedded Number Field.
+///
+/// Each element lives in a fixed number field. If the number field is an
+/// extension of the rationals of degree $d$, its elements are represented by
+/// rational polynomials of degree $d - 1$.
+/// ```
+/// #include <e-antic/renf_class.hpp>
+/// #include <e-antic/renf_elem_class.hpp>
+/// 
+/// auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+/// auto gen = eantic::renf_elem_class(*K, std::vector{-1, 1});
+/// std::cout << gen;
+/// -> (x - 1 ~ 0.4142136)
+/// ```
+///
+/// The underlying data can be accessed directly, e.g., with
+/// [num_vector]() and [den]().
+///
+/// Note that elements do not need to worry about the lifetimes of the number
+/// fields they are contained in. The number field will be kept alive by smart
+/// pointers as long as elements in it are around:
+/// ```
+/// #include <e-antic/renf_class.hpp>
+/// #include <e-antic/renf_elem_class.hpp>
+/// 
+/// auto gen = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")->gen();
+/// std::cout << gen;
+/// -> (x ~ 1.4142136)
+/// ```
 class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
                         boost::ordered_field_operators<renf_elem_class, int>,
                         boost::ordered_field_operators<renf_elem_class, unsigned int>,
@@ -35,10 +66,16 @@ class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_c
                         boost::ordered_field_operators<renf_elem_class, mpz_class>,
                         boost::ordered_field_operators<renf_elem_class, mpq_class> {
 public:
-    // The zero element of the rationals
+    /// Create the zero element of the rationals.
     renf_elem_class() noexcept;
+
     renf_elem_class(const renf_elem_class &);
     renf_elem_class(renf_elem_class &&) noexcept;
+
+    /// ==* `renf_elem_class(integer/rational)` *==
+    /// Create an element in the rationals.
+    /// These are shortcuts equivalent to calling
+    /// `renf_elem_class(*renf_class::make(), value)`.
     renf_elem_class(int);
     renf_elem_class(unsigned int);
     renf_elem_class(long);
@@ -46,28 +83,26 @@ public:
     renf_elem_class(long long);
     renf_elem_class(unsigned long long);
     renf_elem_class(const mpz_class &);
-    renf_elem_class(const mpq_class &);
     renf_elem_class(const fmpz_t);
+    renf_elem_class(const mpq_class &);
     renf_elem_class(const fmpq_t);
-    // The zero element in k; note that all overloads that take the field as a
-    // parameter hold a non-owning reference to the field, i.e., the element is
-    // only valid while that reference is.
+
+    /// Create the zero element in the field `k`.
     explicit renf_elem_class(const renf_class& k);
-    // An integer in the field k
-    renf_elem_class(const renf_class& k, const mpz_class &);
-    // A rational in the field k
-    renf_elem_class(const renf_class& k, const mpq_class &);
-    // An integer in the field k
-    renf_elem_class(const renf_class& k, const fmpz_t);
-    // A rational in the field k
-    renf_elem_class(const renf_class& k, const fmpq_t);
-    // An integer in the field k
+
+    /// ==* `renf_elem_class(const renf_class&, integer/rational)` *==
+    /// Creates a rational element in the field `k`.
     renf_elem_class(const renf_class& k, int);
     renf_elem_class(const renf_class& k, unsigned int);
     renf_elem_class(const renf_class& k, long);
     renf_elem_class(const renf_class& k, unsigned long);
     renf_elem_class(const renf_class& k, long long);
     renf_elem_class(const renf_class& k, unsigned long long);
+    renf_elem_class(const renf_class& k, const mpz_class &);
+    renf_elem_class(const renf_class& k, const fmpz_t);
+    renf_elem_class(const renf_class& k, const mpq_class &);
+    renf_elem_class(const renf_class& k, const fmpq_t);
+
     // Coerce number field element to the field k. Only implemented in trivial cases.
     renf_elem_class(const renf_class& k, const renf_elem_class&);
     // Parse the string into an element in the field k
@@ -112,9 +147,11 @@ public:
 
     // data conversion
     mpz_class num() const;
+    /// TODO
     mpz_class den() const;
     explicit operator mpz_class() const;
     explicit operator mpq_class() const;
+    /// TODO
     std::vector<mpz_class> num_vector() const;
     explicit operator std::string() const;
     std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const;
