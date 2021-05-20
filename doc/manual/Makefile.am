@@ -1,4 +1,5 @@
 EXTRA_DIST = README.md
+PORT ?= 8080
 
 # TODO: Set warn-as-error for most invocations.
 
@@ -19,16 +20,16 @@ $(builddir)/generated/pyeantic/html: $(builddir)/generated/libeantic/inventory $
 
 $(builddir)/generated/libeantic/inventory:
 	@# Create an inventory of libeantic so sphinx can link against it.
-	## TODO: Only generated inventory
+	## TODO: Only generate inventory
 	mkdir -p $(builddir)/generated/libeantic/inventory
-	$(STANDARDESE) --free-file-comments -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'`
+	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
 
-$(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory
+$(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory $(builddir)/arb.inv $(builddir)/flint.inv
 	@# Build markdown files from e-antic C/C++ headers
 	##TODO: Have standardese parse CPPFLAGS instead.
 	mkdir -p $(builddir)/generated/libeantic/
 	rsync -r $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
-	$(STANDARDESE) --warn-as-error --free-file-comments -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --output.prefix $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ -name '*.h' -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'`
+	$(STANDARDESE) --warn-as-error --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'`
 
 $(builddir)/generated/libeantic/html: $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/markdown/mkdocs.yml
 	@# Create html documentation from markdown files
@@ -39,12 +40,18 @@ $(builddir)/generated/libeantic/markdown/mkdocs.yml: $(srcdir)/libeantic/mkdocs.
 	mkdir -p $(builddir)/generated/libeantic/markdown
 	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
 
+$(builddir)/arb.inv:
+	wget -O $@ https://arblib.org/objects.inv
+
+$(builddir)/flint.inv:
+	wget -O $@ https://flintlib.org/sphinx/objects.inv
+
 html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/e-antic/html
 	rsync -r $(builddir)/generated/libeantic/html/ $(builddir)/generated/e-antic/html/libeantic
 	rsync -r $(builddir)/generated/pyeantic/html/ $(builddir)/generated/e-antic/html/pyeantic
 
 serve: html
-	python -m http.server 8080 --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
+	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
 
 .PHONY: serve $(builddir)/generated/libeantic/html $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/html $(builddir)/generated/pyeantic/inventory $(builddir)/generated/pyeantic/source
