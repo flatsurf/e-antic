@@ -26,7 +26,7 @@ AC_PATH_PROG([MKDOCS], [mkdocs], [no])
 AS_IF([test x"$ac_cv_path_MKDOCS" == x"no"], [AC_MSG_ERROR([MkDocs could not be found. It is required to build the documentation. Use --without-doc to not build the documentation of e-antic.])])
 AC_SUBST([MKDOCS], [$ac_cv_path_MKDOCS])
 
-AC_CONFIG_FILES([manual/Makefile])
+AC_CONFIG_FILES([Makefile manual/Makefile])
 
 AC_OUTPUT
 
