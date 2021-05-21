@@ -54,4 +54,6 @@ html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 serve: html
 	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
 
+all: html
+
 .PHONY: serve $(builddir)/generated/libeantic/html $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/html $(builddir)/generated/pyeantic/inventory $(builddir)/generated/pyeantic/source
