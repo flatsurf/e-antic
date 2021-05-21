@@ -25,7 +25,7 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          ./configure --prefix=${CONDA_PREFIX} --without-benchmark
+          ./configure --prefix=${CONDA_PREFIX} --without-benchmark --without-byexample
 
           echo "::group::make distcheck"
           make
