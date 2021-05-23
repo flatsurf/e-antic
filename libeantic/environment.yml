@@ -12,6 +12,7 @@ dependencies:
   - benchmark
   - byexample
   - boost-cpp
+  - cling
   - coreutils
   - cxx-compiler
   - libflint
