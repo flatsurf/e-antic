@@ -82,7 +82,7 @@ public:
     /// ```
     /// #include <e-antic/renf_class.hpp>
     /// 
-    /// auto K = eantic::renf_class::make("2*a^4 - 4", "a", "1 +/- 1");
+    /// auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
     /// ```
     ///
     /// :param:`gen` The name of the variable used in [minpoly]().
@@ -131,7 +131,7 @@ public:
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
-    /// auto K = eantic::renf_class::make("2*a^4 - 4", "a", "1 +/- 1");
+    /// auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
     /// 
     /// auto construction = K->construction();
     /// auto L = eantic::renf_class::make(
@@ -148,18 +148,18 @@ public:
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
-    /// auto K = eantic::renf_class::make("x^2 - 2", "a", "1 +/- 1");
-    /// auto L = eantic::renf_class::make("x^2 - 2", "a", "1.41 +/- 0.1");
+    /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+    /// auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
     /// K == L
     /// // -> (bool) true
     ///
-    /// auto K = eantic::renf_class::make("x^2 - 2", "a", "1 +/- 1");
-    /// auto L = eantic::renf_class::make("2*x^2 - 4", "a", "1 +/- 1");
+    /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+    /// auto L = eantic::renf_class::make("2*x^2 - 4", "x", "1 +/- 1");
     /// K == L
-    /// // -> (bool) true
+    /// // -> (bool) false
     ///
-    /// auto K = eantic::renf_class::make("x^2 - 2", "a", "1 +/- 1");
-    /// auto L = eantic::renf_class::make("x^2 - 2", "b", "1 +/- 1");
+    /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+    /// auto L = eantic::renf_class::make("y^2 - 2", "y", "1 +/- 1");
     /// K == L
     /// // -> (bool) false
     ///
@@ -182,13 +182,13 @@ public:
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
-    /// auto K = eantic::renf_class::make("2*a^4 - 4", "a", "1 +/- 1");
+    /// auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
     /// K->to_string()
-    /// // -> (std::string) "NumberField(2*a^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])"
+    /// // -> (std::string) "NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])"
     /// 
     /// // There is also an operator<< which gives the same output.
     /// std::cout << *K;
-    /// // -> NumberField(2*a^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])
+    /// // -> NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])
     /// ```
     std::string to_string() const;
 

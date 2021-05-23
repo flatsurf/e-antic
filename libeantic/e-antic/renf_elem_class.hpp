@@ -39,7 +39,7 @@ namespace eantic {
 /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
 /// auto gen = eantic::renf_elem_class(*K, std::vector{-1, 1});
 /// std::cout << gen;
-/// -> (x - 1 ~ 0.4142136)
+/// // -> (x-1 ~ 0.41421356)
 /// ```
 ///
 /// The underlying data can be accessed directly, e.g., with
@@ -54,7 +54,7 @@ namespace eantic {
 /// 
 /// auto gen = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")->gen();
 /// std::cout << gen;
-/// -> (x ~ 1.4142136)
+/// // -> (x ~ 1.4142136)
 /// ```
 class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
                         boost::ordered_field_operators<renf_elem_class, int>,
