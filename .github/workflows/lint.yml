@@ -18,13 +18,13 @@ jobs:
           - cc: cc
             cpp: cpp
             cxx: c++
-            cflags: -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel -Wnodocumentation
-            cxxflags: -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wnodocumentation
+            cflags: -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel -Wno-documentation
+            cxxflags: -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wno-documentation
           - cc: clang
             cpp: clang-cpp
             cxx: clang++
-            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wnodocumentation
-            cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wnodocumentation
+            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation
+            cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
