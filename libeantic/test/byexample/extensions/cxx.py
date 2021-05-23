@@ -3,13 +3,13 @@ Extend byexample with natural C(++) tests
 
 Byexample supports C++ directly through cling. However, it expects tests to be
 written cling syntax which is somewhat cryptic to readers not familiar with
-cling.
+cling. Also, pexpect style parsing is not terribly robust.
 
 Here we extend byexample with a parser that can detect regular source code in
 MarkDown code fences and expected outputs in `// ->` comments.
 
-We also extend the cling invocation to pass more parameters to cling through
-the `EXTRA_CLING_ARGS` environment variable.
+We also use cppyy instead of cling which takes care of the hard part of the
+parsing for us.
 """
 ######################################################################
 #  This file is part of e-antic.
@@ -79,7 +79,7 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # then, grab everything until the first end marker
             (?P<zone>.*?)
             # finally, the end marker
-            (?(marker)    
+            (?(marker)   
                   ^[ ]*(?P=marker) # we must match the same amount of backticks
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
@@ -133,20 +133,67 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
 
     def __repr__(self): return "Unprefixed C++ Prompt Finder"
 
-class CxxInterpreter(byexample.modules.cpp.CPPInterpreter):
+class CxxInterpreter(byexample.runner.ExampleRunner):
     r"""
-    Run cling on code samples with `EXTRA_CLING_ARGS`.
+    Run cppyy.cppexec on code samples.
     """
     language = 'cpp'
 
-    def get_default_cmd(self, *args, **kwargs):
-        ret = super(CxxInterpreter, self).get_default_cmd(*args, **kwargs)
-        import os
-        ret[1]['a'].extend(os.environ.get('EXTRA_CLING_ARGS', '').split())
-        return ret
-
     def __repr__(self): return "C++ Interpreter"
 
+    @classmethod
+    def _run(cls, connection):
+        import cppyy
+
+        while True:
+            try:
+                source, = connection.recv()
+            except EOFError:
+                return
+
+            lines = source.split('\n')
+            definitions = [line for line in lines if line.startswith('#include')]
+            executables = [line for line in lines if not line.startswith('#include') and line]
+
+            if executables and not executables[-1].endswith(';'):
+                definitions.append("#include <iostream>")
+                executables[-1] = f"std::cout << std::boolalpha << ({executables[-1]});"
+
+            exception = None
+
+            import py.io
+            capture = py.io.StdCaptureFD()
+
+            try:
+                cppyy.cppdef('\n'.join(definitions))
+                cppyy.cppexec('\n'.join(executables))
+            except Exception as e:
+                exception = e
+
+            stdout, stderr = capture.reset()
+
+            connection.send((stdout, stderr, exception))
+
     def initialize(self, options):
-        super().initialize(options)
-        self._sendline("#include <iostream>")
+        from multiprocessing import Pipe
+        self._parent_connection, child_connection = Pipe()
+
+        from multiprocessing import Process
+        self._child = Process(target=CxxInterpreter._run, args=(child_connection,))
+        self._child.start()
+
+    def run(self, example, options):
+        self._parent_connection.send((example.source,))
+        stdout, stderr, exception = self._parent_connection.recv()
+        if exception is not None:
+            raise exception
+        if stderr is not None:
+            import sys
+            print(stderr, file=sys.stderr)
+        return stdout
+
+    def shutdown(self):
+        self._parent_connection.close()
+        self._child.join(1)
+        if self._child.exitcode is None:
+            self._child.kill()

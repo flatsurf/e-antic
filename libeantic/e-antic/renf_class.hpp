@@ -56,10 +56,10 @@ namespace eantic {
 /// auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 1");
 ///
 /// L->gen().parent() == *K
-/// // -> (bool) true
+/// // -> true
 ///
 /// &L->gen().parent() == &*K
-/// // -> (bool) true
+/// // -> true
 /// ```
 ///
 /// Number fields are hashable but not ordered, i.e., they can be used in
@@ -140,7 +140,7 @@ public:
     ///   std::get<2>(construction),
     ///   std::get<3>(construction));
     /// K == L
-    /// // -> (bool) true
+    /// // -> true
     /// ```
     std::tuple<std::string, std::string, std::string, slong> construction() const;
 
@@ -151,20 +151,20 @@ public:
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
     /// auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
     /// K == L
-    /// // -> (bool) true
+    /// // -> true
     ///
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
     /// auto L = eantic::renf_class::make("2*x^2 - 4", "x", "1 +/- 1");
     /// K == L
-    /// // -> (bool) false
+    /// // -> false
     ///
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
     /// auto L = eantic::renf_class::make("y^2 - 2", "y", "1 +/- 1");
     /// K == L
-    /// // -> (bool) false
+    /// // -> false
     ///
     /// K != L
-    /// // -> (bool) true
+    /// // -> true
     /// ```
     friend bool operator==(const renf_class &, const renf_class &);
 
@@ -178,13 +178,13 @@ public:
     [[deprecated("Use cereal.hpp or the renf_elem_class constructor taking a string instead.")]]
     static boost::intrusive_ptr<const renf_class> get_pword(std::istream &);
 
-    /// Return a human-readable representation of this field.
+    /// Return a human-readabie representation of this field.
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
     /// auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
     /// K->to_string()
-    /// // -> (std::string) "NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])"
+    /// // -> NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])
     /// 
     /// // There is also an operator<< which gives the same output.
     /// std::cout << *K;

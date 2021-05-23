@@ -27,7 +27,7 @@ jobs:
           echo "::group::configure"
           ./configure --prefix=${CONDA_PREFIX} --without-benchmark --without-byexample
 
-          echo "::group::make distcheck"
+          echo "::group::make"
           make
       - name: build documentation
         shell: bash -l {0}
