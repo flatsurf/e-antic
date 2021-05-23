@@ -12,7 +12,7 @@ dependencies:
   - benchmark
   - byexample
   - boost-cpp
-  - cling
+  - cling =0.8
   - coreutils
   - cxx-compiler
   - libflint
