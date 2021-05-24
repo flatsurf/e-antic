@@ -23,7 +23,7 @@ See [repology for e-antic](https://repology.org/project/e-antic/packages).
 
 The following describe alternative ways of installing e-antic
 
-* [Install in conda](install_in_conda.md)
+* [Install with conda](install_in_conda.md)
 * [Building from source](build.md)
 * [Conda environment to build from source](build_in_conda.md)
 
@@ -51,8 +51,3 @@ near future.
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
 that provides automatic bindings to the C++ interface. The documentation of the
 Python interface can be found [here](/pyeantic).
-
-## Indices
-
-* [Index of datastructures and functions](libeantic/standardese_entities)
-* [Index of header files](libeantic/standardese_files)
