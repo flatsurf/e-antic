@@ -50,3 +50,11 @@ footer {
 }
 
 .wy-nav-content { max-width: 1080px; }
+
+li.toctree-l2:first-child {
+    display: none;
+}
+
+li.toctree-l3:first-child {
+    display: none;
+}
