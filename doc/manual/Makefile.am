@@ -6,7 +6,7 @@ PORT ?= 8080
 $(builddir)/generated/pyeantic/source:
 	@# Create a copy of the source dir with some generated assets since Sphinx cannot read from more than one directory.
 	mkdir -p $(builddir)/generated/pyeantic
-	rsync -r $(srcdir)/pyeantic/ $(builddir)/generated/pyeantic/source
+	cp -R $(srcdir)/pyeantic/ $(builddir)/generated/pyeantic/source
 
 $(builddir)/generated/pyeantic/inventory: $(builddir)/generated/pyeantic/source
 	@# Create an inventory of pyeantic so standardese can link against it.
@@ -28,7 +28,7 @@ $(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/invento
 	@# Build markdown files from e-antic C/C++ headers
 	##TODO: Have standardese parse CPPFLAGS instead.
 	mkdir -p $(builddir)/generated/libeantic/
-	rsync -r $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
+	cp -R $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
 	$(STANDARDESE) --warn-as-error --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'`
 
 $(builddir)/generated/libeantic/html: $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/markdown/mkdocs.yml
@@ -48,8 +48,8 @@ $(builddir)/flint.inv:
 
 html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/e-antic/html
-	rsync -r $(builddir)/generated/libeantic/html/ $(builddir)/generated/e-antic/html/libeantic
-	rsync -r $(builddir)/generated/pyeantic/html/ $(builddir)/generated/e-antic/html/pyeantic
+	cp -R $(builddir)/generated/libeantic/html/ $(builddir)/generated/e-antic/html/libeantic
+	cp -R $(builddir)/generated/pyeantic/html/ $(builddir)/generated/e-antic/html/pyeantic
 
 serve: html
 	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
