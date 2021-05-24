@@ -29,6 +29,7 @@
 #pragma cling load("libeantic")
 #ifdef __cplusplus
 #pragma cling load("libeanticxx")
+#pragma cling load("libgmpxx")
 #endif
 
 #endif // __CLING__
