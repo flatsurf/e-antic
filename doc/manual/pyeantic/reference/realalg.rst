@@ -1,4 +1,6 @@
-TODO: Overview of the realalg interface
-=======================================
+.. _realalg_interface:
+
+realalg interface
+=================
 
 .. automodule:: pyeantic.realalg_conversion

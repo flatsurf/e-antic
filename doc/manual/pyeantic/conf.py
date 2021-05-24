@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath('../../pyeantic/src/'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'e-antic'
+project = 'pyeantic'
 copyright = '2021, the e-antic authors'
 author = 'the e-antic authors'
 
