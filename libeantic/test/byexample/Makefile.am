@@ -7,6 +7,7 @@ AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 @VALGRIND_CHECK_RULES@
 
 BUILT_SOURCES = test-env.sh bin/python manual-doctest.sh
+EXTRA_DIST += test-env.sh.in bin/python.in manual-doctest.sh.in
 
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
 	sed -e 's,[@]abs_builddir[@],$(abs_builddir),g' < $< > $@
