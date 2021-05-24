@@ -175,6 +175,10 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
             connection.send((stdout, stderr, exception))
 
     def initialize(self, options):
+        import os.path
+        import sys
+        sys.path.append(os.path.dirname(__file__))
+
         from multiprocessing import Pipe
         self._parent_connection, child_connection = Pipe()
 
