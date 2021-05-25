@@ -1,6 +1,6 @@
-TODO: Overview of the SageMath interface
-========================================
+.. _sage_interface:
 
-TODO: We probably want to distribute this on several pages:
+SageMath interface
+==================
 
 .. automodule:: pyeantic.real_embedded_number_field
