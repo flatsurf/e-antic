@@ -35,8 +35,8 @@ The following headers extend [FLINT](http://flintlib.org/). They should not
 be considered as part of the e-antic API and will be ported to FLINT
 eventually.
 
-* [Rational Polynomials `fmpq_poly_extra.h`](libeantic/doc_fmpq_poly_extra)
-* [Integral Polynomials `fmpz_poly_extra.h`](libeantic/doc_fmpz_poly_extra)
+* [Rational Polynomials `fmpq_poly_extra.h`](doc_fmpq_poly_extra_h)
+* [Integral Polynomials `fmpz_poly_extra.h`](doc_fmpz_poly_extra_h)
 
 ## C++ Interface
 

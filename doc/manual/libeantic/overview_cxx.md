@@ -41,4 +41,4 @@ std::cout << b;
 ```
 
 Note that the same example is also explained in detail in the documentaion of
-the [C interface](overview_c).
+the [C interface](../overview_c).
