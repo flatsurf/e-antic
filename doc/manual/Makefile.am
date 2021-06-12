@@ -43,8 +43,12 @@ $(builddir)/generated/libeantic/markdown/mkdocs.yml: $(srcdir)/libeantic/mkdocs.
 $(builddir)/arb.inv:
 	wget -O $@ https://arblib.org/objects.inv
 
+CLEANFILES = arb.inv
+
 $(builddir)/flint.inv:
 	wget -O $@ https://flintlib.org/sphinx/objects.inv
+
+CLEANFILES = flint.inv
 
 html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/e-antic/html
@@ -62,3 +66,4 @@ EXTRA_DIST = README.md libeantic pyeantic
 
 mostlyclean-local:
 	-rm -rf generated
+	-rm -rf build
