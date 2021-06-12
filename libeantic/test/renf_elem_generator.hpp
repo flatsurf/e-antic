@@ -121,7 +121,7 @@ struct StringMaker<renf_elem_t>
     {
         assert(StringMaker<renf_t>::latest != nullptr && "you must always CAPTURE(nf) before capturing a contained renf_elem_t");
 
-        char * alg = renf_elem_get_str_pretty(const_cast<renf_elem_struct*>(a), "x", StringMaker<renf_t>::latest, 10, EANTIC_STR_ALG);
+        char * alg = renf_elem_get_str_pretty(const_cast<renf_elem_srcptr>(a), "x", StringMaker<renf_t>::latest, 10, EANTIC_STR_ALG);
         char * emb = arb_get_str(a->emb, 10, ARB_STR_MORE);
 
         std::stringstream str;
