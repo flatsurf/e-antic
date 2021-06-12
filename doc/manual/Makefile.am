@@ -65,5 +65,5 @@ all: html
 EXTRA_DIST = README.md libeantic pyeantic
 
 mostlyclean-local:
-	-rm -rf generated
-	-rm -rf build
+	[[ ! -d generated ]] || (chmod -R u+w generated && rm -rf generated)
+	[[ ! -d build ]] || (chmod -R u+w build && rm -rf build)
