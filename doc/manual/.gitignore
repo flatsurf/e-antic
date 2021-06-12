@@ -1,3 +1,5 @@
 .gitignore
 /generated
 /build
+/arb.inv
+/flint.inv
