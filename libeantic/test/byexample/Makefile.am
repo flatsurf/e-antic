@@ -8,6 +8,7 @@ AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 
 BUILT_SOURCES = test-env.sh bin/python manual-doctest.sh
 EXTRA_DIST += test-env.sh.in bin/python.in manual-doctest.sh.in
+CLEANFILES = test-env.sh bin/python manual-doctest.sh
 
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
 	sed -e 's,[@]abs_builddir[@],$(abs_builddir),g' < $< > $@
@@ -20,4 +21,3 @@ $(builddir)/bin/python: $(srcdir)/bin/python.in Makefile
 $(builddir)/manual-doctest.sh: $(srcdir)/manual-doctest.sh.in Makefile
 	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' < $< > $@
 	chmod +x $@
-

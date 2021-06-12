@@ -59,3 +59,6 @@ all: html
 .PHONY: serve $(builddir)/generated/libeantic/html $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/html $(builddir)/generated/pyeantic/inventory $(builddir)/generated/pyeantic/source
 
 EXTRA_DIST = README.md libeantic pyeantic
+
+mostlyclean-local:
+	-rm -rf generated
