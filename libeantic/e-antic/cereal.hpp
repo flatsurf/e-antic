@@ -21,7 +21,8 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 
-#include "renfxx.h"
+#include "renf_class.hpp"
+#include "renf_elem_class.hpp"
 
 namespace eantic {
 template <class Archive>
