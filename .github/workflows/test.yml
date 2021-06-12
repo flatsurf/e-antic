@@ -117,7 +117,8 @@ jobs:
       matrix:
         on:
           - ubuntu-20.04
-          - macos-10.15
+          # standardese 0.6.0 has not been released for macOS yet.
+          # - macos-10.15
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
