@@ -10,12 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <sstream>
-#include <string>
 #include <cstdlib>
 #include <exception>
-#include <vector>
 
 #include "../../e-antic/renfxx.h"
 

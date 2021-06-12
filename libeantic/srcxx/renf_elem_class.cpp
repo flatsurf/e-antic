@@ -845,14 +845,14 @@ renf_elem_class::operator double() const
     return renf_elem_get_d(a, nf->renf_t(), ARF_RND_NEAR);
 }
 
+renf_elem_class renf_elem_class::operator+() const { return *this; }
+
 renf_elem_class renf_elem_class::operator-() const
 {
     renf_elem_class ans(*this);
     renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
     return ans;
 }
-
-renf_elem_class renf_elem_class::operator+() const { return *this; }
 
 renf_elem_class::operator bool() const
 {

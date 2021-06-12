@@ -22,7 +22,7 @@ $(builddir)/generated/libeantic/inventory:
 	@# Create an inventory of libeantic so sphinx can link against it.
 	## TODO: Only generate inventory
 	mkdir -p $(builddir)/generated/libeantic/inventory
-	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
+	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
 
 $(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory $(builddir)/arb.inv $(builddir)/flint.inv
 	@# Build markdown files from e-antic C/C++ headers
