@@ -1,6 +1,6 @@
 .. _sage_interface:
 
-SageMath interface
+SageMath Interface
 ==================
 
 .. automodule:: pyeantic.real_embedded_number_field

@@ -1,4 +1,4 @@
-quickstart
+Quickstart
 ==========
 
 The Python interface is automatically generated from the C++ code using

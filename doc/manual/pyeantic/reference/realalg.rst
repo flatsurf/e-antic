@@ -1,6 +1,6 @@
 .. _realalg_interface:
 
-realalg interface
+Realalg Interface
 =================
 
 .. automodule:: pyeantic.realalg_conversion

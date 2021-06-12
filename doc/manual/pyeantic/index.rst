@@ -15,7 +15,7 @@ refer to the Installation section in the `libeantic documentation
    reference/realalg
    reference/sage
 
-Indices and tables
+Indices and Tables
 ==================
 
 * :ref:`genindex`
