@@ -48,7 +48,7 @@ CLEANFILES = arb.inv
 $(builddir)/flint.inv:
 	wget -O $@ https://flintlib.org/sphinx/objects.inv
 
-CLEANFILES = flint.inv
+CLEANFILES += flint.inv
 
 html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/e-antic/html
