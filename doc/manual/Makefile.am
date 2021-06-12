@@ -1,8 +1,30 @@
-EXTRA_DIST = README.md
 PORT ?= 8080
-STANDARDESE_FLAGS ?=
+EXTRA_STANDARDESE_FLAGS ?=
 
-# TODO: Set warn-as-error for most invocations.
+STANDARDESE_FLAGS = --warn-as-error --free-file-comments -X
+# Configure search paths for #include statements
+STANDARDESE_FLAGS += -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include
+# Link against FLINT's sphinx documentation.
+STANDARDESE_FLAGS += --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/
+# Link against Arb's sphinx documentation.
+STANDARDESE_FLAGS += --external sphinx:arb:arb.inv=https://arblib.org/
+# Allow === Output Section === Syntax
+STANDARDESE_FLAGS += -p output_section='=== (.*) ==='
+# Allow ==* Group *== Syntax
+STANDARDESE_FLAGS += -p group='==\* ((?:.(?!\*==))+)() \*=='
+# Allow :param:`name` syntax like in sphinx.
+STANDARDESE_FLAGS += -p param=':param:`([^`]*)`'
+# We will deploy the C/C++ documentation to the libeantic/ subdirectory
+STANDARDESE_FLAGS += --vpath 'libeantic/doc_{{ sanitize_basename(name) }}'
+# Shorten type names in the documentation that reference common namespaces or use complicated aliases.
+STANDARDESE_FLAGS += --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}'
+
+STANDARDESE_FLAGS += ${EXTRA_STANDARDESE_FLAGS}
+
+# Process all header files with standardese.
+STANDARDESE_INPUTS = `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
+# Progress all MarkDown files with standardese.
+STANDARDESE_INPUTS += `find $(srcdir)/libeantic/ -name '*.md'`
 
 $(builddir)/generated/pyeantic/source:
 	@# Create a copy of the source dir with some generated assets since Sphinx cannot read from more than one directory.
@@ -20,16 +42,15 @@ $(builddir)/generated/pyeantic/html: $(builddir)/generated/libeantic/inventory $
 	python $(SPHINXBUILD) -b html -n $(builddir)/generated/pyeantic/source $(builddir)/generated/pyeantic/html --color -a -E -W
 
 $(builddir)/generated/libeantic/inventory:
-	@# Create an inventory of libeantic so sphinx can link against it.
-	## TODO: Only generate inventory
+	@# Create an inventory of libeantic so sphinx can link against it. (This also creates the entire documentation since there is no flag in standardese yet to only generate the inventory.)
 	mkdir -p $(builddir)/generated/libeantic/inventory
-	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` ${STANDARDESE_FLAGS}
+	$(STANDARDESE) --outdir $(builddir)/generated/libeantic/inventory/ $(STANDARDESE_FLAGS) $(STANDARDESE_INPUTS)
 
 $(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory $(builddir)/arb.inv $(builddir)/flint.inv
 	@# Build markdown files from e-antic C/C++ headers
 	mkdir -p $(builddir)/generated/libeantic/
 	cp -RT $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
-	$(STANDARDESE) --warn-as-error --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'` ${STANDARDESE_FLAGS}
+	$(STANDARDESE) --outdir $(builddir)/generated/libeantic/markdown/ $(STANDARDESE_FLAGS) $(STANDARDESE_INPUTS)
 
 $(builddir)/generated/libeantic/html: $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/markdown/mkdocs.yml
 	@# Create html documentation from markdown files
