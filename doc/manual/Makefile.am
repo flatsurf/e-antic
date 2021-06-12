@@ -1,5 +1,6 @@
 EXTRA_DIST = README.md
 PORT ?= 8080
+STANDARDESE_FLAGS ?=
 
 # TODO: Set warn-as-error for most invocations.
 
@@ -22,14 +23,13 @@ $(builddir)/generated/libeantic/inventory:
 	@# Create an inventory of libeantic so sphinx can link against it.
 	## TODO: Only generate inventory
 	mkdir -p $(builddir)/generated/libeantic/inventory
-	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
+	$(STANDARDESE) --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/inventory/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` ${STANDARDESE_FLAGS}
 
 $(builddir)/generated/libeantic/markdown: $(builddir)/generated/pyeantic/inventory $(builddir)/arb.inv $(builddir)/flint.inv
 	@# Build markdown files from e-antic C/C++ headers
-	##TODO: Have standardese parse CPPFLAGS instead.
 	mkdir -p $(builddir)/generated/libeantic/
 	cp -RT $(srcdir)/libeantic/ $(builddir)/generated/libeantic/markdown
-	$(STANDARDESE) --warn-as-error --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'`
+	$(STANDARDESE) --warn-as-error --free-file-comments -X -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/ --external sphinx:arb:arb.inv=https://arblib.org/ -p output_section='=== (.*) ===' -p group='==\* ((?:.(?!\*==))+)() \*==' -p param=':param:`([^`]*)`' --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}' --vpath 'libeantic/doc_{{ sanitize_basename(name) }}' --outdir $(builddir)/generated/libeantic/markdown/ `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'` `find $(srcdir)/libeantic/ -name '*.md'` ${STANDARDESE_FLAGS}
 
 $(builddir)/generated/libeantic/html: $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/markdown/mkdocs.yml
 	@# Create html documentation from markdown files

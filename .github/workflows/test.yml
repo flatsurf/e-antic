@@ -141,7 +141,7 @@ jobs:
           ./configure
 
           echo "::group::make distcheck"
-          make distcheck
+          STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 
