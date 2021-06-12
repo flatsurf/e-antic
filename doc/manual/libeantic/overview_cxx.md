@@ -37,7 +37,7 @@ We compute $b = a^2 - 2$ and print its value.
 auto b = a.pow(2) - 2;
 
 std::cout << b;
-// -> a^2 - 2
+// -> (x^2 - 2 ~ -1.8793852)
 ```
 
 Note that the same example is also explained in detail in the documentaion of
