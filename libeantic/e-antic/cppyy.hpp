@@ -21,9 +21,7 @@
 namespace eantic {
 std::ostream &operator<<(std::ostream &, const renf_class &);
 std::ostream &operator<<(std::ostream &, const renf_elem_class &);
-}  // namespace eantic
 
-namespace eantic {
 namespace cppyy {
 
 // cppyy does not see the operators provided by boost::operators so we provide
