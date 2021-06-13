@@ -71,7 +71,7 @@ class MarkdownHppDelimiter(ZoneDelimiter):
     @constant
     def zone_regex(self):
         return re.compile(r'''
-            # Begin with a markdown fenced-code marker
+            # Begin with a Markdown fenced-code marker
             ^[ ]*
                 (?:
                     (?P<marker>///[ ]```(?:``)*)$ # fenced-code marker (backticks)
@@ -88,7 +88,7 @@ class MarkdownHppDelimiter(ZoneDelimiter):
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     r"""
-    Detects blocks of C++ code delimited ended by a `// ->` comment that provides the expected output.
+    Detect blocks of C++ code delimited by a `// ->` comment that provides the expected output.
     """
     target = 'cpp-prompt'
 
@@ -97,7 +97,7 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
         return re.compile(r'''
             (?P<snippet>
                 (?:^                                # match the first line
-                  (?P<indent> [ ]* (?:///[ ])?)     # an arbitrary amount of indent (we capture it so we can strip it later)
+                  (?P<indent> [ ]* (?:///[ ])?)     # arbitrary indent, captured so we can strip it later
                   [^\n]+                            # followed by anything on the same line
                 )
                 (?:\n
@@ -113,7 +113,7 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
               )*
             )
             \n?
-            (?:[ ]* (?:///[ ]*)?\n)*                # Finally, consume empty lines so that they do not confuse the indent detection of the next block
+            (?:[ ]* (?:///[ ]*)?\n)*                # finally, consume empty lines to prevent confusing indent detection of next block
             ''', re.MULTILINE | re.VERBOSE)
 
     def get_snippet_and_expected(self, match, where):

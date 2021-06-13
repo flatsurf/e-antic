@@ -9,14 +9,14 @@ and follows the same naming conventions.
 
 The main focus of e-antic is on efficiency. For a more versatile C
 library for exact real numbers computations we recommand
-[calcium](https://fredrikj.net/calcium/) by Fredrik Johansson.
+[Calcium](https://fredrikj.net/calcium/) by Fredrik Johansson.
 
 The development of e-antic is coordinated on [github](https://github.com/flatsurf/e-antic).
 
 ## Installation
 
 The prefered way to install e-antic is to use your package manager (e.g.
-`apt-get` on Debian or Ubuntu, `pacman` on archlinux, `brew` on MacOS, etc).
+`apt-get` on Debian or Ubuntu, `pacman` on Arch Linux, `brew` on MacOS, etc).
 See [repology for e-antic](https://repology.org/project/e-antic/packages).
 
 The following describe alternative ways of installing e-antic.

@@ -13,9 +13,9 @@ rational polynomial as a FLINT [fmpq_poly_t]() and an
 approximation of one of its real roots as an [arb_t]().
 
 Once a [renf_t]() has been initialized, its elements can be created with
-[renf_elem_init](). Eventually, the memory taken by these elements should be
-freed again with [renf_elem_clear]() and finally, the memory taken by the
-number field itself should also be freed with [renf_clear]().
+[renf_elem_init](). Eventually, use [renf_elem_clear]() to free the memory
+taken by these elements, and use [renf_clear]() to free the memory taken
+by the number field itself.
 
 ## Example
 
@@ -30,7 +30,7 @@ fmpq_poly_init(poly);
 fmpq_poly_set_str_pretty(poly, "a^3 - 3*a + 1", "a");
 ```
 
-We fix one of its root which is approximately 0.34.
+We fix one of its roots which is approximately 0.34.
 
 ```c
 #include <arb.h>

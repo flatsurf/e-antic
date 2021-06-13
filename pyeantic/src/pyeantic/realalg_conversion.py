@@ -3,7 +3,7 @@ r"""
 realalg conversions
 
 ``realag`` is a pure Python library developed by Mark C. Bell that provides
-similarly to ``pyeantic`` exact computations over real embedded number field.
+similarly to ``pyeantic`` exact computations over real embedded number fields.
 The source code is available at https://github.com/MarkCBell/realalg.
 This module provides conversion from and to ``realalg``.
 """
