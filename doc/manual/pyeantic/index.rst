@@ -2,7 +2,7 @@ Welcome to pyeantic's documentation!
 ====================================
 
 `pyeantic` is a Python interface to the `e-antic` library. If you want to
-install `pyeantic` this has to be installed together with `e-antic`. We
+install `pyeantic`, it has to be installed together with `e-antic`. We
 refer to the Installation section in the `libeantic documentation
 <../libeantic>`_ for the procedure.
 

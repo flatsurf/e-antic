@@ -39,19 +39,19 @@ LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const 
 LIBEANTIC_API int _fmpz_poly_has_real_root(fmpz * pol, slong len);
 LIBEANTIC_API int fmpz_poly_has_real_root(fmpz_poly_t pol);
 
-/// Gives an upper bound on the bitsize of largest real root of `pol`.
+/// Return an upper bound on the bitsize of largest real root of `pol`.
 LIBEANTIC_API slong fmpz_poly_positive_root_upper_bound_2exp(const fmpz_poly_t pol);
 
-/// Gives an upper bound on the bitsize of largest real root of `(pol, len)`.
+/// Return an upper bound on the bitsize of largest real root of `(pol, len)`.
 LIBEANTIC_API slong _fmpz_poly_positive_root_upper_bound_2exp(const fmpz * pol, slong len);
 
 LIBEANTIC_API slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len);
 
-/// Gives an upper bound on the number of real roots of the polynomial
+/// Return an upper bound on the number of real roots of the polynomial
 /// `pol` (currently using Decartes rule of sign).
 LIBEANTIC_API slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol);
 
-/// Gives an upper bound on the number of real roots between 0 and 1
+/// Return an upper bound on the number of real roots between 0 and 1
 /// of the polynomial `(p, len)` using Decartes rule of sign. If
 /// the result is larger than `bound` then `WORD_MAX` is
 /// returned.
@@ -110,8 +110,8 @@ LIBEANTIC_API slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
 
 /// === flint, arb extra ===
 
-/// Set `res` to be the polynomial whose coefficients are the absolute values of the
-/// ones in `p`
+/// Set `res` to be the polynomial whose coefficients are the absolute values
+/// of the ones in `p`
 LIBEANTIC_API void fmpz_poly_abs(fmpz_poly_t res, fmpz_poly_t p);
 
 /// Evaluate the polynomial `pol` at the ball `a` and set result in `res`

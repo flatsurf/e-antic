@@ -1,6 +1,6 @@
 # Overview of the C interface
 
-There are two main object in e-antic. Number fields, which are represented by a
+There are two main objects in e-antic. Number fields, which are represented by a
 [renf_t](), and their elements, represented by a [renf_elem_t](). Functions
 that operate on number fields are defined in the header [e-antic/renf.h]() and
 have the prefix `renf_`. Functions that operate on elements of number fields

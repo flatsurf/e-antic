@@ -1,6 +1,6 @@
 # Overview of the C++ interface
 
-There are two main object in e-antic. Number fields, which are represented by a
+There are two main objects in e-antic. Number fields, which are represented by a
 [eantic::renf_class](), and their elements, represented by a
 [eantic::renf_elem_class](). These objects are provided by the headers
 [e-antic/renf_class.hpp]() and [e-antic/renf_elem_class.hpp]() respectively.

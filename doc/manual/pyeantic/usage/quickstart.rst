@@ -4,7 +4,7 @@ Quickstart
 The Python interface is automatically generated from the C++ code using
 `cppyy <https://cppyy.readthedocs.io/en/latest/>`_. In particular, all classes,
 functions and methods available from C++ are available from Python. We
-reproduce here the example TODO: link to the "Overview of the C++ interface"
+reproduce here the example from the `C++ overview <../libeantic/overview_cxx>`_.
 
 ::
 
