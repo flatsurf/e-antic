@@ -31,7 +31,7 @@ The following describe alternative ways of installing e-antic.
 * [Number Fields `renf.h`](doc_renf_h)
 * [Number Field Elements `renf_elem.h`](doc_renf_elem_h)
 
-The following headers extend [FLINT](http://flintlib.org/). They should not
+The following headers extend [FLINT](https://flintlib.org/). They should not
 be considered as part of the e-antic API and will be ported to FLINT
 eventually.
 
