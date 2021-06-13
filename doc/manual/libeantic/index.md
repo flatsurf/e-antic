@@ -21,7 +21,7 @@ See [repology for e-antic](https://repology.org/project/e-antic/packages).
 
 The following describe alternative ways of installing e-antic.
 
-* [Install with Conda](install_in_conda.md)
+* [Install with Conda](install_in_conda)
 * [Build from Source](https://github.com/flatsurf/e-antic/#build-from-the-source-code-repository-or-a-tarball)
 * [Conda Environment to Build from Source](https://github.com/flatsurf/e-antic/#build-with-conda-dependencies)
 
@@ -40,7 +40,7 @@ eventually.
 
 ## C++ Interface
 
-* [Tour of the C++ Interface](overview_cxx.md)
+* [Tour of the C++ Interface](overview_cxx)
 * [Number Fields `renf_class.hpp`](doc_renf_class_hpp)
 * [Number Field Elements `renf_elem_class.hpp`](doc_renf_elem_class_hpp)
 
