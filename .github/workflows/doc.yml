@@ -38,17 +38,17 @@ jobs:
         shell: bash -l {0}
         run: |
           make html
-          touch doc/manual/generated/e-antic/html/.nojekyll
+          touch doc/manual/generated/html/.nojekyll
       - name: detect broken links
         shell: bash -l {0}
         run: |
-          python -m http.server 8880 --directory doc/manual/generated/e-antic/html &
+          python -m http.server 8880 --directory doc/manual/generated/html &
           sleep 1
-          linkchecker --check-extern http://localhost:8880/libeantic
+          linkchecker --check-extern http://localhost:8880/e-antic/libeantic
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: doc/manual/generated/e-antic/html
+          FOLDER: doc/manual/generated/html
           TARGET_FOLDER: docs
         if: ${{ github.event_name == 'push' }}
