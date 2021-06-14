@@ -48,4 +48,4 @@ eventually.
 
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
 exposing automatic bindings to the C++ interface. The documentation of the
-Python interface can be found [here](/pyeantic).
+Python interface can be found [here](/e-antic/pyeantic).
