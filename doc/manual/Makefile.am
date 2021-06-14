@@ -4,15 +4,15 @@ EXTRA_STANDARDESE_FLAGS ?=
 STANDARDESE_FLAGS = --warn-as-error --free-file-comments -X
 # Configure search paths for #include statements
 STANDARDESE_FLAGS += -I $(srcdir)/../../libeantic/e-antic -I $(builddir)/../../libeantic/e-antic -I $(includedir) -I $(srcdir)/../../libeantic/test/external/cereal/include
-# Link against FLINT's sphinx documentation.
+# Link against FLINT's Sphinx documentation.
 STANDARDESE_FLAGS += --external sphinx:flint:flint.inv=https://flintlib.org/sphinx/
-# Link against Arb's sphinx documentation.
+# Link against Arb's Sphinx documentation.
 STANDARDESE_FLAGS += --external sphinx:arb:arb.inv=https://arblib.org/
 # Allow === Output Section === Syntax
 STANDARDESE_FLAGS += -p output_section='=== (.*) ==='
 # Allow ==* Group *== Syntax
 STANDARDESE_FLAGS += -p group='==\* ((?:.(?!\*==))+)() \*=='
-# Allow :param:`name` syntax like in sphinx.
+# Allow :param:`name` syntax like in Sphinx.
 STANDARDESE_FLAGS += -p param=':param:`([^`]*)`'
 # We will deploy the C/C++ documentation to the libeantic/ subdirectory
 STANDARDESE_FLAGS += --vpath 'libeantic/doc_{{ sanitize_basename(name) }}'
@@ -37,12 +37,12 @@ $(builddir)/generated/pyeantic/inventory: $(builddir)/generated/pyeantic/source
 	python $(SPHINXBUILD) -b json $(builddir)/generated/pyeantic/source $(builddir)/build/pyeantic/inventory -Q
 
 $(builddir)/generated/pyeantic/html: $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/source
-	@# Create HTML pages for pyeantic with sphinx
+	@# Create HTML pages for pyeantic with Sphinx
 	source $(builddir)/../../pyeantic/test/test-env.sh && \
 	python $(SPHINXBUILD) -b html -n $(builddir)/generated/pyeantic/source $(builddir)/generated/pyeantic/html --color -a -E -W
 
 $(builddir)/generated/libeantic/inventory:
-	@# Create an inventory of libeantic so sphinx can link against it. (This also creates the entire documentation since there is no flag in standardese yet to only generate the inventory.)
+	@# Create an inventory of libeantic so Sphinx can link against it. (This also creates the entire documentation since there is no flag in standardese yet to only generate the inventory.)
 	mkdir -p $(builddir)/generated/libeantic/inventory
 	$(STANDARDESE) --outdir $(builddir)/generated/libeantic/inventory/ $(STANDARDESE_FLAGS) $(STANDARDESE_INPUTS)
 
