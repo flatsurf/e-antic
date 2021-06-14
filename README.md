@@ -13,8 +13,8 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6 or 2.7](http://flintlib.org)
- - [Arb](http://arblib.org/)
+ - [FLINT 2.6 or 2.7](https://flintlib.org)
+ - [Arb](https://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
  - [Boost](https://www.boost.org/) for the C++ library
  - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
@@ -65,38 +65,23 @@ the time of this writing.
 
 For more detailed but generic instructions please refer to the INSTALL file.
 
-## Install with Conda
+## Installation
 
-You can install this package with conda. Download and install
-[Miniconda](https://conda.io/miniconda.html), then run
+See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
+for installation instructions.
 
-    conda config --add channels conda-forge
-    conda create -n eantic -c flatsurf libeantic libeanticxx pyeantic
-    conda activate eantic
-
-The latest (experimental) versions for conda are:
-
-| Name | Downloads | Version | Platforms |
-| --- | --- | --- | --- |
-| [![Build](https://img.shields.io/badge/recipe-e--antic-green.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/e-antic.svg)](https://anaconda.org/flatsurf/e-antic) |
-| [![Build](https://img.shields.io/badge/recipe-pyeantic-green.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) |
-
-## Install with your Distribution Tools
-
-Some Versions of E-ANTIC might also be available as part of your
-[distribution](https://repology.org/project/e-antic/packages).
- 
 ## Build with Conda Dependencies
 
 To build all of e-antic package, you need a fairly recent C++ compiler and
 probably some packages that might not be readily available on your system. If
 you don't want to use your distribution's packages, you can provide these
-dependencies with conda. Download and install
+dependencies with Conda. Download and install
 [Miniconda](https://conda.io/miniconda.html), then run
 
     conda create -n e-antic-build ccache
     conda env update -n e-antic-build -f libeantic/environment.yml
-    conda env create -n e-antic-build -f pyeantic/environment.yml
+    conda env update -n e-antic-build -f pyeantic/environment.yml
+    conda env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
     export CPPFLAGS="-isystem $CONDA_PREFIX/include"
     export CFLAGS="$CPPFLAGS"
@@ -108,5 +93,5 @@ dependencies with conda. Download and install
     ./bootstrap
     ./configure --prefix="$CONDA_PREFIX"
     make
-    make check| [![Build](https://img.shields.io/badge/recipe-libeantic-green.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) |
-
+    make check
+    make html # to build the documentation

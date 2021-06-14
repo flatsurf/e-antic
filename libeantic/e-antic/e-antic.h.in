@@ -7,15 +7,11 @@
     e-antic is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 3.0 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef E_ANTIC_LOCAL_H
 #define E_ANTIC_LOCAL_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* e-antic version number */
 
@@ -27,16 +23,13 @@ extern "C" {
                            E_ANTIC_VERSION_MINOR * 100 + \
                            E_ANTIC_VERSION_PATCHLEVEL)
 
-#ifdef __cplusplus
-}
-#endif
-
 #ifdef __CLING__
 
 #pragma cling add_library_path("@libdir@")
 #pragma cling load("libeantic")
 #ifdef __cplusplus
 #pragma cling load("libeanticxx")
+#pragma cling load("libgmpxx")
 #endif
 
 #endif // __CLING__

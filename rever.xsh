@@ -68,6 +68,8 @@ $VERSION_BUMP_PATTERNS = [
     ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('pyeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
+    ('doc/configure.ac', r'AC_INIT', r'AC_INIT([e-antic-doc], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
+    ('doc/manual/pyeantic/conf.py', r'release =', "release = '$VERSION'"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'

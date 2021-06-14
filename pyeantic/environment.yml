@@ -1,5 +1,5 @@
 # This file lists the dependencies needed to build and test all of pyeantic.
-# Create a conda environment with these dependencies preinstalled with:
+# Create a Conda environment with these dependencies preinstalled with:
 # conda env create -f environment.yml
 name: pyeantic-build
 channels:

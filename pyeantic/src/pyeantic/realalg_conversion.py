@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 r"""
-Conversion from realalg
+realalg conversions
 
-See https://github.com/MarkCBell/realalg
+``realag`` is a pure Python library developed by Mark C. Bell that provides
+similarly to ``pyeantic`` exact computations over real embedded number fields.
+The source code is available at https://github.com/MarkCBell/realalg.
+This module provides conversion from and to ``realalg``.
 """
 ######################################################################
 #  This file is part of e-antic.
@@ -67,6 +70,8 @@ def realalg_nf_to_eantic(K, name='a'):
 
 def realalg_nf_elem_to_eantic(K, elem):
     r"""
+    Convert a realalg real number field element to eantic
+
     >>> import realalg
     >>> from pyeantic.realalg_conversion import realalg_nf_to_eantic, realalg_nf_elem_to_eantic
     >>> R = realalg.RealNumberField([-2,0,1])

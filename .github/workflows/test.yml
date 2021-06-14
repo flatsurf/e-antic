@@ -24,7 +24,9 @@ jobs:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
       - name: install valgrind and libc debug symbols
-        run: sudo apt install libc6-dbg valgrind
+        run: |
+          sudo apt update
+          sudo apt install libc6-dbg valgrind
         if: ${{ matrix.target == 'check-valgrind' }}
       - name: build flags
         id: flags
@@ -48,7 +50,7 @@ jobs:
           cd libeantic
           export CFLAGS="$CFLAGS -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
@@ -75,7 +77,9 @@ jobs:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
       - name: install valgrind and libc debug symbols
-        run: sudo apt install libc6-dbg valgrind
+        run: |
+          sudo apt update
+          sudo apt install libc6-dbg valgrind
         if: ${{ matrix.target == 'check-valgrind' }}
       - name: build flags
         id: flags
@@ -97,7 +101,7 @@ jobs:
 
           echo "::group::configure"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
@@ -113,7 +117,8 @@ jobs:
       matrix:
         on:
           - ubuntu-20.04
-          - macos-10.15
+          # standardese 0.6.0 has not been released for macOS yet.
+          # - macos-10.15
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -124,6 +129,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
+          mamba env update --quiet -n test -f doc/environment.yml
           conda list
       - name: make distcheck
         shell: bash -l {0}
@@ -132,10 +138,10 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          ./configure --without-benchmark
+          ./configure
 
           echo "::group::make distcheck"
-          make distcheck
+          EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 

@@ -59,7 +59,6 @@ libeantic_la_SOURCES +=               \
     renf/clear.c                      \
     renf/degree.c                     \
     renf/equal.c                      \
-    renf/fmpz_poly_real_embeddings.c  \
     renf/get_str.c                    \
     renf/init.c                       \
     renf/init_nth_root.c              \
@@ -67,6 +66,7 @@ libeantic_la_SOURCES +=               \
     renf/print.c                      \
     renf/randtest.c                   \
     renf/refine_embedding.c           \
+    renf/set_embeddings_fmpz_poly.c   \
     renf/set_immutable.c
 
 noinst_HEADERS =                  \

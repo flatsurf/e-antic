@@ -7,16 +7,22 @@
     e-antic is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 3.0 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef E_ANTIC_RENFXX_CEREAL_H
 #define E_ANTIC_RENFXX_CEREAL_H
 
+#include <string>
+#include <memory>
+#include <stdexcept>
+#include <sstream>
+
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 
-#include "renfxx.h"
+#include "renf_class.hpp"
+#include "renf_elem_class.hpp"
 
 namespace eantic {
 template <class Archive>

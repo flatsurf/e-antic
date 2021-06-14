@@ -8,7 +8,7 @@
     e-antic is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 3.0 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef E_ANTIC_CPPYY_H
@@ -21,9 +21,7 @@
 namespace eantic {
 std::ostream &operator<<(std::ostream &, const renf_class &);
 std::ostream &operator<<(std::ostream &, const renf_elem_class &);
-}  // namespace eantic
 
-namespace eantic {
 namespace cppyy {
 
 // cppyy does not see the operators provided by boost::operators so we provide

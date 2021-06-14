@@ -19,6 +19,10 @@
 #include <boost/optional.hpp>
 #include <boost/convert/lexical_cast.hpp>
 
+#include <boost/optional.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/convert/lexical_cast.hpp>
+
 #include "../e-antic/renfxx.h"
 #include "../e-antic/fmpq_poly_extra.h"
 
@@ -841,14 +845,14 @@ renf_elem_class::operator double() const
     return renf_elem_get_d(a, nf->renf_t(), ARF_RND_NEAR);
 }
 
+renf_elem_class renf_elem_class::operator+() const { return *this; }
+
 renf_elem_class renf_elem_class::operator-() const
 {
     renf_elem_class ans(*this);
     renf_elem_neg(ans.a, ans.a, ans.nf->renf_t());
     return ans;
 }
-
-renf_elem_class renf_elem_class::operator+() const { return *this; }
 
 renf_elem_class::operator bool() const
 {

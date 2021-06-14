@@ -1,3 +1,9 @@
+if HAVE_BYEXAMPLE
+    MAYBE_BYEXAMPLE = byexample
+endif
+
+SUBDIRS = $(MAYBE_BYEXAMPLE)
+
 LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la
 
 @VALGRIND_CHECK_RULES@

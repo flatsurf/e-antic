@@ -9,6 +9,12 @@ AM_INIT_AUTOMAKE([1.14.1 subdir-objects tar-pax foreign])
 
 AC_CONFIG_FILES([Makefile])
 
-AC_CONFIG_SUBDIRS([libeantic pyeantic])
+AC_CONFIG_SUBDIRS([libeantic])
+
+AC_ARG_WITH([pyeantic], AS_HELP_STRING([--without-pyeantic], [Do not build the Python interface pyeantic]))
+AS_IF([test "x$with_pyeantic" != "xno"], [AC_CONFIG_SUBDIRS([pyeantic])])
+
+AC_ARG_WITH([doc], AS_HELP_STRING([--without-doc], [Do not build the e-antic documentation]))
+AS_IF([test "x$with_doc" != "xno"], [AC_CONFIG_SUBDIRS([doc])])
 
 AC_OUTPUT
