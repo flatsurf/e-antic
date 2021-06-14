@@ -75,7 +75,7 @@ for installation instructions.
 To build all of e-antic package, you need a fairly recent C++ compiler and
 probably some packages that might not be readily available on your system. If
 you don't want to use your distribution's packages, you can provide these
-dependencies with conda. Download and install
+dependencies with Conda. Download and install
 [Miniconda](https://conda.io/miniconda.html), then run
 
     conda create -n e-antic-build ccache
