@@ -45,8 +45,8 @@ namespace eantic {
 /// The underlying data can be accessed directly, e.g., with
 /// [num_vector]() and [den]().
 ///
-/// Note that elements do not need to worry about the lifetimes of the number
-/// fields they are contained in. The number field will be kept alive by smart
+/// Note that elements do not need to worry about the lifetime of the number
+/// field they are contained in. The number field will be kept alive by smart
 /// pointers as long as elements in it are around:
 /// ```
 /// #include <e-antic/renf_class.hpp>

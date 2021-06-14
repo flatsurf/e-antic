@@ -20,7 +20,8 @@ by the number field itself.
 ## Example
 
 We want to construct a totally real field with minimal polynomial $x^3 - 3x +
-1$, represented by an `fmpq_poly_t`.
+1$, represented by an `fmpq_poly_t`. We include the appropriate headers
+and define the polynomial.
 
 ```c
 #include <e-antic/fmpq_poly_extra.h>
@@ -59,7 +60,7 @@ renf_elem_init(a, nf);
 renf_elem_gen(a, nf);
 ```
 
-We can deallocate the embedding and the defining polynomial, we won't need them anymore.
+We deallocate the embedding and the defining polynomial, as we will no longer need them.
 
 ```c
 fmpq_poly_clear(poly);

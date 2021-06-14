@@ -6,11 +6,11 @@ There are two main objects in e-antic. Number fields, which are represented by a
 [e-antic/renf_class.hpp]() and [e-antic/renf_elem_class.hpp]() respectively.
 
 To work with e-antic, you first need to create a number field. Typically, by
-providing a minimal polynomial and approximation of one of its roots.
+providing a minimal polynomial and an approximation of one of its roots.
 
 Once a [eantic::renf_class]() has been initialized, its elements can be created
 with the various [eantic::renf_elem_class]() contructors. Lifetime of all these
-objects is taken care of by smart pointers, so you usually, do not need to
+objects is taken care of by smart pointers, so you usually do not need to
 worry about allocating and freeing resources manually.
 
 ## Example
@@ -40,5 +40,5 @@ std::cout << b;
 // -> (x^2 - 2 ~ -1.8793852)
 ```
 
-Note that the same example is also explained in detail in the documentaion of
+Note that the same example is also explained in detail in the documentation of
 the [C interface](../overview_c).

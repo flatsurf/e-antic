@@ -2,11 +2,11 @@ r"""
 Extend byexample with natural C(++) tests
 
 Byexample supports C++ directly through cling. However, it expects tests to be
-written cling syntax which is somewhat cryptic to readers not familiar with
+written in cling syntax which is somewhat cryptic to readers not familiar with
 cling. Also, pexpect style parsing is not terribly robust.
 
 Here we extend byexample with a parser that can detect regular source code in
-MarkDown code fences and expected outputs in `// ->` comments.
+Markdown code fences and expected outputs in `// ->` comments.
 
 We also use cppyy instead of cling which takes care of the hard part of the
 parsing for us.
@@ -39,14 +39,14 @@ stability = 'experimental'
 
 class MarkdownCxxDelimiter(ZoneDelimiter):
     r"""
-    Detects C/C++ examples in MarkDown.
+    Detects C/C++ examples in Markdown.
     """
     target = {'.md'}
 
     @constant
     def zone_regex(self):
         return re.compile(r'''
-            # Begin with a markdown fenced-code marker
+            # Begin with a Markdown fenced-code marker
             ^[ ]*
                 (?:
                     (?P<marker>```(?:``)*)[ ]*(c|c\+\+|cpp)\b # fenced-code marker (backticks + language)
@@ -63,7 +63,7 @@ class MarkdownCxxDelimiter(ZoneDelimiter):
 
 class MarkdownHppDelimiter(ZoneDelimiter):
     r"""
-    Detect C/C++ examples in MarkDown comments in Header files like the ones
+    Detect C/C++ examples in Markdown comments in header files like the ones
     that we are using for standardese.
     """
     target = {'.h', '.hpp'}

@@ -48,11 +48,11 @@ LIBEANTIC_API slong _fmpz_poly_positive_root_upper_bound_2exp(const fmpz * pol, 
 LIBEANTIC_API slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len);
 
 /// Return an upper bound on the number of real roots of the polynomial
-/// `pol` (currently using Decartes rule of sign).
+/// `pol` (currently using Descartes' rule of sign).
 LIBEANTIC_API slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol);
 
 /// Return an upper bound on the number of real roots between 0 and 1
-/// of the polynomial `(p, len)` using Decartes rule of sign. If
+/// of the polynomial `(p, len)` using Descartes' rule of sign. If
 /// the result is larger than `bound` then `WORD_MAX` is
 /// returned.
 LIBEANTIC_API slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
@@ -61,7 +61,7 @@ LIBEANTIC_API slong _fmpz_poly_descartes_bound(fmpz * p, slong len, slong bound)
 
 /// Isolate the real roots of `(pol, len)` contained in the
 /// interval $(0, 1)$. The array `exact_roots` will be set by
-/// the exact diadic roots found by the algorithm and
+/// the exact dyadic roots found by the algorithm and
 /// `n_exact_roots` updated accordingly. The arrays
 /// `c_array` and `k_array` are set to be interval data
 /// that enclose the remaining roots and `n_interval` is
@@ -71,7 +71,7 @@ LIBEANTIC_API slong _fmpz_poly_descartes_bound(fmpz * p, slong len, slong bound)
 LIBEANTIC_API void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slong * n_exact_roots, fmpz * c_array, slong * k_array, slong * n_intervals, fmpz * pol, slong len);
 
 /// Isolate the real roots of `pol`. The array
-/// `exact_roots` will be set by the exact diadic roots found
+/// `exact_roots` will be set by the exact dyadic roots found
 /// by the algorithm and `n_exact_roots` updated accordingly.
 /// The arrays `c_array` and `k_array` are set to be
 /// interval data that enclose the remaining roots and

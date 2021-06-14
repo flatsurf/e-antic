@@ -1,4 +1,4 @@
-# Install e-antic in conda
+# Install e-antic in Conda
 
 You can install this package with conda. Download and install
 [Miniconda](https://conda.io/miniconda.html), then run

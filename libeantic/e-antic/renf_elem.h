@@ -182,7 +182,7 @@ LIBEANTIC_API void renf_elem_neg(renf_elem_t a, const renf_elem_t b, const renf_
 LIBEANTIC_API void renf_elem_inv(renf_elem_t a, const renf_elem_t b, const renf_t nf);
 
 /// === Binary operations ===
-/// All the binary operations functions are of the form `renf_elem_OP_TYP(a, b, c, nf)` where
+/// All the binary operation functions are of the form `renf_elem_OP_TYP(a, b, c, nf)` where
 /// * `OP` is the operation type
 /// * `TYP` is the type of the argument `c`
 /// * `a` is the argument used for returned value
@@ -216,7 +216,7 @@ LIBEANTIC_API void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, 
 /// Perform the floor division of the number field elements `b` and `c` and set the
 /// result in `a`.
 /// The result is equivalent to a call of [renf_elem_div] followed by
-/// [renf_elem_floor]. Though, this function is much faster.
+/// [renf_elem_floor]. This function is much faster, though.
 LIBEANTIC_API void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf);
 
 /// === Other functions ===

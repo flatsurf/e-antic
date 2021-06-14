@@ -8,14 +8,14 @@ The C library is built on top of [FLINT](https://flintlib.org/),
 and follows the same naming conventions.
 
 The main focus of e-antic is on efficiency. For a more versatile C
-library for exact real numbers computations we recommand
+library for exact real numbers computations we recommend
 [Calcium](https://fredrikj.net/calcium/) by Fredrik Johansson.
 
 The development of e-antic is coordinated on [github](https://github.com/flatsurf/e-antic).
 
 ## Installation
 
-The prefered way to install e-antic is to use your package manager (e.g.
+The preferred way to install e-antic is to use your package manager (e.g.
 `apt-get` on Debian or Ubuntu, `pacman` on Arch Linux, `brew` on MacOS, etc).
 See [repology for e-antic](https://repology.org/project/e-antic/packages).
 
@@ -44,7 +44,7 @@ eventually.
 * [Number Fields `renf_class.hpp`](doc_renf_class_hpp)
 * [Number Field Elements `renf_elem_class.hpp`](doc_renf_elem_class_hpp)
 
-## Python interface
+## Python Interface
 
 The Python interface relies on [cppyy](https://cppyy.readthedocs.io/en/latest/)
 exposing automatic bindings to the C++ interface. The documentation of the

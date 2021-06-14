@@ -178,7 +178,7 @@ public:
     [[deprecated("Use cereal.hpp or the renf_elem_class constructor taking a string instead.")]]
     static boost::intrusive_ptr<const renf_class> get_pword(std::istream &);
 
-    /// Return a human-readabie representation of this field.
+    /// Return a human-readable representation of this field.
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
