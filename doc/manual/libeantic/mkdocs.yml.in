@@ -20,7 +20,7 @@ nav:
   - "renf_class - number fields": doc_renf_class_hpp.md
   - "renf_elem_class - number field elements": doc_renf_elem_class_hpp.md
 - pyeantic:
-  - "Manual": "/pyeantic"
+  - "Manual": "/e-antic/pyeantic"
 markdown_extensions:
   - toc:
       permalink: True

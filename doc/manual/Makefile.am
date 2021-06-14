@@ -14,8 +14,8 @@ STANDARDESE_FLAGS += -p output_section='=== (.*) ==='
 STANDARDESE_FLAGS += -p group='==\* ((?:.(?!\*==))+)() \*=='
 # Allow :param:`name` syntax like in Sphinx.
 STANDARDESE_FLAGS += -p param=':param:`([^`]*)`'
-# We will deploy the C/C++ documentation to the libeantic/ subdirectory
-STANDARDESE_FLAGS += --vpath 'libeantic/doc_{{ sanitize_basename(name) }}'
+# We will serve the C/C++ documentation from the e-antic/libeantic/ subdirectory
+STANDARDESE_FLAGS += --vpath 'e-antic/libeantic/doc_{{ sanitize_basename(name) }}'
 # Shorten type names in the documentation that reference common namespaces or use complicated aliases.
 STANDARDESE_FLAGS += --format type='{% set formatted = format(option("default:type_format")) %}{% set formatted = replace(formatted, "std::|eantic::", "") %}{% set formatted = replace(formatted, "mp_limb_signed_t", "slong") %}{% set formatted = replace(formatted, "mp_bitcnt_t", "ulong") %}{{ formatted }}'
 
@@ -72,12 +72,12 @@ $(builddir)/flint.inv:
 CLEANFILES += flint.inv
 
 html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
-	mkdir -p $(builddir)/generated/e-antic/html
-	cp -RT $(builddir)/generated/libeantic/html/ $(builddir)/generated/e-antic/html/libeantic
-	cp -RT $(builddir)/generated/pyeantic/html/ $(builddir)/generated/e-antic/html/pyeantic
+	mkdir -p $(builddir)/generated/html/e-antic
+	cp -RT $(builddir)/generated/libeantic/html/ $(builddir)/generated/html/e-antic/libeantic
+	cp -RT $(builddir)/generated/pyeantic/html/ $(builddir)/generated/html/e-antic/pyeantic
 
 serve: html
-	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/e-antic/html
+	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/html
 
 all: html
 
