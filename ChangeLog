@@ -4,6 +4,21 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.14
+====================
+
+**Changed:**
+
+* Split `renfxx.h` into `renf_elem_class.hpp` and `renf_class.hpp` headers. The
+  original header still exists and simply includes the two novel headers.
+
+**Performance:**
+
+* Speed up arithmetic between `renf_elem_class` in C++ interface.
+* Speed up creation of trivial number fields by a factor of seven.
+
+
+
 v1.0.0-rc.13
 ====================
 
