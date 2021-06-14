@@ -14,7 +14,7 @@ v1.0.0-rc.13
 **Fixed:**
 
 * compatible with FLINT 2.7
-* Removed dependency of `renfxx_cereal.h` on arb and FLINT, i.e., one does not need to `-larb -lflint` anymore when using cereal.
+* Removed dependency of `renfxx_cereal.h` on Arb and FLINT, i.e., one does not need to `-larb -lflint` anymore when using cereal.
 
 
 

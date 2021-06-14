@@ -108,7 +108,7 @@ LIBEANTIC_API slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol);
 LIBEANTIC_API slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
 
 
-/// === FLINT, arb extra ===
+/// === FLINT, Arb extra ===
 
 /// Set `res` to be the polynomial whose coefficients are the absolute values
 /// of the ones in `p`

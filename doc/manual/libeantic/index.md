@@ -4,7 +4,7 @@ e-antic is a C library for exact computation with real embedded algebraic
 numbers. It also offers C++ and Python interfaces.
 
 The C library is built on top of [FLINT](https://flintlib.org/),
-[arb](https://fredrikj.net/arb/) and [antic](https://github.com/wbhart/antic)
+[Arb](https://fredrikj.net/arb/) and [antic](https://github.com/wbhart/antic)
 and follows the same naming conventions.
 
 The main focus of e-antic is on efficiency. For a more versatile C
