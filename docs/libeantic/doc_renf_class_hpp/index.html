@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>renf_class - number fields - e-antic</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "renf_class - number fields";
+    var mkdocs_page_input_path = "doc_renf_class_hpp.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> e-antic</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">libeantic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview_c/">Overview</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_h/">renf — number fields</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_elem_h/">renf_elem — number field elements</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">libeanticxx</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../overview_cxx/">Overview</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">renf_class - number fields</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#class-renf_class">Class renf_class</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_elem_class_hpp/">renf_elem_class - number field elements</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">pyeantic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="/pyeantic">Manual</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">e-antic</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>libeanticxx &raquo;</li>
+        
+      
+    
+    <li>renf_class - number fields</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="renf_classhpp-real-embedded-number-fields">renf_class.hpp — Real Embedded Number Fields<a class="headerlink" href="#renf_classhpp-real-embedded-number-fields" title="Permanent link">&para;</a></h1>
+<h2 id="class-renf_class">Class <code>renf_class</code><a class="headerlink" href="#class-renf_class" title="Permanent link">&para;</a></h2>
+<p>A Real Embedded Number Field.</p>
+<p>All number fields are simple extensions of the rational numbers whose defining minimal polynomial has a real root.</p>
+<p>To create a number field, use one of the <a href="/libeantic/doc_renf_class_hpp#const-renf_class-make">factory functions</a>; typically, by specifying the minimal polynomial of the number field and selecting a real root:</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+</code></pre>
+<p>These factories return an <a href="https://www.boost.org/doc/libs/1_75_0/libs/smart_ptr/doc/html/smart_ptr.html#intrusive_ptr">intrusive pointer</a> to a number field which takes care of reference counting, i.e., you do not need to worry about dangling references; any element of the number field keeps the number field itself alive.</p>
+<p>All number fields are unique. If you are familiar with SageMath, they are “unique parents”. If you create the same number field twice, you get a reference to the same field:</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 1");
+
+L-&gt;gen().parent() == *K
+// -&gt; true
+
+&amp;L-&gt;gen().parent() == &amp;*K
+// -&gt; true
+</code></pre>
+<p>Number fields are hashable but not ordered, i.e., they can be used in containers such as <code>std::unordered_set</code> but not in <code>std::set</code>.</p>
+<h3 id="const-renf_class-make"><code>const renf_class&amp; make()</code><a class="headerlink" href="#const-renf_class-make" title="Permanent link">&para;</a></h3>
+<p>Return the trivial number field obtained by adjoining a root of $x - 1$ to the rationals.</p>
+<h3 id="boostintrusive_ptrconst-renf_class-makeconst-renf_t-const-string-gen"><code>boost::intrusive_ptr&lt;const renf_class&gt;</code> <code>make(const ::renf_t, const string&amp; gen)</code><a class="headerlink" href="#boostintrusive_ptrconst-renf_class-makeconst-renf_t-const-string-gen" title="Permanent link">&para;</a></h3>
+<p>Return the number field created from a <a href="/libeantic/doc_renf_h#type-alias-renf_t">::renf_t</a>, the C type underlying a <code>renf_class</code>.</p>
+<h3 id="boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-string-emb-slong-prec"><code>boost::intrusive_ptr&lt;const renf_class&gt;</code> <code>make(const string&amp; minpoly, const string&amp; gen, const string&amp; emb, slong prec)</code><a class="headerlink" href="#boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-string-emb-slong-prec" title="Permanent link">&para;</a></h3>
+<p>Return the number field obtained by adjoining the root of <a href="/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a> which is approximately <a href="/libeantic/doc_renf_class_hpp#parameter-emb">emb</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
+</code></pre>
+<h4 id="parameter-minpoly">Parameter <code>minpoly</code><a class="headerlink" href="#parameter-minpoly" title="Permanent link">&para;</a></h4>
+<p>An irreducible polynomial in the variable <a href="/libeantic/doc_renf_class_hpp#parameter-gen">gen</a>.</p>
+<p>This minimal polynomial does not have to be totally real or monic.</p>
+<h4 id="parameter-gen">Parameter <code>gen</code><a class="headerlink" href="#parameter-gen" title="Permanent link">&para;</a></h4>
+<p>The name of the variable used in <a href="/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a>.</p>
+<p>Note that two fields that differ only in the name of the generator are treated as being distinct fields.</p>
+<h4 id="parameter-emb">Parameter <code>emb</code><a class="headerlink" href="#parameter-emb" title="Permanent link">&para;</a></h4>
+<p>An approximation of the root of <a href="/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a>.</p>
+<p>It makes no difference to what precision this approximation is provided but it must uniquely determine a single root of the polynomial.</p>
+<h4 id="parameter-prec">Parameter <code>prec</code><a class="headerlink" href="#parameter-prec" title="Permanent link">&para;</a></h4>
+<p>The default precision for all arithmetic.</p>
+<p>When performing arithmetic in this field, all operations are performed to that precision. When necessary, the precision is dynamically increased. This only affects the performance and inner workings of libeantic, the results of arithmetic operations and comparisons are not affected by this.</p>
+<h3 id="slong-degree-const"><code>slong degree() const</code><a class="headerlink" href="#slong-degree-const" title="Permanent link">&para;</a></h3>
+<p>Return the absolute degree of this number field.</p>
+<h3 id="const-renf_elem_class-zero-const"><code>const renf_elem_class&amp; zero() const</code><a class="headerlink" href="#const-renf_elem_class-zero-const" title="Permanent link">&para;</a></h3>
+<p>Return the zero element of this number field.</p>
+<h3 id="const-renf_elem_class-one-const"><code>const renf_elem_class&amp; one() const</code><a class="headerlink" href="#const-renf_elem_class-one-const" title="Permanent link">&para;</a></h3>
+<p>Return the one element of this number field.</p>
+<h3 id="const-renf_elem_class-gen-const"><code>const renf_elem_class&amp; gen() const</code><a class="headerlink" href="#const-renf_elem_class-gen-const" title="Permanent link">&para;</a></h3>
+<p>Return the generator of this number field.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto&amp; K = eantic::renf_class::make();
+std::cout &lt;&lt; K.gen();
+// -&gt; 1
+
+auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 1");
+std::cout &lt;&lt; L-&gt;gen();
+// -&gt; (x ~ 1.4142136)
+</code></pre>
+<h3 id="tuplestring-string-string-slong-construction-const"><code>tuple&lt;string, string, string, slong&gt;</code> <code>construction() const</code><a class="headerlink" href="#tuplestring-string-string-slong-construction-const" title="Permanent link">&para;</a></h3>
+<p>Return the parameters <code>(minpoly, gen, emb, prec)</code> that can be used to construct this field with <a href="/libeantic/doc_renf_class_hpp#boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-string-emb-slong-prec">make</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
+
+auto construction = K-&gt;construction();
+auto L = eantic::renf_class::make(
+  std::get&lt;0&gt;(construction),
+  std::get&lt;1&gt;(construction),
+  std::get&lt;2&gt;(construction),
+  std::get&lt;3&gt;(construction));
+K == L
+// -&gt; true
+</code></pre>
+<h3 id="friend-bool-operatorconst-renf_class-const-renf_class"><code>friend bool operator==(const renf_class&amp;, const renf_class&amp;)</code><a class="headerlink" href="#friend-bool-operatorconst-renf_class-const-renf_class" title="Permanent link">&para;</a></h3>
+<p>Return whether two number fields are indistinguishable.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+auto L = eantic::renf_class::make("x^2 - 2", "x", "1.41 +/- 0.1");
+K == L
+// -&gt; true
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+auto L = eantic::renf_class::make("2*x^2 - 4", "x", "1 +/- 1");
+K == L
+// -&gt; false
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1 +/- 1");
+auto L = eantic::renf_class::make("y^2 - 2", "y", "1 +/- 1");
+K == L
+// -&gt; false
+
+K != L
+// -&gt; true
+</code></pre>
+<h3 id="const-string-gen_name-const"><code>const string&amp; gen_name() const</code><a class="headerlink" href="#const-string-gen_name-const" title="Permanent link">&para;</a></h3>
+<p>Return the name of the generator of this field.</p>
+<h3 id="string-to_string-const"><code>string to_string() const</code><a class="headerlink" href="#string-to_string-const" title="Permanent link">&para;</a></h3>
+<p>Return a human-readable representation of this field.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+
+auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
+K-&gt;to_string()
+// -&gt; NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])
+
+// There is also an operator&lt;&lt; which gives the same output.
+std::cout &lt;&lt; *K;
+// -&gt; NumberField(2*x^4 - 4, [1.18920711500272106671749997056 +/- 1.11e-30])
+</code></pre>
+<h3 id="friend-ostream-operatorostream-const-renf_class"><code>friend ostream&amp; operator&lt;&lt;(ostream&amp;, const renf_class&amp;)</code><a class="headerlink" href="#friend-ostream-operatorostream-const-renf_class" title="Permanent link">&para;</a></h3>
+<p>Write a human-readable representation of this field to the output stream.</p>
+<h3 id="add_lvalue_reference_t-renf_t-renf_t-const"><code>add_lvalue_reference_t&lt; ::renf_t&gt;</code> <code>renf_t() const</code><a class="headerlink" href="#add_lvalue_reference_t-renf_t-renf_t-const" title="Permanent link">&para;</a></h3>
+<p>Return the underlying <a href="/libeantic/doc_renf_class_hpp#add_lvalue_reference_t-renf_t-renf_t-const">renf_t</a>.</p>
+<p>We do not return a const <code>renf_t</code> since calls in the C API might need to modify it (e.g., to refine the stored embedding) even though they are morally const.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../doc_renf_elem_class_hpp/" class="btn btn-neutral float-right" title="renf_elem_class - number field elements">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../overview_cxx/" class="btn btn-neutral" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../overview_cxx/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../doc_renf_elem_class_hpp/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../extra.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
