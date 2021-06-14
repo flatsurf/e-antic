@@ -4,6 +4,15 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.15
+====================
+
+**Fixed:**
+
+* Made lexical_cast include work with more versions of boost.
+
+
+
 v1.0.0-rc.14
 ====================
 
