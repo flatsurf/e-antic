@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>fmpq\_poly\_extra.h — Flint rational polynomials utilities - e-antic</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "fmpq\\_poly\\_extra.h \u2014 Flint rational polynomials utilities";
+    var mkdocs_page_input_path = "doc_fmpq_poly_extra_h.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> e-antic</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">libeantic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview_c/">Overview</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_h/">renf — number fields</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_elem_h/">renf_elem — number field elements</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">libeanticxx</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview_cxx/">Overview</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_class_hpp/">renf_class - number fields</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../doc_renf_elem_class_hpp/">renf_elem_class - number field elements</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">pyeantic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="/e-antic/pyeantic">Manual</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">e-antic</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>fmpq\_poly\_extra.h — Flint rational polynomials utilities</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="fmpq_poly_extrah-flint-rational-polynomials-utilities">fmpq_poly_extra.h — Flint rational polynomials utilities<a class="headerlink" href="#fmpq_poly_extrah-flint-rational-polynomials-utilities" title="Permanent link">&para;</a></h1>
+<h2 id="int-fmpq_poly_set_str_prettyfmpq_poly_t-p-char-s-char-var"><code>int fmpq_poly_set_str_pretty(fmpq_poly_t p, char* s, char* var)</code><a class="headerlink" href="#int-fmpq_poly_set_str_prettyfmpq_poly_t-p-char-s-char-var" title="Permanent link">&para;</a></h2>
+<p>Set the polynomial <code>p</code> from the string <code>s</code> using <code>var</code> as variable name</p>
+<h2 id="void-fmpq_poly_evaluate_arbarb_t-b-const-fmpq_poly_t-pol-const-arb_t-a-slong-prec"><code>void fmpq_poly_evaluate_arb(arb_t b, const fmpq_poly_t pol, const arb_t a, slong prec)</code><a class="headerlink" href="#void-fmpq_poly_evaluate_arbarb_t-b-const-fmpq_poly_t-pol-const-arb_t-a-slong-prec" title="Permanent link">&para;</a></h2>
+<p>Evaluate the polynomial <code>pol</code> at the ball <code>b</code></p>
+<h2 id="void-fmpq_poly_evaluate_arfarf_t-b-const-fmpq_poly_t-pol-const-arf_t-a-slong-prec"><code>void fmpq_poly_evaluate_arf(arf_t b, const fmpq_poly_t pol, const arf_t a, slong prec)</code><a class="headerlink" href="#void-fmpq_poly_evaluate_arfarf_t-b-const-fmpq_poly_t-pol-const-arf_t-a-slong-prec" title="Permanent link">&para;</a></h2>
+<p>Evaluate the polynomial <code>pol</code> at the ball <code>b</code></p>
+<h2 id="int-fmpq_poly_check_unique_real_rootconst-fmpq_poly_t-pol-const-arb_t-a-slong-prec"><code>int fmpq_poly_check_unique_real_root(const fmpq_poly_t pol, const arb_t a, slong prec)</code><a class="headerlink" href="#int-fmpq_poly_check_unique_real_rootconst-fmpq_poly_t-pol-const-arb_t-a-slong-prec" title="Permanent link">&para;</a></h2>
+<p>Return 1 if it is possible to check with precision <code>prec</code> whether the interval <code>a</code> encloses a unique root of <code>pol</code></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../extra.js" defer></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
