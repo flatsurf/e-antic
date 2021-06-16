@@ -12,7 +12,6 @@
 
 #include <cassert>
 #include <flint/fmpq.h>
-#include <iostream>
 #include <cstdlib>
 #include <functional>
 #include <boost/numeric/conversion/cast.hpp>

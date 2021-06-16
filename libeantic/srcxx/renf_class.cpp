@@ -10,8 +10,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <atomic>
 #include <iostream>
+#include <atomic>
 #include <mutex>
 #include <stdexcept>
 #include <type_traits>
