@@ -42,6 +42,8 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
         auto c = a + b;
 
+        REQUIRE(c == b + a);
+
         if (a.sgn() > 0) REQUIRE(c > b);
         if (a.sgn() < 0) REQUIRE(c < b);
 
@@ -107,6 +109,8 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         CAPTURE(b);
 
         auto c = a * b;
+
+        REQUIRE(c == b * a);
 
         if (a == 0 || b == 0)
         {
@@ -224,17 +228,20 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
 TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
 {
-    const auto L = renf_class::make("a^2 - 2", "a", "1.4 +/- 1", 32);
-    const auto M = renf_class::make("b^2 - 3", "b", "1.7 +/- 1", 32);
+    flint_rand_t& state = GENERATE(rands());
 
-    const auto a = L->gen();
-    auto b = M->gen();
+    const auto& L = GENERATE_REF(take(4, renf_classs(state)));
+    const auto& M = GENERATE_REF(take(4, renf_classs(state)));
 
-    REQUIRE_THROWS(a + b);
+    const auto a = L.gen();
+    auto b = M.gen();
+
+    if (!a.is_rational() && !b.is_rational() && L != M)
+      REQUIRE_THROWS(a + b);
 
     SECTION("Rational Elements can be Mixed")
     {
-        b = M->zero();
+        b = M.zero();
         REQUIRE((a + b - b) == a);
         REQUIRE((b + a - a) == b);
         REQUIRE((a - b + b) == a);
@@ -243,7 +250,7 @@ TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
         REQUIRE((b * a / a) == b);
         REQUIRE((b / a * a) == b);
 
-        b = M->one();
+        b = M.one();
         REQUIRE((a + b - b) == a);
         REQUIRE((b + a - a) == b);
         REQUIRE((a - b + b) == a);
@@ -253,7 +260,7 @@ TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
         REQUIRE((b / a * a) == b);
         REQUIRE((a / b * b) == a);
 
-        b = renf_elem_class(*M, "1/2");
+        b = renf_elem_class(M, "1/2");
         REQUIRE((a + b - b) == a);
         REQUIRE((b + a - a) == b);
         REQUIRE((a - b + b) == a);

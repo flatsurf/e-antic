@@ -37,7 +37,7 @@ const fmpz_t& renf_elem_get_fmpz(const renf_elem_t a, const renf_t nf)
         // two (actually three) coefficients for the numerator. The first
         // coefficient of the numerator is the degree 0 entry (the denominator
         // is 1 for integers.)
-        return reinterpret_cast<const fmpz_t&>(QNF_ELEM_NUMREF(a->elem));
+        return reinterpret_cast<const fmpz_t&>(QNF_ELEM_NUMREF(a->elem)[0]);
     }
     else if (fmpq_poly_length(NF_ELEM(a->elem)) == 0)
     {
@@ -49,7 +49,7 @@ const fmpz_t& renf_elem_get_fmpz(const renf_elem_t a, const renf_t nf)
     else
     {
         // As in the quadratic case, we return the degree 0 entry.
-        return reinterpret_cast<const fmpz_t&>(NF_ELEM_NUMREF(a->elem));
+        return reinterpret_cast<const fmpz_t&>(NF_ELEM_NUMREF(a->elem)[0]);
     }
 }
 

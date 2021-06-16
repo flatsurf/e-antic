@@ -29,6 +29,7 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
     flint_rand_t& state;
     boost::intrusive_ptr<const eantic::renf_class> nf;
     ulong minbits, maxbits;
+    mutable int iteration = 0;
 
     mutable boost::optional<eantic::renf_elem_class> current;
 
@@ -50,9 +51,19 @@ struct RenfElemClassGenerator : public Catch::Generators::IGenerator<eantic::ren
         {
             ulong bits = minbits + n_randint(state, maxbits - minbits);
 
-            current = eantic::renf_elem_class(*nf);
+            switch(iteration++) {
+              case 0:
+                current = eantic::renf_elem_class(*nf, static_cast<slong>(bits));
+                break;
+              case 1:
+                current = eantic::renf_elem_class(*nf, mpq_class(-1337)/static_cast<slong>(bits));
+                break;
+              default:
+                current = eantic::renf_elem_class(*nf);
+                renf_elem_randtest(current->renf_elem_t(), state, bits, nf->renf_t());
+                break;
+            }
 
-            renf_elem_randtest(current->renf_elem_t(), state, bits, nf->renf_t());
         }
         return *current;
     }
