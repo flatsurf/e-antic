@@ -4,6 +4,15 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.0-rc.16
+====================
+
+**Fixed:**
+
+* Fixed arithmetic with rationals in different number fields.
+
+
+
 v1.0.0-rc.15
 ====================
 
