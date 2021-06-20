@@ -35,6 +35,9 @@ AS_IF([test "x$with_pytest" != "xno" && test "x$have_python" = "xyes"],
        AC_MSG_CHECKING([for cppyy])
        AS_IF([$PYTHON -c 'import cppyy'], , AC_MSG_ERROR([cppyy for make check not found; run --without-pytest to disable Python tests in make check]))
        AC_MSG_RESULT([yes])
+       AC_MSG_CHECKING([for cppyythonizations])
+       AS_IF([$PYTHON -c 'import cppyythonizations'], , AC_MSG_ERROR([cppyythonizations for make check not found; run --without-pytest to disable Python tests in make check]))
+       AC_MSG_RESULT([yes])
       ], [])
 AM_CONDITIONAL([HAVE_PYTEST], [test "x$with_pytest" = "xyes"])
 
