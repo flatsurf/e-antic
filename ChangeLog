@@ -4,6 +4,18 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.1
+====================
+
+**Fixed:**
+
+* `./configure` now checks for cppyythonizations which are required to run Python tests
+* allow creation of `RealEmbeddedNumberField` from an intrusive pointer in pyeantic.
+* Skip tests requiring realalg and sage when configured --without-realalg and --without-sage, respectively.
+* Disable pyeantic testing --without-pytest.
+
+
+
 v1.0.0
 ====================
 
