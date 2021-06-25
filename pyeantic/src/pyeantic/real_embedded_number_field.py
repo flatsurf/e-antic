@@ -360,7 +360,15 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K is M
             True
 
+        Instead of an embedding, a `renf_class` can be used:
+
+            sage: from pyeantic import eantic, RealEmbeddedNumberField
+            sage: K = eantic.renf_class.make("x^2 - 2", "x", "1.4 +/- 1")
+            sage: L = RealEmbeddedNumberField(K)
+
         """
+        if 'cppyy.gbl.boost.intrusive_ptr<const eantic::renf_class>' in str(type(embed)):
+            embed = embed.get()
         if isinstance(embed, eantic.renf_class):
             # Since it is quite annoying to convert an fmpz polynomial, we parse
             # the printed representation of the renf_class. This is of course
