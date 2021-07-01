@@ -1,9 +1,9 @@
 # Pins from https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/master/recipe/conda_build_config.yaml
 # so our packages is compatible with the choices made by conda-forge.
 arb:
-  - '2.18'
+  - '2.19'
 boost_cpp:
-  - '1.72.0'
+  - '1.74.0'
 gmp:
   - '6'
 fmt:
