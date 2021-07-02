@@ -1,6 +1,7 @@
 site_name: e-antic
 docs_dir: .
 strict: true
+site_url: https://flatsurf.github.io/e-antic/libeantic/
 theme:
   name: readthedocs
   navigation_depth: 2
