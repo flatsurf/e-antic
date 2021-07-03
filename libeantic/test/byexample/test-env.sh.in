@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Source this file to put our "python" script on the PATH.
+# This python script runs python3 with environment variables set up so that we
+# pick up our local libeantic(xx) libraries when testing.
+
+# This is a hack. But note that we cannot simply put the contents of
+# bin/python.in into this environment file since security measures on macOS
+# sanitize DYLD_LIBRARY_PATH before following shebangs. Why DYLD_LIBRARY_PATH
+# is absolutely necessary to make things work on macOS is still unclear to us.
+# Without it, i.e., when just telling cppyy/cling with `#pragma cling
+# add_library_path` where `libeantic.dylib` and `libeanticxx.dylib` live
+# locally, the libraries load but some symbols in these libraries fail to
+# resolve mysteriously later.
+
+export PATH="@abs_builddir@/bin:$PATH"

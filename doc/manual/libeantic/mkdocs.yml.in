@@ -1,0 +1,27 @@
+site_name: e-antic
+docs_dir: .
+strict: true
+site_url: https://flatsurf.github.io/e-antic/libeantic/
+theme:
+  name: readthedocs
+  navigation_depth: 2
+extra_css:
+  - extra.css
+extra_javascript:
+  - extra.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+nav:
+- "Home": index.md
+- libeantic:
+  - Overview: overview_c.md
+  - "renf — number fields": doc_renf_h.md
+  - "renf_elem — number field elements": doc_renf_elem_h.md
+- libeanticxx:
+  - Overview: overview_cxx.md
+  - "renf_class - number fields": doc_renf_class_hpp.md
+  - "renf_elem_class - number field elements": doc_renf_elem_class_hpp.md
+- pyeantic:
+  - "Manual": "/e-antic/pyeantic"
+markdown_extensions:
+  - toc:
+      permalink: True

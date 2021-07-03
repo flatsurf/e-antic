@@ -1,0 +1,29 @@
+# This file lists the dependencies needed to build and test all of pyeantic.
+# Create a Conda environment with these dependencies preinstalled with:
+# conda env create -f environment.yml
+name: pyeantic-build
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - antic
+  - arb
+  - automake
+  - benchmark
+  - boost-cpp
+  - coreutils
+  - cppyy>=1.9.2
+  - cxx-compiler
+  - gmp
+  - ipywidgets
+  - libflint
+  - libtool
+  - pytest
+  - sagelib
+  - sympy
+  - cppyythonizations
+  # valgrind is only needed for make check-valgrind
+  # - valgrind
+  - pip
+  - pip:
+    - realalg

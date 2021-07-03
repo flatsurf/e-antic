@@ -1,9 +1,0 @@
-language: generic
-env:
-  - CC=gcc CXX=g++ PACKAGES=g++
-  - CC=gcc CXX=g++ PACKAGES=g++ CONFIGURE=--without-pthread
-  - CC=clang CXX=clang++ PACKAGES=clang
-services:
-  - docker
-script:
-  - docker run -i -e CC -e CXX -e PACKAGES -v ${TRAVIS_BUILD_DIR}:/eantic -v `pwd`/.travis.sh:/travis.sh -w /eantic ubuntu:bionic /travis.sh

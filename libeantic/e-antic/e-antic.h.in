@@ -1,0 +1,64 @@
+/*
+    Copyright (C) 2016 - 2019 Vincent Delecroix
+                  2019 - 2021 Julian Rüth
+
+    This file is part of e-antic
+
+    e-antic is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 3.0 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
+
+#ifndef E_ANTIC_LOCAL_H
+#define E_ANTIC_LOCAL_H
+
+/* e-antic version number */
+
+#define E_ANTIC_VERSION_MAJOR 1
+#define E_ANTIC_VERSION_MINOR 0
+#define E_ANTIC_VERSION_PATCHLEVEL 1
+#define E_ANTIC_VERSION "1.0.1"
+#define E_ANTIC_RELEASE (E_ANTIC_VERSION_MAJOR * 10000 + \
+                           E_ANTIC_VERSION_MINOR * 100 + \
+                           E_ANTIC_VERSION_PATCHLEVEL)
+
+#ifdef __CLING__
+
+#pragma cling add_library_path("@libdir@")
+#pragma cling load("libeantic")
+#ifdef __cplusplus
+#pragma cling load("libeanticxx")
+#pragma cling load("libgmpxx")
+#endif
+
+#endif // __CLING__
+
+// Visibility Macros to separate API from non-API and inline template code.
+// See, https://gcc.gnu.org/wiki/Visibility.
+#if defined _WIN32 || defined __CYGWIN__
+#define LIBEANTIC_LIBRARY_IMPORT __declspec(dllimport)
+#define LIBEANTIC_LIBRARY_EXPORT __declspec(dllexport)
+#define LIBEANTIC_LIBRARY_HIDDEN
+#else
+#ifdef __cplusplus
+#define LIBEANTIC_LIBRARY_IMPORT __attribute__((visibility("default")))
+#define LIBEANTIC_LIBRARY_EXPORT __attribute__((visibility("default")))
+#define LIBEANTIC_LIBRARY_HIDDEN __attribute__((visibility("hidden")))
+#else
+#define LIBEANTIC_LIBRARY_IMPORT
+#define LIBEANTIC_LIBRARY_EXPORT
+#define LIBEANTIC_LIBRARY_HIDDEN
+#endif
+#endif
+
+#ifdef BUILD_LIBEANTIC
+#define LIBEANTIC_API LIBEANTIC_LIBRARY_EXPORT
+#define LIBEANTIC_LOCAL LIBEANTIC_LIBRARY_HIDDEN
+#else
+#define LIBEANTIC_API LIBEANTIC_LIBRARY_IMPORT
+#define LIBEANTIC_LOCAL
+#endif
+
+#endif
+

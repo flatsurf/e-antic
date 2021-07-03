@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+######################################################################
+#  This file is part of e-antic.
+#
+#        Copyright (C)      2019 Vincent Delecroix
+#        Copyright (C) 2019-2021 Julian Rüth
+#
+#  e-antic is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your
+#  option) any later version.
+#
+#  e-antic is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
+#####################################################################
+
+set -ex
+
+# We cannot run pytest directly since it would be invoked through its shebang
+# which makes macOS sanitize some environment variables. Instead, we go thorugh
+# our bin/python wrapper to set the necessary environment variables and invoke
+# the Python binary to run pytest which keeps our environment intact on macOS.
+
+TARGETS=`grep -l '>>> ' @abs_srcdir@/../src/pyeantic/*.py | grep -v realalg | grep -v real_embedded_number_field`
+python -m pytest --doctest-modules $TARGETS

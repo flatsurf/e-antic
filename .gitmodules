@@ -1,6 +1,12 @@
 [submodule "renfxx/test/external/cereal"]
-	path = renfxx/test/external/cereal
+	path = libeantic/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
-[submodule "renfxx/external/unique-factory"]
-	path = renfxx/external/unique-factory
-	url = https://github.com/flatsurf/unique-factory.git
+[submodule "upstream/antic"]
+	path = libeantic/upstream/antic
+	url = https://github.com/flatsurf/antic.git
+[submodule "upstream/flint"]
+	path = libeantic/upstream/flint
+	url = https://github.com/wbhart/flint2.git
+[submodule "renfxx/test/external/catch2"]
+	path = libeantic/test/external/catch2
+	url = https://github.com/catchorg/Catch2.git
