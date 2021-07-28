@@ -682,6 +682,10 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K(a)
             a
 
+        TESTS:
+
+        Verify that the name of the generator is not relevant::
+
             sage: K = NumberField(x**2 - 2, 'b', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: b = KK.an_element()
@@ -705,8 +709,8 @@ class CoercionNumberFieldRenf(Morphism):
             sage: KK = RealEmbeddedNumberField(K)
             sage: K.coerce_map_from(KK).section()
             Generic morphism:
-              From: Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
-              To:   Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+              From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+              To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 
         """
-        return self.codomain().convert_map_from(self.domain())
+        return self.domain().convert_map_from(self.codomain())
