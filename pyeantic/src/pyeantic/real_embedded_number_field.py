@@ -58,6 +58,22 @@ class RealEmbeddedNumberFieldElement(FieldElement):
 
         sage: TestSuite(a).run()
 
+    Verify that #192 has been resolved::
+
+        sage: R.<x> = QQ[]
+        sage: K.<b> = NumberField(x^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    ::
+
+        sage: R.<y> = QQ[]
+        sage: K.<b> = NumberField(y^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
     """
     def __init__(self, parent, value):
         r"""
@@ -666,11 +682,16 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K(a)
             a
 
+        TESTS:
+
+        Verify that the name of the generator is not relevant::
+
             sage: K = NumberField(x**2 - 2, 'b', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: b = KK.an_element()
             sage: K(b)
             b
+
         """
         rational_coefficients = [ZZ(str(c.get_str())) / ZZ(str(x.renf_elem.den().get_str())) for c in x.renf_elem.num_vector()]
         while len(rational_coefficients) < self.domain().number_field.degree():
@@ -687,9 +708,9 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: K.coerce_map_from(KK).section()
-            Generic morphism:
-              From: Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
-              To:   Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+            Conversion map:
+              From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+              To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 
         """
-        return self.codomain().convert_map_from(self.domain())
+        return self.domain().convert_map_from(self.codomain())
