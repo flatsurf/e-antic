@@ -58,6 +58,22 @@ class RealEmbeddedNumberFieldElement(FieldElement):
 
         sage: TestSuite(a).run()
 
+    Verify that #192 has been resolved::
+
+        sage: R.<x> = QQ[]
+        sage: K.<b> = NumberField(x^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    ::
+
+        sage: R.<y> = QQ[]
+        sage: K.<b> = NumberField(y^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
     """
     def __init__(self, parent, value):
         r"""
@@ -671,6 +687,7 @@ class CoercionNumberFieldRenf(Morphism):
             sage: b = KK.an_element()
             sage: K(b)
             b
+
         """
         rational_coefficients = [ZZ(str(c.get_str())) / ZZ(str(x.renf_elem.den().get_str())) for c in x.renf_elem.num_vector()]
         while len(rational_coefficients) < self.domain().number_field.degree():
