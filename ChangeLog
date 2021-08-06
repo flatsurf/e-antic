@@ -4,6 +4,17 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.2
+====================
+
+**Fixed:**
+
+* removed docbuild warnings for latest version of mkdocs.
+* Fixed parsing of trivial number fields in pyeantic. #197
+* Conversion from `NumberField` to `RealEmbeddedNumberField` when defining polynomial is not in `x`.
+
+
+
 v1.0.1
 ====================
 
