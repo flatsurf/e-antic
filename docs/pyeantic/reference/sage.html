@@ -191,9 +191,9 @@ required for classical geometry.</p>
 sage: K = NumberField(x**2 - 2, &#39;a&#39;, embedding=sqrt(AA(2)))
 sage: KK = RealEmbeddedNumberField(K)
 sage: K.coerce_map_from(KK).section()
-Generic morphism:
-  From: Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
-  To:   Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+Conversion map:
+  From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+  To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 </pre></div>
 </div>
 </dd></dl>
@@ -315,6 +315,21 @@ slight improvement in performance.</p>
 </div>
 <p>TESTS:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Verify that #192 has been resolved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.&lt;</span><span class="n">x</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="p">[]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.&lt;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">(</span><span class="n">b</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.&lt;</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="p">[]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.&lt;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">(</span><span class="n">b</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
