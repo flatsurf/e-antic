@@ -382,6 +382,15 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = eantic.renf_class.make("x^2 - 2", "x", "1.4 +/- 1")
             sage: L = RealEmbeddedNumberField(K)
 
+        TESTS:
+
+        Check that #197 has been resolved::
+
+            sage: from pyeantic import RealEmbeddedNumberField
+            sage: K = RealEmbeddedNumberField(QQ).renf
+            sage: RealEmbeddedNumberField(K)
+            Real Embedded Number Field in x with defining polynomial x - 1 with x = 1
+
         """
         if 'cppyy.gbl.boost.intrusive_ptr<const eantic::renf_class>' in str(type(embed)):
             embed = embed.get()
@@ -390,12 +399,12 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             # the printed representation of the renf_class. This is of course
             # not very robust…
             import re
-            match = re.match("^NumberField\\(([^,]+), (\\[[^\\]]+\\])\\)$", repr(embed))
-            assert match, "renf_class printed in an unexpected way"
+            match = re.match("^NumberField\\(([^,]+), ([^)]+)\\)$", repr(embed))
+            assert match, "renf_class printed in an unexpected way: " + repr(embed)
             minpoly = match.group(1)
             root_str = match.group(2)
-            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ ]", minpoly)
-            assert match, "renf_class printed leading coefficient in an unexpected way"
+            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ +-]", minpoly)
+            assert match, "renf_class printed leading coefficient in an unexpected way: " + minpoly
             minpoly = QQ[match.group(1)](minpoly)
             roots = []
             AA_roots = minpoly.roots(AA, multiplicities=False)
