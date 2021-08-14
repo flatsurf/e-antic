@@ -99,18 +99,15 @@ want to use your distribution's packages, you can use these dependencies from
     mamba env update -n e-antic-build -f pyeantic/environment.yml
     mamba env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
-    export CPPFLAGS="-isystem $CONDA_PREFIX/include"
-    export CFLAGS="$CPPFLAGS"
-    export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"
-    export CC="ccache cc"
-    export CXX="ccache c++"
+    export CC="ccache cc"  # to speed up future compilation
+    export CXX="ccache c++"  # to speed up future compilation
     git clone --recurse-submodules https://github.com/flatsurf/e-antic.git
     cd e-antic
     ./bootstrap
     ./configure --prefix="$CONDA_PREFIX"
     make
-    make check
-    make html # to build the documentation
+    make check  # to run our test suite
+    make html  # to build the documentation
 
 How to Cite this Project
 ------------------------

@@ -14,6 +14,7 @@ dependencies:
   - boost-cpp
   - cppyy
   - coreutils
+  - c-compiler
   - cxx-compiler
   - libflint
   - gmp
