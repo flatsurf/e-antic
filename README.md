@@ -84,18 +84,18 @@ For more detailed but generic instructions please refer to the INSTALL file.
 See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
 for installation instructions.
 
-## Build with Conda Dependencies
+## Build with conda-forge Dependencies
 
 To build all of e-antic package, you need a fairly recent C++ compiler and
 probably some packages that might not be readily available on your system. If
-you don't want to use your distribution's packages, you can provide these
-dependencies with Conda. Download and install
-[Miniconda](https://conda.io/miniconda.html), then run
+you don't want to use your distribution's packages, you can use these
+dependencies from [conda-forge](https://conda-forge.org). Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforgeg), then run
 
-    conda create -n e-antic-build ccache
-    conda env update -n e-antic-build -f libeantic/environment.yml
-    conda env update -n e-antic-build -f pyeantic/environment.yml
-    conda env update -n e-antic-build -f doc/environment.yml
+    mamba create -n e-antic-build ccache
+    mamba env update -n e-antic-build -f libeantic/environment.yml
+    mamba env update -n e-antic-build -f pyeantic/environment.yml
+    mamba env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
     export CPPFLAGS="-isystem $CONDA_PREFIX/include"
     export CFLAGS="$CPPFLAGS"
