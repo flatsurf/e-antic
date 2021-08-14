@@ -86,6 +86,14 @@ For more detailed but generic instructions please refer to the INSTALL file.
 See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
 for installation instructions.
 
+## Run with binder in the Cloud
+
+You can try out the projects in this repository in a very limited environment
+online by clicking the following links:
+
+* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/master?filepath=binder%2FSample.libeantic.ipynb)
+* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/master?filepath=binder%2FSample.pyeantic.ipynb)
+
 ## Build with conda-forge Dependencies
 
 To build all of e-antic, you need a fairly recent C++ compiler and probably
