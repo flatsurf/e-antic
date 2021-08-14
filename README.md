@@ -109,14 +109,17 @@ want to use your distribution's packages, you can use these dependencies from
     make check  # to run our test suite
     make html  # to build the documentation
 
-How to Cite this Project
-------------------------
+## How to Cite this Project
 
 If you have used this project in the preparation of a publication, please cite
 it as described [on our zenodo site](https://doi.org/10.5281/zenodo.5166953).
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 * Julian Rüth's contributions to this project has been supported by the Simons
   Foundation Investigator grant of Alex Eskin.
+
+## Maintainers
+
+* [@saraedum](https://github.com/saraedum)
+* [@videlec](https://github.com/videlec)
