@@ -1,0 +1,13 @@
+# This environment.yml can be used to create a conda environment with
+# e-antic and all its dependencies installed. It is used for our demo
+# binders.
+name: binder
+channels:
+  - flatsurf
+  - conda-forge
+dependencies:
+  - ipywidgets
+  - notebook
+  - e-antic
+  - pyeantic
+  - xeus-cling

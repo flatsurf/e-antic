@@ -8,18 +8,24 @@ jobs:
     runs-on: ${{ matrix.on }}
     strategy:
       matrix:
-        on:
-          - ubuntu-20.04
-          - macos-10.15
-        libflint:
-          - 2.6
-          - 2.7
-        target:
-          - check
-        include:
-          - on: ubuntu-20.04
-            libflint: 2.7
-            target: check-valgrind
+        - on: ubuntu-20.04
+          libflint: 2.6
+          target: check
+        - on: ubuntu-20.04
+          libflint: 2.7
+          target: check
+        - on: ubuntu-20.04
+          libflint: 2.7
+          target: check-valgrind
+        - on: ubuntu-20.04
+          environment: binder
+          target: check
+        - on: macos-10.15
+          libflint: 2.6
+          target: check
+        - on: macos-10.15
+          libflint: 2.7
+          target: check
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -40,6 +46,16 @@ jobs:
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba install libflint=${{ matrix.libflint }}
           conda list
+        if: ${{ matrix.environment != 'binder' }}
+      - name: Create binder environment
+        shell: bash -l {0}
+        run: |
+          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/master/repo2docker/buildpacks/conda/environment.yml
+          mamba install -n test --quiet -y pytest pytest-xdist
+          mamba env update -n test --quiet -f repo2docker.yml
+          mamba env update -n test --quiet -f binder/environment.yml
+          conda list
+        if: ${{ matrix.environment == 'binder' }}
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
