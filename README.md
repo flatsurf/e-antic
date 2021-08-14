@@ -48,8 +48,8 @@ worked, you just have to do
 
     ./configure
     make
-    make check
-    make install
+    make check  # to run our test suite
+    make install  # to install into /usr/local
 
 If you happen to have any of FLINT, Arb, or ANTIC installed in a non standard
 directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
