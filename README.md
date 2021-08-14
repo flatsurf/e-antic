@@ -1,7 +1,21 @@
-# E-ANTIC — (Real Embedded) Algebraic Number Theory
+<!--
+<p align="center">
+    <img alt="logo" src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" width="300px">
+</p>
+-->
 
-E-ANTIC is a C/C++/Python library to deal with real embedded number fields
-built on top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as
+<h1><p align="center">e-antic</p></h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-LGPL_3.0_or_later-blue.svg" alt="License: LGPL 3.0 or later">
+  <a href="https://github.com/flatsurf/e-antic/actions/workflows/test.yml"><img src="https://github.com/flatsurf/e-antic/actions/workflows/test.yml/badge.svg" alt="Test"></a>
+</p>
+
+<p align="center">(Real Embedded) Algebraic Number Theory</p>
+<hr>
+
+e-antic is a C/C++/Python library to deal with real embedded number fields
+built on top of [ANTIC](https://github.com/wbhart/antic). Its aim is to have as
 fast as possible exact arithmetic operations and comparisons.
 
 Source tarballs can be downloaded at https://github.com/flatsurf/e-antic/releases.
