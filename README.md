@@ -88,10 +88,10 @@ for installation instructions.
 
 ## Build with conda-forge Dependencies
 
-To build all of e-antic package, you need a fairly recent C++ compiler and
-probably some packages that might not be readily available on your system. If
-you don't want to use your distribution's packages, you can use these
-dependencies from [conda-forge](https://conda-forge.org). Download and install
+To build all of e-antic, you need a fairly recent C++ compiler and probably
+some packages that might not be readily available on your system. If you don't
+want to use your distribution's packages, you can use these dependencies from
+[conda-forge](https://conda-forge.org). Download and install
 [Mambaforge](https://github.com/conda-forge/miniforge#mambaforgeg), then run
 
     mamba create -n e-antic-build ccache
