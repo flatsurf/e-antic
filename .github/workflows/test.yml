@@ -8,6 +8,7 @@ jobs:
     runs-on: ${{ matrix.on }}
     strategy:
       matrix:
+        include:
         - on: ubuntu-20.04
           libflint: 2.6
           target: check
