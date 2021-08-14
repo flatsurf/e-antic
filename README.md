@@ -124,7 +124,7 @@ it as described [on our zenodo site](https://doi.org/10.5281/zenodo.5166953).
 
 ## Acknowledgements
 
-* Julian Rüth's contributions to this project has been supported by the Simons
+* Julian Rüth's contributions to this project have been supported by the Simons
   Foundation Investigator grant of Alex Eskin.
 
 ## Maintainers
