@@ -54,3 +54,6 @@ t-*
 # distributions
 /e-antic*.tar.gz
 /rever
+
+# Jupyter checkpoints
+.ipynb_checkpoints
