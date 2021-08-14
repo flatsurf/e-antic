@@ -115,3 +115,9 @@ How to Cite this Project
 
 If you have used this project in the preparation of a publication, please cite
 it as described [on our zenodo site](https://doi.org/10.5281/zenodo.5166953).
+
+Acknowledgements
+----------------
+
+* Julian Rüth's contributions to this project has been supported by the Simons
+  Foundation Investigator grant of Alex Eskin.
