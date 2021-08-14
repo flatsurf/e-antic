@@ -1,8 +1,6 @@
-<!--
 <p align="center">
     <img alt="logo" src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" width="300px">
 </p>
--->
 
 <h1><p align="center">e-antic</p></h1>
 
