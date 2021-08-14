@@ -98,7 +98,7 @@ To build all of e-antic, you need a fairly recent C++ compiler and probably
 some packages that might not be readily available on your system. If you don't
 want to use your distribution's packages, you can use these dependencies from
 [conda-forge](https://conda-forge.org). Download and install
-[Mambaforge](https://github.com/conda-forge/miniforge#mambaforgeg), then run
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
 
     mamba create -n e-antic-build ccache
     mamba env update -n e-antic-build -f libeantic/environment.yml
@@ -118,7 +118,7 @@ want to use your distribution's packages, you can use these dependencies from
 ## How to Cite this Project
 
 If you have used this project in the preparation of a publication, please cite
-it as described [on our zenodo site](https://doi.org/10.5281/zenodo.5166953).
+it as described [on our zenodo page](https://doi.org/10.5281/zenodo.5166953).
 
 ## Acknowledgements
 
