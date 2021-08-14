@@ -95,3 +95,9 @@ dependencies with Conda. Download and install
     make
     make check
     make html # to build the documentation
+
+How to Cite this Project
+------------------------
+
+If you have used this project in the preparation of a publication, please cite
+it as described [on our zenodo site](https://doi.org/10.5281/zenodo.5166953).
