@@ -4,6 +4,17 @@ e-antic Change Log
 
 .. current developments
 
+v1.0.3
+====================
+
+**Fixed:**
+
+* Cleaned up the README and our Zenodo site.
+
+* Fixed linking of C++ test programs.
+
+
+
 v1.0.2
 ====================
 
