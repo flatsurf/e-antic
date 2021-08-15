@@ -42,7 +42,7 @@ about:
   license_file: COPYING
   summary: embedded algebraic number fields
   description: |
-    E-ANTIC is a C/C++ library to deal with real embedded number fields built
+    e-antic is a C/C++ library to deal with real embedded number fields built
     on top of ANTIC. Its aim is to have as fast as possible exact arithmetic
     operations and comparisons.
   dev_url: https://github.com/flatsurf/e-antic

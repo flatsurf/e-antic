@@ -1,7 +1,21 @@
-# E-ANTIC — (Real Embedded) Algebraic Number Theory
+<p align="center">
+    <img alt="logo" src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" width="300px">
+</p>
 
-E-ANTIC is a C/C++/Python library to deal with real embedded number fields
-built on top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as
+<h1><p align="center">e-antic</p></h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-LGPL_3.0_or_later-blue.svg" alt="License: LGPL 3.0 or later">
+  <a href="https://github.com/flatsurf/e-antic/actions/workflows/test.yml"><img src="https://github.com/flatsurf/e-antic/actions/workflows/test.yml/badge.svg" alt="Test"></a>
+  <a href="https://codecov.io/gh/flatsurf/e-antic"><img src="https://codecov.io/gh/flatsurf/e-antic/branch/master/graph/badge.svg" alt="Coverage"></a>
+  <a href="https://doi.org/10.5281/zenodo.5166953"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.5166953.svg" alt="DOI 10.5281/zenodo.5166953"></a>
+</p>
+
+<p align="center">(Real Embedded) Algebraic Number Theory</p>
+<hr>
+
+e-antic is a C/C++/Python library to deal with real embedded number fields
+built on top of [ANTIC](https://github.com/wbhart/antic). Its aim is to have as
 fast as possible exact arithmetic operations and comparisons.
 
 Source tarballs can be downloaded at https://github.com/flatsurf/e-antic/releases.
@@ -32,8 +46,8 @@ worked, you just have to do
 
     ./configure
     make
-    make check
-    make install
+    make check  # to run our test suite
+    make install  # to install into /usr/local
 
 If you happen to have any of FLINT, Arb, or ANTIC installed in a non standard
 directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
@@ -70,28 +84,48 @@ For more detailed but generic instructions please refer to the INSTALL file.
 See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
 for installation instructions.
 
-## Build with Conda Dependencies
+## Run with binder in the Cloud
 
-To build all of e-antic package, you need a fairly recent C++ compiler and
-probably some packages that might not be readily available on your system. If
-you don't want to use your distribution's packages, you can provide these
-dependencies with Conda. Download and install
-[Miniconda](https://conda.io/miniconda.html), then run
+You can try out the projects in this repository in a very limited environment
+online by clicking the following links:
 
-    conda create -n e-antic-build ccache
-    conda env update -n e-antic-build -f libeantic/environment.yml
-    conda env update -n e-antic-build -f pyeantic/environment.yml
-    conda env update -n e-antic-build -f doc/environment.yml
+* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/master?filepath=binder%2FSample.libeantic.ipynb)
+* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/master?filepath=binder%2FSample.pyeantic.ipynb)
+
+## Build with conda-forge Dependencies
+
+To build all of e-antic, you need a fairly recent C++ compiler and probably
+some packages that might not be readily available on your system. If you don't
+want to use your distribution's packages, you can use these dependencies from
+[conda-forge](https://conda-forge.org). Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
+
+    mamba create -n e-antic-build ccache
+    mamba env update -n e-antic-build -f libeantic/environment.yml
+    mamba env update -n e-antic-build -f pyeantic/environment.yml
+    mamba env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
-    export CPPFLAGS="-isystem $CONDA_PREFIX/include"
-    export CFLAGS="$CPPFLAGS"
-    export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"
-    export CC="ccache cc"
-    export CXX="ccache c++"
+    export CC="ccache cc"  # to speed up future compilation
+    export CXX="ccache c++"  # to speed up future compilation
     git clone --recurse-submodules https://github.com/flatsurf/e-antic.git
     cd e-antic
     ./bootstrap
     ./configure --prefix="$CONDA_PREFIX"
     make
-    make check
-    make html # to build the documentation
+    make check  # to run our test suite
+    make html  # to build the documentation
+
+## How to Cite this Project
+
+If you have used this project in the preparation of a publication, please cite
+it as described [on our zenodo page](https://doi.org/10.5281/zenodo.5166953).
+
+## Acknowledgements
+
+* Julian Rüth's contributions to this project have been supported by the Simons
+  Foundation Investigator grant of Alex Eskin.
+
+## Maintainers
+
+* [@saraedum](https://github.com/saraedum)
+* [@videlec](https://github.com/videlec)

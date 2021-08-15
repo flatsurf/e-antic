@@ -1,0 +1,24 @@
+{
+    "creators": [
+        {   
+            "orcid": "0000-0002-9608-782X",
+            "name": "Delecroix, Vincent",
+            "affiliation": "CNRS - Université de Bordeaux"
+        },
+        {   
+            "orcid": "0000-0003-2492-4139",
+            "name": "Köppe, Matthias",
+            "affiliation": "University of California Davis"
+        },
+        {   
+            "orcid": "0000-0002-3930-9107",
+            "name": "Rüth, Julian"
+        }
+    ],    
+
+    "license": "LGPL-3.0-or-later",
+    "title": "e-antic",
+    "description": "<p>e-antic is a C/C++/Python library to deal with real embedded number fields built on top of <a href='https://github.com/wbhart/antic'>ANTIC</a>. Its aim is to have as fast as possible exact arithmetic operations and comparisons.</p><p>Please visit our <a href='https://flatsurf.github.io/e-antic/libeantic'>documentation</a> for more information.</p>"
+}
+
+
