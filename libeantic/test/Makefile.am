@@ -4,7 +4,7 @@ endif
 
 SUBDIRS = $(MAYBE_BYEXAMPLE)
 
-LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la
+LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la -lgmpxx
 
 @VALGRIND_CHECK_RULES@
 
@@ -88,7 +88,6 @@ renf_t_init_nth_root_fmpq_SOURCES = renf/t-init_nth_root_fmpq.c
 renf_t_randtest_SOURCES = renf/t-randtest.c
 renf_t_real_embeddings_SOURCES = renf/t-real_embeddings.c
 renf_elem_t_binop_SOURCES = renf_elem/t-binop.cpp main.cpp
-renf_elem_t_binop_LDADD = -lgmpxx
 renf_elem_t_ceil_SOURCES = renf_elem/t-ceil.c
 renf_elem_t_cmp_SOURCES = renf_elem/t-cmp.c
 renf_elem_t_cmp_fmpq_SOURCES = renf_elem/t-cmp_fmpq.c
