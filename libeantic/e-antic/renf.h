@@ -18,7 +18,7 @@
 #ifndef E_ANTIC_RENF_H
 #define E_ANTIC_RENF_H
 
-#include "e-antic.h"
+#include "local.h"
 
 #include <flint/fmpq_poly.h>
 #include <antic/nf.h>

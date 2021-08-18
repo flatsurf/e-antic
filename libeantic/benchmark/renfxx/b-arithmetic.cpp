@@ -11,7 +11,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 #include "renf_elem_class_pool.hpp"
 #include "number_fields.hpp"
 

@@ -13,7 +13,7 @@
 #include <cereal/archives/json.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 #include "../../e-antic/cereal.hpp"
 
 #include "../rand_generator.hpp"

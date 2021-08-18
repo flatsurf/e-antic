@@ -13,7 +13,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 using namespace eantic;
 

@@ -21,7 +21,7 @@
 #include <string>
 #include <atomic>
 
-#include "renfxx_fwd.hpp"
+#include "forward.hpp"
 #include "renf.h"
 
 namespace eantic {
