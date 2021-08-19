@@ -28,4 +28,4 @@ set -ex
 # the Python binary to run pytest which keeps our environment intact on macOS.
 
 IGNORE=`grep -L '>>>' @abs_srcdir@/../src/pyeantic/*.py | awk '{ print "--ignore=" $0 }'`
-python -m pytest --verbose --doctest-modules $IGNORE '@abs_srcdir@/../src/pyeantic' $@
+python -m pytest --verbose --doctest-modules $IGNORE --ignore="@abs_srcdir@/../src/pyeantic/realalg_conversion.py" '@abs_srcdir@/../src/pyeantic' $@
