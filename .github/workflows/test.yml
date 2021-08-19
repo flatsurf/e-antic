@@ -39,11 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
-      - name: install valgrind and libc debug symbols
-        run: |
-          sudo apt update
-          sudo apt install libc6-dbg valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: build flags
         id: flags
         run: |
@@ -51,6 +46,10 @@ jobs:
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
+      - name: install valgrind
+        run: |
+          mamba install valgrind
+        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         shell: bash -l {0}
         run: |
@@ -134,11 +133,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
-      - name: install valgrind and libc debug symbols
-        run: |
-          sudo apt update
-          sudo apt install libc6-dbg valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: build flags
         id: flags
         run: |
@@ -146,6 +140,10 @@ jobs:
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitizer-recover -fno-omit-frame-pointer"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
+      - name: install valgrind
+        run: |
+          mamba install valgrind
+        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         shell: bash -l {0}
         run: |
