@@ -19,4 +19,10 @@ export LD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../src
 # Load libeantic.dylib and libeanticxx.dylib from our build tree.
 export DYLD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../srcxx/.libs/:$DYLD_LIBRARY_PATH"
 
+# Support libasan loading when our library has been built with -fsanitize=address.
+export LD_PRELOAD="$EANTIC_LD_PRELOAD:$LD_PRELOAD"
+
+# Support libasan loading on macOS when our library has been built with -fsanitize=address.
+export DYLD_INSERT_LIBRARIES="$EANTIC_DYLD_INSERT_LIBRARIES:$DYLD_INSERT_LIBRARIES"
+
 exec python3 "$@"
