@@ -74,7 +74,9 @@ jobs:
 
           echo "::group::make ${{ matrix.target }}"
           make V=1 ${{ matrix.target }}
-      - uses: flatsurf/actions/show-logs@main
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
   test-pyeantic:
     runs-on: ${{ matrix.on }}
@@ -158,7 +160,9 @@ jobs:
           echo "::group::make ${{ matrix.target }}"
           cd pyeantic
           make V=1 ${{ matrix.target }}
-      - uses: flatsurf/actions/show-logs@main
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
   distcheck:
     runs-on: ${{ matrix.on }}
@@ -191,7 +195,9 @@ jobs:
 
           echo "::group::make distcheck"
           EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
-      - uses: flatsurf/actions/show-logs@main
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
 
 env:
