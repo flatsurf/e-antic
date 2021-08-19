@@ -164,6 +164,7 @@ jobs:
           make V=1
 
           echo "::group::test"
+          cd pyeantic
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
       - name: show logs
         shell: bash -l {0}
