@@ -50,7 +50,7 @@ worked, you just have to do
     make install  # to install into /usr/local
 
 If you happen to have any of FLINT, Arb, or ANTIC installed in a non standard
-directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
+directory, you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
 the configure script
 
     ./configure CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
