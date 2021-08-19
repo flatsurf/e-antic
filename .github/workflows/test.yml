@@ -97,10 +97,6 @@ jobs:
       - name: debug
         shell: bash -l {0}
         run: |
-          set -x
-          set +e
-          find
-          find . -name '*.log'
           for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
@@ -190,10 +186,6 @@ jobs:
       - name: debug
         shell: bash -l {0}
         run: |
-          set -x
-          set +e
-          find
-          find . -name '*.log'
           for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
