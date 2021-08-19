@@ -15,8 +15,8 @@
 <hr>
 
 e-antic is a C/C++/Python library to deal with real embedded number fields
-built on top of [ANTIC](https://github.com/wbhart/antic). Its aim is to have as
-fast as possible exact arithmetic operations and comparisons.
+built on top of [ANTIC](https://github.com/wbhart/antic). It aims to provide
+the fastest possible exact arithmetic operations and comparisons.
 
 Source tarballs can be downloaded at https://github.com/flatsurf/e-antic/releases.
 

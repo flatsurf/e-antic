@@ -138,16 +138,26 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitizer-recover"`
       - uses: conda-incubator/setup-miniconda@v2
-        with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true, python-version: "${{ matrix.python }}" }
+        with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
       - name: install dependencies
         shell: bash -l {0}
         run: |
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
           conda list
+        if: ${{ matrix.environment != 'binder' }}
+      - name: Create binder environment
+        shell: bash -l {0}
+        run: |
+          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
+          mamba install -n test --quiet -y pytest pytest-xdist byexample
+          mamba env update -n test --quiet -f repo2docker.yml
+          mamba env update -n test --quiet -f binder/environment.yml
+          conda list
+        if: ${{ matrix.environment == 'binder' }}
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
