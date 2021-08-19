@@ -94,10 +94,9 @@ jobs:
           cd libeantic
           make V=1 check-valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: debug
+      - name: show logs
         shell: bash -l {0}
-        run: |
-          for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
@@ -188,6 +187,10 @@ jobs:
         run: |
           for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
         if: ${{ always() }}
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+        if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   distcheck:
@@ -221,6 +224,10 @@ jobs:
 
           echo "::group::make distcheck"
           EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+        if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 
