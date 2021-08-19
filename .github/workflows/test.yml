@@ -48,7 +48,7 @@ jobs:
         id: flags
         run: |
           echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
-          echo "::set-output name=compiler::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "--fsanitize=address --fno-sanitize-recover"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--fsanitize=undefined --fno-sanitize-recover"`
+          echo "::set-output name=compiler::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install dependencies
@@ -153,7 +153,7 @@ jobs:
         id: flags
         run: |
           echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
-          echo "::set-output name=compiler::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "--fsanitize=address --fno-sanitize-recover"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--fsanitize=undefined --fno-sanitizer-recover"`
+          echo "::set-output name=compiler::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitizer-recover"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true, python-version: "${{ matrix.python }}" }
       - name: install dependencies
