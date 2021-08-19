@@ -18,7 +18,7 @@
 
     "license": "LGPL-3.0-or-later",
     "title": "e-antic",
-    "description": "<p>e-antic is a C/C++/Python library to deal with real embedded number fields built on top of <a href='https://github.com/wbhart/antic'>ANTIC</a>. Its aim is to have as fast as possible exact arithmetic operations and comparisons.</p><p>Please visit our <a href='https://flatsurf.github.io/e-antic/libeantic'>documentation</a> for more information.</p>"
+    "description": "<p>e-antic is a C/C++/Python library to deal with real embedded number fields built on top of <a href='https://github.com/wbhart/antic'>ANTIC</a>. It aims to provide the fastest possible arithmetic operations and comparisons.</p><p>Please visit our <a href='https://flatsurf.github.io/e-antic/libeantic'>documentation</a> for more information.</p>"
 }
 
 
