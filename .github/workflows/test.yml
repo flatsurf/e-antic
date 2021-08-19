@@ -65,8 +65,8 @@ jobs:
 
           echo "::group::configure"
           cd libeantic
-          export CFLAGS="$CFLAGS -UNDEBUG"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
@@ -151,7 +151,8 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
