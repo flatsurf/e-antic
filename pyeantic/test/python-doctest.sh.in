@@ -27,5 +27,5 @@ set -ex
 # our bin/python wrapper to set the necessary environment variables and invoke
 # the Python binary to run pytest which keeps our environment intact on macOS.
 
-TARGETS=`grep -l '>>> ' @abs_srcdir@/../src/pyeantic/*.py | grep -v realalg | grep -v real_embedded_number_field`
-python -m pytest --doctest-modules $TARGETS
+IGNORE=`grep -L '>>>' @abs_srcdir@/../src/pyeantic/*.py | awk '{ print "--ignore=" $0 }'`
+python -m pytest --verbose --doctest-modules $IGNORE '@abs_srcdir@/../src/pyeantic' $@
