@@ -177,7 +177,7 @@ jobs:
             # disabled it in their CI actually.
             export ASAN_OPTIONS=detect_leaks=0
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
-            export ASAN_OPTIONS="$ASAN_OPTIONS:alloc-dealloc-mismatch=0"
+            export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
           fi
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
