@@ -41,8 +41,9 @@ jobs:
         with: { submodules: recursive }
       - name: build flags
         id: flags
+        shell: bash -l {0}
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "--without-byexample"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--without-byexample"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
@@ -77,10 +78,6 @@ jobs:
           export CFLAGS="$CFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          if [[ "${{ matrix.sanitizer }}" == "address" ]]; then
-            export EANTIC_LD_PRELOAD="$CONDA_PREFIX/lib/libasan.so"
-            export EANTIC_DYLD_INSERT_LIBRARIES="$CONDA_PREFIX/lib/libasan.dylib"
-          fi
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
@@ -170,7 +167,7 @@ jobs:
           export CFLAGS="$CFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          if [[ "${{ matrix.sanitizer }}" == "address" ]]; then
+          if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
             export EANTIC_LD_PRELOAD="$CONDA_PREFIX/lib/libasan.so"
             export EANTIC_DYLD_INSERT_LIBRARIES="$CONDA_PREFIX/lib/libasan.dylib"
             # Leak detection reports too many false positives in Python; they
