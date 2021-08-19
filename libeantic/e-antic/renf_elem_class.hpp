@@ -503,7 +503,7 @@ LIBEANTIC_API renf_elem_class pow(const renf_elem_class& x, int exp);
 
 namespace std {
 template <>
-struct hash<eantic::renf_elem_class> {
+struct LIBEANTIC_API hash<eantic::renf_elem_class> {
   size_t operator()(const eantic::renf_elem_class&) const;
 };
 }  // namespace std

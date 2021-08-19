@@ -234,7 +234,7 @@ private:
 
 namespace std {
 template <>
-struct hash<eantic::renf_class> {
+struct LIBEANTIC_API hash<eantic::renf_class> {
   size_t operator()(const eantic::renf_class&) const;
 };
 }  // namespace std
