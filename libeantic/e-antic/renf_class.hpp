@@ -166,7 +166,7 @@ public:
     /// K != L
     /// // -> true
     /// ```
-    friend bool operator==(const renf_class &, const renf_class &);
+    LIBEANTIC_API friend bool operator==(const renf_class &, const renf_class &);
 
     /// Return the name of the generator of this field.
     const std::string & gen_name() const { return name; }
@@ -193,7 +193,7 @@ public:
     std::string to_string() const;
 
     /// Write a human-readable representation of this field to the output stream.
-    friend std::ostream & operator<<(std::ostream &, const renf_class &);
+    LIBEANTIC_API friend std::ostream & operator<<(std::ostream &, const renf_class &);
 
     /// Return the underlying [renf_t]().
     /// We do not return a const `renf_t` since calls in the C API might need to
@@ -234,7 +234,7 @@ private:
 
 namespace std {
 template <>
-struct LIBEANTIC_API hash<eantic::renf_class> {
+struct hash<eantic::renf_class> {
   size_t operator()(const eantic::renf_class&) const;
 };
 }  // namespace std
