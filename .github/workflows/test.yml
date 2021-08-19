@@ -67,7 +67,7 @@ jobs:
           mamba env update -n test --quiet -f binder/environment.yml
           conda list
         if: ${{ matrix.environment == 'binder' }}
-      - name: make
+      - name: configure & build & test
         shell: bash -l {0}
         run: |
           echo "::group::bootstrap"
@@ -78,23 +78,13 @@ jobs:
           export CFLAGS="$CFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          export
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
-      - name: make check
-        shell: bash -l {0}
-        run: |
-          cd libeantic
-          make V=1 check
-        if: ${{ matrix.sanitizer != 'valgrind' }}
-      - name: make check-valgrind
-        shell: bash -l {0}
-        run: |
-          cd libeantic
-          make V=1 check-valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
+
+          echo "::group::test"
+          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
       - name: show logs
         shell: bash -l {0}
         run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
@@ -172,23 +162,9 @@ jobs:
 
           echo "::group::make"
           make V=1
-      - name: make check
-        shell: bash -l {0}
-        run: |
-          cd pyeantic
-          make V=1 check
-        if: ${{ matrix.sanitizer != 'valgrind' }}
-      - name: make check-valgrind
-        shell: bash -l {0}
-        run: |
-          cd pyeantic
-          make V=1 check-valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: debug
-        shell: bash -l {0}
-        run: |
-          for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
-        if: ${{ always() }}
+
+          echo "::group::test"
+          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
       - name: show logs
         shell: bash -l {0}
         run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
