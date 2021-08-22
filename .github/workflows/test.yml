@@ -77,8 +77,8 @@ jobs:
 
           echo "::group::configure"
           cd libeantic
-          export CFLAGS="$CFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
@@ -168,8 +168,8 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          export CFLAGS="$CFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
             export EANTIC_LD_PRELOAD="$CONDA_PREFIX/lib/libasan.so"
