@@ -363,8 +363,8 @@ public:
     /// Elements can be compared with the usual operators `==`, `!=`, `<`,
     /// `<=`, `>=`, `>`.
     /// Internally, these operators are all derived from the definition of `==` and `<`.
-    friend bool operator==(const renf_elem_class &, const renf_elem_class &);
-    friend bool operator<(const renf_elem_class &, const renf_elem_class &);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class &, const renf_elem_class &);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class &, const renf_elem_class &);
 
     /// Return the integer floor of the division of this element by `rhs`.
     mpz_class floordiv(const renf_elem_class & rhs) const;
@@ -412,30 +412,30 @@ public:
     /// ==* Relational Operators with Integers & Rationals *==
     /// Elements in a number field and integers/rationals can be compared with
     /// the usual relational operators `==`, `!=`, `<`, `<=`, `>=`, `>`.
-    friend bool operator==(const renf_elem_class&, int);
-    friend bool operator<(const renf_elem_class&, int);
-    friend bool operator>(const renf_elem_class&, int);
-    friend bool operator==(const renf_elem_class&, unsigned int);
-    friend bool operator<(const renf_elem_class&, unsigned int);
-    friend bool operator>(const renf_elem_class&, unsigned int);
-    friend bool operator==(const renf_elem_class&, long);
-    friend bool operator<(const renf_elem_class&, long);
-    friend bool operator>(const renf_elem_class&, long);
-    friend bool operator==(const renf_elem_class&, unsigned long);
-    friend bool operator<(const renf_elem_class&, unsigned long);
-    friend bool operator>(const renf_elem_class&, unsigned long);
-    friend bool operator==(const renf_elem_class&, long long);
-    friend bool operator<(const renf_elem_class&, long long);
-    friend bool operator>(const renf_elem_class&, long long);
-    friend bool operator==(const renf_elem_class&, unsigned long long);
-    friend bool operator<(const renf_elem_class&, unsigned long long);
-    friend bool operator>(const renf_elem_class&, unsigned long long);
-    friend bool operator==(const renf_elem_class&, const mpz_class&);
-    friend bool operator<(const renf_elem_class&, const mpz_class&);
-    friend bool operator>(const renf_elem_class&, const mpz_class&);
-    friend bool operator==(const renf_elem_class&, const mpq_class&);
-    friend bool operator<(const renf_elem_class&, const mpq_class&);
-    friend bool operator>(const renf_elem_class&, const mpq_class&);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, int);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, int);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, int);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, unsigned int);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, unsigned int);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, unsigned int);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, long);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, long);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, long);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, unsigned long);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, unsigned long);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, unsigned long);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, long long);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, long long);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, long long);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, unsigned long long);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, unsigned long long);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, unsigned long long);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, const mpz_class&);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, const mpz_class&);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, const mpz_class&);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, const mpq_class&);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, const mpq_class&);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, const mpq_class&);
 
     /// Deprecated methods from e-antic releases before 1.0.0.
     /// \exclude
@@ -468,8 +468,8 @@ public:
     /// K->set_pword(s);
     /// s >> a;
     /// ```
-    friend std::ostream & operator<<(std::ostream &, const renf_elem_class &);
-    friend std::istream & operator>>(std::istream &, renf_elem_class &);
+    LIBEANTIC_API friend std::ostream & operator<<(std::ostream &, const renf_elem_class &);
+    LIBEANTIC_API friend std::istream & operator>>(std::istream &, renf_elem_class &);
 
     /// Efficiently swap two number field elements.
     LIBEANTIC_API friend void swap(renf_elem_class& lhs, renf_elem_class& rhs) noexcept;

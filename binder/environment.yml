@@ -8,6 +8,6 @@ channels:
 dependencies:
   - ipywidgets
   - notebook
-  - e-antic
+  - libeantic
   - pyeantic
   - xeus-cling
