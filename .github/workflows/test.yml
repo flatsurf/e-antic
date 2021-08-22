@@ -16,9 +16,10 @@ jobs:
         - on: ubuntu-20.04
           libflint: 2.7
           sanitizer: address
-        - on: ubuntu-20.04
-          libflint: 2.7
-          sanitizer: undefined
+        # Needs https://github.com/wbhart/flint2/pull/992
+        # - on: ubuntu-20.04
+        #   libflint: 2.7
+        #   sanitizer: undefined
         - on: ubuntu-20.04
           libflint: 2.7
           sanitizer: valgrind
@@ -33,9 +34,10 @@ jobs:
         - on: macos-10.15
           libflint: 2.7
           sanitizer: address
-        - on: macos-10.15
-          libflint: 2.7
-          sanitizer: undefined
+        # Needs https://github.com/wbhart/flint2/pull/992
+        # - on: macos-10.15
+        #   libflint: 2.7
+        #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -121,12 +123,14 @@ jobs:
           - on: macos-10.15
             python: "3.9"
             sanitizer: address
-          - on: ubuntu-20.04
-            python: "3.9"
-            sanitizer: undefined
-          - on: macos-10.15
-            python: "3.9"
-            sanitizer: undefined
+          # Needs https://github.com/wbhart/flint2/pull/992
+          # - on: ubuntu-20.04
+          #   python: "3.9"
+          #   sanitizer: undefined
+          # Needs https://github.com/wbhart/flint2/pull/992
+          # - on: macos-10.15
+          #   python: "3.9"
+          #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
