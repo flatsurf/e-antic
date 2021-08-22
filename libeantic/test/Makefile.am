@@ -4,7 +4,7 @@ endif
 
 SUBDIRS = $(MAYBE_BYEXAMPLE)
 
-LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la -lgmpxx -larb
+LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la -lgmpxx
 
 @VALGRIND_CHECK_RULES@
 
