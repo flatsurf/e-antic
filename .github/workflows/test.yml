@@ -172,8 +172,8 @@ jobs:
           export CXXFLAGS="$CXXFLAGS -UNDEBUG ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
-            export EANTIC_LD_PRELOAD="$CONDA_PREFIX/lib/libasan.so"
-            export EANTIC_DYLD_INSERT_LIBRARIES="$CONDA_PREFIX/lib/libasan.dylib"
+            export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
+            export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
             # Leak detection reports too many false positives in Python; they
             # disabled it in their CI actually.
             export ASAN_OPTIONS=detect_leaks=0
