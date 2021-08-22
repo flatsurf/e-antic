@@ -51,7 +51,8 @@ jobs:
         run: |
           echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--without-byexample"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
-          echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
+          # libtool strips -fsanitize flags from LDFLAGS so force them onto the linker.
+          echo "::set-output name=libs::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install valgrind
@@ -85,8 +86,7 @@ jobs:
           export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          # libtool strips -fsanitize flags from LDFLAGS so force them onto the linker.
-          export LD="$LD ${{ steps.flags.outputs.linker }}"
+          export LIBS="$LIBS ${{ steps.flags.outputs.libs }}"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
@@ -146,6 +146,8 @@ jobs:
         run: |
           echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
+          # libtool strips -fsanitize flags from LDFLAGS so force them onto the linker.
+          echo "::set-output name=libs::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
       - name: install valgrind
@@ -178,8 +180,7 @@ jobs:
           export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          # libtool strips -fsanitize flags from LDFLAGS so force them onto the linker.
-          export LD="$LD ${{ steps.flags.outputs.linker }}"
+          export LIBS="$LIBS ${{ steps.flags.outputs.libs }}"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
             export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
             export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
