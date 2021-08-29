@@ -10,7 +10,7 @@
 # alive.
 
 # Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
-# resolve #include "e-antic.h" relative to e-antic/e-antic in the build tree.
+# resolve #include "local.h" relative to e-antic/e-antic in the build tree.
 export EXTRA_CLING_ARGS="-I@abs_srcdir@/../.. -I@abs_builddir@/../../e-antic -std=c++17 -Wno-unused-comparison $EXTRA_CLING_ARGS"
 
 # Load libeantic.so and libeanticxx.so from our build tree.

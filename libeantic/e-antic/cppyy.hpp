@@ -14,7 +14,7 @@
 #ifndef E_ANTIC_CPPYY_H
 #define E_ANTIC_CPPYY_H
 
-#include "renfxx.h"
+#include "e-antic.hpp"
 
 // On macOS/clang we get "error: cannot take the address of an rvalue of type 'std::__1::basic_ostream<char>'"
 // Probably, https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator is not fixed there.

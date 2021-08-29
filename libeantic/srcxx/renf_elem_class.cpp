@@ -18,7 +18,7 @@
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "../e-antic/renfxx.h"
+#include "../e-antic/e-antic.hpp"
 #include "../e-antic/fmpq_poly_extra.h"
 
 namespace eantic {

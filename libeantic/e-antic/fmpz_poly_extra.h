@@ -14,7 +14,7 @@
 #ifndef E_ANTIC_FMPZ_POLY_EXTRA_H
 #define E_ANTIC_FMPZ_POLY_EXTRA_H
 
-#include "e-antic.h"
+#include "local.h"
 
 #include <flint/fmpz_poly.h>
 #include <arb.h>

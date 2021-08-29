@@ -12,7 +12,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 #include "number_fields.hpp"
 
 using benchmark::DoNotOptimize;
