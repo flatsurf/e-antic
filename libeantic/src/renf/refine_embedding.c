@@ -11,8 +11,6 @@
 */
 
 #include <assert.h>
-#include <config.h>
-#include <err.h>
 
 #include "../e-antic/fmpz_poly_extra.h"
 #include "../e-antic/renf.h"
