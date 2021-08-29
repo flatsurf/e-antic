@@ -26,12 +26,27 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://flatsurf.github.io/e-antic/libeantic/doc_e_antic_hpp/</loc>
+         <lastmod>2021-08-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://flatsurf.github.io/e-antic/libeantic/doc_fmpq_poly_extra_h/</loc>
          <lastmod>2021-08-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://flatsurf.github.io/e-antic/libeantic/doc_fmpz_poly_extra_h/</loc>
+         <lastmod>2021-08-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://flatsurf.github.io/e-antic/libeantic/doc_forward_hpp/</loc>
+         <lastmod>2021-08-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://flatsurf.github.io/e-antic/libeantic/doc_local_h/</loc>
          <lastmod>2021-08-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
