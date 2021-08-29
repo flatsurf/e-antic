@@ -64,7 +64,7 @@ AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
 # Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
 AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
 
-AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([Arb header not found])])
+AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
 AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
 
 AC_LANG_PUSH([C++])
