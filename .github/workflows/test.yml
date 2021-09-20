@@ -63,6 +63,8 @@ jobs:
       - name: install valgrind
         shell: bash -l {0}
         run: |
+          sudo apt update
+          sudo apt install -y libc6-dbg
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
@@ -158,6 +160,8 @@ jobs:
       - name: install valgrind
         shell: bash -l {0}
         run: |
+          sudo apt update
+          sudo apt install -y libc6-dbg
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
