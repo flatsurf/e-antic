@@ -180,6 +180,12 @@ jobs:
           mamba env update -n test --quiet -f binder/environment.yml
           conda list
         if: ${{ matrix.environment == 'binder' }}
+      - name: upgrade sanitizer
+        shell: bash -l {0}
+        run: |
+          # With the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
+          mamba install libsanitizer=11
+        if: ${{ matrix.sanitizer == 'address' && runner.os == 'Linux' }}
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
@@ -213,8 +219,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         with:
           limit-access-to-actor: true
-        # if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
-        if: ${{ failure() }}
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   distcheck:
     runs-on: ${{ matrix.on }}
     strategy:
