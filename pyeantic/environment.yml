@@ -19,8 +19,7 @@ dependencies:
   - libflint
   - libtool
   - pytest
-  # sagelib 9.4 breaks our test runner, see https://trac.sagemath.org/timeline?from=2021-09-20T16%3A08%3A13Z&precision=second
-  - sagelib 9.3
+  - sagelib
   - sympy
   - cppyythonizations
   # valgrind is only needed for make check-valgrind
