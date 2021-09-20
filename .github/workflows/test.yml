@@ -92,10 +92,6 @@ jobs:
 
           echo "::group::test"
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
-        if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   test-pyeantic:
@@ -192,10 +188,6 @@ jobs:
           echo "::group::test"
           cd pyeantic
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
-        if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
   distcheck:
@@ -229,10 +221,6 @@ jobs:
 
           echo "::group::make distcheck"
           EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
-        if: ${{ always() }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 
