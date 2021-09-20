@@ -61,6 +61,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install valgrind
+        shell: bash -l {0}
         run: |
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
@@ -155,6 +156,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
       - name: install valgrind
+        shell: bash -l {0}
         run: |
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
