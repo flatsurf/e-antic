@@ -2,6 +2,12 @@ name: Test
 on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 concurrency:
   group: test-${{ github.ref }}
@@ -94,6 +100,11 @@ jobs:
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   test-pyeantic:
     runs-on: ${{ matrix.on }}
     strategy:
@@ -192,6 +203,11 @@ jobs:
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   distcheck:
     runs-on: ${{ matrix.on }}
     strategy:
@@ -225,6 +241,11 @@ jobs:
           EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
 
 env:
   MAKEFLAGS: -j2
