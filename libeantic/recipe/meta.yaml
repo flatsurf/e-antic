@@ -2,7 +2,7 @@
 {% set build_number = '0' %}
 
 package:
-  name: e-antic
+  name: libeantic
   version: {{ version | replace("-", "") | replace("rc.", "rc") | replace("beta.", "beta") }}
 
 source:
@@ -13,7 +13,7 @@ build:
   # dependency antic is not available for Windows on conda-forge
   skip: True  # [win]
   run_exports:
-    - {{ pin_subpackage("e-antic") }}
+    - {{ pin_subpackage("libeantic") }}
 
 requirements:
   build:

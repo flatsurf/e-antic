@@ -10,7 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 #include "../rand_generator.hpp"
 #include "../renf_class_generator.hpp"

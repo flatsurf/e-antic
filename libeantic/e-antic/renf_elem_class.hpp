@@ -22,7 +22,7 @@
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 #include <vector>
 
-#include "renfxx_fwd.hpp"
+#include "forward.hpp"
 #include "renf_elem.h"
 
 namespace eantic {

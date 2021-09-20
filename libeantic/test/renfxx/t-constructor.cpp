@@ -13,7 +13,7 @@
 #include <limits>
 #include <set>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 #include "../external/catch2/single_include/catch2/catch.hpp"
 

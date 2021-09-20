@@ -1,6 +1,6 @@
 /*  This is a -*- C++ -*- header file.
 
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -10,11 +10,14 @@
     (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
-#ifndef E_ANTIC_RENFXX_FWD_HPP
-#define E_ANTIC_RENFXX_FWD_HPP
+#ifndef E_ANTIC_E_ANTIC_HPP
+#define E_ANTIC_E_ANTIC_HPP
 
-// This header file exists for backwards compatibility. Include forward.hpp instead.
+// Include this header to use the full C++ interface of e-antic.
+// For better build times, consider including only forward.hpp or
+// some of the following headers instead.
 
-#include "forward.hpp"
+#include "renf_class.hpp"
+#include "renf_elem_class.hpp"
 
 #endif

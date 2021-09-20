@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <exception>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 using namespace eantic;
 
