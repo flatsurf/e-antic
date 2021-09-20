@@ -22,4 +22,14 @@ export DYLD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddi
 # Load pyeantic from our source tree.
 export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
 
+# Support libasan loading when our library has been built with -fsanitize=address.
+if [ ! -z "$EANTIC_LD_PRELOAD" ]; then
+  export LD_PRELOAD="$EANTIC_LD_PRELOAD:$LD_PRELOAD"
+fi
+
+# Support libasan loading on macOS when our library has been built with -fsanitize=address.
+if [ ! -z "$EANTIC_DYLD_INSERT_LIBRARIES" ]; then
+  export DYLD_INSERT_LIBRARIES="$EANTIC_DYLD_INSERT_LIBRARIES:$DYLD_INSERT_LIBRARIES"
+fi
+
 exec python3 $@

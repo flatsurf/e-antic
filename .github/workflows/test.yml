@@ -174,8 +174,10 @@ jobs:
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }} ${{ steps.flags.outputs.linker }}"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
-            # Leak detection reports too many false positives in Python; they
-            # disabled it in their CI actually.
+            # Since our application (python) was not build with asan, we need to preload it explicitly.
+            export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
+            export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
+            # Leak detection reports too many false positives in Python; they disabled it in their CI actually.
             export ASAN_OPTIONS=detect_leaks=0
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
             export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
