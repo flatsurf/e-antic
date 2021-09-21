@@ -2,6 +2,16 @@ name: Test
 on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test-libeantic:
@@ -11,36 +21,52 @@ jobs:
         include:
         - on: ubuntu-20.04
           libflint: 2.6
-          target: check
         - on: ubuntu-20.04
           libflint: 2.7
-          target: check
         - on: ubuntu-20.04
           libflint: 2.7
-          target: check-valgrind
+          sanitizer: address
+        # Needs https://github.com/wbhart/flint2/pull/992
+        # - on: ubuntu-20.04
+        #   libflint: 2.7
+        #   sanitizer: undefined
+        - on: ubuntu-20.04
+          libflint: 2.7
+          sanitizer: valgrind
         - on: ubuntu-20.04
           environment: binder
-          target: check
         - on: macos-10.15
           libflint: 2.6
-          target: check
         - on: macos-10.15
           libflint: 2.7
-          target: check
+        - on: macos-10.15
+          libflint: 2.7
+        - on: macos-10.15
+          libflint: 2.7
+          sanitizer: address
+        # Needs https://github.com/wbhart/flint2/pull/992
+        # - on: macos-10.15
+        #   libflint: 2.7
+        #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
-      - name: install valgrind and libc debug symbols
-        run: |
-          sudo apt update
-          sudo apt install libc6-dbg valgrind
-        if: ${{ matrix.target == 'check-valgrind' }}
       - name: build flags
         id: flags
+        shell: bash -l {0}
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--without-byexample"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
+          echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
+          echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
+      - name: install valgrind
+        shell: bash -l {0}
+        run: |
+          sudo apt update
+          sudo apt install -y libc6-dbg
+          mamba install valgrind
+        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         shell: bash -l {0}
         run: |
@@ -57,7 +83,7 @@ jobs:
           mamba env update -n test --quiet -f binder/environment.yml
           conda list
         if: ${{ matrix.environment == 'binder' }}
-      - name: make ${{ matrix.target }}
+      - name: configure & build & test
         shell: bash -l {0}
         run: |
           echo "::group::bootstrap"
@@ -65,19 +91,23 @@ jobs:
 
           echo "::group::configure"
           cd libeantic
-          export CFLAGS="$CFLAGS -UNDEBUG -g3"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
+          export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }} ${{ steps.flags.outputs.linker }}"
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
 
-          echo "::group::make ${{ matrix.target }}"
-          make V=1 ${{ matrix.target }}
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+          echo "::group::test"
+          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   test-pyeantic:
     runs-on: ${{ matrix.on }}
     strategy:
@@ -85,49 +115,57 @@ jobs:
         include:
           - on: ubuntu-20.04
             python: "3.6"
-            target: check
+          - on: ubuntu-20.04
+            python: "3.7"
+          - on: ubuntu-20.04
+            python: "3.8"
+          - on: ubuntu-20.04
+            python: "3.9"
           - on: macos-10.15
             python: "3.6"
-            target: check
-          - on: ubuntu-20.04
-            python: "3.7"
-            target: check
           - on: macos-10.15
             python: "3.7"
-            target: check
-          - on: ubuntu-20.04
-            python: "3.8"
-            target: check
           - on: macos-10.15
             python: "3.8"
-            target: check
-          - on: ubuntu-20.04
-            python: "3.9"
-            target: check
           - on: macos-10.15
             python: "3.9"
-            target: check
           - on: ubuntu-20.04
             python: "3.9"
-            target: check-valgrind
-          - on: ubuntu-20.04
-            python: "3.7"
-            environment: binder
-            target: check
+            sanitizer: valgrind
+          # Needs libsanitizer=11, with the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
+          # - on: ubuntu-20.04
+          #   python: "3.9"
+          #   sanitizer: address
+          # libtool strips -shared-asan which is required in LDFLAGS to load asan at runtime when building with clang
+          # - on: macos-10.15
+          #   python: "3.9"
+          #   sanitizer: address
+          # Needs https://github.com/wbhart/flint2/pull/992
+          # - on: ubuntu-20.04
+          #   python: "3.9"
+          #   sanitizer: undefined
+          # Needs https://github.com/wbhart/flint2/pull/992
+          # - on: macos-10.15
+          #   python: "3.9"
+          #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
-      - name: install valgrind and libc debug symbols
-        run: |
-          sudo apt update
-          sudo apt install libc6-dbg valgrind
-        if: ${{ matrix.target == 'check-valgrind' }}
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
+          echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
+          echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
+      - name: install valgrind
+        shell: bash -l {0}
+        run: |
+          sudo apt update
+          sudo apt install -y libc6-dbg
+          mamba install valgrind
+        if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         shell: bash -l {0}
         run: |
@@ -151,20 +189,33 @@ jobs:
           ./bootstrap
 
           echo "::group::configure"
-          export CFLAGS="$CFLAGS -UNDEBUG -g3"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+          export CFLAGS="$CFLAGS -UNDEBUG -g3 ${{ steps.flags.outputs.shared }}"
+          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
+          export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }} ${{ steps.flags.outputs.linker }}"
+          if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
+            # Since our application (python) was not build with asan, we need to preload it explicitly.
+            export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
+            export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
+            # Leak detection reports too many false positives in Python; they disabled it in their CI actually.
+            export ASAN_OPTIONS=detect_leaks=0
+            # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
+            export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
+          fi
           ./configure --without-benchmark ${{ steps.flags.outputs.configure }} --without-doc
 
           echo "::group::make"
           make V=1
 
-          echo "::group::make ${{ matrix.target }}"
+          echo "::group::test"
           cd pyeantic
-          make V=1 ${{ matrix.target }}
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check`
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   distcheck:
     runs-on: ${{ matrix.on }}
     strategy:
@@ -196,10 +247,13 @@ jobs:
 
           echo "::group::make distcheck"
           EXTRA_STANDARDESE_FLAGS=-I${CONDA_PREFIX}/include make distcheck
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
 
 env:
   MAKEFLAGS: -j2

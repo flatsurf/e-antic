@@ -3,6 +3,10 @@ on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
 
+concurrency:
+  group: doc-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-manual:
     runs-on: ubuntu-20.04

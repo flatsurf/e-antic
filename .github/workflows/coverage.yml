@@ -3,6 +3,10 @@ on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
 
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   codecov:
     runs-on: ubuntu-20.04
@@ -25,8 +29,7 @@ jobs:
           export CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG"
           ./configure --prefix="$PREFIX" --without-doc
           make check
-      - name: show logs
-        run: grep "" /dev/null `find -name '*.log'` || true
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: create & post coverage report
         shell: bash -l {0}

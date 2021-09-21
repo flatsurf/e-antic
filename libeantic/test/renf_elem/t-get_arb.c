@@ -36,6 +36,9 @@ int main(void)
     renf_init(nf, p, emb, 20 + (slong)n_randint(state, 10));
     arb_clear(emb);
 
+    fmpq_poly_clear(p);
+    fmpq_clear(k);
+
     {
         arb_t x;
         fmpq_poly_t q;

@@ -493,14 +493,14 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
 
         ::
 
-            sage: type(K.one() - K.number_field.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.number_field.one() - K.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.one() - 1)
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
-            sage: type(1 - K.one())
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
+            sage: type(K.one() - K.number_field.one()) is type(K.number_field.one())
+            True
+            sage: type(K.number_field.one() - K.one()) is type(K.number_field.one())
+            True
+            sage: type(K.one() - 1) is type(K.one())
+            True
+            sage: type(1 - K.one()) is type(K.one())
+            True
 
         """
         self.number_field = embedded

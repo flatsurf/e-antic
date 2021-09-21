@@ -19,14 +19,14 @@ AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-s
 
 AC_CANONICAL_HOST
 
+dnl We build our library with libtool.
+LT_INIT
+
 dnl Find C++ Compiler
 AC_PROG_CXX
 
 dnl Set INSTALL or use install-sh.
 AC_PROG_INSTALL
-
-dnl We build our library with libtool.
-LT_INIT
 
 AC_CONFIG_LIBOBJ_DIR([upstream/patched])
 
