@@ -658,7 +658,7 @@ bool renf_elem_class::is_rational() const
     return renf_elem_is_rational(a, nf->renf_t());
 }
 
-::renf_elem_t & renf_elem_class::renf_elem_t() const
+std::add_lvalue_reference_t<::renf_elem_t> renf_elem_class::renf_elem_t() const
 {
     return a;
 }
