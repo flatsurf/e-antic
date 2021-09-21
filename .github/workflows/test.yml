@@ -57,7 +57,7 @@ jobs:
         run: |
           echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--without-byexample"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
-          echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"` `[[ "${{ matrix.sanitizer }}" == "address" && "${{ runner.os }}" == "macOS" ]] && echo "-shared-libasan"`
+          echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
       - name: install valgrind
@@ -136,9 +136,10 @@ jobs:
           # - on: ubuntu-20.04
           #   python: "3.9"
           #   sanitizer: address
-          - on: macos-10.15
-            python: "3.9"
-            sanitizer: address
+          # libtool strips -shared-asan which is required in LDFLAGS to load asan at runtime when building with clang
+          # - on: macos-10.15
+          #   python: "3.9"
+          #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: ubuntu-20.04
           #   python: "3.9"
