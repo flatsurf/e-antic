@@ -132,9 +132,10 @@ jobs:
           - on: ubuntu-20.04
             python: "3.9"
             sanitizer: valgrind
-          - on: ubuntu-20.04
-            python: "3.9"
-            sanitizer: address
+          # Needs libsanitizer=11, with the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
+          # - on: ubuntu-20.04
+          #   python: "3.9"
+          #   sanitizer: address
           - on: macos-10.15
             python: "3.9"
             sanitizer: address
@@ -164,13 +165,6 @@ jobs:
           sudo apt install -y libc6-dbg
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: upgrade sanitizer
-        shell: bash -l {0}
-        run: |
-          # With the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
-          mamba install libsanitizer=11
-          echo 'libsanitizer=11' >> $CONDA_PREFIX/conda-meta/pinned
-        if: ${{ matrix.sanitizer == 'address' && runner.os == 'Linux' }}
       - name: install dependencies
         shell: bash -l {0}
         run: |
