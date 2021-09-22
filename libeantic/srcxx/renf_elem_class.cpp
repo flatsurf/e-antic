@@ -1048,11 +1048,11 @@ bool operator==(const renf_elem_class& lhs, long rhs) {
 }
 
 bool operator<(const renf_elem_class& lhs, long rhs) {
-    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) < 0;
 }
 
 bool operator>(const renf_elem_class& lhs, long rhs) {
-    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) > 0;
 }
 
 renf_elem_class& renf_elem_class::operator+=(unsigned long rhs)
@@ -1084,11 +1084,11 @@ bool operator==(const renf_elem_class& lhs, unsigned long rhs) {
 }
 
 bool operator<(const renf_elem_class& lhs, unsigned long rhs) {
-    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) < 0;
 }
 
 bool operator>(const renf_elem_class& lhs, unsigned long rhs) {
-    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) > 0;
 }
 
 renf_elem_class& renf_elem_class::operator+=(long long rhs)
