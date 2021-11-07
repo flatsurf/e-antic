@@ -1,5 +1,5 @@
 {% set version = '1.0.3' %}
-{% set build_number = '0' %}
+{% set build_number = '1' %}
 
 package:
   name: libeantic
@@ -25,7 +25,7 @@ requirements:
     - boost-cpp {{ boost_cpp }}
     - gmp {{ gmp }}
     - arb {{ arb }}
-    - libflint 2.6.*
+    - libflint {{ libflint }}
 
 test:
   commands:
