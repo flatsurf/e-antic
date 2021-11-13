@@ -1,3 +1,11 @@
+r"""
+Pretend that pytest is not installed.
+
+`sage -t` tries to invoke pytest on our files which does
+not always work. We use this file to pretend that pytest
+is not installed, see
+https://trac.sagemath.org/ticket/31103#comment:49
+"""
 ######################################################################
 #  This file is part of e-antic.
 #
@@ -16,12 +24,4 @@
 #  You should have received a copy of the GNU General Public License
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
-
-def test_nothing():
-    r"""
-    In SageMath 9.4 invocations of sage-runtests broke for us, see
-    https://trac.sagemath.org/timeline?from=2021-09-20T16%3A08%3A13Z&precision=second
-
-    Adding a trivial pytest test works around this problem and makes the
-    SageMath tests pass again.
-    """
+raise ModuleNotFoundError

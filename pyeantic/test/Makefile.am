@@ -19,7 +19,7 @@ realalg-doctest.sh: test-env.sh bin/python
 @VALGRIND_CHECK_RULES@
 
 BUILT_SOURCES = test-env.sh bin/python python-doctest.sh sage-doctest.sh realalg-doctest.sh
-EXTRA_DIST += test-env.sh.in bin/python.in python-doctest.sh.in sage-doctest.sh.in realalg-doctest.sh.in test_nothing.py
+EXTRA_DIST += test-env.sh.in bin/python.in python-doctest.sh.in sage-doctest.sh.in realalg-doctest.sh.in disable-pytest/pytest.py
 CLEANFILES = test-env.sh bin/python python-doctest.sh sage-doctest.sh realalg-doctest.sh
 
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
