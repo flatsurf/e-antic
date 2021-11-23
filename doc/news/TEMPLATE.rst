@@ -1,23 +1,23 @@
 **Added:**
 
-* <news item>
+* Added <news item>
 
 **Changed:**
 
-* <news item>
+* Changed <news item>
 
 **Deprecated:**
 
-* <news item>
+* Deprecated <news item>
 
 **Removed:**
 
-* <news item>
+* Removed <news item>
 
 **Fixed:**
 
-* <news item>
+* Fixed <news item>
 
 **Performance:**
 
-* <news item>
+* Improved <news item>
