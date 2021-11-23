@@ -1,5 +1,5 @@
 <!--
-Thank you for pull request.
+Thank you for your pull request.
 Below are a few things we ask you kindly to self-check. Remove checks that are not relevant and let us know if you need help with any of these.
 -->
 Checklist
