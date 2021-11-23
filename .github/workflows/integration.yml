@@ -3,6 +3,10 @@ on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
 
+concurrency:
+  group: normaliz-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-normaliz:
     runs-on: ubuntu-20.04
@@ -26,7 +30,7 @@ jobs:
           pushd libeantic
           export CFLAGS="$CFLAGS -UNDEBUG"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --prefix="$CONDA_PREFIX" --without-benchmark --with-version-script
+          ./configure --prefix="$CONDA_PREFIX" --without-benchmark --with-version-script --without-doc
           make
           make install
           popd
@@ -40,8 +44,7 @@ jobs:
           make
           make check
           popd
-      - name: show logs
-        run: grep "" /dev/null `find -name '*.log'` || true
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
 
 env:
