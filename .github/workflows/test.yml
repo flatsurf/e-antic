@@ -114,23 +114,23 @@ jobs:
       matrix:
         include:
           - on: ubuntu-20.04
-            python: "3.6"
-          - on: ubuntu-20.04
             python: "3.7"
           - on: ubuntu-20.04
             python: "3.8"
           - on: ubuntu-20.04
             python: "3.9"
-          - on: macos-10.15
-            python: "3.6"
+          - on: ubuntu-20.04
+            python: "3.10"
           - on: macos-10.15
             python: "3.7"
           - on: macos-10.15
             python: "3.8"
           - on: macos-10.15
             python: "3.9"
+          - on: macos-10.15
+            python: "3.10"
           - on: ubuntu-20.04
-            python: "3.9"
+            python: "3.10"
             sanitizer: valgrind
           # Needs libsanitizer=11, with the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
           # - on: ubuntu-20.04
