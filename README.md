@@ -1,8 +1,22 @@
-# E-ANTIC — (Real Embedded) Algebraic Number Theory
+<p align="center">
+    <img alt="logo" src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" width="300px">
+</p>
 
-E-ANTIC is a C/C++/Python library to deal with real embedded number fields
-built on top of ANTIC (https://github.com/wbhart/antic). Its aim is to have as
-fast as possible exact arithmetic operations and comparisons.
+<h1><p align="center">e-antic</p></h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-LGPL_3.0_or_later-blue.svg" alt="License: LGPL 3.0 or later">
+  <a href="https://github.com/flatsurf/e-antic/actions/workflows/test.yml"><img src="https://github.com/flatsurf/e-antic/actions/workflows/test.yml/badge.svg" alt="Test"></a>
+  <a href="https://codecov.io/gh/flatsurf/e-antic"><img src="https://codecov.io/gh/flatsurf/e-antic/branch/master/graph/badge.svg" alt="Coverage"></a>
+  <a href="https://doi.org/10.5281/zenodo.5166953"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.5166953.svg" alt="DOI 10.5281/zenodo.5166953"></a>
+</p>
+
+<p align="center">(Real Embedded) Algebraic Number Theory</p>
+<hr>
+
+e-antic is a C/C++/Python library to deal with real embedded number fields
+built on top of [ANTIC](https://github.com/wbhart/antic). It aims to provide
+the fastest possible exact arithmetic operations and comparisons.
 
 Source tarballs can be downloaded at https://github.com/flatsurf/e-antic/releases.
 
@@ -13,9 +27,11 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6](http://flintlib.org)
- - [Arb](http://arblib.org/)
+ - [FLINT 2.6 or 2.7](https://flintlib.org)
+ - [Arb](https://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
+ - [Boost](https://www.boost.org/) for the C++ library
+ - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
 ## Build from the Source Code Repository or a Tarball
 
@@ -30,11 +46,11 @@ worked, you just have to do
 
     ./configure
     make
-    make check
-    make install
+    make check  # to run our test suite
+    make install  # to install into /usr/local
 
 If you happen to have any of FLINT, Arb, or ANTIC installed in a non standard
-directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
+directory, you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
 the configure script
 
     ./configure CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
@@ -63,48 +79,53 @@ the time of this writing.
 
 For more detailed but generic instructions please refer to the INSTALL file.
 
-## Install with Conda
+## Installation
 
-You can install this package with conda. Download and install
-[Miniconda](https://conda.io/miniconda.html), then run
+See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
+for installation instructions.
 
-    conda config --add channels conda-forge
-    conda create -n eantic -c flatsurf libeantic libeanticxx pyeantic
-    conda activate eantic
+## Run with binder in the Cloud
 
-The latest (experimental) versions for conda are:
+You can try out the projects in this repository in a very limited environment
+online by clicking the following links:
 
-| Name | Downloads | Version | Platforms |
-| --- | --- | --- | --- |
-| [![Build](https://img.shields.io/badge/recipe-libeantic-green.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) |
-| [![Build](https://img.shields.io/badge/recipe-pyeantic-green.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyeantic.svg)](https://anaconda.org/flatsurf/pyeantic) |
+* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.0.3?filepath=binder%2FSample.libeantic.ipynb)
+* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.0.3?filepath=binder%2FSample.pyeantic.ipynb)
 
-## Install with your Distribution Tools
+## Build with conda-forge Dependencies
 
-Some Versions of E-ANTIC might also be available as part of your
-[distribution](https://repology.org/project/e-antic/packages).
- 
-## Build with Conda Dependencies
+To build all of e-antic, you need a fairly recent C++ compiler and probably
+some packages that might not be readily available on your system. If you don't
+want to use your distribution's packages, you can use these dependencies from
+[conda-forge](https://conda-forge.org). Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
 
-To build all of e-antic package, you need a fairly recent C++ compiler and
-probably some packages that might not be readily available on your system. If
-you don't want to use your distribution's packages, you can provide these
-dependencies with conda. Download and install
-[Miniconda](https://conda.io/miniconda.html), then run
-
-    conda create -n e-antic-build ccache
-    conda env update -n e-antic-build -f libeantic/environment.yml
-    conda env create -n e-antic-build -f pyeantic/environment.yml
+    mamba create -n e-antic-build ccache
+    mamba env update -n e-antic-build -f libeantic/environment.yml
+    mamba env update -n e-antic-build -f pyeantic/environment.yml
+    mamba env update -n e-antic-build -f doc/environment.yml
     conda activate e-antic-build
-    export CPPFLAGS="-isystem $CONDA_PREFIX/include"
-    export CFLAGS="$CPPFLAGS"
-    export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"
-    export CC="ccache cc"
-    export CXX="ccache c++"
+    export CC="ccache cc"  # to speed up future compilation
+    export CXX="ccache c++"  # to speed up future compilation
     git clone --recurse-submodules https://github.com/flatsurf/e-antic.git
     cd e-antic
     ./bootstrap
     ./configure --prefix="$CONDA_PREFIX"
     make
-    make check| [![Build](https://img.shields.io/badge/recipe-libeantic-green.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libeantic.svg)](https://anaconda.org/flatsurf/libeantic) |
+    make check  # to run our test suite
+    make html  # to build the documentation
 
+## How to Cite this Project
+
+If you have used this project in the preparation of a publication, please cite
+it as described [on our zenodo page](https://doi.org/10.5281/zenodo.5166953).
+
+## Acknowledgements
+
+* Julian Rüth's contributions to this project have been supported by the Simons
+  Foundation Investigator grant of Alex Eskin.
+
+## Maintainers
+
+* [@saraedum](https://github.com/saraedum)
+* [@videlec](https://github.com/videlec)

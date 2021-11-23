@@ -1,4 +1,4 @@
-{% set version = '1.0.0-rc.11' %}
+{% set version = '1.0.3' %}
 {% set build_number = '1' %}
 
 package:
@@ -23,10 +23,10 @@ requirements:
     - python
     - setuptools
     - cppyythonizations
-    - e-antic
+    - libeantic
   run:
     - python
-    - cppyy
+    - cppyy >=2.1.0,<3
     - cppyythonizations
     - boost-cpp
 

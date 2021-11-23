@@ -1,7 +1,7 @@
 # Installed library (libtool (LT) libraries)
 lib_LTLIBRARIES = libeantic.la
 
-libeantic_la_LDFLAGS = -version-info @libeantic_version_info@ -no-undefined
+libeantic_la_LDFLAGS = -version-info $(libeantic_version_info) -no-undefined
 
 if HAVE_VERSION_SCRIPT
 libeantic_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libeantic.map
@@ -18,6 +18,7 @@ libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 
 # Installed headers
 nobase_pkginclude_HEADERS =      \
+		../e-antic/e-antic.h         \
 		../e-antic/renf.h            \
 		../e-antic/renf_elem.h       \
 		../e-antic/fmpz_poly_extra.h \
@@ -59,7 +60,6 @@ libeantic_la_SOURCES +=               \
     renf/clear.c                      \
     renf/degree.c                     \
     renf/equal.c                      \
-    renf/fmpz_poly_real_embeddings.c  \
     renf/get_str.c                    \
     renf/init.c                       \
     renf/init_nth_root.c              \
@@ -67,6 +67,7 @@ libeantic_la_SOURCES +=               \
     renf/print.c                      \
     renf/randtest.c                   \
     renf/refine_embedding.c           \
+    renf/set_embeddings_fmpz_poly.c   \
     renf/set_immutable.c
 
 noinst_HEADERS =                  \
@@ -140,22 +141,22 @@ libeantic_la_SOURCES +=                        \
     renf_elem/sub_ui.c                         \
     renf_elem/zero.c
 
-# We generate e-antic.h in the Makefile (not in configure) as recommended by
+# We generate local.h in the Makefile (not in configure) as recommended by
 # autoconf so DESTDIR installs work.
-$(builddir)/../e-antic/e-antic.h: $(srcdir)/../e-antic/e-antic.h.in Makefile
+$(builddir)/../e-antic/local.h: $(srcdir)/../e-antic/local.h.in Makefile
 	mkdir -p $(builddir)/../e-antic
 	sed -e 's,[@]libdir[@],$(libdir),g' < $< > $@
 
-# Since we generate e-antic.h, we need to search $(builddir) during out-of-tree builds aka VPATH builds
+# Since we generate local.h, we need to search $(builddir) during out-of-tree builds aka VPATH builds
 VPATH = $(srcdir) $(builddir)
-# Generate e-antic.h before performing any compilation
-BUILT_SOURCES = ../e-antic/e-antic.h
-# Distribute e-antic.h.in as part of the tarball, but not e-antic.h
-EXTRA_DIST = ../e-antic/e-antic.h.in
-nodist_pkginclude_HEADERS = ../e-antic/e-antic.h
+# Generate local.h before performing any compilation
+BUILT_SOURCES = ../e-antic/local.h
+# Distribute local.h.in as part of the tarball, but not local.h
+EXTRA_DIST = ../e-antic/local.h.in
+nodist_pkginclude_HEADERS = ../e-antic/local.h
 
-# Install e-antic.h into e-antic/
+# Install local.h into e-antic/
 generatedincludedir = $(includedir)/e-antic
-nodist_generatedinclude_HEADERS = ../e-antic/e-antic.h
+nodist_generatedinclude_HEADERS = ../e-antic/local.h
 
-CLEANFILES = ../e-antic/e-antic.h
+CLEANFILES = ../e-antic/local.h

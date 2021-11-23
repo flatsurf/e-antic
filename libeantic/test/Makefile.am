@@ -1,4 +1,10 @@
-LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la
+if HAVE_BYEXAMPLE
+    MAYBE_BYEXAMPLE = byexample
+endif
+
+SUBDIRS = $(MAYBE_BYEXAMPLE)
+
+LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la -lgmpxx
 
 @VALGRIND_CHECK_RULES@
 
@@ -48,7 +54,7 @@ check_PROGRAMS =                                     \
     renfxx/t-get_num_den                             \
     renfxx/t-get_str                                 \
     renfxx/t-hash                                    \
-    renfxx/t-is_integer_rational                     \
+    renfxx/t-predicates                              \
     renfxx/t-num_content                             \
     renfxx/t-pow                                     \
     renfxx/t-stream
@@ -98,7 +104,7 @@ renf_elem_t_swap_SOURCES = renf_elem/t-swap.c
 renfxx_t_assignment_SOURCES = renfxx/t-assignment.cpp main.cpp
 renfxx_t_binop_SOURCES = renfxx/t-binop.cpp main.cpp
 renfxx_t_ceil_SOURCES = renfxx/t-ceil.cpp
-renfxx_t_cmp_SOURCES = renfxx/t-cmp.cpp
+renfxx_t_cmp_SOURCES = renfxx/t-cmp.cpp main.cpp
 renfxx_t_cereal_SOURCES = renfxx/t-cereal.cpp main.cpp
 renfxx_t_constructor_SOURCES = renfxx/t-constructor.cpp main.cpp
 renfxx_t_floor_SOURCES = renfxx/t-floor.cpp
@@ -106,15 +112,15 @@ renfxx_t_get_SOURCES = renfxx/t-get.cpp
 renfxx_t_get_num_den_SOURCES = renfxx/t-get_num_den.cpp main.cpp
 renfxx_t_get_str_SOURCES = renfxx/t-get_str.cpp
 renfxx_t_hash_SOURCES = renfxx/t-hash.cpp main.cpp
-renfxx_t_is_integer_rational_SOURCES = renfxx/t-is_integer_rational.cpp main.cpp
+renfxx_t_predicates_SOURCES = renfxx/t-predicates.cpp main.cpp
 renfxx_t_num_content_SOURCES = renfxx/t-num_content.cpp
 renfxx_t_pow_SOURCES = renfxx/t-pow.cpp
 renfxx_t_stream_SOURCES = renfxx/t-stream.cpp main.cpp
 
-#
-# structures) to be able to run the tests even when cereal is not installed.
+# We vendor the header-only library Cereal (serialization with C++ to be able
+# to run the tests even when cereal is not installed.
 # Cereal is basically not packaged in any distribution since it is a
-# header-only library that people always vendor into their sourc tree.
+# header-only library that people always vendor into their source tree.
 EXTRA_DIST = external/cereal/include
 
 TESTS = $(check_PROGRAMS)

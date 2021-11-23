@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2017 Vincent Delecroix
-                  2020 Julian Rüth
+    Copyright (C)      2017 Vincent Delecroix
+                  2020-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -10,25 +10,23 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
-#include "rand_generator.hpp"
-#include "renf_class_generator.hpp"
-#include "renf_elem_class_generator.hpp"
+#include "../rand_generator.hpp"
+#include "../renf_class_generator.hpp"
+#include "../renf_elem_class_generator.hpp"
 
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include "../external/catch2/single_include/catch2/catch.hpp"
 
 using namespace eantic;
-
-static std::shared_ptr<const renf_class> K = nullptr;
 
 TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(take(16, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(16, renf_classs(state)));
     auto a = GENERATE_REF(take(16, renf_elem_classs(state, K)));
 
-    CAPTURE(*K, a);
+    CAPTURE(K, a);
 
     SECTION("Unary Operators")
     {
@@ -43,6 +41,8 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         CAPTURE(b);
 
         auto c = a + b;
+
+        REQUIRE(c == b + a);
 
         if (a.sgn() > 0) REQUIRE(c > b);
         if (a.sgn() < 0) REQUIRE(c < b);
@@ -86,7 +86,7 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         c += 1ull;
         REQUIRE(c);
 
-        c -= 1ll;
+        c -= 1ull;
         REQUIRE(!c);
 
         c += mpz_class(1);
@@ -109,6 +109,8 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         CAPTURE(b);
 
         auto c = a * b;
+
+        REQUIRE(c == b * a);
 
         if (a == 0 || b == 0)
         {
@@ -174,14 +176,14 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
     SECTION("Build Element as Sum of Terms")
     {
-        auto c = K->zero();
-        auto g = K->one();
+        auto c = K.zero();
+        auto g = K.one();
 
         auto coeffs = a.num_vector();
         for (size_t i = 0; i < coeffs.size(); i++)
         {
             c += coeffs[i] * g;
-            g *= K->gen();
+            g *= K.gen();
         }
 
         c /= a.den();
@@ -226,22 +228,46 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
 
 TEST_CASE("Incompatible parents cannot be mixed", "[renf_elem][parents]")
 {
-    const auto L = renf_class::make("a^2 - 2", "a", "1.4 +/- 1", 32);
-    const auto M = renf_class::make("b^2 - 3", "b", "1.7 +/- 1", 32);
+    flint_rand_t& state = GENERATE(rands());
 
-    const auto a = L->gen();
-    auto b = M->gen();
+    const auto& L = GENERATE_REF(take(4, renf_classs(state)));
+    const auto& M = GENERATE_REF(take(4, renf_classs(state)));
 
-    REQUIRE_THROWS(a + b);
+    const auto a = L.gen();
+    auto b = M.gen();
+
+    if (!a.is_rational() && !b.is_rational() && L != M)
+      REQUIRE_THROWS(a + b);
 
     SECTION("Rational Elements can be Mixed")
     {
-        b = M->one();
+        b = M.zero();
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b - a) == -a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
 
-        REQUIRE((a + b - a).is_one());
+        b = M.one();
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b / b) == a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
+        REQUIRE((a / b * b) == a);
 
-        b = M->zero();
-
-        REQUIRE((a + b - a).is_zero());
+        b = renf_elem_class(M, "1/2");
+        REQUIRE((a + b - b) == a);
+        REQUIRE((b + a - a) == b);
+        REQUIRE((a - b + b) == a);
+        REQUIRE((b - a + a) == b);
+        REQUIRE((a * b / b) == a);
+        REQUIRE((b * a / a) == b);
+        REQUIRE((b / a * a) == b);
+        REQUIRE((a / b * b) == a);
     }
 }

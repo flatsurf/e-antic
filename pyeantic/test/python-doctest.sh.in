@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2019 Vincent Delecroix
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C)      2019 Vincent Delecroix
+#        Copyright (C) 2019-2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -22,4 +22,10 @@
 
 set -ex
 
-pytest --doctest-modules @abs_srcdir@/../src/pyeantic
+# We cannot run pytest directly since it would be invoked through its shebang
+# which makes macOS sanitize some environment variables. Instead, we go thorugh
+# our bin/python wrapper to set the necessary environment variables and invoke
+# the Python binary to run pytest which keeps our environment intact on macOS.
+
+IGNORE=`grep -L '>>>' @abs_srcdir@/../src/pyeantic/*.py | awk '{ print "--ignore=" $0 }'`
+python -m pytest --verbose --doctest-modules $IGNORE --ignore="@abs_srcdir@/../src/pyeantic/realalg_conversion.py" '@abs_srcdir@/../src/pyeantic' $@

@@ -1,0 +1,19 @@
+# This file lists the dependencies needed to build the documentation of
+# e-antic.
+# Create a conda environment with these dependencies preinstalled with:
+# conda env create -n doc-eantic-build -f libeantic/environment.yml
+# conda env update -n doc-eantic-build -f pyeantic/environment.yml
+# conda env update -n doc-eantic-build -f doc/environment.yml
+name: doc-eantic-build
+channels:
+  - saraedum
+  - conda-forge
+  - defaults
+dependencies:
+  - standardese>=0.6.0
+  - sphinx
+  - mkdocs>=1.1.0
+  - pip
+  - pip:
+    - linkchecker
+    - sphinx_rtd_theme

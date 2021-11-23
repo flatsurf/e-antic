@@ -10,7 +10,7 @@ required for classical geometry.
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2020 Julian Rüth
+#                      2019-2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ from pyeantic import eantic
 class RealEmbeddedNumberFieldElement(FieldElement):
     r"""
     An element of a :class:`RealEmbeddedNumberField`, i.e., a wrapper of
-    e-antic's ``renf_elem_class`.
+    e-antic's ``renf_elem_class``.
 
     ..NOTES:
 
@@ -58,9 +58,23 @@ class RealEmbeddedNumberFieldElement(FieldElement):
 
         sage: TestSuite(a).run()
 
-    """
-    renf_elem_class = cppyy.gbl.eantic.renf_elem_class
+    Verify that #192 has been resolved::
 
+        sage: R.<x> = QQ[]
+        sage: K.<b> = NumberField(x^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    ::
+
+        sage: R.<y> = QQ[]
+        sage: K.<b> = NumberField(y^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    """
     def __init__(self, parent, value):
         r"""
         TESTS::
@@ -355,25 +369,42 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = RealEmbeddedNumberField(K)
             sage: L = NumberField(x**2 - 2, 'a')
             sage: L = RealEmbeddedNumberField(L.embeddings(AA)[1])
-            sage: M = eantic.renf_class.make("a^2 - 2", "a", "1.4 +/- .1")
+            sage: M = eantic.renf("a^2 - 2", "a", "1.4 +/- .1")
             sage: M = RealEmbeddedNumberField(M)
             sage: K is L
             True
             sage: K is M
             True
 
+        Instead of an embedding, a `renf_class` can be used:
+
+            sage: from pyeantic import eantic, RealEmbeddedNumberField
+            sage: K = eantic.renf_class.make("x^2 - 2", "x", "1.4 +/- 1")
+            sage: L = RealEmbeddedNumberField(K)
+
+        TESTS:
+
+        Check that #197 has been resolved::
+
+            sage: from pyeantic import RealEmbeddedNumberField
+            sage: K = RealEmbeddedNumberField(QQ).renf
+            sage: RealEmbeddedNumberField(K)
+            Real Embedded Number Field in x with defining polynomial x - 1 with x = 1
+
         """
+        if 'cppyy.gbl.boost.intrusive_ptr<const eantic::renf_class>' in str(type(embed)):
+            embed = embed.get()
         if isinstance(embed, eantic.renf_class):
             # Since it is quite annoying to convert an fmpz polynomial, we parse
             # the printed representation of the renf_class. This is of course
             # not very robust…
             import re
-            match = re.match("^NumberField\\(([^,]+), (\\[[^\\]]+\\])\\)$", repr(embed))
-            assert match, "renf_class printed in an unexpected way"
+            match = re.match("^NumberField\\(([^,]+), ([^)]+)\\)$", repr(embed))
+            assert match, "renf_class printed in an unexpected way: " + repr(embed)
             minpoly = match.group(1)
             root_str = match.group(2)
-            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ ]", minpoly)
-            assert match, "renf_class printed leading coefficient in an unexpected way"
+            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ +-]", minpoly)
+            assert match, "renf_class printed leading coefficient in an unexpected way: " + minpoly
             minpoly = QQ[match.group(1)](minpoly)
             roots = []
             AA_roots = minpoly.roots(AA, multiplicities=False)
@@ -462,14 +493,14 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
 
         ::
 
-            sage: type(K.one() - K.number_field.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.number_field.one() - K.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.one() - 1)
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
-            sage: type(1 - K.one())
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
+            sage: type(K.one() - K.number_field.one()) is type(K.number_field.one())
+            True
+            sage: type(K.number_field.one() - K.one()) is type(K.number_field.one())
+            True
+            sage: type(K.one() - 1) is type(K.one())
+            True
+            sage: type(1 - K.one()) is type(K.one())
+            True
 
         """
         self.number_field = embedded
@@ -660,11 +691,16 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K(a)
             a
 
+        TESTS:
+
+        Verify that the name of the generator is not relevant::
+
             sage: K = NumberField(x**2 - 2, 'b', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: b = KK.an_element()
             sage: K(b)
             b
+
         """
         rational_coefficients = [ZZ(str(c.get_str())) / ZZ(str(x.renf_elem.den().get_str())) for c in x.renf_elem.num_vector()]
         while len(rational_coefficients) < self.domain().number_field.degree():
@@ -681,9 +717,9 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: K.coerce_map_from(KK).section()
-            Generic morphism:
-              From: Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
-              To:   Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+            Conversion map:
+              From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+              To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 
         """
-        return self.codomain().convert_map_from(self.domain())
+        return self.domain().convert_map_from(self.codomain())

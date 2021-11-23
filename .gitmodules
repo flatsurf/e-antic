@@ -1,9 +1,6 @@
 [submodule "renfxx/test/external/cereal"]
 	path = libeantic/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
-[submodule "renfxx/external/unique-factory"]
-	path = libeantic/srcxx/external/unique-factory
-	url = https://github.com/flatsurf/unique-factory.git
 [submodule "upstream/antic"]
 	path = libeantic/upstream/antic
 	url = https://github.com/flatsurf/antic.git

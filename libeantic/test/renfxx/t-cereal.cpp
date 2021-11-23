@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C) 2019-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -13,8 +13,8 @@
 #include <cereal/archives/json.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "../../e-antic/renfxx.h"
-#include "../../e-antic/renfxx_cereal.h"
+#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/cereal.hpp"
 
 #include "../rand_generator.hpp"
 #include "../renf_class_generator.hpp"
@@ -48,16 +48,14 @@ T test_serialization(const T& x)
     return y;
 }
 
-static std::shared_ptr<const renf_class> K = nullptr;
-
 TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 {
     flint_rand_t& state = GENERATE(rands());
-    K = GENERATE_REF(take(128, renf_classs(state)));
+    const auto& K = GENERATE_REF(take(128, renf_classs(state)));
     auto a = GENERATE_REF(take(4, renf_elem_classs(state, K)));
     auto b = GENERATE_REF(take(4, renf_elem_classs(state, K)));
 
-    CAPTURE(*K);
+    CAPTURE(K);
 
     test_serialization(a);
     test_serialization(std::vector<renf_elem_class>{a, a, b});

@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2019 Vincent Delecroix
-    Copyright (C) 2019 Julian Rüth
+    Copyright (C)      2019 Vincent Delecroix
+                  2019-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -12,7 +12,7 @@
 
 #include <limits.h>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 using namespace eantic;
 
@@ -29,7 +29,7 @@ int main(void)
         renf_clear(nf);
 
         {
-            renf_elem_class a(K, 2);
+            renf_elem_class a(*K, 2);
             if (a.pow(2) != 4)
                 throw std::runtime_error("2^2 is wrong");
             if (4 * a.pow(-2) != 1)
