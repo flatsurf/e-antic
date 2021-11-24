@@ -13,6 +13,12 @@
 
 #include "../e-antic/renf_elem.h"
 
+static int sgn(int a) {
+  if (a == 0) return 0;
+  else if (a > 0) return 1;
+  return -1;
+}
+
 void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
 {
     if (!renf_elem_is_rational(c, nf))
@@ -69,7 +75,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
             renf_elem_init(ac, nf);
             renf_elem_mul_fmpz(ac, c, a, nf);
 
-            if (renf_elem_cmp(ac, b, nf) == renf_elem_sgn(c, nf))
+            if (sgn(renf_elem_cmp(ac, b, nf)) == renf_elem_sgn(c, nf))
                 fmpz_add_si(a, a, -1);
 
             renf_elem_clear(ac, nf);

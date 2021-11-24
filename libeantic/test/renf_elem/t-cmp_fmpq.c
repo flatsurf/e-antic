@@ -11,6 +11,12 @@
 
 #include "../../e-antic/renf_elem.h"
 
+static int sgn(int a) {
+  if (a == 0) return 0;
+  if (a < 0) return -1;
+  return 1;
+}
+
 int main()
 {
     int iter;
@@ -40,7 +46,7 @@ int main()
             renf_elem_init(a, nf);
             renf_elem_set_fmpq(a, q1, nf);
 
-            if (renf_elem_cmp_fmpq(a, q1, nf) != 0 || renf_elem_cmp_fmpq(a, q2, nf) != fmpq_cmp(q1, q2))
+            if (renf_elem_cmp_fmpq(a, q1, nf) != 0 || sgn(renf_elem_cmp_fmpq(a, q2, nf)) != sgn(fmpq_cmp(q1, q2)))
             {
                 printf("FAIL:\n");
                 printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
