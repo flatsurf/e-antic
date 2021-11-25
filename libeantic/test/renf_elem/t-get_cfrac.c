@@ -11,6 +11,12 @@
 
 #include "../../e-antic/renf_elem.h"
 
+static int sgn(int a) {
+  if (a == 0) return 0;
+  if (a < 0) return -1;
+  return 1;
+}
+
 static void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, const slong n, const slong num)
 {
     slong iter;
@@ -63,7 +69,7 @@ static void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, c
 
                 s = 0;
             }
-            if (ans != s)
+            if (sgn(ans) != s)
             {
                 printf("FAIL:\n");
                 printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
