@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2020 Julian Rüth
+    Copyright (C) 2020-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -12,12 +12,6 @@
 #include <arb.h>
 
 #include "../e-antic/renf_elem.h"
-
-static int sgn(int a) {
-  if (a == 0) return 0;
-  else if (a > 0) return 1;
-  return -1;
-}
 
 void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
 {
@@ -75,7 +69,11 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
             renf_elem_init(ac, nf);
             renf_elem_mul_fmpz(ac, c, a, nf);
 
-            if (sgn(renf_elem_cmp(ac, b, nf)) == renf_elem_sgn(c, nf))
+            int cmp = renf_elem_cmp(ac, b, nf);
+            int csgn = renf_elem_sgn(c, nf);
+
+            // If a > b/c, we need to subtract one from a.
+            if (cmp == csgn)
                 fmpz_add_si(a, a, -1);
 
             renf_elem_clear(ac, nf);

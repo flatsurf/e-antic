@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2017 Vincent Delecroix
-    Copyright (C) 2020 Julian Rüth
+    Copyright (C)      2017 Vincent Delecroix
+                  2020-2021 Julian Rüth
 
     This file is part of e-antic
 
@@ -102,7 +102,8 @@ TEST_CASE("Floor Division of renf_elem", "[renf_elem][binop][fdiv]")
     {
         fmpz_t& n = GENERATE_REF(take(4, fmpzs(state)));
 
-        if (!fmpz_is_zero(n)) {
+        if (!fmpz_is_zero(n) && !renf_elem_is_zero(a, nf))
+        {
             renf_elem_t b;
             renf_elem_init(b, nf);
             renf_elem_mul_fmpz(b, a, n, nf);
@@ -114,12 +115,45 @@ TEST_CASE("Floor Division of renf_elem", "[renf_elem][binop][fdiv]")
             renf_elem_fdiv(fdiv, b, a, nf);
 
             CAPTURE(fdiv, n);
-            if (renf_elem_is_zero(a, nf))
-                REQUIRE(fmpz_is_zero(fdiv));
-            else
-                REQUIRE(fmpz_equal(fdiv, n));
+            REQUIRE(fmpz_equal(fdiv, n));
 
             fmpz_clear(fdiv);
+            renf_elem_clear(b, nf);
+        }
+    }
+
+    SECTION("The quotient a // b when a / b is close to an integer")
+    {
+        fmpz_t& n = GENERATE_REF(take(4, fmpzs(state)));
+
+        renf_elem_t& error = GENERATE_REF(take(4, renf_elems(state, nf)));
+
+        renf_elem_div_ui(error, error, 1<<31, nf);
+
+        if (!fmpz_is_zero(n) && !renf_elem_is_zero(a, nf))
+        {
+            renf_elem_t b;
+            renf_elem_init(b, nf);
+            renf_elem_mul_fmpz(b, a, n, nf);
+            renf_elem_add(b, b, error, nf);
+
+            if (renf_elem_sgn(a, nf) == renf_elem_sgn(b, nf))
+            {
+                fmpz_t fdiv;
+                fmpz_init(fdiv);
+
+                CAPTURE(a, b, error);
+                renf_elem_fdiv(fdiv, b, a, nf);
+
+                CAPTURE(fdiv, n);
+                if (renf_elem_sgn(error, nf) == 0 || renf_elem_sgn(error, nf) == renf_elem_sgn(b, nf))
+                    REQUIRE(fmpz_cmp(fdiv, n) >= 0);
+                else
+                    REQUIRE(fmpz_cmp(fdiv, n) < 0);
+
+                fmpz_clear(fdiv);
+            }
+
             renf_elem_clear(b, nf);
         }
     }
