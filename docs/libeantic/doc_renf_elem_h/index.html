@@ -234,16 +234,16 @@
 (11) int renf_elem_equal_fmpq(const renf_elem_t a, const fmpq_t b, const renf_t nf)
 
 </code></pre>
-<p>All the comparison functions <code>renf_elem_cmp_…</code> between two elements <code>a</code> and <code>b</code> behave as follows. They return:</p>
+<p>All the comparison functions <code>renf_elem_cmp_…</code> between two elements <code>a</code> and <code>b</code> behave as follows. They return</p>
 <ul>
 <li>
-<p><code>1</code> if <code>a</code> is greater than <code>b</code></p>
+<p>a positive integer if <code>a</code> is greater than <code>b</code>,</p>
 </li>
 <li>
-<p><code>0</code> if <code>a</code> and <code>b</code> are equal</p>
+<p><code>0</code> if <code>a</code> and <code>b</code> are equal, and</p>
 </li>
 <li>
-<p><code>-1</code> if <code>a</code> is smaller than <code>b</code></p>
+<p>a negative integer if <code>a</code> is smaller than <code>b</code>.</p>
 </li>
 </ul>
 <p>If you want to check for equality, use the faster <code>renf_elem_equal_…</code> functions.</p>
