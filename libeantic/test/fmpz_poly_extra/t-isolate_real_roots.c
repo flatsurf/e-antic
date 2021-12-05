@@ -105,7 +105,7 @@ static void check_intervals(
 
         if ((j < n_exact) && (k < n_interval))
         {
-            if ((fmpq_cmp(exact + j, x) == 1) && (fmpq_cmp(y, exact + j) == 1))
+            if ((fmpq_cmp(exact + j, x) > 0) && (fmpq_cmp(y, exact + j) > 0))
             {
                 flint_printf("ERROR:\n");
                 flint_printf("the %wd-th exact root ", j);

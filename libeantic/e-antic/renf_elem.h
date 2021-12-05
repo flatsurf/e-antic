@@ -144,10 +144,10 @@ LIBEANTIC_API double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
 /// ==* Comparisons *==
 /// All the comparison functions `renf_elem_cmp_…` between two elements `a` and
-/// `b` behave as follows. They return:
-/// * `1` if `a` is greater than `b`
-/// * `0` if `a` and `b` are equal
-/// * `-1` if `a` is smaller than `b`
+/// `b` behave as follows. They return
+/// * a positive integer if `a` is greater than `b`,
+/// * `0` if `a` and `b` are equal, and
+/// * a negative integer if `a` is smaller than `b`.
 ///
 /// If you want to check for equality, use the faster `renf_elem_equal_…` functions.
 LIBEANTIC_API int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
