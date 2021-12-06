@@ -12,7 +12,8 @@ dependencies:
   - benchmark
   - byexample
   - boost-cpp
-  - cppyy
+  # Our byexample setup uses cppyy to run C++ code samples.
+  - cppyy>=2.1.0,<3
   - coreutils
   - c-compiler
   - cxx-compiler
