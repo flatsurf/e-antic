@@ -22,6 +22,8 @@ dependencies:
   - sagelib
   - sympy
   - cppyythonizations
+  # cysignals seems to be broken on macOS, see https://github.com/conda-forge/cysignals-feedstock/issues/39
+  - cysignals<1.11.0
   # valgrind is only needed for make check-valgrind
   # - valgrind
   - pip
