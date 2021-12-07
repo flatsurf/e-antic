@@ -1,9 +1,9 @@
 all-local:
-	mkdir -p $(builddir)/build
+	mkdir -p $(abs_top_builddir)/src/build
 	cd $(srcdir) && $(PYTHON) setup.py build --verbose --build-base $(abs_top_builddir)/src/build
 
 install-exec-local:
-	$(PYTHON) setup.py install --prefix $(DESTDIR)$(prefix) --single-version-externally-managed --record $(DESTDIR)$(pythondir)/pyeantic/install_files.txt --verbose
+	python $(srcdir)/setup.py install --prefix $(DESTDIR)$(prefix) --single-version-externally-managed --record $(DESTDIR)$(pythondir)/pyeantic/install_files.txt --verbose
 
 uninstall-local:
 	cat $(DESTDIR)$(pythondir)/pyeantic/install_files.txt | xargs rm -rf

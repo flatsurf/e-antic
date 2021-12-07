@@ -22,6 +22,10 @@ from distutils.core import setup
 from setuptools.command.egg_info import egg_info
 
 
+# The @srcdir@ containing this setup.py file.
+srcdir = os.path.relpath(os.path.dirname(__file__) or ".")
+
+
 class vpath_egg_info(egg_info):
     r"""
     A VPATH aware egg_info for VPATH builds with Automake, see
@@ -48,7 +52,11 @@ setup(
     install_requires=[
         'cppyy',
     ],
-    long_description=open('../../README.md').read(),
+    long_description=open(os.path.join(srcdir, '..', '..', 'README.md')).read(),
     include_package_data=True,
     cmdclass={'egg_info': vpath_egg_info},
+    package_dir={
+        # In VPATH builds, search pyeantic relative to this setup.py file.
+        '': srcdir,
+    },
 )
