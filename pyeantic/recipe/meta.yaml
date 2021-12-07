@@ -29,6 +29,8 @@ requirements:
     - cppyy >=2.1.0,<3
     - cppyythonizations
     - boost-cpp
+    # See https://github.com/flatsurf/e-antic/issues/223
+    - cysignals <1.11.0  # [osx]
 
 test:
   imports:
