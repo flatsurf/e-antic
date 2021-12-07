@@ -22,9 +22,9 @@ setup(
     name = 'pyeantic',
     version = '@PACKAGE_VERSION@',
     packages = ['pyeantic',],
-    license = 'GPL 2.0+',
+    license = 'GPL 3.0+',
     install_requires=[
-        'cppyy'
+        'cppyy',
     ],
     long_description = open('@abs_top_srcdir@/../README.md').read(),
     include_package_data=True,
