@@ -42,14 +42,13 @@ class vpath_egg_info(egg_info):
 
 setup(
     name='pyeantic',
-    version='@PACKAGE_VERSION@',
+    version='1.0.3',
     packages=['pyeantic'],
     license='GPL 3.0+',
     install_requires=[
         'cppyy',
     ],
-    long_description=open('@abs_top_srcdir@/../README.md').read(),
+    long_description=open('../README.md').read(),
     include_package_data=True,
     cmdclass={'egg_info': vpath_egg_info},
-    package_dir={"": os.path.relpath('@abs_top_srcdir@/src/')},
 )
