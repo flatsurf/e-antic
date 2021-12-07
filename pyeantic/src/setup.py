@@ -48,7 +48,7 @@ setup(
     install_requires=[
         'cppyy',
     ],
-    long_description=open('../README.md').read(),
+    long_description=open('../../README.md').read(),
     include_package_data=True,
     cmdclass={'egg_info': vpath_egg_info},
 )
