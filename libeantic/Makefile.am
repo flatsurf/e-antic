@@ -8,6 +8,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 # Distribute files that we might need to fill/replace from our dependencies
 EXTRA_DIST =                                          \
+  setup.py                                            \
   upstream/patched/EANTIC_fmpq_poly_add_fmpq.c        \
   upstream/patched/EANTIC_nf_elem_add_fmpq.c          \
   upstream/patched/EANTIC_nf_elem_scalar_div_fmpq.c   \

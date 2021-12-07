@@ -32,8 +32,10 @@ import os
 from setuptools import setup
 from setuptools.command.install import install
 from distutils.command.build import build
+from setuptools.command.sdist import sdist
 from subprocess import check_call
 from contextlib import contextmanager
+import tempfile
 
 
 @contextmanager
@@ -46,59 +48,73 @@ def cwd(path):
         os.chdir(pwd)
 
 
-def abs_builddir(distribution):
-    builddir = distribution.command_obj["build"].build_base
-    if not os.path.isabs(builddir):
-        builddir = os.path.join(abs_srcdir, builddir)
-    os.makedirs(builddir, exist_ok=True)
-    return builddir
+class AutotoolsCommand:
+    @property
+    def abs_builddir(self):
+        builddir = self.distribution.command_obj["build"].build_base
+        if not os.path.isabs(builddir):
+            builddir = os.path.join(self.abs_srcdir, builddir)
+        os.makedirs(builddir, exist_ok=True)
+        return builddir
+
+    @property
+    def destdir(self):
+        if "install" in self.distribution.command_obj:
+            return os.path.join(self.distribution.command_obj["install"].install_lib, "libeantic")
+        else:
+            raise NotImplementedError("Cannot determine installation prefix in this build. We need to know the eventual location of the install so hard-coded library paths are set correctly.")
+
+    @property
+    def abs_srcdir(self):
+        # The @abs_srcdir@ containing this setup.py file.
+        return os.path.abspath(os.path.dirname(__file__) or ".")
+
+    @property
+    def MAKE(self):
+        return os.getenv("MAKE", "make")
 
 
-def prefix(distribution):
-    if "install" in distribution.command_obj:
-        return os.path.join(distribution.command_obj["install"].install_lib, "libeantic")
-    elif "bdist_wheel" in distribution.command_obj:
-        return os.path.join(distribution.command_obj["bdist_wheel"].bdist_dir, "libeantic")
-    else:
-        raise NotImplementedError("Cannot determine installation prefix in this distribution.")
+class NoBinary(build):
+    def run(self):
+        raise NotImplementedError("No binary wheels can be built for libeantic currently because the installation prefix is hard-coded in some of its header files. To skip this step when using pip, run with --no-binary :all:")
 
 
-def destdir(distribution):
-    return os.path.join(abs_builddir(distribution))
+class ConfigureMakeInstall(install, AutotoolsCommand):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.skip_build = True
 
-
-# The @abs_srcdir@ containing this setup.py file.
-abs_srcdir = os.path.abspath(os.path.dirname(__file__) or ".")
-
-
-MAKE = os.getenv("MAKE", "make")
-
-
-class ConfigureMake(build):
     def run(self):
         super().run()
 
-        with cwd(abs_builddir(self.distribution)):
-            check_call([os.path.join(abs_srcdir, "configure"), "--prefix=/install", "--without-benchmark", "--without-byexample"])
+        with tempfile.TemporaryDirectory() as build:
+            with cwd(build):
+                check_call([os.path.join(self.abs_srcdir, "configure"), f"--prefix={self.destdir}", "--without-benchmark", "--without-byexample"])
+                check_call([self.MAKE, "install"])
 
-            check_call([MAKE, f"DESTDIR={destdir(self.distribution)}", "install"])
+    def get_outputs(self):
+        return super().get_outputs() + [self.destdir]
 
 
-class MakeInstall(install):
+class MakeDist(sdist, AutotoolsCommand):
     def run(self):
-        super().run()
-
-        self.copy_tree(os.path.join(destdir(self.distribution), "install"), prefix(self.distribution))
+        with cwd(self.abs_srcdir):
+            check_call([os.path.join(self.abs_srcdir, "configure"), "--without-benchmark", "--without-byexample"])
+            check_call([self.MAKE, "distdir"])
+            super().run()
 
 
 setup(
     name='libeantic',
-    long_description=open('../README.md').read(),
+    long_description=r"""
+        TODO
+    """,
     version='1.0.3',
     license='GPL 3.0+',
     setup_requires=["wheel"],
     cmdclass={
-        'build': ConfigureMake,
-        'install': MakeInstall,
+        'sdist': MakeDist,
+        'build': NoBinary,
+        'install': ConfigureMakeInstall,
     },
 )
