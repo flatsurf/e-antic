@@ -53,15 +53,16 @@ jobs:
           name: pyeantic-sdist
           path:
             pyeantic/dist/**
-  sage:
+  install:
     needs: sdist
     runs-on: ubuntu-20.04
     container: ${{ matrix.container }}
     strategy:
       matrix:
         container:
-          - sagemath/sagemath-dev:9.1
-          - sagemath/sagemath-dev:9.2
+          - sagemath/sagemath-dev:9.2.beta3
+          - sagemath/sagemath-dev:9.3.beta8
+          - ubuntu:20.04
     steps:
       - name: download libeantic sdist
         uses: actions/download-artifact@v2
