@@ -26,17 +26,6 @@ from distutils.core import setup
 from setuptools.command.sdist import sdist
 from setuptools.command.egg_info import egg_info
 from subprocess import check_call
-from contextlib import contextmanager
-
-
-@contextmanager
-def cwd(path):
-    pwd = os.getcwd()
-    os.chdir(path)
-    try:
-        yield path
-    finally:
-        os.chdir(pwd)
 
 
 class AutotoolsCommand:
@@ -160,6 +149,11 @@ setup(
     ],
     long_description=inspect.cleandoc(r"""
         pyeantic is a Python interface to the e-antic C/C++ library which offers exact computation with real embedded algebraic numbers.
+
+        We do not recommend to install pyeantic from PyPI as it has lots of
+        dependencies that are not available on PyPI. If you want to install
+        libeantic, please have a look at our installation guide:
+        https://flatsurf.github.io/e-antic/libeantic/#installation
 
         Please consult pyeantic's home page for further details: https://flatsurf.github.io/e-antic/pyeantic/
         """),
