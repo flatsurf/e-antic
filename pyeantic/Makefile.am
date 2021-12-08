@@ -4,4 +4,6 @@ endif
 
 SUBDIRS = src $(MAYBE_PYTEST)
 
+EXTRA_DIST = setup.py
+
 ACLOCAL_AMFLAGS = -I m4

@@ -1,3 +1,6 @@
+r"""
+Setup instructions for pyeantic.
+"""
 # ####################################################################
 #  This file is part of e-antic.
 #
@@ -18,12 +21,9 @@
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 # ###################################################################
 import os
+import inspect
 from distutils.core import setup
 from setuptools.command.egg_info import egg_info
-
-
-# The @srcdir@ containing this setup.py file.
-srcdir = os.path.relpath(os.path.dirname(__file__) or ".")
 
 
 class vpath_egg_info(egg_info):
@@ -48,15 +48,23 @@ setup(
     name='pyeantic',
     version='1.0.3',
     packages=['pyeantic'],
-    license='GPL 3.0+',
+    license='LGPL 3.0+',
+    license_files=('COPYING', 'COPYING.LESSER'),
     install_requires=[
+        # We cannot encode our dependency on libeantic easily here since
+        # libeantic is usually not installed as a Python package.
+        # However, pyeantic won't work at all without libeantic of course.
         'cppyy',
     ],
-    long_description=open(os.path.join(srcdir, '..', '..', 'README.md')).read(),
+    long_description=inspect.cleandoc(r"""
+        pyeantic is a Python interface to the e-antic C/C++ library which offers exact computation with real embedded algebraic numbers.
+
+        Please consult pyeantic's home page for further details: https://flatsurf.github.io/e-antic/pyeantic/
+        """),
     include_package_data=True,
     cmdclass={'egg_info': vpath_egg_info},
     package_dir={
         # In VPATH builds, search pyeantic relative to this setup.py file.
-        '': srcdir,
+        '': os.path.join(os.path.relpath(os.path.dirname(__file__) or "."), 'src'),
     },
 )
