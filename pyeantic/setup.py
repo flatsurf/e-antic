@@ -81,7 +81,7 @@ class AutotoolsCommand:
         """
         if "install" not in self.distribution.command_obj:
             raise ValueError("Cannot determine installation prefix in this build which does not install.")
-        return os.path.join(self.distribution.command_obj["install"].install_lib, self.name)
+        return os.path.join(self.distribution.command_obj["install"].install_lib, self.distribution.get_name())
 
     @property
     def abs_srcdir(self):
