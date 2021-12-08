@@ -12,4 +12,4 @@ uninstall-local:
 clean-local:
 	-rm -rf pyeantic/__pycache__ pyeantic.egg-info build .pytest_cache
 
-EXTRA_DIST = setup.py MANIFEST.in pyeantic/__init__.py pyeantic/cppyy_eantic.py pyeantic/realalg_conversion.py pyeantic/real_embedded_number_field.py pyeantic/sage_conversion.py
+EXTRA_DIST = setup.py pyeantic/__init__.py pyeantic/cppyy_eantic.py pyeantic/realalg_conversion.py pyeantic/real_embedded_number_field.py pyeantic/sage_conversion.py
