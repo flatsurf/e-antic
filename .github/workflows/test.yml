@@ -112,24 +112,11 @@ jobs:
     runs-on: ${{ matrix.on }}
     strategy:
       matrix:
+        on: ['ubuntu-20.04', 'macos-10.15']
+        python: ['3.6', '3.7', '3.8', '3.9']
+        sagelib: ['9.3', '9.4']
         include:
-          - on: ubuntu-20.04
-            python: "3.6"
-          - on: ubuntu-20.04
-            python: "3.7"
-          - on: ubuntu-20.04
-            python: "3.8"
-          - on: ubuntu-20.04
-            python: "3.9"
-          - on: macos-10.15
-            python: "3.6"
-          - on: macos-10.15
-            python: "3.7"
-          - on: macos-10.15
-            python: "3.8"
-          - on: macos-10.15
-            python: "3.9"
-          - on: ubuntu-20.04
+          - on: ubuntu-latest
             python: "3.9"
             sanitizer: valgrind
           # Needs libsanitizer=11, with the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
@@ -169,6 +156,8 @@ jobs:
       - name: install dependencies
         shell: bash -l {0}
         run: |
+          mamba install -n test sagelib=${{ matrix.sagelib }}
+          echo "sagelib ==${{ matrix.sagelib }}" >> $CONDA_PREFIX/conda-meta/pinned
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
           conda list
