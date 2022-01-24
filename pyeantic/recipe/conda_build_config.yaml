@@ -1,7 +1,7 @@
 # Pins from https://github.com/conda-forge/conda-forge-pinning-feedstock/blob/master/recipe/conda_build_config.yaml
 # so our packages is compatible with the choices made by conda-forge.
 python:
-  - 3.6.* *_cpython
   - 3.7.* *_cpython
   - 3.8.* *_cpython
   - 3.9.* *_cpython
+  - 3.10.* *_cpython
