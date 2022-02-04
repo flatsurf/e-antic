@@ -166,3 +166,9 @@ LIBEANTICXX_1.0.0 {
     };
   local: *;
 };
+LIBEANTICXX_1.1.0 {
+  global:
+    extern "C++" {
+      "eantic::renf_class::make(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::function<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (long)>, long)";
+    };
+} LIBEANTICXX_1.0.0;

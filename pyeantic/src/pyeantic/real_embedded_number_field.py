@@ -10,7 +10,7 @@ required for classical geometry.
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2021 Julian Rüth
+#                      2019-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@ required for classical geometry.
 
 import cppyy
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RBF, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RealBallField, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
 from sage.structure.element import FieldElement
 from sage.categories.map import Map
 
@@ -74,7 +74,27 @@ class RealEmbeddedNumberFieldElement(FieldElement):
         sage: K(b)
         (b ~ 1.4142136)
 
+    Verify that #226 has been resolved::
+
+        sage: K.<a> = NumberField(x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58 \
+        ....: - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46 \
+        ....: - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36 \
+        ....: + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26 \
+        ....: - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16 \
+        ....: + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71, \
+        ....: embedding=1.999510553370486)
+        sage: from pyeantic import RealEmbeddedNumberField
+        sage: RealEmbeddedNumberField(K)
+        Real Embedded Number Field in a with defining polynomial x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58
+        - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46
+        - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36
+        + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26
+        - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16
+        + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71
+        with a = 1.999510553370486?
+
     """
+
     def __init__(self, parent, value):
         r"""
         TESTS::
@@ -505,10 +525,11 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
         """
         self.number_field = embedded
         var = self.number_field.variable_name()
+
         self.renf = eantic.renf(
             repr(self.number_field.polynomial().change_variable_name(var)),
             var,
-            str(RBF(self.number_field.gen())))
+            lambda prec: str(RealBallField(prec)(self.number_field.gen())))
 
         CommutativeRing.__init__(self, QQ, category=category)
 
