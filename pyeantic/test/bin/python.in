@@ -20,7 +20,7 @@ export LD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@
 export DYLD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$DYLD_LIBRARY_PATH"
 
 # Load pyeantic from our source tree.
-export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@:$PYTHONPATH"
+export PYTHONPATH="@abs_srcdir@/../src/:$PYTHONPATH:@pythondir@"
 
 # Support libasan loading when our library has been built with -fsanitize=address.
 if [ ! -z "$EANTIC_LD_PRELOAD" ]; then
