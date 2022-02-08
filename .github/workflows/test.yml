@@ -130,9 +130,13 @@ jobs:
             python: "3.9"
             sagelib: "9.4"
           - on: ubuntu-20.04
+            # SageMath 9.5 shipped with Python 3.9 so we test that this combination works.
+            python: "3.9"
+            sagelib: "9.5"
+          - on: ubuntu-20.04
             # We test the latest SageMath with the latest Python.
             python: "3.10"
-            sagelib: "9.4"
+            sagelib: "9.5"
           - on: macos-10.15
             # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
             python: "3.7"
@@ -149,11 +153,14 @@ jobs:
             # SageMath 9.4 shipped with Python 3.9 so we test that this combination works.
             python: "3.9"
             sagelib: "9.4"
-          # Needs https://github.com/conda-forge/sagelib-feedstock/pull/129, i.e., SageMath for Python 3.10 in conda-forge.
-          # - on: macos-10.15
-          #   # We test the latest SageMath with the latest Python.
-          #   python: "3.10"
-          #   sagelib: "9.4"
+          - on: macos-10.15
+            # SageMath 9.5 shipped with Python 3.9 so we test that this combination works.
+            python: "3.9"
+            sagelib: "9.5"
+          - on: macos-10.15
+            # We test the latest SageMath with the latest Python.
+            python: "3.10"
+            sagelib: "9.5"
           # - on: ubuntu-20.04
           #   python: "3.10"
           #   sagelib: "9.4"
