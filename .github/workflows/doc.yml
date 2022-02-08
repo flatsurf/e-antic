@@ -45,7 +45,7 @@ jobs:
           sleep 1
 
           # Strangely, the linkchecker modules are installed writable and linkchecker then refuses to load them.
-          chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"`
+          chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"` || true
 
           linkchecker --check-extern http://localhost:8880/e-antic/libeantic
       - uses: JamesIves/github-pages-deploy-action@3.7.1
