@@ -161,6 +161,37 @@ auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
 <h4 id="parameter-prec">Parameter <code>prec</code><a class="headerlink" href="#parameter-prec" title="Permanent link">&para;</a></h4>
 <p>The default precision for all arithmetic.</p>
 <p>When performing arithmetic in this field, all operations are performed to that precision. When necessary, the precision is dynamically increased. This only affects the performance and inner workings of libeantic, the results of arithmetic operations and comparisons are not affected by this.</p>
+<h3 id="boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-functionstring-slong-emb-slong-prec"><code>boost::intrusive_ptr&lt;const renf_class&gt;</code> <code>make(const string&amp; minpoly, const string&amp; gen, const function&lt;string (slong)&gt;</code> <code>emb, slong prec)</code><a class="headerlink" href="#boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-functionstring-slong-emb-slong-prec" title="Permanent link">&para;</a></h3>
+<p>Return the number field obtained by adjoining the root of <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a> which is approximately <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-emb">emb</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;arb.h&gt;
+#include &lt;arf.h&gt;
+
+const auto emb = [](slong prec) {
+    arb_t emb;
+    arb_init(emb);
+    arb_sqrt_ui(emb, 2, prec);
+    char* c_str = arb_get_str(emb, prec, ARB_STR_NO_RADIUS);
+    std::string str(c_str);
+    flint_free(c_str);
+    arb_clear(emb);
+    return str;
+};
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", emb);
+</code></pre>
+<h4 id="parameter-minpoly_1">Parameter <code>minpoly</code><a class="headerlink" href="#parameter-minpoly_1" title="Permanent link">&para;</a></h4>
+<p>An irreducible polynomial in the variable <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-gen">gen</a>.</p>
+<p>This minimal polynomial does not have to be totally real or monic.</p>
+<h4 id="parameter-gen_1">Parameter <code>gen</code><a class="headerlink" href="#parameter-gen_1" title="Permanent link">&para;</a></h4>
+<p>The name of the variable used in <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a>.</p>
+<p>Note that two fields that differ only in the name of the generator are treated as being distinct fields.</p>
+<h4 id="parameter-emb_1">Parameter <code>emb</code><a class="headerlink" href="#parameter-emb_1" title="Permanent link">&para;</a></h4>
+<p>Creates approximations of the root of <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a> that is suitable for computations with precision <code>prec</code>.</p>
+<p>It makes no difference to what precision this approximation is provided but it must for a sufficiently large value of <code>prec</code> uniquely determine a single root of the polynomial; with increasing <code>prec</code> it should converge to the actual root.</p>
+<h4 id="parameter-prec_1">Parameter <code>prec</code><a class="headerlink" href="#parameter-prec_1" title="Permanent link">&para;</a></h4>
+<p>The default precision for all arithmetic.</p>
+<p>When performing arithmetic in this field, all operations are performed to that precision. When necessary, the precision is dynamically increased. This only affects the performance and inner workings of libeantic, the results of arithmetic operations and comparisons are not affected by this.</p>
 <h3 id="slong-degree-const"><code>slong degree() const</code><a class="headerlink" href="#slong-degree-const" title="Permanent link">&para;</a></h3>
 <p>Return the absolute degree of this number field.</p>
 <h3 id="const-renf_elem_class-zero-const"><code>const renf_elem_class&amp; zero() const</code><a class="headerlink" href="#const-renf_elem_class-zero-const" title="Permanent link">&para;</a></h3>

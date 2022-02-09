@@ -241,6 +241,25 @@ slight improvement in performance.</p>
 <span class="p">(</span><span class="n">b</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Verify that #226 has been resolved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: K.&lt;a&gt; = NumberField(x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58 \
+....: - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46 \
+....: - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36 \
+....: + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26 \
+....: - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16 \
+....: + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71, \
+....: embedding=1.999510553370486)
+sage: from pyeantic import RealEmbeddedNumberField
+sage: RealEmbeddedNumberField(K)
+Real Embedded Number Field in a with defining polynomial x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58
+- 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46
+- 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36
++ 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26
+- 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16
++ 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71
+with a = 1.999510553370486?
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly">
 <span class="sig-name descname"><span class="pre">minpoly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly" title="Permalink to this definition"></a></dt>
