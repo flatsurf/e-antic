@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019-2021 Julian Rüth
+    Copyright (C)      2018 Vincent Delecroix
+    Copyright (C) 2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -111,42 +111,55 @@ boost::intrusive_ptr<const renf_class> renf_class::make(const ::renf_t k, const 
 
 boost::intrusive_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string & gen, const std::string & emb, const slong prec)
 {
-    arb_t e;
-    fmpq_poly_t p;
-
-    fmpq_poly_init(p);
-    if (fmpq_poly_set_str_pretty(p, minpoly.c_str(), gen.c_str()))
+    return make(minpoly, gen, [&](slong p) -> std::string
     {
-        fmpq_poly_clear(p);
-        throw std::invalid_argument("renf_class: can not read polynomial from string");
-    }
+        if (p != prec)
+            throw std::invalid_argument("the given polynomial does not have a unique such root");
+        return emb;
+    }, prec);
+}
 
-    arb_init(e);
-    if (arb_set_str(e, emb.c_str(), prec))
+boost::intrusive_ptr<const renf_class> renf_class::make(const std::string & minpoly, const std::string& gen, const std::function<std::string(slong prec)> emb, slong prec) {
+    while (true)
     {
+        arb_t e;
+        fmpq_poly_t p;
+
+        fmpq_poly_init(p);
+        if (fmpq_poly_set_str_pretty(p, minpoly.c_str(), gen.c_str()))
+        {
+            fmpq_poly_clear(p);
+            throw std::invalid_argument("renf_class: can not read polynomial from string");
+        }
+
+        arb_init(e);
+        if (arb_set_str(e, emb(prec).c_str(), prec))
+        {
+            fmpq_poly_clear(p);
+            arb_clear(e);
+            throw std::invalid_argument("renf_class: can not read ball from string");
+        }
+
+        if (!fmpq_poly_check_unique_real_root(p, e, prec))
+        {
+            fmpq_poly_clear(p);
+            arb_clear(e);
+            prec *= 2;
+            continue;
+        }
+
+        ::renf_t nf;
+        renf_init(nf, p, e, prec);
+
         fmpq_poly_clear(p);
         arb_clear(e);
-        throw std::invalid_argument("renf_class: can not read ball from string");
+
+        auto field = make(nf, gen);
+
+        renf_clear(nf);
+
+        return field;
     }
-
-    if (!fmpq_poly_check_unique_real_root(p, e, prec))
-    {
-        fmpq_poly_clear(p);
-        arb_clear(e);
-        throw std::invalid_argument("the given polynomial does not have a unique such root");
-    }
-
-    ::renf_t nf;
-    renf_init(nf, p, e, prec);
-
-    fmpq_poly_clear(p);
-    arb_clear(e);
-
-    auto field = make(nf, gen);
-
-    renf_clear(nf);
-
-    return field;
 }
 
 renf_class::~renf_class() noexcept

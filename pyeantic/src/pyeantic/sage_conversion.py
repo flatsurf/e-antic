@@ -6,8 +6,8 @@ embedded variants provided by e-antic.
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2019 Vincent Delecroix
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C)      2019 Vincent Delecroix
+#        Copyright (C) 2019-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@ embedded variants provided by e-antic.
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
 
+
 def sage_nf_to_eantic(K):
     r"""
     An alias for ``pyeantic.RealEmbeddedNumberField(K).renf``.
@@ -34,13 +35,14 @@ def sage_nf_to_eantic(K):
         sage: K = NumberField(x**3 - 3, 'a', embedding=AA(3)**Rational((1,3)))
         sage: L = sage_nf_to_eantic(K)
         sage: L
-        NumberField(a^3 - 3, [1.442249570307408382321638310780 +/- 5.49e-31])
+        NumberField(a^3 - 3, [1.442249570307408382321638310780...])
         sage: L.gen()
         (a ~ 1.4422496)
 
     """
     from .real_embedded_number_field import RealEmbeddedNumberField
     return RealEmbeddedNumberField(K).renf
+
 
 def sage_nf_elem_to_eantic(K, elem):
     r"""
