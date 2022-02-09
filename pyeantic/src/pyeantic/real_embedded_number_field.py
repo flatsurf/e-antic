@@ -445,7 +445,15 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             # We recreate our NumberField from the embedding since number
             # fields with the same embedding might differ by other parameters
             # and therefore do not serve immediately as unique keys.
-            embed = AA.coerce_map_from(embed)
+            recover = AA.coerce_map_from(embed)
+            if recover is None:
+                # Due to a bug/missing functionality in SageMath ≤ 9.1, we
+                # have to recover the embedding by filtering through all real
+                # embeddings.
+                embed = [e for e in embed.embeddings(AA) if e(embed.gen()) == embed.gen_embedding()]
+                assert len(embed) == 1
+                recover = embed[0]
+            embed = recover
         if isinstance(embed, Map):
             K = embed.domain()
             if K not in NumberFields():
