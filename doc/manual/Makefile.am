@@ -23,7 +23,7 @@ STANDARDESE_FLAGS += ${EXTRA_STANDARDESE_FLAGS}
 
 # Process all header files with standardese.
 STANDARDESE_INPUTS = `find $(srcdir)/../../libeantic/e-antic/ \( -name '*.h' -o -name '*.hpp' \) -not -path '*external*'`
-# Progress all MarkDown files with standardese.
+# Process all MarkDown files with standardese.
 STANDARDESE_INPUTS += `find $(srcdir)/libeantic/ -name '*.md'`
 
 $(builddir)/generated/pyeantic/source:
