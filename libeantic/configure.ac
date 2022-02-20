@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl We need at least autoconf 2.69 for this configure.ac to work.
 AC_PREREQ([2.69])
-AC_INIT([libeantic], [1.0.1], [vincent.delecroix@math.cnrs.fr])
+AC_INIT([libeantic], [1.1.0], [vincent.delecroix@math.cnrs.fr])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
@@ -12,21 +12,21 @@ dnl Version number of the library c:r:a.
 dnl Set to c+1:0:0 on a non-backwards-compatible change.
 dnl Set to c+1:0:a+1 on a backwards-compatible change.
 dnl Set to c:r+1:a if the interface is unchanged.
-AC_SUBST([libeantic_version_info], [1:0:0])
-AC_SUBST([libeanticxx_version_info], [1:0:0])
+AC_SUBST([libeantic_version_info], [1:2:0])
+AC_SUBST([libeanticxx_version_info], [1:2:0])
 
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
 
 AC_CANONICAL_HOST
+
+dnl We build our library with libtool.
+LT_INIT
 
 dnl Find C++ Compiler
 AC_PROG_CXX
 
 dnl Set INSTALL or use install-sh.
 AC_PROG_INSTALL
-
-dnl We build our library with libtool.
-LT_INIT
 
 AC_CONFIG_LIBOBJ_DIR([upstream/patched])
 
@@ -64,7 +64,7 @@ AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
 # Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
 AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
 
-AC_CHECK_HEADERS(arb.h arf.h, , [AC_MSG_ERROR([Arb header not found])])
+AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
 AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
 
 AC_LANG_PUSH([C++])

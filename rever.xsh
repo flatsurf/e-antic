@@ -1,7 +1,7 @@
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2020 Julian Rüth
+#        Copyright (C) 2020-2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -59,10 +59,10 @@ MAJOR, MINOR, PATCH = version.parse($VERSION).release
 $VERSION_BUMP_PATTERNS = [
     ('configure.ac', r'AC_INIT', r'AC_INIT([e-antic], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
     ('libeantic/configure.ac', r'AC_INIT', r'AC_INIT([libeantic], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
-    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION ', r'#define E_ANTIC_VERSION "$VERSION"'),
-    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
-    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
-    ('libeantic/e-antic/e-antic.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
+    ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION ', r'#define E_ANTIC_VERSION "$VERSION"'),
+    ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
+    ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
+    ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
     ('libeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('libeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
@@ -70,6 +70,8 @@ $VERSION_BUMP_PATTERNS = [
     ('pyeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('doc/configure.ac', r'AC_INIT', r'AC_INIT([e-antic-doc], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
     ('doc/manual/pyeantic/conf.py', r'release =', "release = '$VERSION'"),
+    ('README.md', r'\* \*\*libeantic\*\* \[!\[Binder\]', r'* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.libeantic.ipynb)'),
+    ('README.md', r'\* \*\*pyeantic\*\* \[!\[Binder\]', r'* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.pyeantic.ipynb)'),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'

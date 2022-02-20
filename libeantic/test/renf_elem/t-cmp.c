@@ -13,11 +13,18 @@
 
 #include "../../e-antic/renf_elem.h"
 
+static int sgn(int a) {
+  if (a == 0) return 0;
+  if (a < 0) return -1;
+  return 1;
+}
+
+
 static void check_cmp_fmpq(renf_elem_t a, fmpq_t b, renf_t nf, int ans)
 {
     int test;
 
-    if ((test = renf_elem_cmp_fmpq(a, b, nf)) != ans)
+    if (sgn(test = renf_elem_cmp_fmpq(a, b, nf)) != ans)
     {
         printf("FAIL:\n");
         printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
@@ -49,7 +56,7 @@ static void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
         abort();
     }
 
-    if ((test = renf_elem_cmp(a, b, nf)) != ans)
+    if (sgn(test = renf_elem_cmp(a, b, nf)) != ans)
     {
         printf("FAIL:\n");
         printf("a = "); renf_elem_print_pretty(a, "x", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");
@@ -58,7 +65,7 @@ static void check_cmp(renf_elem_t a, renf_elem_t b, renf_t nf, int ans)
         abort();
     }
 
-    if ((test = renf_elem_cmp(b, a, nf)) != -ans)
+    if (sgn(test = renf_elem_cmp(b, a, nf)) != -ans)
     {
         printf("FAIL:\n");
         printf("a = "); renf_elem_print_pretty(a, "s", nf, 10, EANTIC_STR_ALG & EANTIC_STR_D); printf("\n");

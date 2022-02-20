@@ -4,6 +4,72 @@ e-antic Change Log
 
 .. current developments
 
+v1.1.0
+====================
+
+**Added:**
+
+* automatic integration checks for [Normaliz](https://github.com/Normaliz/Normaliz)
+* Added support for Python 3.10; we are now automatically testing pyeantic with
+  Python 3.10.
+* Added `renf_class` that uses a root with dynamic precision. (Makes it easier to specify a root when the roots of the minimal polynomial are very close to each other.)
+
+**Changed:**
+
+* We do not claim anymore that `_cmp` functions return -1, 0, 1. Instead we
+  only make a statement about the sign of the integer returned. In practice we
+  still return -1, 0, 1 for the time being.
+* Header file `e-antic.h` is now called `local.h`. There is still a header file
+  `e-antic.h` that includes all of e-antic's C interface, so in particular
+  `local.h`.
+* Header file `renfxx_fwd.hpp` is now called `forward.hpp`. The old header file
+  `renfxx_fwd.hpp` can still be used.
+* Header file `renfxx.h` is now called `e-antic.hpp`. The old header file
+  `renfxx.h` can still be used.
+* Dropped explicit support for Python 3.6 which has reached its end of life. It
+  should still work but we are not testing it explicitly in our CI anymore.
+
+**Fixed:**
+
+* We do not assume anymore that `_cmp` functions return -1, 0, 1. FLINT, GMP,
+  and Arb only guarantee that these functions return a negative, zero, or
+  positive integer. In practice their implementations return -1, 0, 1, however
+  in some obscure case on Fedora/i686, this was not the case.
+* Removed unused includes that cannot be resolved on Windows.
+* Fixed a compiler warning on Fedora.
+* Improved the error message when arb headers cannot be found. Fedora installs the arb headers into /usr/include/arb instead of /usr/include.
+* Added missing `LIBEANTIC_API` declarators so building with `-fvisibility=hidden` produces a usable libeanticxx.so.
+* Updated installation instructions for installation from conda-forge. The
+  e-antic package there has been renamed to libeantic. The package `e-antic`
+  still exists but is now essentially an alias for `libeantic` and `pyeantic`.
+* Worked around doctesting issues in SageMath 9.4.
+* Fixed failing SageMath tests when pytest is installed.
+* Fixed construction of `RealEmbeddedNumberField` in Python when roots of the minimal polynomial are very close to each other.
+
+
+
+v1.0.3
+====================
+
+**Fixed:**
+
+* Cleaned up the README and our Zenodo site.
+
+* Fixed linking of C++ test programs.
+
+
+
+v1.0.2
+====================
+
+**Fixed:**
+
+* removed docbuild warnings for latest version of mkdocs.
+* Fixed parsing of trivial number fields in pyeantic. #197
+* Conversion from `NumberField` to `RealEmbeddedNumberField` when defining polynomial is not in `x`.
+
+
+
 v1.0.1
 ====================
 

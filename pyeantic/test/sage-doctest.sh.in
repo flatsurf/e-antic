@@ -37,4 +37,5 @@ OLD_PATH=$PATH
 source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"'"%(key, value) for (key, value) in os.environ.items()]))')
 export PATH=$OLD_PATH
 
-python `which sage-runtests` -p --long --force-lib @abs_srcdir@/../src/pyeantic
+export PYTHONPATH="@abs_srcdir@/disable-pytest:$PYTHONPATH"
+python `which sage-runtests` -p --long --force-lib @abs_srcdir@/../src/pyeantic @abs_srcdir@

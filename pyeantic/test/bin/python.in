@@ -9,8 +9,11 @@
 # directly and pass a script to it as a parameter to keep DYLD_LIBRARY_PATH
 # alive.
 
+# Disable warnings on macOS with FLINT 2.8.4, see https://github.com/conda-forge/libflint-feedstock/issues/26
+export EXTRA_CLING_ARGS="-Wno-macro-redefined $EXTRA_CLING_ARGS"
+
 # Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
-# resolve #include "e-antic.h" relative to e-antic/e-antic in the build tree.
+# resolve #include "local.h" relative to libeantic/e-antic in the build tree.
 export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libeantic -I@abs_builddir@/../../libeantic/e-antic $EXTRA_CLING_ARGS"
 
 # Load libeantic.so and libeanticxx.so from our build tree.
@@ -20,6 +23,16 @@ export LD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@
 export DYLD_LIBRARY_PATH="@abs_builddir@/../../libeantic/src/.libs/:@abs_builddir@/../../libeantic/srcxx/.libs/:$DYLD_LIBRARY_PATH"
 
 # Load pyeantic from our source tree.
-export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
+export PYTHONPATH="@abs_srcdir@/../src/:$PYTHONPATH:@pythondir@"
+
+# Support libasan loading when our library has been built with -fsanitize=address.
+if [ ! -z "$EANTIC_LD_PRELOAD" ]; then
+  export LD_PRELOAD="$EANTIC_LD_PRELOAD:$LD_PRELOAD"
+fi
+
+# Support libasan loading on macOS when our library has been built with -fsanitize=address.
+if [ ! -z "$EANTIC_DYLD_INSERT_LIBRARIES" ]; then
+  export DYLD_INSERT_LIBRARIES="$EANTIC_DYLD_INSERT_LIBRARIES:$DYLD_INSERT_LIBRARIES"
+fi
 
 exec python3 $@

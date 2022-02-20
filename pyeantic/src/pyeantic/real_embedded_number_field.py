@@ -10,7 +10,7 @@ required for classical geometry.
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2021 Julian Rüth
+#                      2019-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -28,7 +28,7 @@ required for classical geometry.
 
 import cppyy
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RBF, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RealBallField, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
 from sage.structure.element import FieldElement
 from sage.categories.map import Map
 
@@ -58,7 +58,43 @@ class RealEmbeddedNumberFieldElement(FieldElement):
 
         sage: TestSuite(a).run()
 
+    Verify that #192 has been resolved::
+
+        sage: R.<x> = QQ[]
+        sage: K.<b> = NumberField(x^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    ::
+
+        sage: R.<y> = QQ[]
+        sage: K.<b> = NumberField(y^2 - 2, embedding=sqrt(AA(2)))
+        sage: K = RealEmbeddedNumberField(K)
+        sage: K(b)
+        (b ~ 1.4142136)
+
+    Verify that #226 has been resolved::
+
+        sage: K.<a> = NumberField(x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58 \
+        ....: - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46 \
+        ....: - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36 \
+        ....: + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26 \
+        ....: - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16 \
+        ....: + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71, \
+        ....: embedding=1.999510553370486)
+        sage: from pyeantic import RealEmbeddedNumberField
+        sage: RealEmbeddedNumberField(K)
+        Real Embedded Number Field in a with defining polynomial x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58
+        - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46
+        - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36
+        + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26
+        - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16
+        + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71
+        with a = 1.999510553370486?
+
     """
+
     def __init__(self, parent, value):
         r"""
         TESTS::
@@ -366,6 +402,15 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = eantic.renf_class.make("x^2 - 2", "x", "1.4 +/- 1")
             sage: L = RealEmbeddedNumberField(K)
 
+        TESTS:
+
+        Check that #197 has been resolved::
+
+            sage: from pyeantic import RealEmbeddedNumberField
+            sage: K = RealEmbeddedNumberField(QQ).renf
+            sage: RealEmbeddedNumberField(K)
+            Real Embedded Number Field in x with defining polynomial x - 1 with x = 1
+
         """
         if 'cppyy.gbl.boost.intrusive_ptr<const eantic::renf_class>' in str(type(embed)):
             embed = embed.get()
@@ -374,12 +419,12 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             # the printed representation of the renf_class. This is of course
             # not very robust…
             import re
-            match = re.match("^NumberField\\(([^,]+), (\\[[^\\]]+\\])\\)$", repr(embed))
-            assert match, "renf_class printed in an unexpected way"
+            match = re.match("^NumberField\\(([^,]+), ([^)]+)\\)$", repr(embed))
+            assert match, "renf_class printed in an unexpected way: " + repr(embed)
             minpoly = match.group(1)
             root_str = match.group(2)
-            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ ]", minpoly)
-            assert match, "renf_class printed leading coefficient in an unexpected way"
+            match = re.match("^\\d*\\*?([^\\^ *]+)[\\^ +-]", minpoly)
+            assert match, "renf_class printed leading coefficient in an unexpected way: " + minpoly
             minpoly = QQ[match.group(1)](minpoly)
             roots = []
             AA_roots = minpoly.roots(AA, multiplicities=False)
@@ -400,7 +445,15 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             # We recreate our NumberField from the embedding since number
             # fields with the same embedding might differ by other parameters
             # and therefore do not serve immediately as unique keys.
-            embed = AA.coerce_map_from(embed)
+            recover = AA.coerce_map_from(embed)
+            if recover is None:
+                # Due to a bug/missing functionality in SageMath ≤ 9.1, we
+                # have to recover the embedding by filtering through all real
+                # embeddings.
+                embed = [e for e in embed.embeddings(AA) if e(embed.gen()) == embed.gen_embedding()]
+                assert len(embed) == 1
+                recover = embed[0]
+            embed = recover
         if isinstance(embed, Map):
             K = embed.domain()
             if K not in NumberFields():
@@ -468,22 +521,23 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
 
         ::
 
-            sage: type(K.one() - K.number_field.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.number_field.one() - K.one())
-            <class 'sage.rings.number_field.number_field_element_quadratic.NumberFieldElement_quadratic'>
-            sage: type(K.one() - 1)
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
-            sage: type(1 - K.one())
-            <class 'pyeantic.real_embedded_number_field.RealEmbeddedNumberField_with_category.element_class'>
+            sage: type(K.one() - K.number_field.one()) is type(K.number_field.one())
+            True
+            sage: type(K.number_field.one() - K.one()) is type(K.number_field.one())
+            True
+            sage: type(K.one() - 1) is type(K.one())
+            True
+            sage: type(1 - K.one()) is type(K.one())
+            True
 
         """
         self.number_field = embedded
         var = self.number_field.variable_name()
+
         self.renf = eantic.renf(
             repr(self.number_field.polynomial().change_variable_name(var)),
             var,
-            str(RBF(self.number_field.gen())))
+            lambda prec: str(RealBallField(prec)(self.number_field.gen())))
 
         CommutativeRing.__init__(self, QQ, category=category)
 
@@ -666,11 +720,16 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K(a)
             a
 
+        TESTS:
+
+        Verify that the name of the generator is not relevant::
+
             sage: K = NumberField(x**2 - 2, 'b', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: b = KK.an_element()
             sage: K(b)
             b
+
         """
         rational_coefficients = [ZZ(str(c.get_str())) / ZZ(str(x.renf_elem.den().get_str())) for c in x.renf_elem.num_vector()]
         while len(rational_coefficients) < self.domain().number_field.degree():
@@ -687,9 +746,9 @@ class CoercionNumberFieldRenf(Morphism):
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
             sage: KK = RealEmbeddedNumberField(K)
             sage: K.coerce_map_from(KK).section()
-            Generic morphism:
-              From: Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
-              To:   Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+            Conversion map:
+              From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+              To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
 
         """
-        return self.codomain().convert_map_from(self.domain())
+        return self.domain().convert_map_from(self.codomain())

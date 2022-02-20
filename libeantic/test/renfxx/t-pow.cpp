@@ -12,7 +12,7 @@
 
 #include <limits.h>
 
-#include "../../e-antic/renfxx.h"
+#include "../../e-antic/e-antic.hpp"
 
 using namespace eantic;
 

@@ -3,6 +3,10 @@ on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
 
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   compiler-warnings:
     runs-on: ubuntu-20.04
@@ -25,7 +29,8 @@ jobs:
             cc: clang
             cpp: clang-cpp
             cxx: clang++
-            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation
+            # We need -Wno-reselved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
+            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier
             cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation
     steps:
       - uses: actions/checkout@v2

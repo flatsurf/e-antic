@@ -30,7 +30,7 @@ static int renf_elem_overflows_d(renf_elem_t a, renf_t nf)
         fmpz_set_d(dbl_max, DBL_MAX);
         int cmp = renf_elem_cmp_fmpz(a, dbl_max, nf);
         fmpz_clear(dbl_max);
-        return cmp == 1 ? 1 : 0;
+        return cmp > 0 ? 1 : 0;
     } else {
         renf_elem_neg(a, a, nf);
         int overflow = renf_elem_overflows_d(a, nf);

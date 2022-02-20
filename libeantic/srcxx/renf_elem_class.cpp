@@ -15,10 +15,11 @@
 #include <cstdlib>
 #include <functional>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/math/special_functions/sign.hpp>
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "../e-antic/renfxx.h"
+#include "../e-antic/e-antic.hpp"
 #include "../e-antic/fmpq_poly_extra.h"
 
 namespace eantic {
@@ -146,7 +147,7 @@ bool relop_mpz(const renf_elem_class& lhs, const mpz_class& rhs, const int cmp)
     if (cmp == 0)
         ret = renf_elem_equal_fmpz(lhs.renf_elem_t(), r, lhs.parent().renf_t());
     else
-        ret = renf_elem_cmp_fmpz(lhs.renf_elem_t(), r, lhs.parent().renf_t()) == cmp;
+        ret = boost::math::sign(renf_elem_cmp_fmpz(lhs.renf_elem_t(), r, lhs.parent().renf_t())) == cmp;
     fmpz_clear_readonly(r);
 
     return ret;
@@ -175,7 +176,7 @@ bool relop_mpq(const renf_elem_class& lhs, const mpq_class& rhs, const int cmp)
     if (cmp == 0)
         ret = renf_elem_equal_fmpq(lhs.renf_elem_t(), r, lhs.parent().renf_t());
     else
-        ret = renf_elem_cmp_fmpq(lhs.renf_elem_t(), r, lhs.parent().renf_t()) == cmp;
+        ret = boost::math::sign(renf_elem_cmp_fmpq(lhs.renf_elem_t(), r, lhs.parent().renf_t())) == cmp;
     fmpq_clear_readonly(r);
 
     return ret;
@@ -239,8 +240,8 @@ bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::functi
     bool ret;
 
     maybe_fmpz(rhs,
-        [&](auto v) { ret = op(lhs.renf_elem_t(), v, lhs.parent().renf_t()) == cmp; },
-        [&](const fmpz_t v) { ret = renf_elem_cmp_fmpz(lhs.renf_elem_t(), v, lhs.parent().renf_t()) == cmp; });
+        [&](auto v) { ret = boost::math::sign(op(lhs.renf_elem_t(), v, lhs.parent().renf_t())) == cmp; },
+        [&](const fmpz_t v) { ret = boost::math::sign(renf_elem_cmp_fmpz(lhs.renf_elem_t(), v, lhs.parent().renf_t())) == cmp; });
 
     return ret;
 }
@@ -658,7 +659,7 @@ bool renf_elem_class::is_rational() const
     return renf_elem_is_rational(a, nf->renf_t());
 }
 
-::renf_elem_t & renf_elem_class::renf_elem_t() const
+std::add_lvalue_reference_t<::renf_elem_t> renf_elem_class::renf_elem_t() const
 {
     return a;
 }
@@ -1048,11 +1049,11 @@ bool operator==(const renf_elem_class& lhs, long rhs) {
 }
 
 bool operator<(const renf_elem_class& lhs, long rhs) {
-    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) < 0;
 }
 
 bool operator>(const renf_elem_class& lhs, long rhs) {
-    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
+    return renf_elem_cmp_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) > 0;
 }
 
 renf_elem_class& renf_elem_class::operator+=(unsigned long rhs)
@@ -1084,11 +1085,11 @@ bool operator==(const renf_elem_class& lhs, unsigned long rhs) {
 }
 
 bool operator<(const renf_elem_class& lhs, unsigned long rhs) {
-    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == -1;
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) < 0;
 }
 
 bool operator>(const renf_elem_class& lhs, unsigned long rhs) {
-    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) == 1;
+    return renf_elem_cmp_ui(lhs.renf_elem_t(), rhs, lhs.nf->renf_t()) > 0;
 }
 
 renf_elem_class& renf_elem_class::operator+=(long long rhs)

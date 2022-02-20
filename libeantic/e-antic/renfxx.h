@@ -14,12 +14,8 @@
 #ifndef E_ANTIC_RENFXX_H
 #define E_ANTIC_RENFXX_H
 
-// This header exists as a convenience and for backwards compatibility. Include
-// this header to use the full C++ interface of e-antic.
-// For better build times, consider including only renfxx_fwd.hpp or any of the
-// following headers.
+// This header exists for backwards compatibility, include e-antic.hpp instead.
 
-#include "renf_class.hpp"
-#include "renf_elem_class.hpp"
+#include "e-antic.hpp"
 
 #endif

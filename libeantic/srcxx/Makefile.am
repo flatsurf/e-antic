@@ -18,6 +18,8 @@ libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint -lantic
 # Installed headers
 nobase_pkginclude_HEADERS =        \
     ../e-antic/cppyy.hpp           \
+    ../e-antic/e-antic.hpp         \
+    ../e-antic/forward.hpp         \
     ../e-antic/renfxx.h            \
     ../e-antic/renf_class.hpp      \
     ../e-antic/renf_elem_class.hpp \

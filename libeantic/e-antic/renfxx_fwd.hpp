@@ -10,23 +10,11 @@
     (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
-#ifndef E_ANTIC_RENFXX_FWD_H
-#define E_ANTIC_RENFXX_FWD_H
+#ifndef E_ANTIC_RENFXX_FWD_HPP
+#define E_ANTIC_RENFXX_FWD_HPP
 
-// This file contains forward declarations for all the C++ classes defined by
-// renfxx.h to speed up compilation when included in header files.
+// This header file exists for backwards compatibility. Include forward.hpp instead.
 
-namespace eantic {
-
-class renf_elem_class;
-class renf_class;
-
-}
-
-namespace cereal {
-
-class access;
-
-}
+#include "forward.hpp"
 
 #endif
