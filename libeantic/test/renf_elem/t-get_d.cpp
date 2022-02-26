@@ -9,7 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <cmath>
+#include <math.h>
 
 #include <arf.h>
 
@@ -24,7 +24,7 @@ static void d_get_fmpq(double d, fmpq_t q)
     arf_t a;
     fmpz_t man, exp, quo;
 
-    REQUIRE(std::isnormal(d));
+    REQUIRE(isnormal(d));
 
     arf_init(a);
     fmpz_init(man);
