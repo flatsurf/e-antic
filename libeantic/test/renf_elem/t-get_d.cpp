@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2020 Julian Rüth
+    Copyright (C) 2020-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -8,6 +8,8 @@
     by the Free Software Foundation; either version 3.0 of the License, or
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
+
+#include <cmath>
 
 #include <arf.h>
 
@@ -22,7 +24,7 @@ static void d_get_fmpq(double d, fmpq_t q)
     arf_t a;
     fmpz_t man, exp, quo;
 
-    REQUIRE(isnormal(d));
+    REQUIRE(std::isnormal(d));
 
     arf_init(a);
     fmpz_init(man);
