@@ -13,7 +13,7 @@
 #ifndef E_ANTIC_FMPQ_POLY_EXTRA_H
 #define E_ANTIC_FMPQ_POLY_EXTRA_H
 
-#include "local.h"
+#include <e-antic/local.h>
 
 #include <flint/fmpq_poly.h>
 #include <arb.h>
