@@ -10,7 +10,9 @@ dependencies:
   - antic
   - automake
   - benchmark
-  - byexample
+  # byexample 10.5 is not working on macOS:
+  # _pickle.PicklingError: Can't pickle <class 'cxx.CxxInterpreter'>: it's not the same object as cxx.CxxInterpreter
+  - byexample>=10.4,<10.5
   - boost-cpp
   # Our byexample setup uses cppyy to run C++ code samples.
   - cppyy>=2.1.0,<3
