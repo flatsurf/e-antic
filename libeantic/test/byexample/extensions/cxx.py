@@ -14,7 +14,7 @@ parsing for us.
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C) 2021 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,6 @@ from byexample.common import constant
 import byexample.modules.cpp
 
 stability = 'experimental'
-
 
 class MarkdownCxxDelimiter(ZoneDelimiter):
     r"""
@@ -62,7 +61,6 @@ class MarkdownCxxDelimiter(ZoneDelimiter):
 
     def __repr__(self): return "```c++ ... ``` or ```cpp ... ``` or ```c ... ```"
 
-
 class MarkdownHppDelimiter(ZoneDelimiter):
     r"""
     Detect C/C++ examples in Markdown comments in header files like the ones
@@ -81,13 +79,12 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # then, grab everything until the first end marker
             (?P<zone>.*?)
             # finally, the end marker
-            (?(marker)
+            (?(marker)   
                   ^[ ]*(?P=marker) # we must match the same amount of backticks
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
     def __repr__(self): return "/// ``` ... ```"
-
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     r"""
@@ -131,11 +128,10 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     def _remove_expected(self, snippet):
         marker = "// -> "
         lines = snippet.split("\n")
-        lines = [line[len(marker):] if line.startswith(marker) else line for line in lines]
+        lines = [ line[len(marker):] if line.startswith(marker) else line for line in lines]
         return '\n'.join(lines)
 
     def __repr__(self): return "Unprefixed C++ Prompt Finder"
-
 
 class CxxInterpreter(byexample.runner.ExampleRunner):
     r"""
