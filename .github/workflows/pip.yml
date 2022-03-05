@@ -58,7 +58,6 @@ jobs:
     runs-on: ubuntu-20.04
     container:
       image: ${{ matrix.container }}
-      options: --user root
     strategy:
       matrix:
         container:
@@ -84,6 +83,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: libeantic-sdist
+          path: /tmp//artifacts/
       - name: install libeantic
         shell: bash
         run: |
@@ -92,6 +92,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pyeantic-sdist
+          path: /tmp/artifacts/
       - name: install pyeantic
         shell: bash
         run: |
