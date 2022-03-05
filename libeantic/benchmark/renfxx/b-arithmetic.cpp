@@ -47,6 +47,16 @@ static void TrivialReverseAddition(State& state)
 }
 BENCHMARK(TrivialReverseAddition)->Arg(1)->Arg(2)->Arg(4);
 
+static void RationalAddition(State& state)
+{
+    renf_elem_class lhs = make_number_field(state.range(0))->gen();
+    renf_elem_class rhs = 2;
+
+    for (auto _ : state)
+        DoNotOptimize(lhs += rhs);
+}
+BENCHMARK(RationalAddition)->Arg(1)->Arg(2)->Arg(4);
+
 template <typename T>
 static void TrivialMultiplication(State& state)
 {
@@ -63,15 +73,25 @@ BENCHMARK_TEMPLATE(TrivialMultiplication, mpz_class)->Arg(1)->Arg(2)->Arg(4);
 BENCHMARK_TEMPLATE(TrivialMultiplication, mpq_class)->Arg(1)->Arg(2)->Arg(4);
 BENCHMARK_TEMPLATE(TrivialMultiplication, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
 
-static void TrivialReverseSubtraction(State& state)
+static void TrivialReverseMultiplication(State& state)
 {
-    renf_elem_class_pool lhs(state, 2);
+    renf_elem_class_pool lhs(state, -1);
     renf_elem_class rhs = make_number_field(state.range(0))->gen();
 
     for (auto _ : state)
-        DoNotOptimize(lhs() -= rhs);
+        DoNotOptimize(lhs() *= rhs);
 }
-BENCHMARK(TrivialReverseSubtraction)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK(TrivialReverseMultiplication)->Arg(1)->Arg(2)->Arg(4);
+
+static void RationalMultiplication(State& state)
+{
+    renf_elem_class lhs = make_number_field(state.range(0))->gen();
+    renf_elem_class rhs = -1;
+
+    for (auto _ : state)
+        DoNotOptimize(lhs *= rhs);
+}
+BENCHMARK(RationalMultiplication)->Arg(1)->Arg(2)->Arg(4);
 
 template <typename T>
 static void TrivialSubtraction(State& state)
@@ -89,15 +109,25 @@ BENCHMARK_TEMPLATE(TrivialSubtraction, mpz_class)->Arg(1)->Arg(2)->Arg(4);
 BENCHMARK_TEMPLATE(TrivialSubtraction, mpq_class)->Arg(1)->Arg(2)->Arg(4);
 BENCHMARK_TEMPLATE(TrivialSubtraction, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
 
-static void TrivialReverseMultiplication(State& state)
+static void TrivialReverseSubtraction(State& state)
 {
-    renf_elem_class_pool lhs(state, -1);
+    renf_elem_class_pool lhs(state, 2);
     renf_elem_class rhs = make_number_field(state.range(0))->gen();
 
     for (auto _ : state)
-        DoNotOptimize(lhs() *= rhs);
+        DoNotOptimize(lhs() -= rhs);
 }
-BENCHMARK(TrivialReverseMultiplication)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK(TrivialReverseSubtraction)->Arg(1)->Arg(2)->Arg(4);
+
+static void RationalSubtraction(State& state)
+{
+    renf_elem_class lhs = make_number_field(state.range(0))->gen();
+    renf_elem_class rhs = 2;
+
+    for (auto _ : state)
+        DoNotOptimize(lhs -= rhs);
+}
+BENCHMARK(RationalSubtraction)->Arg(1)->Arg(2)->Arg(4);
 
 template <typename T>
 static void TrivialDivision(State& state)
@@ -124,6 +154,16 @@ static void TrivialReverseDivision(State& state)
         DoNotOptimize(lhs() /= rhs);
 }
 BENCHMARK(TrivialReverseDivision)->Arg(1)->Arg(2)->Arg(4);
+
+static void RationalDivision(State& state)
+{
+    renf_elem_class lhs = make_number_field(state.range(0))->gen();
+    renf_elem_class rhs = -1;
+
+    for (auto _ : state)
+        DoNotOptimize(lhs /= rhs);
+}
+BENCHMARK(RationalDivision)->Arg(1)->Arg(2)->Arg(4);
 
 }
 }

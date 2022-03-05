@@ -37,6 +37,7 @@ import byexample.modules.cpp
 
 stability = 'experimental'
 
+
 class MarkdownCxxDelimiter(ZoneDelimiter):
     r"""
     Detects C/C++ examples in Markdown.
@@ -61,6 +62,7 @@ class MarkdownCxxDelimiter(ZoneDelimiter):
 
     def __repr__(self): return "```c++ ... ``` or ```cpp ... ``` or ```c ... ```"
 
+
 class MarkdownHppDelimiter(ZoneDelimiter):
     r"""
     Detect C/C++ examples in Markdown comments in header files like the ones
@@ -79,12 +81,13 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # then, grab everything until the first end marker
             (?P<zone>.*?)
             # finally, the end marker
-            (?(marker)   
+            (?(marker)
                   ^[ ]*(?P=marker) # we must match the same amount of backticks
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
     def __repr__(self): return "/// ``` ... ```"
+
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     r"""
@@ -128,10 +131,11 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     def _remove_expected(self, snippet):
         marker = "// -> "
         lines = snippet.split("\n")
-        lines = [ line[len(marker):] if line.startswith(marker) else line for line in lines]
+        lines = [line[len(marker):] if line.startswith(marker) else line for line in lines]
         return '\n'.join(lines)
 
     def __repr__(self): return "Unprefixed C++ Prompt Finder"
+
 
 class CxxInterpreter(byexample.runner.ExampleRunner):
     r"""
