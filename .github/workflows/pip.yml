@@ -75,6 +75,11 @@ jobs:
           apt update
           apt install -y pip libgmp-dev libmpfr-dev libflint-dev
         if: ${{ startswith(matrix.container, 'ubuntu') }}
+      - name: install dependencies
+        shell: bash
+        run: |
+          sage -i pip
+        if: ${{ startswith(matrix.container, 'sagemath') }}
       - name: download libeantic sdist
         uses: actions/download-artifact@v3
         with:
