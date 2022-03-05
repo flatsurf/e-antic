@@ -56,12 +56,15 @@ jobs:
   install:
     needs: sdist
     runs-on: ubuntu-20.04
-    container: ${{ matrix.container }}
+    container:
+      image: ${{ matrix.container }}
+      options: --user root
     strategy:
       matrix:
         container:
-          - sagemath/sagemath-dev:9.2.beta3
-          - sagemath/sagemath-dev:9.3.beta8
+          - sagemath/sagemath-dev:9.3
+          - sagemath/sagemath-dev:9.4
+          - sagemath/sagemath-dev:9.5
           # We need libflint 2.6 which is not available in 20.04 yet.
           # - ubuntu:focal
           - ubuntu:hirsute
@@ -73,7 +76,6 @@ jobs:
           apt install -y pip libgmp-dev libmpfr-dev libflint-dev
         if: ${{ startswith(matrix.container, 'ubuntu') }}
       - name: download libeantic sdist
-        id: sdist
         uses: actions/download-artifact@v3
         with:
           name: libeantic-sdist
@@ -88,4 +90,4 @@ jobs:
       - name: install pyeantic
         shell: bash
         run: |
-          pip install pyeantic/dist/* --verbose --no-binary :all:
+          pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
