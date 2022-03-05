@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-                  2019-2021 Julian Rüth
+                  2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -100,6 +100,49 @@ public:
     /// libeantic, the results of arithmetic operations and comparisons are not
     /// affected by this.
     static boost::intrusive_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, slong prec = 64);
+
+    /// Return the number field obtained by adjoining the root of [minpoly]()
+    /// which is approximately [emb]().
+    ///
+    /// :param:`minpoly` An irreducible polynomial in the variable [gen]().
+    /// This minimal polynomial does not have to be totally real or monic.
+    /// ```
+    /// #include <e-antic/renf_class.hpp>
+    /// #include <arb.h>
+    /// #include <arf.h>
+    ///
+    /// const auto emb = [](slong prec) {
+    ///     arb_t emb;
+    ///     arb_init(emb);
+    ///     arb_sqrt_ui(emb, 2, prec);
+    ///     char* c_str = arb_get_str(emb, prec, ARB_STR_NO_RADIUS);
+    ///     std::string str(c_str);
+    ///     flint_free(c_str);
+    ///     arb_clear(emb);
+    ///     return str;
+    /// };
+    ///
+    /// auto K = eantic::renf_class::make("x^2 - 2", "x", emb);
+    /// ```
+    ///
+    /// :param:`gen` The name of the variable used in [minpoly]().
+    /// Note that two fields that differ only in the name of the generator are
+    /// treated as being distinct fields.
+    ///
+    /// :param:`emb` Creates approximations of the root of [minpoly]() that is
+    /// suitable for computations with precision `prec`.
+    /// It makes no difference to what precision this approximation is provided
+    /// but it must for a sufficiently large value of `prec` uniquely determine
+    /// a single root of the polynomial; with increasing `prec` it should
+    /// converge to the actual root.
+    ///
+    /// :param:`prec` The default precision for all arithmetic.
+    /// When performing arithmetic in this field, all operations are performed
+    /// to that precision. When necessary, the precision is dynamically
+    /// increased. This only affects the performance and inner workings of
+    /// libeantic, the results of arithmetic operations and comparisons are not
+    /// affected by this.
+    static boost::intrusive_ptr<const renf_class> make(const std::string & minpoly, const std::string& gen, const std::function<std::string(slong prec)> emb, slong prec = 64);
 
     ~renf_class() noexcept;
 

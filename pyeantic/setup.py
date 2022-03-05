@@ -22,9 +22,9 @@ Setup instructions for pyeantic.
 # ###################################################################
 import os
 import inspect
-from distutils.core import setup
 from setuptools.command.sdist import sdist
 from setuptools.command.egg_info import egg_info
+from distutils.core import setup
 from subprocess import check_call
 
 

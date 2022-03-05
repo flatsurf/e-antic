@@ -164,9 +164,10 @@ def for_eantic(x):
         x = cppyy.gbl.mpq_class(cppyy.gbl.std.string(str(x)))
     return x
 
-# cppyy is confused by template resolution, see
-# https://bitbucket.org/wlav/cppyy/issues/119/templatized-constructor-is-ignored
-# and https://github.com/flatsurf/pyeantic/issues/10
+# It should be possible to get rid of this helper eventually, see https://github.com/flatsurf/e-antic/issues/212
+# However, due to
+# https://bitbucket.org/wlav/cppyy/issues/376/stack-overflow-when-calling-private
+# we still need to wrap arguments with for_eantic.
 def make_renf_elem_class(*args):
     if len(args) > 2:
         raise NotImplementedError("can not create renf_elem_class from more than two arguments")
