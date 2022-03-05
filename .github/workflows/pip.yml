@@ -42,13 +42,13 @@ jobs:
           cd pyeantic
           python setup.py sdist
       - name: upload libeantic sdist
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: libeantic-sdist
           path:
             libeantic/dist/**
       - name: upload pyeantic sdist
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: pyeantic-sdist
           path:
@@ -74,7 +74,7 @@ jobs:
         if: ${{ startswith(matrix.container, 'ubuntu') }}
       - name: download libeantic sdist
         id: sdist
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: libeantic-sdist
       - name: install libeantic
@@ -82,7 +82,7 @@ jobs:
         run: |
           pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
       - name: download pyeantic sdist
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: pyeantic-sdist
       - name: install pyeantic
