@@ -80,7 +80,7 @@ jobs:
           name: libeantic-sdist
           path: /tmp//artifacts/
       - name: install libeantic
-        shell: bash
+        shell: sage -sh -c {0}
         run: |
           pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
       - name: download pyeantic sdist
@@ -89,6 +89,6 @@ jobs:
           name: pyeantic-sdist
           path: /tmp/artifacts/
       - name: install pyeantic
-        shell: bash
+        shell: sage -sh -c {0}
         run: |
           pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
