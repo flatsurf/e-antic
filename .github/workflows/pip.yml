@@ -78,11 +78,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: libeantic-sdist
-          path: /tmp//artifacts/
+          path: /tmp/artifacts/
       - name: install libeantic
         shell: sage -sh -c {0}
         run: |
-          pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
+          pip install /tmp/artifacts/libeantic*.tar.gz --verbose --no-binary :all:
       - name: download pyeantic sdist
         uses: actions/download-artifact@v3
         with:
@@ -91,4 +91,4 @@ jobs:
       - name: install pyeantic
         shell: sage -sh -c {0}
         run: |
-          pip install ${{ steps.sdist.outputs.download-path }}/libeantic*.tar.gz --verbose --no-binary :all:
+          pip install /tmp/artifacts/pyeantic*.tar.gz --verbose --no-binary :all:
