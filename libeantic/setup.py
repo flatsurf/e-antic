@@ -12,7 +12,7 @@ requirements.txt.
 # ####################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2021 Julian Rüth
+#        Copyright (C) 2021-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -106,6 +106,10 @@ class AutotoolsCommand:
         return os.path.join(self.distribution.command_obj["install"].install_lib, self.distribution.get_name())
 
     @property
+    def distdir(self):
+        return f"{self.distribution.get_name()}-{self.distribution.get_version()}"
+
+    @property
     def abs_srcdir(self):
         r"""
         Return the absolute path of the source directory, i.e., the directory where this setup.py is.
@@ -168,13 +172,22 @@ class MakeDist(sdist, AutotoolsCommand):
     Create a source distribution for PyPI for an autoconfiscated project.
     """
 
-    def run(self):
-        if os.path.normpath(os.getcwd()) != os.path.normpath(self.abs_srcdir):
-            raise NotImplementedError("A source distribution can only be created from the directory where the setup.py file resides, currently.")
+    def make_release_tree(self, base_dir, files):
+        import sys
+        if sys.version_info < (3, 8):
+            raise NotImplementedError("sdist requires at least Python 3.8")
+
+        import os
+        os.makedirs(base_dir, exist_ok=True)
+        os.makedirs(self.distdir, exist_ok=True)
+
+        if not os.path.samefile(base_dir, self.distdir):
+            raise NotImplementedError(f"automake distdir {self.distdir} and setuptools staging dir {base_dir} must be the same")
 
         check_call([os.path.join(self.abs_srcdir, "configure"), "--without-benchmark", "--without-byexample"])
         check_call([self.MAKE, "distdir"])
-        super().run()
+
+        super().make_release_tree(base_dir, files)
 
 
 setup(
@@ -193,7 +206,7 @@ setup(
 
         Please consult libeantic's home page for further details: https://flatsurf.github.io/e-antic/libeantic/
         """),
-    version='1.0.3',
+    version='1.1.0',
     license='LGPL 3.0+',
     license_files=('COPYING', 'COPYING.LESSER'),
     setup_requires=["wheel"],
