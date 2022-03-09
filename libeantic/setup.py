@@ -157,8 +157,25 @@ class ConfigureMakeInstall(install, AutotoolsCommand):
         import tempfile
         with tempfile.TemporaryDirectory() as build:
             with cwd(build):
-                check_call([os.path.join(self.abs_srcdir, "configure"), f"--prefix={self.destdir}", "--without-benchmark", "--without-byexample"])
-                check_call([self.MAKE, "install"])
+                import os
+                env = os.environ.copy()
+
+                # Check whether antic has been installed through pip
+                import importlib
+                antic = importlib.util.find_spec('antic')
+                if antic:
+                    # When antic has been pip-installed, we need to add its include/ and lib/ directory to the search path.
+                    # Currently, this probably does not work on Windows.
+                    import os.path
+                    include = os.path.join(antic.submodule_search_locations[0], 'include')
+                    # TODO: Need to escape spaces and such.
+                    env['CPPFLAGS'] = f"-I{include} {env.get('CPPFLAGS', '')}"
+
+                    lib = os.path.join(antic.submodule_search_locations[0], 'lib')
+                    env['LDFLAGS'] = f"-L{lib} {env.get('LDFLAGS', '')}"
+
+                check_call([os.path.join(self.abs_srcdir, "configure"), f"--prefix={self.destdir}", "--without-benchmark", "--without-byexample"], env=env)
+                check_call([self.MAKE, "install"], env=env)
 
     def get_outputs(self):
         r"""
