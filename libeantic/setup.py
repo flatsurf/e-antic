@@ -164,15 +164,16 @@ class ConfigureMakeInstall(install, AutotoolsCommand):
                 import importlib
                 antic = importlib.util.find_spec('antic')
                 if antic:
+                    from shlex import quote
+
                     # When antic has been pip-installed, we need to add its include/ and lib/ directory to the search path.
                     # Currently, this probably does not work on Windows.
                     import os.path
                     include = os.path.join(antic.submodule_search_locations[0], 'include')
-                    # TODO: Need to escape spaces and such.
-                    env['CPPFLAGS'] = f"-I{include} {env.get('CPPFLAGS', '')}"
+                    env['CPPFLAGS'] = f"-I{quote(include)} {env.get('CPPFLAGS', '')}"
 
                     lib = os.path.join(antic.submodule_search_locations[0], 'lib')
-                    env['LDFLAGS'] = f"-L{lib} {env.get('LDFLAGS', '')}"
+                    env['LDFLAGS'] = f"-L{quote(lib)} {env.get('LDFLAGS', '')}"
 
                 check_call([os.path.join(self.abs_srcdir, "configure"), f"--prefix={self.destdir}", "--without-benchmark", "--without-byexample"], env=env)
                 check_call([self.MAKE, "install"], env=env)
