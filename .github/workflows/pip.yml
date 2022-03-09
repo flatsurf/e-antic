@@ -82,6 +82,7 @@ jobs:
       - name: install libeantic
         shell: bash -l {0}
         run: |
+          sage -pip install antic
           sage -pip install /tmp/artifacts/libeantic*.tar.gz --verbose --no-binary :all:
       - name: download pyeantic sdist
         uses: actions/download-artifact@v3
