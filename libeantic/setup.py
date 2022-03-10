@@ -136,12 +136,12 @@ class NoBinaryBuild(build):
     r"""
     Disables building binary wheels for this package.
 
-    Since such binary wheels are not relocatable because we hard code library
+    Such a binary wheel would not be relocatable because we hard code library
     paths into our hedaer files so cppyy known where things are located.
     """
 
     def run(self):
-        raise NotImplementedError("No binary wheels can be built for libeantic currently because the installation prefix is hard-coded in some of its header files. To skip this step when using pip, run with --no-binary :all:")
+        raise NotImplementedError("No binary wheels can be built for libeantic currently because the installation prefix is hard-coded in some of its header files. If you tried to pip-install this package, then you can ignore this message, since we will now try to build libeantic from source. To silence this error when using pip, run with --no-binary :all:")
 
 
 class ConfigureMakeInstall(install, AutotoolsCommand):
@@ -172,7 +172,7 @@ class ConfigureMakeInstall(install, AutotoolsCommand):
                     from shlex import quote
 
                     # When antic has been pip-installed, we need to add its include/ and lib/ directory to the search path.
-                    # Currently, this probably does not work on Windows.
+                    # Currently, this probably does not work correctly on Windows.
                     import os.path
                     include = os.path.join(antic.submodule_search_locations[0], 'include')
                     env['CPPFLAGS'] = f"-I{quote(include)} {env.get('CPPFLAGS', '')}"

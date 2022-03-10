@@ -5,7 +5,7 @@ Setup instructions for pyeantic.
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2021 Julian Rüth
+#                      2019-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -137,7 +137,7 @@ setup(
     name='pyeantic',
     author='the e-antic authors',
     url='https://flatsurf.github.io/e-antic/pyeantic/',
-    version='1.0.3',
+    version='1.1.0',
     packages=['pyeantic'],
     license='LGPL 3.0+',
     license_files=('COPYING', 'COPYING.LESSER'),
@@ -152,7 +152,7 @@ setup(
 
         We do not recommend to install pyeantic from PyPI as it has lots of
         dependencies that are not available on PyPI. If you want to install
-        libeantic, please have a look at our installation guide:
+        pyeantic, please have a look at our installation guide:
         https://flatsurf.github.io/e-antic/libeantic/#installation
 
         Please consult pyeantic's home page for further details: https://flatsurf.github.io/e-antic/pyeantic/
