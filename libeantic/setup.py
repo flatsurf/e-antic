@@ -107,6 +107,11 @@ class AutotoolsCommand:
 
     @property
     def distdir(self):
+        r"""
+        Return the directory where ``make dist`` prepares the contents of the tarballs.
+
+        There is probably no well-documented equivalent to this in automake.
+        """
         return f"{self.distribution.get_name()}-{self.distribution.get_version()}"
 
     @property
