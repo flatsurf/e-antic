@@ -20,6 +20,8 @@ dependencies:
   - libtool
   - pytest
   - sagelib
+  # sagelib<9.2 does not explicitly install libiconv which is needed in lots of places.
+  - libiconv
   - sympy
   - cppyythonizations
   # valgrind is only needed for make check-valgrind
