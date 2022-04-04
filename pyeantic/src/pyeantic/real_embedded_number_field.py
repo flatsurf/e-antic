@@ -31,6 +31,7 @@ import cppyy
 from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RealBallField, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
 from sage.structure.element import FieldElement
 from sage.categories.map import Map
+from sage.misc.cachefunc import weak_cached_function
 
 from pyeantic import eantic
 
@@ -382,7 +383,9 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
     @staticmethod
     def __classcall__(cls, embed, category=None):
         r"""
-        Normalize parameters so embedded real number fields are unique::
+        Normalize parameters so embedded real number fields are unique:
+
+        EXAMPLES::
 
             sage: from pyeantic import eantic, RealEmbeddedNumberField
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
@@ -410,6 +413,31 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             sage: K = RealEmbeddedNumberField(QQ).renf
             sage: RealEmbeddedNumberField(K)
             Real Embedded Number Field in x with defining polynomial x - 1 with x = 1
+
+        """
+        embed = cls._normalize_embedding(embed)
+        category = category or Fields()
+        return super(RealEmbeddedNumberField, cls).__classcall__(cls, embed, category)
+
+    @staticmethod
+    @weak_cached_function
+    def _normalize_embedding(embed):
+        r"""
+        Return the normalized SageMath number field with an embedding that is
+        compatible with the embedding ``embed``.
+
+        This is a helper method for ``__classcall__`` to make sure that real
+        embedded number fields are unique parents.
+
+        TESTS:
+
+        If ``embed`` is already a number field with an embedding into the
+        reals, then it is left alone::
+
+            sage: from pyeantic.real_embedded_number_field import RealEmbeddedNumberField
+            sage: K = NumberField(x**2 - 3, 'a', embedding=sqrt(AA(3)))
+            sage: RealEmbeddedNumberField._normalize_embedding(K) is K
+            True
 
         """
         if 'cppyy.gbl.boost.intrusive_ptr<const eantic::renf_class>' in str(type(embed)):
@@ -471,8 +499,7 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
         else:
             raise TypeError("cannot build RealEmbeddedNumberField from embedding %s" % (type(embed)))
 
-        category = category or Fields()
-        return super(RealEmbeddedNumberField, cls).__classcall__(cls, embed, category)
+        return embed
 
     def __init__(self, embedded, category=None):
         r"""
