@@ -49,6 +49,9 @@ AS_IF([test "x$with_sage" != "xno" && test "x$with_pytest" = "xyes"],
        AC_MSG_CHECKING([for sage module])
        AS_IF([$PYTHON -c 'import sage'], , AC_MSG_ERROR([SageMath for make check not found; run --without-sage to disable SageMath tests in make check]))
        AC_MSG_RESULT([yes])
+       AC_MSG_CHECKING([for gmpxxyy])
+       AS_IF([$PYTHON -c 'import gmpxxyy'], , AC_MSG_ERROR([gmpxxyy for make check not found; run --without-sage to disable SageMath tests in make check]))
+       AC_MSG_RESULT([yes])
       ], [])
 AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
 
