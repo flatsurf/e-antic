@@ -28,7 +28,7 @@ required for classical geometry.
 
 import cppyy
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, RealBallField, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, AA, Morphism, Hom, SetsWithPartialMaps, NumberField, NumberFields, RealBallField, CommutativeRing
 from sage.structure.element import FieldElement
 from sage.categories.map import Map
 from sage.misc.cachefunc import weak_cached_function
@@ -109,17 +109,26 @@ class RealEmbeddedNumberFieldElement(FieldElement):
             sage: isinstance(a, RealEmbeddedNumberFieldElement)
             True
 
+        A type of conversion that used to be very slow::
+
+            sage: K = NumberField(x^200 - 2, 'a', embedding=AA(2)^(1/200))
+            sage: L = RealEmbeddedNumberField(K)
+            sage: b = K.gen()^199
+            sage: L(b) * L(K.gen()) == 2
+            True
+
         """
         if isinstance(value, cppyy.gbl.eantic.renf_elem_class):
             self.renf_elem = value
         else:
             value = parent.number_field(value)
-            self.renf_elem = parent.renf.zero()
+            coefficients = value.polynomial().list()
 
-            gen_pow = parent.renf.one()
-            for coeff in value.polynomial().coefficients(sparse=False):
-                self.renf_elem = self.renf_elem + coeff * gen_pow
-                gen_pow = gen_pow * parent.renf.gen()
+            from gmpxxyy import mpq
+            # See https://github.com/flatsurf/gmpxxyy/issues/11 for a possible speedup.
+            coefficients = [mpq(str(c)) for c in coefficients]
+            coefficients = cppyy.gbl.std.vector[cppyy.gbl.mpq_class](coefficients)
+            self.renf_elem = cppyy.gbl.eantic.renf_elem_class(parent.renf, coefficients)
 
         FieldElement.__init__(self, parent)
 

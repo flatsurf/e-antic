@@ -514,8 +514,7 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpq_clas
 
     fmpq_poly_t p;
     fmpq_poly_init(p);
-    for (size_t i = 0; i < coefficients.size(); i++)
-        fmpq_poly_set_coeff_mpq(p, static_cast<slong>(i), coefficients[i].__get_mp());
+    fmpq_poly_set_array_mpq(p, reinterpret_cast<const mpq_t*>(&coefficients[0]), coefficients.size());
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);

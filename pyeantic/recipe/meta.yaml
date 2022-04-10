@@ -23,10 +23,12 @@ requirements:
     - python
     - setuptools
     - cppyythonizations
+    - gmpxxyy
     - libeantic
   run:
     - python
     - cppyy >=2.1.0,<3
+    - gmpxxyy
     - cppyythonizations
     - boost-cpp
 
