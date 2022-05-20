@@ -1,6 +1,6 @@
 /*  This is a -*- C++ -*- header file.
 
-    Copyright (C) 2019-2021 Julian Rüth
+    Copyright (C) 2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -19,6 +19,7 @@
 #include <sstream>
 
 #include <cereal/cereal.hpp>
+#include <cereal/version.hpp>
 #include <cereal/types/memory.hpp>
 
 #include "renf_class.hpp"
@@ -28,12 +29,16 @@ namespace eantic {
 template <class Archive>
 void save(Archive & archive, const boost::intrusive_ptr<const renf_class> & self)
 {
-   uint32_t id = archive.registerSharedPointer(self.get());
+#if CEREAL_VERSION >= 10301
+    uint32_t id = archive.registerSharedPointer(std::shared_ptr<const renf_class>(self.get(), [](auto) {}));
+#else
+    uint32_t id = archive.registerSharedPointer(self.get());
+#endif
 
-   archive(cereal::make_nvp("id", id));
+    archive(cereal::make_nvp("id", id));
 
-   if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
-   {
+    if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
+    {
         // This is the first time cereal sees this renf_class, so we actually
         // store it. Future copies only need the id to resolve to a pointer to
         // the same renf_class.
@@ -44,14 +49,22 @@ void save(Archive & archive, const boost::intrusive_ptr<const renf_class> & self
             cereal::make_nvp("embedding", std::get<2>(construction)),
             cereal::make_nvp("minpoly", std::get<0>(construction)),
             cereal::make_nvp("precision", std::get<3>(construction)));
-   }
+    }
 }
 
 template <class Archive>
 void load(Archive & archive, boost::intrusive_ptr<const renf_class> & self)
 {
     uint32_t id;
-    archive(cereal::make_nvp("id", id));
+    try {
+      archive(cereal::make_nvp("id", id));
+    }
+    catch(const cereal::Exception&)
+    {
+      // If this object has been serialized with e-antic <1.0.0, the field is
+      // called "shared" instead.
+      archive(cereal::make_nvp("shared", id));
+    }
 
     if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {
@@ -95,7 +108,8 @@ void load(Archive & archive, renf_elem_class & self)
     boost::intrusive_ptr<const renf_class> nf;
     std::string serialized_element;
 
-    archive(nf, serialized_element);
+    archive(cereal::make_nvp("parent", nf));
+    archive(cereal::make_nvp("value", serialized_element));
 
     self = renf_elem_class(*nf, serialized_element);
 }

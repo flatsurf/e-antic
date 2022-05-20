@@ -22,6 +22,9 @@ AC_CANONICAL_HOST
 dnl We build our library with libtool.
 LT_INIT
 
+dnl Find a C99 compiler
+AC_PROG_CC_C99
+
 dnl Find C++ Compiler
 AC_PROG_CXX
 
