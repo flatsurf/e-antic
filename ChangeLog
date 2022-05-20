@@ -4,6 +4,17 @@ e-antic Change Log
 
 .. current developments
 
+v1.2.1
+====================
+
+**Fixed:**
+
+* Fixed serialization of `renf_class` with cereal>=1.3.2 (#224)
+
+* Fixed deserialization of objects serialized with e-antic prior to 1.0.0
+
+
+
 v1.2.0
 ====================
 
