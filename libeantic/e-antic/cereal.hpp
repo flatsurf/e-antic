@@ -52,19 +52,46 @@ void save(Archive & archive, const boost::intrusive_ptr<const renf_class> & self
     }
 }
 
+namespace {
+
+template <class Archive>
+uint32_t getId(Archive& archive, ...)
+{
+    uint32_t id;
+    archive(id);
+
+    return id;
+}
+
+template <class Archive, typename = decltype(std::declval<Archive>().getNodeName())>
+uint32_t getId(Archive& archive, int)
+{
+    uint32_t id;
+
+    // Pre-1.0.0 (unreleased) versions of serialization used cereal's builtin
+    // versioning. We do not use that anymore, so we have to strip it away.
+    if (archive.getNodeName() == std::string{"cereal_class_version"})
+      archive.finishNode();
+
+    // Pre-1.0.0 (unreleased) version of serialization called the shared
+    // pointer "shared" instead of "id" so we accept both here.
+    if (std::string(archive.getNodeName()) == std::string{"shared"})
+    {
+      archive(cereal::make_nvp("shared", id));
+    } else
+    {
+      archive(cereal::make_nvp("id", id));
+    }
+
+    return id;
+}
+
+}
+
 template <class Archive>
 void load(Archive & archive, boost::intrusive_ptr<const renf_class> & self)
 {
-    uint32_t id;
-    try {
-      archive(cereal::make_nvp("id", id));
-    }
-    catch(const cereal::Exception&)
-    {
-      // If this object has been serialized with e-antic <1.0.0, the field is
-      // called "shared" instead.
-      archive(cereal::make_nvp("shared", id));
-    }
+    const uint32_t id = getId(archive, 0 /* ignored, needed to prefer the specialized getId over the generic one */);
 
     if ( id & static_cast<unsigned int>(cereal::detail::msb_32bit) )
     {

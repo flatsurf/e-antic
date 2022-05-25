@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <cereal/archives/json.hpp>
+#include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
 #include "../../e-antic/e-antic.hpp"
@@ -22,14 +23,14 @@
 
 using namespace eantic;
 
-template <typename T>
+template <typename OutputArchive, typename T>
 T test_serialization(const T& x)
 {
     CAPTURE(x);
 
     std::stringstream s;
     {
-        ::cereal::JSONOutputArchive archive(s);
+        OutputArchive archive(s);
         archive(x);
     }
 
@@ -37,7 +38,9 @@ T test_serialization(const T& x)
 
     T y;
     {
-        ::cereal::JSONInputArchive archive(s);
+        using InputArchive = std::conditional_t<std::is_same<OutputArchive, ::cereal::JSONOutputArchive>::value, ::cereal::JSONInputArchive, ::cereal::BinaryInputArchive>;
+
+        InputArchive archive(s);
         archive(y);
     }
 
@@ -48,7 +51,7 @@ T test_serialization(const T& x)
     return y;
 }
 
-TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
+TEMPLATE_TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]", ::cereal::JSONOutputArchive, ::cereal::BinaryOutputArchive)
 {
     flint_rand_t& state = GENERATE(rands());
     const auto& K = GENERATE_REF(take(128, renf_classs(state)));
@@ -57,8 +60,8 @@ TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 
     CAPTURE(K);
 
-    test_serialization(a);
-    test_serialization(std::vector<renf_elem_class>{a, a, b});
+    test_serialization<TestType>(a);
+    test_serialization<TestType>(std::vector<renf_elem_class>{a, a, b});
 }
 
 TEST_CASE("Deserialize elements which were created with e-antic <1") {
