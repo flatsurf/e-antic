@@ -70,12 +70,12 @@ uint32_t getId(Archive& archive, int)
 
     // Pre-1.0.0 (unreleased) versions of serialization used cereal's builtin
     // versioning. We do not use that anymore, so we have to strip it away.
-    if (archive.getNodeName() == "cereal_class_version")
+    if (archive.getNodeName() == std::string{"cereal_class_version"})
       archive.finishNode();
 
     // Pre-1.0.0 (unreleased) version of serialization called the shared
     // pointer "shared" instead of "id" so we accept both here.
-    if (std::string(archive.getNodeName()) == "shared")
+    if (std::string(archive.getNodeName()) == std::string{"shared"})
     {
       archive(cereal::make_nvp("shared", id));
     } else
