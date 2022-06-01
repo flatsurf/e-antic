@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019-2021 Julian Rüth
+    Copyright (C) 2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <cereal/archives/json.hpp>
+#include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
 #include "../../e-antic/e-antic.hpp"
@@ -22,14 +23,14 @@
 
 using namespace eantic;
 
-template <typename T>
+template <typename OutputArchive, typename T>
 T test_serialization(const T& x)
 {
     CAPTURE(x);
 
     std::stringstream s;
     {
-        ::cereal::JSONOutputArchive archive(s);
+        OutputArchive archive(s);
         archive(x);
     }
 
@@ -37,7 +38,9 @@ T test_serialization(const T& x)
 
     T y;
     {
-        ::cereal::JSONInputArchive archive(s);
+        using InputArchive = std::conditional_t<std::is_same<OutputArchive, ::cereal::JSONOutputArchive>::value, ::cereal::JSONInputArchive, ::cereal::BinaryInputArchive>;
+
+        InputArchive archive(s);
         archive(y);
     }
 
@@ -48,7 +51,7 @@ T test_serialization(const T& x)
     return y;
 }
 
-TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
+TEMPLATE_TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]", ::cereal::JSONOutputArchive, ::cereal::BinaryOutputArchive)
 {
     flint_rand_t& state = GENERATE(rands());
     const auto& K = GENERATE_REF(take(128, renf_classs(state)));
@@ -57,6 +60,17 @@ TEST_CASE("Serialize and deserialize elements", "[renf_class][renf_elem_class]")
 
     CAPTURE(K);
 
-    test_serialization(a);
-    test_serialization(std::vector<renf_elem_class>{a, a, b});
+    test_serialization<TestType>(a);
+    test_serialization<TestType>(std::vector<renf_elem_class>{a, a, b});
+}
+
+TEST_CASE("Deserialize elements which were created with e-antic <1") {
+    std::stringstream s;
+    s << R"({"cereal":{"cereal_class_version": 0, "parent": {"shared": 2147483649, "name": "c", "embedding": "[1.979642883761865464752184075553437574753038743897433376 +/- 4.15e-55]", "minpoly": "c^10 - 11*c^8 + 44*c^6 - 77*c^4 + 55*c^2 - 11", "precision": 64}, "value": "292/33*c^9 + 2272/33*c^8 - 804/11*c^7 - 6225/11*c^6 + 6032/33*c^5 + 46124/33*c^4 - 156*c^3 - 39275/33*c^2 + 100/3*c + 307"}})";
+
+    renf_elem_class x;
+    {
+      ::cereal::JSONInputArchive archive(s);
+      archive(x);
+    }
 }

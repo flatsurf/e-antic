@@ -4,6 +4,47 @@ e-antic Change Log
 
 .. current developments
 
+v1.2.1
+====================
+
+**Fixed:**
+
+* Fixed serialization of `renf_class` with cereal>=1.3.2 (#224)
+
+* Fixed deserialization of objects serialized with e-antic prior to 1.0.0
+
+
+
+v1.2.0
+====================
+
+**Performance:**
+
+* Improved conversion from vectors of rational coefficients to `renf_elem_class` by using a faster code path in FLINT.
+
+* Improved conversion from SageMath number fields to pyeantic `RealEmbeddedNumberField`. This **adds a dependency** of pyeantic on gmpxxyy.
+
+
+
+v1.1.1
+====================
+
+**Deprecated:**
+
+* Deprecated arithmetic between elements in different number fields in the C++ interface. Before, an operation such as `a + b` was possible even if `a` and `b` lived in different number fields if at least one of them was actually a rational number. This led to inconsistent parent fields of the resulting element. We still allow such operations if the parent of `a` or `b` is the rational field (`renf_class::make()`) otherwise a deprecation warning is printed. To fully opt in to the new behaviour set the environment variable `LIBEANTIC_STRICT_BINOP` to any value; this raises an exception instead of printing a warning.
+
+**Fixed:**
+
+* Fixed a compilation error on some xenial systems.
+* Fixed import order in pyeantic's setup.py script.
+* Fixed inclusion of .map files in distribution tarball even if building without version script support.
+
+**Performance:**
+
+* Improved performance of `RealEmbeddedNumberField` in Python interface by caching results. In particular the costly conversion from `renf_class`.
+
+
+
 v1.1.0
 ====================
 

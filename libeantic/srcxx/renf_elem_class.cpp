@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019-2021 Julian Rüth
+    Copyright (C) 2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -10,6 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <cassert>
 #include <flint/fmpq.h>
 #include <cstdlib>
@@ -106,20 +107,39 @@ template <
 renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs)
 {
     if (lhs.parent() == rhs.parent())
-        renf_op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
-    else if (rhs.is_integer())
-        fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpz(rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
-    else if (rhs.is_rational())
     {
-        fmpq_t buffer;
-        fmpq_init(buffer);
-        fmpq_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpq(buffer, rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
-        fmpq_clear(buffer);
+        renf_op(lhs.renf_elem_t(), lhs.renf_elem_t(), rhs.renf_elem_t(), lhs.parent().renf_t());
     }
     else
     {
-        coerce(lhs, rhs.parent());
-        binop<renf_op, fmpz_op, fmpq_op>(lhs, rhs);
+        if (lhs.parent() != renf_class::make() && rhs.parent() != renf_class::make())
+        {
+            static const char* STRICT_BINOP = getenv("LIBEANTIC_STRICT_BINOP");
+
+            static const char* message = "Performing arithmetic on number field elements in different fields has been deprecated. Make sure to bring the elements into the same field or the rational field explicitly before performing arithmetic on them. See https://github.com/flatsurf/e-antic/issues/126.";
+
+            if (STRICT_BINOP != nullptr)
+                throw std::invalid_argument(message);
+            else
+                std::cerr << message << std::endl;
+        }
+
+        if (rhs.is_integer())
+        {
+            fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpz(rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
+        }
+        else if (rhs.is_rational())
+        {
+            fmpq_t buffer;
+            fmpq_init(buffer);
+            fmpq_op(lhs.renf_elem_t(), lhs.renf_elem_t(), renf_elem_get_fmpq(buffer, rhs.renf_elem_t(), rhs.parent().renf_t()), lhs.parent().renf_t());
+            fmpq_clear(buffer);
+        }
+        else
+        {
+            coerce(lhs, rhs.parent());
+            binop<renf_op, fmpz_op, fmpq_op>(lhs, rhs);
+        }
     }
 
     return lhs;
@@ -494,8 +514,7 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpq_clas
 
     fmpq_poly_t p;
     fmpq_poly_init(p);
-    for (size_t i = 0; i < coefficients.size(); i++)
-        fmpq_poly_set_coeff_mpq(p, static_cast<slong>(i), coefficients[i].__get_mp());
+    fmpq_poly_set_array_mpq(p, reinterpret_cast<const mpq_t*>(&coefficients[0]), coefficients.size());
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
