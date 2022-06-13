@@ -92,19 +92,10 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="install-e-antic-in-conda">Install e-antic in Conda<a class="headerlink" href="#install-e-antic-in-conda" title="Permanent link">&para;</a></h1>
-<p>You can install this package with conda. Download and install <a href="https://conda.io/miniconda.html">Miniconda</a>, then run</p>
-<pre><code>conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda create -n eantic libeantic pyeantic
-conda activate eantic
+<p>You can install this package with conda. Download and install <a href="https://github.com/conda-forge/miniforge#install">mambaforge</a>, and then create an environment with <a href="https://github.com/conda-forge/e-antic-feedstock">conda-forge’s distribution of e-antic</a> installed</p>
+<pre><code>mamba create -n eantic libeantic pyeantic
+mamba activate eantic
 </code></pre>
-<p>These stable builds are maintained by <a href="https://github.com/conda-forge/e-antic-feedstock">conda-forge</a>:</p>
-<p>| Name | Downloads | Version | Platforms | | — | — | — | — | | <a href="https://anaconda.org/conda-forge/libeantic"><img alt="Build" src="https://img.shields.io/badge/recipe-e--antic-green.svg" /></a> | <a href="https://anaconda.org/conda-forge/libeantic"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/conda-forge/libeantic.svg" /></a> | <a href="https://anaconda.org/conda-forge/libeantic"><img alt="Conda Version" src="https://img.shields.io/conda/vn/conda-forge/libeantic.svg" /></a> | <a href="https://anaconda.org/conda-forge/libeantic"><img alt="Conda Platforms" src="https://img.shields.io/conda/pn/conda-forge/libeantic.svg" /></a> | | <a href="https://anaconda.org/conda-forge/pyeantic"><img alt="Build" src="https://img.shields.io/badge/recipe-pyeantic-green.svg" /></a> | <a href="https://anaconda.org/conda-forge/pyeantic"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/conda-forge/pyeantic.svg" /></a> | <a href="https://anaconda.org/conda-forge/pyeantic"><img alt="Conda Version" src="https://img.shields.io/conda/vn/conda-forge/pyeantic.svg" /></a> | <a href="https://anaconda.org/conda-forge/pyeantic"><img alt="Conda Platforms" src="https://img.shields.io/conda/pn/conda-forge/pyeantic.svg" /></a> |</p>
-<p>You can also install the latest (experimental) versions by replacing the third line above with</p>
-<pre><code>conda create -n eantic -c flatsurf libeantic pyeantic
-</code></pre>
-<p>The latest available experimental versions are:</p>
-<p>| Name | Downloads | Version | Platforms | | — | — | — | — | | <a href="https://anaconda.org/flatsurf/libeantic"><img alt="Build" src="https://img.shields.io/badge/recipe-e--antic-green.svg" /></a> | <a href="https://anaconda.org/flatsurf/libeantic"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/flatsurf/libeantic.svg" /></a> | <a href="https://anaconda.org/flatsurf/libeantic"><img alt="Conda Version" src="https://img.shields.io/conda/vn/flatsurf/libeantic.svg" /></a> | <a href="https://anaconda.org/flatsurf/libeantic"><img alt="Conda Platforms" src="https://img.shields.io/conda/pn/flatsurf/libeantic.svg" /></a> | | <a href="https://anaconda.org/flatsurf/pyeantic"><img alt="Build" src="https://img.shields.io/badge/recipe-pyeantic-green.svg" /></a> | <a href="https://anaconda.org/flatsurf/pyeantic"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/flatsurf/pyeantic.svg" /></a> | <a href="https://anaconda.org/flatsurf/pyeantic"><img alt="Conda Version" src="https://img.shields.io/conda/vn/flatsurf/pyeantic.svg" /></a> | <a href="https://anaconda.org/flatsurf/pyeantic"><img alt="Conda Platforms" src="https://img.shields.io/conda/pn/flatsurf/pyeantic.svg" /></a> |</p>
               
             </div>
           </div><footer>
