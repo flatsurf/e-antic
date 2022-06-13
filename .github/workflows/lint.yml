@@ -23,14 +23,14 @@ jobs:
             cc: cc
             cpp: cpp
             cxx: c++
-            cflags: -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wsign-promo -Wstrict-null-sentinel -Wno-documentation
-            cxxflags: -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wno-documentation
+            cflags: -Werror -Wall -Wextra -pedantic
+            cxxflags: -Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-documentation
           - compiler: clang
             cc: clang
             cpp: clang-cpp
             cxx: clang++
             # We need -Wno-reselved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
-            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier
+            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement
             cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation
     steps:
       - uses: actions/checkout@v2

@@ -89,8 +89,8 @@ for installation instructions.
 You can try out the projects in this repository in a very limited environment
 online by clicking the following links:
 
-* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.2.0?filepath=binder%2FSample.libeantic.ipynb)
-* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.2.0?filepath=binder%2FSample.pyeantic.ipynb)
+* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.2.1?filepath=binder%2FSample.libeantic.ipynb)
+* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/1.2.1?filepath=binder%2FSample.pyeantic.ipynb)
 
 ## Build with conda-forge Dependencies
 
