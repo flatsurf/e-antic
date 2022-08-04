@@ -29,17 +29,17 @@ jobs:
           sanitizer: valgrind
         - on: ubuntu-20.04
           environment: binder
-        - on: macos-10.15
+        - on: macos-11
           libflint: 2.6
-        - on: macos-10.15
+        - on: macos-11
           libflint: 2.7
-        - on: macos-10.15
+        - on: macos-11
           libflint: 2.7
-        - on: macos-10.15
+        - on: macos-11
           libflint: 2.7
           sanitizer: address
         # Needs https://github.com/wbhart/flint2/pull/992
-        # - on: macos-10.15
+        # - on: macos-11
         #   libflint: 2.7
         #   sanitizer: undefined
     steps:
@@ -126,27 +126,27 @@ jobs:
             # We test the latest SageMath with the latest Python.
             python: "3.10"
             sagelib: "9.5"
-          - on: macos-10.15
+          - on: macos-11
             # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
             python: "3.7"
             sagelib: "9.1"
-          - on: macos-10.15
+          - on: macos-11
             # SageMath 9.2 shipped with Python 3.8 so we test that this combination works.
             python: "3.8"
             sagelib: "9.2"
-          - on: macos-10.15
+          - on: macos-11
             # SageMath 9.3 shipped with Python 3.9 so we test that this combination works.
             python: "3.9"
             sagelib: "9.3"
-          - on: macos-10.15
+          - on: macos-11
             # SageMath 9.4 shipped with Python 3.9 so we test that this combination works.
             python: "3.9"
             sagelib: "9.4"
-          - on: macos-10.15
+          - on: macos-11
             # SageMath 9.5 shipped with Python 3.9 so we test that this combination works.
             python: "3.9"
             sagelib: "9.5"
-          - on: macos-10.15
+          - on: macos-11
             # We test the latest SageMath with the latest Python.
             python: "3.10"
             sagelib: "9.5"
@@ -159,7 +159,7 @@ jobs:
           #   python: "3.9"
           #   sanitizer: address
           # libtool strips -shared-asan which is required in LDFLAGS to load asan at runtime when building with clang
-          # - on: macos-10.15
+          # - on: macos-11
           #   python: "3.9"
           #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
@@ -167,7 +167,7 @@ jobs:
           #   python: "3.9"
           #   sanitizer: undefined
           # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: macos-10.15
+          # - on: macos-11
           #   python: "3.9"
           #   sanitizer: undefined
     steps:
@@ -242,7 +242,7 @@ jobs:
         on:
           - ubuntu-20.04
           # standardese 0.6.0 has not been released for macOS yet.
-          # - macos-10.15
+          # - macos-11
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
