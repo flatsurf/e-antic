@@ -20,13 +20,15 @@ jobs:
         - on: ubuntu-22.04
           libflint: 2.8
         - on: ubuntu-22.04
-          libflint: 2.8
+          libflint: 2.9
+        - on: ubuntu-22.04
+          libflint: 2.9
           sanitizer: address
         - on: ubuntu-22.04
-          libflint: 2.8
+          libflint: 2.9
           sanitizer: undefined
         - on: ubuntu-22.04
-          libflint: 2.8
+          libflint: 2.9
           sanitizer: valgrind
         - on: ubuntu-20.04
           environment: binder
@@ -37,10 +39,12 @@ jobs:
         - on: macos-11
           libflint: 2.8
         - on: macos-11
-          libflint: 2.8
+          libflint: 2.9
+        - on: macos-11
+          libflint: 2.9
           sanitizer: address
         - on: macos-11
-          libflint: 2.8
+          libflint: 2.9
           sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
