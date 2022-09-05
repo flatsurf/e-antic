@@ -166,10 +166,11 @@ jobs:
           # - on: macos-11
           #   python: "3.9"
           #   sanitizer: address
-          - on: ubuntu-22.04
-            python: "3.10"
-            sagelib: "9.6"
-            sanitizer: undefined
+          # Produces a mysterious "TypeError: signal handler must be signal.SIG_IGN, signal.SIG_DFL, or a callable object" in cysignals
+          # - on: ubuntu-22.04
+          #   python: "3.10"
+          #   sagelib: "9.6"
+          #   sanitizer: undefined
           - on: macos-11
             python: "3.10"
             sagelib: "9.6"
