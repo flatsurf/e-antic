@@ -224,7 +224,7 @@ jobs:
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
             # Since our application (python) was not build with asan, we need to preload it explicitly.
             export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
-            export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
+            export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan_osx_dynamic.dylib)
             # Leak detection reports too many false positives in Python; they disabled it in their CI actually.
             export ASAN_OPTIONS=detect_leaks=0
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
