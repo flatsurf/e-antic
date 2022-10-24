@@ -12,7 +12,7 @@
 #include "../../e-antic/renf.h"
 #include "../../e-antic/fmpz_poly_extra.h"
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);

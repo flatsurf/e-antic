@@ -86,7 +86,7 @@ static void check_init(fmpq_poly_t p, double demb, double rad1, double rad2, slo
     arb_clear(emb);
 }
 
-int main()
+int main(void)
 {
     fmpq_poly_t p;
 

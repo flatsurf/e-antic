@@ -14,7 +14,7 @@
 
 #define MAX_DEGREE 20
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);
