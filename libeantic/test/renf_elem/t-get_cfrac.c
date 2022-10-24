@@ -89,7 +89,7 @@ static void check_nf_cf(renf_t nf, flint_rand_t state, const mp_bitcnt_t bits, c
     }
 }
 
-int main()
+int main(void)
 {
     renf_t nf;
     fmpq_t d;

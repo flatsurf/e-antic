@@ -13,7 +13,7 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
-int main()
+int main(void)
 {
     int iter;
 

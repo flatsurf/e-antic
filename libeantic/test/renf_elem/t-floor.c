@@ -216,7 +216,7 @@ static void test_field2(flint_rand_t state)
     TEST_FLOOR_CLEANUP
 }
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);

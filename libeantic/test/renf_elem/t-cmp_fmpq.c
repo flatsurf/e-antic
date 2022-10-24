@@ -17,7 +17,7 @@ static int sgn(int a) {
   return 1;
 }
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);

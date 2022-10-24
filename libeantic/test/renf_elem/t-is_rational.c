@@ -12,7 +12,7 @@
 
 #include "../../e-antic/renf_elem.h"
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);
