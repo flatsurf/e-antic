@@ -4,6 +4,19 @@ e-antic Change Log
 
 .. current developments
 
+v1.2.3
+====================
+
+**Added:**
+
+* Added automatic update on conda-forge with every release.
+
+**Fixed:**
+
+* Fixed soname which was not bumped in the 1.2.2 release.
+
+
+
 v1.2.2
 ====================
 
