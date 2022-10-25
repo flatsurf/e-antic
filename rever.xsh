@@ -52,6 +52,7 @@ $ACTIVITIES = [
     'tag',
     'push_tag',
     'ghrelease',
+    'forge',
 ]
 
 MAJOR, MINOR, PATCH = version.parse($VERSION).release
@@ -84,3 +85,5 @@ $GITHUB_ORG = 'flatsurf'
 $GITHUB_REPO = 'e-antic'
 
 $GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz']
+
+$FORGE_FEEDSTOCK_ORG = "conda-forge"
