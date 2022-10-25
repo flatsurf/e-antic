@@ -4,6 +4,21 @@ e-antic Change Log
 
 .. current developments
 
+v1.2.2
+====================
+
+**Fixed:**
+
+* Fixed conda channels used for binder notebooks.
+* Fixed compilation errors on recent compilers by upgrading catch2 dependency used for testing.
+* Fixed deserialization of renf_class from old Python pickles. (#242 sometimes crashed when called from Python since cppyy had trouble with the exceptions being thrown.)
+* Fixed "installation with conda" page in our documentation (#240)
+* Added logo to documentation. (#239)
+* Fixed serialization with cereal 1.3.1+.
+* Fixed compiler warnings about missing prototypes for test functions.
+
+
+
 v1.2.1
 ====================
 
