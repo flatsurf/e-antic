@@ -11,7 +11,7 @@
 
 #include "../../e-antic/fmpq_poly_extra.h"
 
-int main()
+int main(void)
 {
     slong iter;
 

@@ -31,12 +31,11 @@ easier to test this in a SageMath doctest.)::
     TypeError: ...
 
 """
-# -*- coding: utf-8 -*-
 ######################################################################
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2021 Julian Rüth
+#                      2019-2022 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -128,8 +127,8 @@ eantic.renf_class.make.__sig2exc__ = True
 
 def for_eantic(x):
     r"""
-    Attempt to convert ``x`` from something that SageMath understand to
-    something that the constructor of renf_elem_class understands.
+    Attempt to convert ``x`` from something that SageMath understands to
+    something that, e.g., the constructor of renf_elem_class understands.
 
     Typically, this is the conversion of a SageMath Integer to a mpz_class and
     such.

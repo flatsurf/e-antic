@@ -11,7 +11,7 @@
 
 #include "../../e-antic/renf_elem.h"
 
-int main()
+int main(void)
 {
     renf_t nf;
     fmpq_t d;

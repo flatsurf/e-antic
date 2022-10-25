@@ -172,7 +172,7 @@ static void test_field2(flint_rand_t state)
     fmpq_poly_clear(p);
 }
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);
