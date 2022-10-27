@@ -171,10 +171,11 @@ jobs:
           #   python: "3.10"
           #   sagelib: "9.6"
           #   sanitizer: undefined
-          - on: macos-11
-            python: "3.10"
-            sagelib: "9.6"
-            sanitizer: undefined
+          # Produces a mysterious "TypeError: signal handler must be signal.SIG_IGN, signal.SIG_DFL, or a callable object" in cysignals
+          # - on: macos-11
+          #   python: "3.10"
+          #   sagelib: "9.6"
+          #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
