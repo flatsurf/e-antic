@@ -27,7 +27,7 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6 or 2.7](https://flintlib.org)
+ - [FLINT 2.6, 2.7, 2.8, or 2.9](https://flintlib.org)
  - [Arb](https://arblib.org/)
  - [ANTIC](https://github.com/wbhart/antic)
  - [Boost](https://www.boost.org/) for the C++ library
