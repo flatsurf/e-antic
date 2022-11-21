@@ -1,6 +1,6 @@
 /*
     Copyright (C)      2017 Vincent Delecroix
-                  2020-2021 Julian Rüth
+                  2020-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -51,6 +51,18 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         REQUIRE(c == b);
 
         c -= b;
+        REQUIRE(!c);
+
+        c += static_cast<short>(1);
+        REQUIRE(c);
+
+        c -= static_cast<short>(1);
+        REQUIRE(!c);
+
+        c += static_cast<unsigned short>(1u);
+        REQUIRE(c);
+
+        c -= static_cast<unsigned short>(1u);
         REQUIRE(!c);
 
         c += 1;
@@ -122,6 +134,18 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
             REQUIRE(c == b);
 
             c /= b;
+            REQUIRE(c == 1);
+
+            c *= static_cast<short>(2);
+            REQUIRE(c == 2);
+
+            c /= static_cast<short>(2);
+            REQUIRE(c == 1);
+
+            c *= static_cast<unsigned short>(2u);
+            REQUIRE(c == 2);
+
+            c /= static_cast<unsigned short>(2u);
             REQUIRE(c == 1);
 
             c *= 2;

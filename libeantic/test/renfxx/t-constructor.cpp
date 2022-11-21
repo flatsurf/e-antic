@@ -34,6 +34,10 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
 
     SECTION("Construct from extreme integers")
     {
+        REQUIRE(renf_elem_class(std::numeric_limits<short>::min()) == std::numeric_limits<short>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<short>::max()) == std::numeric_limits<short>::max());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned short>::min()) == std::numeric_limits<unsigned short>::min());
+        REQUIRE(renf_elem_class(std::numeric_limits<unsigned short>::max()) == std::numeric_limits<unsigned short>::max());
         REQUIRE(renf_elem_class(std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
         REQUIRE(renf_elem_class(std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
         REQUIRE(renf_elem_class(std::numeric_limits<unsigned int>::min()) == std::numeric_limits<unsigned int>::min());
@@ -93,6 +97,10 @@ TEST_CASE("Construct renf_elem_class from integers and rationals", "[renf_elem_c
 
     SECTION("Construct from extreme integers with a given field")
     {
+        REQUIRE(renf_elem_class(*K, std::numeric_limits<short>::min()) == std::numeric_limits<short>::min());
+        REQUIRE(renf_elem_class(*K, std::numeric_limits<short>::max()) == std::numeric_limits<short>::max());
+        REQUIRE(renf_elem_class(*K, std::numeric_limits<unsigned short>::min()) == std::numeric_limits<unsigned short>::min());
+        REQUIRE(renf_elem_class(*K, std::numeric_limits<unsigned short>::max()) == std::numeric_limits<unsigned short>::max());
         REQUIRE(renf_elem_class(*K, std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
         REQUIRE(renf_elem_class(*K, std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
         REQUIRE(renf_elem_class(*K, std::numeric_limits<unsigned int>::min()) == std::numeric_limits<unsigned int>::min());
