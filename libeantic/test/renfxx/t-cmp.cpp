@@ -94,7 +94,10 @@ TEMPLATE_TEST_CASE("Relational Operators with Integers", "[renf_elem_class]", sh
     const auto& K = GENERATE_REF(take(16, renf_classs(state)));
     
     auto a = GENERATE_REF(take(8, renf_elem_classs(state, K)));
-    T b = GENERATE(0, std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+    // Strangley, GENERATE returns in int/unsigned int when T is a
+    // short/unsigned short here. We cast explicitly to avoid compiler
+    // warnings.
+    T b = static_cast<T>(GENERATE(0, std::numeric_limits<T>::min(), std::numeric_limits<T>::max()));
 
     check_relop(a, b);
 }
