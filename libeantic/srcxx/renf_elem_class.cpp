@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019-2022 Julian Rüth
+    Copyright (C)      2018 Vincent Delecroix
+                  2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -282,6 +282,12 @@ renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
     *a = *value.a;
 }
 
+renf_elem_class::renf_elem_class(short value)
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(unsigned short value)
+    : renf_elem_class(renf_class::make(), value) {}
+
 renf_elem_class::renf_elem_class(int value)
     : renf_elem_class(renf_class::make(), value) {}
 
@@ -318,6 +324,12 @@ renf_elem_class::renf_elem_class(const renf_class& k)
     renf_elem_init(a, nf->renf_t());
     renf_elem_zero(a, nf->renf_t());
 }
+
+renf_elem_class::renf_elem_class(const renf_class& k, short value)
+    : renf_elem_class(k, static_cast<long>(value)) {}
+
+renf_elem_class::renf_elem_class(const renf_class& k, unsigned short value)
+    : renf_elem_class(k, static_cast<unsigned long>(value)) {}
 
 renf_elem_class::renf_elem_class(const renf_class& k, int value)
     : renf_elem_class(k, static_cast<long>(value)) {}
@@ -525,6 +537,16 @@ renf_elem_class::~renf_elem_class() noexcept
     // When this element has been moved out by the move-constructor, then nf is
     // null and a points to another element's storage.
     if (nf) renf_elem_clear(a, nf->renf_t());
+}
+
+renf_elem_class & renf_elem_class::operator=(short value)
+{
+    return *this = static_cast<long>(value);
+}
+
+renf_elem_class & renf_elem_class::operator=(unsigned short value)
+{
+    return *this = static_cast<unsigned long>(value);
 }
 
 renf_elem_class & renf_elem_class::operator=(int value)
@@ -971,6 +993,72 @@ bool operator<(const renf_elem_class & lhs, const renf_elem_class & rhs)
     }
     else
         throw std::logic_error("not implemented: cannot compare renf_elem_class from different number fields");
+}
+
+renf_elem_class& renf_elem_class::operator+=(short rhs)
+{
+    return *this += static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(short rhs)
+{
+    return *this -= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(short rhs)
+{
+    return *this *= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(short rhs)
+{
+    return *this /= static_cast<long>(rhs);
+}
+
+bool operator==(const renf_elem_class& lhs, short rhs) {
+    if (rhs == 0)
+        return lhs.is_zero();
+    return lhs == static_cast<long>(rhs);
+}
+
+bool operator<(const renf_elem_class& lhs, short rhs) {
+    return lhs < static_cast<long>(rhs);
+}
+
+bool operator>(const renf_elem_class& lhs, short rhs) {
+    return lhs > static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator+=(unsigned short rhs)
+{
+    return *this += static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(unsigned short rhs)
+{
+    return *this -= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(unsigned short rhs)
+{
+    return *this *= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(unsigned short rhs)
+{
+    return *this /= static_cast<unsigned long>(rhs);
+}
+
+bool operator==(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs == static_cast<unsigned long>(rhs);
+}
+
+bool operator<(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs < static_cast<unsigned long>(rhs);
+}
+
+bool operator>(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs > static_cast<unsigned long>(rhs);
 }
 
 renf_elem_class& renf_elem_class::operator+=(int rhs)

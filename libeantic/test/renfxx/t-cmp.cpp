@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2018 Vincent Delecroix
-                  2021 Julian Rüth
+                  2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -86,7 +86,7 @@ void check_relop(const S& a, const T& b)
     }
 }
 
-TEMPLATE_TEST_CASE("Relational Operators with Integers", "[renf_elem_class]", int, unsigned int, long, unsigned long, long long, unsigned long long)
+TEMPLATE_TEST_CASE("Relational Operators with Integers", "[renf_elem_class]", short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long)
 {
     using T = TestType;
 
