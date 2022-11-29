@@ -172,3 +172,28 @@ LIBEANTICXX_1.1.0 {
       "eantic::renf_class::make(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::function<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (long)>, long)";
     };
 } LIBEANTICXX_1.0.0;
+LIBEANTICXX_1.3.0 {
+  global:
+    extern "C++" {
+      "eantic::renf_elem_class::renf_elem_class(short)";
+      "eantic::renf_elem_class::renf_elem_class(eantic::renf_class const&, short)";
+      "eantic::renf_elem_class::operator=(short)";
+      "eantic::renf_elem_class::operator+=(short)";
+      "eantic::renf_elem_class::operator-=(short)";
+      "eantic::renf_elem_class::operator*=(short)";
+      "eantic::renf_elem_class::operator/=(short)";
+      "eantic::operator==(eantic::renf_elem_class const&, short)";
+      "eantic::operator<(eantic::renf_elem_class const&, short)";
+      "eantic::operator>(eantic::renf_elem_class const&, short)";
+      "eantic::renf_elem_class::renf_elem_class(unsigned short)";
+      "eantic::renf_elem_class::renf_elem_class(eantic::renf_class const&, unsigned short)";
+      "eantic::renf_elem_class::operator=(unsigned short)";
+      "eantic::renf_elem_class::operator+=(unsigned short)";
+      "eantic::renf_elem_class::operator-=(unsigned short)";
+      "eantic::renf_elem_class::operator*=(unsigned short)";
+      "eantic::renf_elem_class::operator/=(unsigned short)";
+      "eantic::operator==(eantic::renf_elem_class const&, unsigned short)";
+      "eantic::operator<(eantic::renf_elem_class const&, unsigned short)";
+      "eantic::operator>(eantic::renf_elem_class const&, unsigned short)";
+    };
+} LIBEANTICXX_1.1.0;
