@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl We need at least autoconf 2.69 for this configure.ac to work.
 AC_PREREQ([2.69])
-AC_INIT([libeantic], [1.2.3], [vincent.delecroix@math.cnrs.fr])
+AC_INIT([libeantic], [1.3.0], [vincent.delecroix@math.cnrs.fr])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
@@ -12,8 +12,8 @@ dnl Version number of the library c:r:a.
 dnl Set to c+1:0:0 on a non-backwards-compatible change.
 dnl Set to c+1:0:a+1 on a backwards-compatible change.
 dnl Set to c:r+1:a if the interface is unchanged.
-AC_SUBST([libeantic_version_info], [1:6:0])
-AC_SUBST([libeanticxx_version_info], [1:6:0])
+AC_SUBST([libeantic_version_info], [2:0:1])
+AC_SUBST([libeanticxx_version_info], [2:0:1])
 
 AM_SILENT_RULES([yes]) # non-verbose make; override with ./configure --disable-silent-rules
 
