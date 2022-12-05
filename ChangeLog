@@ -4,6 +4,16 @@ e-antic Change Log
 
 .. current developments
 
+v1.3.0
+====================
+
+**Added:**
+
+* Added support for FLINT 2.8 and 2.9
+* Added short and unsigned short operators to C++ interface.
+
+
+
 v1.2.3
 ====================
 
