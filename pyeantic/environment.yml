@@ -28,6 +28,4 @@ dependencies:
   - cppyythonizations
   # valgrind is only needed for make check-valgrind
   # - valgrind
-  - pip
-  - pip:
-    - realalg
+  - realalg
