@@ -19,6 +19,7 @@ requirements:
   build:
     - libtool
     - automake
+    - make
     - {{ compiler('cxx') }}
   host:
     - antic
