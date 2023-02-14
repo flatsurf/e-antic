@@ -75,6 +75,7 @@ html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/html/e-antic
 	cp -RT $(builddir)/generated/libeantic/html/ $(builddir)/generated/html/e-antic/libeantic
 	cp -RT $(builddir)/generated/pyeantic/html/ $(builddir)/generated/html/e-antic/pyeantic
+	cp $(srcdir)/robots.txt $(builddir)/generated/html
 
 serve: html
 	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/html
