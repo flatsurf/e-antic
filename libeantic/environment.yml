@@ -21,6 +21,7 @@ dependencies:
   - libflint
   - gmp
   - libtool
+  - make
   - py
   # valgrind is only needed for make check-valgrind
   # - valgrind

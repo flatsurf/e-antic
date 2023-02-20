@@ -18,6 +18,7 @@ dependencies:
   - ipywidgets
   - libflint
   - libtool
+  - make
   - pytest
   - sagelib
   # sagelib<9.2 does not explicitly install libiconv which is needed in lots of places.
