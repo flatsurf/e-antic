@@ -53,7 +53,7 @@ def doc():
     with TemporaryDirectory() as tmp:
         ./bootstrap
         pushd @(tmp)
-        @(DIRSTACK[-1])/configure --without-benchmark --without-byexample
+        @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
         make
         make html
         mv doc/manual-generated/html e-antic-manual-$VERSION
