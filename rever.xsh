@@ -56,7 +56,7 @@ def doc():
         @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
         make
         make html
-        mv doc/manual-generated/html e-antic-manual-$VERSION
+        mv doc/manual/generated/html e-antic-manual-$VERSION
         tar czf e-antic-manual-$VERSION.tar.gz e-antic-manual-$VERSION
         mv *.tar.gz @(DIRSTACK[-1])
         popd
