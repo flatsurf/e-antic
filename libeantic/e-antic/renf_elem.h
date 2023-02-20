@@ -213,6 +213,20 @@ LIBEANTIC_API void renf_elem_mul(renf_elem_t a, const renf_elem_t b, const renf_
 LIBEANTIC_API void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf);
 LIBEANTIC_API void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, const renf_t nf);
 
+/// Set `res` to `res + a * b`.
+LIBEANTIC_API void renf_elem_addmul(renf_elem_t res, const renf_elem_t a, const renf_elem_t b, const renf_t nf);
+LIBEANTIC_API void renf_elem_addmul_si(renf_elem_t res, const renf_elem_t a, slong b, const renf_t nf);
+LIBEANTIC_API void renf_elem_addmul_ui(renf_elem_t res, const renf_elem_t a, ulong b, const renf_t nf);
+LIBEANTIC_API void renf_elem_addmul_fmpz(renf_elem_t res, const renf_elem_t a, const fmpz_t b, const renf_t nf);
+LIBEANTIC_API void renf_elem_addmul_fmpq(renf_elem_t res, const renf_elem_t a, const fmpq_t b, const renf_t nf);
+
+/// Set `res` to `res - a * b`.
+LIBEANTIC_API void renf_elem_submul(renf_elem_t res, const renf_elem_t a, const renf_elem_t b, const renf_t nf);
+LIBEANTIC_API void renf_elem_submul_si(renf_elem_t res, const renf_elem_t a, slong b, const renf_t nf);
+LIBEANTIC_API void renf_elem_submul_ui(renf_elem_t res, const renf_elem_t a, ulong b, const renf_t nf);
+LIBEANTIC_API void renf_elem_submul_fmpz(renf_elem_t res, const renf_elem_t a, const fmpz_t b, const renf_t nf);
+LIBEANTIC_API void renf_elem_submul_fmpq(renf_elem_t res, const renf_elem_t a, const fmpq_t b, const renf_t nf);
+
 /// Perform the floor division of the number field elements `b` and `c` and set the
 /// result in `a`.
 /// The result is equivalent to a call of [renf_elem_div] followed by
