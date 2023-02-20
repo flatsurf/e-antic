@@ -43,12 +43,32 @@ def dist():
         popd
     return True
 
+@activity
+def doc():
+    r"""
+    Run make html and create a tarball from the built manual.
+    """
+    from tempfile import TemporaryDirectory
+    from xonsh.dirstack import DIRSTACK
+    with TemporaryDirectory() as tmp:
+        ./bootstrap
+        pushd @(tmp)
+        @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
+        make
+        make html
+        mv doc/manual/generated/html e-antic-manual-$VERSION
+        tar czf e-antic-manual-$VERSION.tar.gz e-antic-manual-$VERSION
+        mv *.tar.gz @(DIRSTACK[-1])
+        popd
+    return True
+
 $PROJECT = 'e-antic'
 
 $ACTIVITIES = [
     'version_bump',
     'changelog',
     'dist',
+    'doc',
     'tag',
     'push_tag',
     'ghrelease',
@@ -84,6 +104,6 @@ $PUSH_TAG_REMOTE = 'git@github.com:flatsurf/e-antic.git'
 $GITHUB_ORG = 'flatsurf'
 $GITHUB_REPO = 'e-antic'
 
-$GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz']
+$GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz', 'e-antic-manual-' + $VERSION + '.tar.gz']
 
 $FORGE_FEEDSTOCK_ORG = "conda-forge"
