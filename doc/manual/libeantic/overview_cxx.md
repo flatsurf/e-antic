@@ -9,7 +9,7 @@ To work with e-antic, you first need to create a number field. Typically, by
 providing a minimal polynomial and an approximation of one of its roots.
 
 Once a [eantic::renf_class]() has been initialized, its elements can be created
-with the various [eantic::renf_elem_class]() contructors. Lifetime of all these
+with the various [eantic::renf_elem_class]() constructors. Lifetime of all these
 objects is taken care of by smart pointers, so you usually do not need to
 worry about allocating and freeing resources manually.
 

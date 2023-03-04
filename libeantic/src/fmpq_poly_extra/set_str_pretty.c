@@ -89,7 +89,7 @@ static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char *
 
     x += strlen(var);
 
-    /* 5. carret */
+    /* 5. caret */
     if (!isdigit(*x))
     {
         while (*x == ' ') x++;

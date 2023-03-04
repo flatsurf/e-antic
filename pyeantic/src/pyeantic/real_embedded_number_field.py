@@ -358,7 +358,7 @@ class RealEmbeddedNumberFieldElement(FieldElement):
         Return a vector representation of this element in terms of the basis of
         the number field.
 
-        EXAPLES::
+        EXAMPLES::
 
             sage: from pyeantic import RealEmbeddedNumberField
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
@@ -373,7 +373,7 @@ class RealEmbeddedNumberFieldElement(FieldElement):
         r"""
         Return the minimal polynomial of this element over the rationals.
 
-        EXAPLES::
+        EXAMPLES::
 
             sage: from pyeantic import RealEmbeddedNumberField
             sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
@@ -500,7 +500,7 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             if not K.is_absolute():
                 raise NotImplementedError("number field must be absolute")
             # We explicitly construct an embedding from the given embedding to
-            # make sure that we get a useable key.
+            # make sure that we get a usabe key.
             minpoly = (QQ['x'].gen() - 1) if K is QQ else K.polynomial()
             minpoly = minpoly.change_variable_name('x')
             embedding = AA.one() if K is QQ else embed(K.gen())

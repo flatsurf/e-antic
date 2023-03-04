@@ -52,7 +52,7 @@ typedef struct LIBEANTIC_API renf
   /// Precision (number of bits) used for binary operations on enclosures.
   slong prec;
 
-  /// The real embeddeding of the generator of this number field, given as ball
+  /// The real embedding of the generator of this number field, given as ball
   /// in the reals.
   arb_t emb;
 
