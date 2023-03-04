@@ -500,7 +500,7 @@ class RealEmbeddedNumberField(UniqueRepresentation, CommutativeRing):
             if not K.is_absolute():
                 raise NotImplementedError("number field must be absolute")
             # We explicitly construct an embedding from the given embedding to
-            # make sure that we get a usabe key.
+            # make sure that we get a usable key.
             minpoly = (QQ['x'].gen() - 1) if K is QQ else K.polynomial()
             minpoly = minpoly.change_variable_name('x')
             embedding = AA.one() if K is QQ else embed(K.gen())
