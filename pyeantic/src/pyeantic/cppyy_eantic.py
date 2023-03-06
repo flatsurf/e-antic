@@ -52,7 +52,12 @@ easier to test this in a SageMath doctest.)::
 #####################################################################
 
 import os
-import cppyy
+import warnings
+
+with warnings.catch_warnings():
+    # Ignore deprecation warnings from cppyy calling into pkg_resources
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import cppyy
 
 from cppyythonizations.printing import enable_pretty_printing
 from cppyythonizations.pickling.cereal import enable_cereal
