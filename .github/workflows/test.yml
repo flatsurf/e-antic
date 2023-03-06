@@ -60,6 +60,12 @@ jobs:
           echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
+      - name: work around https://github.com/conda-forge/libcxx-feedstock/issues/111
+        shell: bash -l {0}
+        run: |
+          mamba install -y libcxx=14
+          echo "libcxx <15" >> $CONDA_PREFIX/conda-meta/pinned
+        if: ${{ matrix.on == 'macos-11' }}
       - name: install valgrind
         shell: bash -l {0}
         run: |
@@ -189,6 +195,12 @@ jobs:
           echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { miniforge-variant: "Mambaforge", miniforge-version: "latest", python-version: "${{ matrix.python }}" }
+      - name: work around https://github.com/conda-forge/libcxx-feedstock/issues/111
+        shell: bash -l {0}
+        run: |
+          mamba install -y libcxx=14
+          echo "libcxx <15" >> $CONDA_PREFIX/conda-meta/pinned
+        if: ${{ matrix.on == 'macos-11' }}
       - name: install valgrind
         shell: bash -l {0}
         run: |
