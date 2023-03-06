@@ -10,8 +10,8 @@ This module provides conversion from and to ``realalg``.
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2019 Vincent Delecroix
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C)      2019 Vincent Delecroix
+#        Copyright (C) 2019-2023 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,12 @@ This module provides conversion from and to ``realalg``.
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
 
-import realalg
+import warnings
+with warnings.catch_warnings():
+    # Ignore deprecation warnings, see https://github.com/MarkCBell/realalg/pull/6
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import realalg
+
 
 import numbers
 from .cppyy_eantic import eantic
