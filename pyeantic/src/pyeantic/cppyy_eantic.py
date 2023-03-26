@@ -126,7 +126,7 @@ def unwrap_intrusive_ptr(K):
         raise TypeError("argument must be an intrusive_ptr to a renf_class")
 
     wrapped = K.get()
-    wrapped.__intrusive__ = K
+    wrapped.__lifeline = K
 
     return wrapped
 
