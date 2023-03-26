@@ -50,7 +50,7 @@ class RealEmbeddedNumberFieldElement(FieldElement):
 
     EXAMPLES::
 
-        sage: from pyeantic import RealEmbeddedNumberField
+        sage: from pyeantic import RealEmbeddedNumberField  # random output due to deprecation warnings
         sage: K = NumberField(x^2 - 2, 'a', embedding=sqrt(AA(2)))
         sage: K = RealEmbeddedNumberField(K)
         sage: a = K.gen()

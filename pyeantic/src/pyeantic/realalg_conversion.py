@@ -52,7 +52,7 @@ def realalg_nf_to_eantic(K, name='a'):
     r"""
     Convert a realalg real number field to eantic
 
-    >>> import realalg
+    >>> import realalg  # random output due to deprecation warnings
     >>> from pyeantic.realalg_conversion import realalg_nf_to_eantic
     >>> R = realalg.RealNumberField([-2,0,1])  # random output as it prints a deprecation warning in SageMath
     >>> realalg_nf_to_eantic(R)

@@ -3,7 +3,7 @@ Make e-antic accessible from Python through cppyy
 
 EXAMPLES::
 
-    >>> from pyeantic import eantic
+    >>> from pyeantic import eantic  # random output due to deprecation warnings
     >>> K = eantic.renf("x^2 - 2", "x", "[1.4 +/- 1]")
     >>> x = eantic.renf_elem(K, "x"); x
     (x ~ 1.4142136)
