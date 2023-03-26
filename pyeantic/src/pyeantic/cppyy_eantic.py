@@ -100,12 +100,35 @@ def enable_intrusive_serialization(proxy, name):
     proxy.__reduce__ = reduce
 
 def unwrap_intrusive_ptr(K):
+    r"""
+    Return a reference to a ``renf_class`` that makes sure that keeps itself
+    alive by holding on to an intrusive pointer to that same ``renf_class``.
+
+    INPUT:
+
+    - ``K`` -- a reference or pointer or intrusive pointer to a ``renf_class``
+
+    EXAMPLES:
+
+    Without this machinery, the following would be a segfault because ``K``
+    just immediately gets garbage collected again::
+
+        sage: from pyeantic import eantic
+        sage: K = eantic.renf("x^2 - 2", "x", "1 +/- 1")
+        sage: K.gen().parent()
+        NumberField(x^2 - 2, [1.41421356237309504880168872420969807857 +/- 2.22e-39])
+
+    """
     if isinstance(K, eantic.renf_class):
         K = cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class'](K)
-    if isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
-        K = K.get()
-        K.__intrusive__ = K
-    return K
+
+    if not isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
+        raise TypeError("argument must be an intrusive_ptr to a renf_class")
+
+    wrapped = K.get()
+    wrapped.__intrusive__ = K
+
+    return wrapped
 
 def intrusive_ptr_deserialize(intrusive):
     cppyy.include('e-antic/cereal.hpp')
