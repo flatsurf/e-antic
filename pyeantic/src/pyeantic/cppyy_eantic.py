@@ -198,7 +198,8 @@ def make_renf_elem_class(*args):
         return eantic.renf_elem_class()
 
     K = args[0]
-    K = unwrap_intrusive_ptr(K)
+    if isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
+        K = unwrap_intrusive_ptr(K)
 
     if len(args) == 1:
         if isinstance(K, eantic.renf_class):
