@@ -12,7 +12,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -103,7 +104,7 @@ This module provides conversion from and to <code class="docutils literal notran
 <dt class="sig sig-object py" id="pyeantic.realalg_conversion.realalg_nf_to_eantic">
 <span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_nf_to_eantic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_nf_to_eantic" title="Permalink to this definition"></a></dt>
 <dd><p>Convert a realalg real number field to eantic</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">realalg</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">realalg</span>  <span class="c1"># random output as it prints a deprecation warning, see https://github.com/MarkCBell/realalg/pull/6</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyeantic.realalg_conversion</span> <span class="kn">import</span> <span class="n">realalg_nf_to_eantic</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">realalg</span><span class="o">.</span><span class="n">RealNumberField</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># random output as it prints a deprecation warning in SageMath</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">realalg_nf_to_eantic</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>

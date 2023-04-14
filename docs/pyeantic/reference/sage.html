@@ -12,7 +12,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -291,7 +292,7 @@ with a = 1.999510553370486?
 <dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly">
 <span class="sig-name descname"><span class="pre">minpoly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly" title="Permalink to this definition"></a></dt>
 <dd><p>Return the minimal polynomial of this element over the rationals.</p>
-<p>EXAPLES:</p>
+<p>EXAMPLES:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
@@ -306,7 +307,7 @@ with a = 1.999510553370486?
 <span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.vector" title="Permalink to this definition"></a></dt>
 <dd><p>Return a vector representation of this element in terms of the basis of
 the number field.</p>
-<p>EXAPLES:</p>
+<p>EXAMPLES:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
