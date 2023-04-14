@@ -23,7 +23,7 @@ static void check_renf(renf_t nf)
     if (fmpq_poly_length(nf->nf->pol) != fmpz_poly_length(nf->der) + 1)
     {
         printf("FAIL:\n");
-        printf("uninitalized derivative");
+        printf("uninitialized derivative");
         fflush(stdout);
         abort();
     }
