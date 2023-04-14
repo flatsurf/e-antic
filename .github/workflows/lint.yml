@@ -30,7 +30,8 @@ jobs:
             cpp: clang-cpp
             cxx: clang++
             # We need -Wno-reselved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
-            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement
+            # We need -Wno-unsafe-buffer-usage since we need unsafe pointer arithmetic to extend FLINT (efficiently.)
+            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-unsafe-buffer-usage
             cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation
     steps:
       - uses: actions/checkout@v2
