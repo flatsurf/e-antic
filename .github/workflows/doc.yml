@@ -47,7 +47,9 @@ jobs:
           # Strangely, the linkchecker modules are installed writable and linkchecker then refuses to load them.
           chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"` || true
 
-          linkchecker --check-extern http://localhost:8880/e-antic/libeantic
+          # Do not fail if there are 302 redirects.
+          # Ignore missing robots.txt on GMP website.
+          linkchecker --check-extern http://localhost:8880/e-antic/libeantic --no-warnings --no-robots
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
