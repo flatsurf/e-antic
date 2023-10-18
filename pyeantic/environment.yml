@@ -4,7 +4,6 @@
 name: pyeantic-build
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - antic
   - arb

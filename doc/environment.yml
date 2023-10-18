@@ -8,7 +8,6 @@ name: doc-eantic-build
 channels:
   - saraedum
   - conda-forge
-  - defaults
 dependencies:
   - standardese>=0.6.0
   - sphinx
