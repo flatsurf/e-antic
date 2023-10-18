@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "dvcs": "git",
+  "project": "e-antic",
+  "project_url": "https://github.com/flatsurf/e-antic",
+  "show_commit_url": "https://github.com/flatsurf/e-antic/commit/",
+  "repo": ".",
+  "environment_type": "conda",
+  "matrix": {
+    "arb": [],
+    "automake": [],
+    "benchmark==1.5.0": [],
+    "boost-cpp": [],
+    "ccache": [],
+    "flatsurf::cppasv": [],
+    "cxx-compiler": [],
+    "gmp": [],
+    "libtool": [],
+    "make": []
+  },
+  "conda_channels": ["conda-forge"],
+  "repo_subdir": "libeantic",
+  "build_command": [
+    "autoreconf -ivf",
+    "/bin/sh configure CXX='ccache c++'",
+    "make"
+  ],
+  "install_command": [],
+  "uninstall_command": [],
+  "benchmark_dir": "tools/asv",
+  "env_dir": ".asv/env",
+  "results_dir": ".asv/results",
+  "html_dir": ".asv/html"
+}
+
+
