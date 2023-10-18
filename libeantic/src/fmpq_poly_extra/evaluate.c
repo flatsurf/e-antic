@@ -13,7 +13,7 @@
 #include "../e-antic/fmpq_poly_extra.h"
 #include "../e-antic/fmpz_poly_extra.h"
 
-void _fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_limb_signed_t prec)
+static void _fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_limb_signed_t prec)
 {
     _fmpz_poly_evaluate_arf(res, ((pol)->coeffs), fmpq_poly_length(pol), a, prec);
     arf_div_fmpz(res, res, ((pol)->den), prec, 4);
@@ -37,7 +37,7 @@ void fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_
     }
 }
 
-void _fmpq_poly_evaluate_arb(arb_t res, const fmpq_poly_t pol, const arb_t a, mp_limb_signed_t prec)
+static void _fmpq_poly_evaluate_arb(arb_t res, const fmpq_poly_t pol, const arb_t a, mp_limb_signed_t prec)
 {
     _fmpz_poly_evaluate_arb(res, ((pol)->coeffs), fmpq_poly_length(pol), a, prec);
     arb_div_fmpz(res, res, ((pol)->den), prec);
