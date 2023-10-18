@@ -26,7 +26,7 @@ void fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_
         arf_t tmp;
         arf_init(tmp);
 
-        _fmpq_poly_evaluate_arf(tmp, pol, a, prec)
+        _fmpq_poly_evaluate_arf(tmp, pol, a, prec);
         arf_swap(tmp, res);
 
         arf_clear(tmp);
@@ -50,7 +50,7 @@ void fmpq_poly_evaluate_arb(arb_t res, const fmpq_poly_t pol, const arb_t a, mp_
         arb_t tmp;
         arb_init(tmp);
 
-        _fmpq_poly_evaluate_arb(tmp, pol, a, prec)
+        _fmpq_poly_evaluate_arb(tmp, pol, a, prec);
         arb_swap(tmp, res);
 
         arb_clear(tmp);
