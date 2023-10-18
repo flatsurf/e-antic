@@ -33,7 +33,7 @@ void fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_
     }
     else
     {
-        _fmpq_poly_evaluate_arf(res, pol, a, prec)
+        _fmpq_poly_evaluate_arf(res, pol, a, prec);
     }
 }
 
@@ -57,7 +57,7 @@ void fmpq_poly_evaluate_arb(arb_t res, const fmpq_poly_t pol, const arb_t a, mp_
     }
     else
     {
-        _fmpq_poly_evaluate_arb(res, pol, a, prec)
+        _fmpq_poly_evaluate_arb(res, pol, a, prec);
     }
 }
 
