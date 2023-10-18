@@ -96,7 +96,7 @@ cppyy.py.add_pythonization(filtered("renf_elem_class")(enable_arithmetic), "eant
 
 def enable_intrusive_serialization(proxy, name):
     r"""
-    Enable seralization for an eantic::renf_class& as returned by
+    Enable serialization for an eantic::renf_class& as returned by
     renf_class::parent().
     """
     def reduce(self):
