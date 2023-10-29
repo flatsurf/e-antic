@@ -1,9 +1,6 @@
 [submodule "renfxx/test/external/cereal"]
 	path = libeantic/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
-[submodule "upstream/antic"]
-	path = libeantic/upstream/antic
-	url = https://github.com/flatsurf/antic.git
 [submodule "upstream/flint"]
 	path = libeantic/upstream/flint
 	url = https://github.com/flintlib/flint.git
