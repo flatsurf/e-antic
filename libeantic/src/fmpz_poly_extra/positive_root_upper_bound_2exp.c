@@ -16,7 +16,7 @@
 
 #include <assert.h>
 
-#include <arb.h>
+#include <flint/arb.h>
 #include <flint/fmpz_poly.h>
 #include "../e-antic/fmpz_poly_extra.h"
 

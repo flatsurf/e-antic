@@ -21,6 +21,8 @@
 
 #endif
 
+#include <stdlib.h>
+
 static inline int 
 ARB_UNIQUE_INT(fmpz_t res, arb_t x, arf_t cl, arf_t cr, slong prec)
 {

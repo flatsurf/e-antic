@@ -10,6 +10,9 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <flint/fmpz_vec.h>
+#include <flint/fmpq.h>
 #include <flint/fmpq_vec.h>
 #include <flint/fmpq_poly.h>
 

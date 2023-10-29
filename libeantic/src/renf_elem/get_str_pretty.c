@@ -9,8 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <arb.h>
+#include <math.h>
 #include <string.h>
+#include <flint/arb.h>
 
 #include "../e-antic/renf_elem.h"
 

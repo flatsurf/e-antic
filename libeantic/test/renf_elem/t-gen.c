@@ -9,6 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
 #include <flint/flint.h>
 
 #include "../../e-antic/renf_elem.h"

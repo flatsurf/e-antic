@@ -10,6 +10,7 @@
 */
 
 #include <flint/fmpz_mod_poly.h>
+#include <flint/fmpz_mod.h>
 
 #include "../e-antic/fmpz_poly_extra.h"
 

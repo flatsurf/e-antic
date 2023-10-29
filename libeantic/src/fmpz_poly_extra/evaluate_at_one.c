@@ -9,6 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/fmpz_vec.h>
+
 #include "../e-antic/fmpz_poly_extra.h"
 
 void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)

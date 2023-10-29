@@ -17,7 +17,7 @@
 #include "local.h"
 
 #include <flint/fmpz_poly.h>
-#include <arb.h>
+#include <flint/arb.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -9,9 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <cfloat>
 #include <math.h>
-
-#include <arf.h>
+#include <flint/arf.h>
 
 #include "../rand_generator.hpp"
 #include "../renf_generator.hpp"
