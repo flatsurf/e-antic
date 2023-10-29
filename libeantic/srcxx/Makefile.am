@@ -15,7 +15,7 @@ EXTRA_DIST = $(srcdir)/libeanticxx.map
 AM_CPPFLAGS = -DBUILD_LIBEANTIC
 
 # Linked-against libraries
-libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint -lantic
+libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint
 
 # Installed headers
 nobase_pkginclude_HEADERS =        \
