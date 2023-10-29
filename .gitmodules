@@ -6,7 +6,7 @@
 	url = https://github.com/flatsurf/antic.git
 [submodule "upstream/flint"]
 	path = libeantic/upstream/flint
-	url = https://github.com/wbhart/flint2.git
+	url = https://github.com/flintlib/flint.git
 [submodule "renfxx/test/external/catch2"]
 	path = libeantic/test/external/catch2
 	url = https://github.com/catchorg/Catch2.git
