@@ -109,10 +109,6 @@ jobs:
       matrix:
         include:
           - on: ubuntu-22.04
-            # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
-            python: "3.7"
-            sagelib: "9.1"
-          - on: ubuntu-22.04
             # SageMath 9.2 shipped with Python 3.8 so we test that this combination works.
             python: "3.8"
             sagelib: "9.2"
@@ -132,10 +128,6 @@ jobs:
             # We test the latest SageMath with the latest Python.
             python: "3.10"
             sagelib: "9.5"
-          - on: macos-11
-            # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
-            python: "3.7"
-            sagelib: "9.1"
           - on: macos-11
             # SageMath 9.2 shipped with Python 3.8 so we test that this combination works.
             python: "3.8"
