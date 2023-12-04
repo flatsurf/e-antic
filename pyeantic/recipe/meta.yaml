@@ -28,7 +28,7 @@ requirements:
     - libeantic
   run:
     - python
-    - cppyy >=2.1.0,<3
+    - cppyy >=3,<4
     - gmpxxyy
     - cppyythonizations
     - boost-cpp
