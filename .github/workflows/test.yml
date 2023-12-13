@@ -32,7 +32,7 @@ jobs:
           sanitizer: valgrind
         # This test is not terribly useful and very flaky. It should be replaced with something like https://github.com/flatsurf/sage-flatsurf/pull/190
         # Note that we should also run pyeantic tests here.
-        # - on: ubuntu-20.04
+        # - on: ubuntu-22.04
         #   environment: binder
         - on: macos-11
           libflint: 2.6
