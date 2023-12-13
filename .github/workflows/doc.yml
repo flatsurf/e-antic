@@ -48,7 +48,8 @@ jobs:
           chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"` || true
 
           # Do not fail if there are 302 redirects.
-          linkchecker --check-extern http://localhost:8880/e-antic/libeantic --no-warnings
+          # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
+          linkchecker --check-extern http://localhost:8880/e-antic/libeantic --no-warnings --ignore gmplib.org
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
