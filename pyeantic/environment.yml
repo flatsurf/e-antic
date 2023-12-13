@@ -11,7 +11,7 @@ dependencies:
   - benchmark
   - boost-cpp
   - coreutils
-  - cppyy>=2.1.0,<3
+  - cppyy>=3,<4
   - cxx-compiler
   - gmpxxyy
   - ipywidgets
