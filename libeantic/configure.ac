@@ -54,8 +54,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #error FLINT must be at least 3.0.0
 #endif
 ])], [
-  AM_CONDITIONAL([HAVE_LIBANTIC], [false])
-  AM_CONDITIONAL([HAVE_LIBARB], [false])
+  # We do not want to link against libarb and libantic since they are part of FLINT 3 now.
+  # To make the build system happy, we need to define the variables HAVE_LIBANTIC and HAVE_ARB.
+  AC_CHECK_LIB(antic, no_such_symbol, [AC_MSG_ERROR([bug in configure script])], [AC_MSG_NOTICE([Not linking against antic which is contained in FLINT 3 now])])
+  AC_CHECK_LIB(arb, no_such_symbol, [AC_MSG_ERROR([bug in configure script])], [AC_MSG_NOTICE([Not linking against arb which is contained in FLINT 3 now])])
 ], [
   # We are now trying to build against the legacy FLINT 2.
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
