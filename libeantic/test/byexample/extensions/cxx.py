@@ -193,11 +193,14 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
     def run(self, example, options):
         self._parent_connection.send((example.source,))
         stdout, stderr, exception = self._parent_connection.recv()
-        if exception is not None:
-            raise exception
         if stderr is not None:
             import sys
             print(stderr, file=sys.stderr)
+        if exception is not None:
+            if stdout is not None:
+                import sys
+                print(stdout, file=sys.stderr)
+            raise exception
         return stdout
 
     def shutdown(self):
