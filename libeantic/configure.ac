@@ -54,6 +54,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #error FLINT must be at least 3.0.0
 #endif
 ])], [
+  AM_CONDITIONAL([HAVE_LIBFLINT3], [true])
   AM_CONDITIONAL([HAVE_LIBANTIC], [false])
   AM_CONDITIONAL([HAVE_LIBARB], [false])
 ], [
@@ -65,8 +66,11 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
   #endif
   ])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
 
+  AM_CONDITIONAL([HAVE_LIBFLINT3], [false])
+
   AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
   AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
+  AM_CONDITIONAL([HAVE_LIBANTIC], [true])
   
   # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
   AC_REPLACE_FUNCS(nf_init_randtest)
@@ -79,6 +83,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
   
   AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
   AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
+  AM_CONDITIONAL([HAVE_LIBARB], [true])
 ])
 
 AC_LANG_PUSH([C++])
