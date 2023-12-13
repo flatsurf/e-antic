@@ -53,7 +53,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #if __FLINT_RELEASE < 30000
 #error FLINT must be at least 3.0.0
 #endif
-])], [], [
+])], [
+  AM_CONDITIONAL([HAVE_LIBANTIC], [false])
+  AM_CONDITIONAL([HAVE_LIBARB], [false])
+], [
   # We are now trying to build against the legacy FLINT 2.
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
   #include <flint/flint.h>
