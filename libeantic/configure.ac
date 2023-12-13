@@ -48,6 +48,7 @@ AC_CHECK_LIB(mpfr, mpfr_init, [], [AC_MSG_WARN([libmpfr not found which FLINT ne
 AC_CHECK_HEADERS(flint/flint.h flint/fmpz.h flint/fmpq.h, , [AC_MSG_ERROR([FLINT headers not found])])
 AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
 
+## Check that FLINT 2 or 3 is available.
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <flint/flint.h>
 #if __FLINT_RELEASE < 30000
@@ -67,26 +68,55 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
   HAVE_FLINT=2
 ])
 
+## Check that ANTIC is available
 AS_IF([test "x$HAVE_FLINT" = "x3"], [
-  # We do not want to link against libarb and libantic since they are part of FLINT 3 now.
-  # To make the build system happy, we need to define the variables HAVE_LIBANTIC and HAVE_ARB.
-  AC_CHECK_LIB(antic, no_such_symbol, [AC_MSG_ERROR([bug in configure script])], [AC_MSG_NOTICE([Not linking against antic which is contained in FLINT 3 now])])
-  AC_CHECK_LIB(arb, no_such_symbol, [AC_MSG_ERROR([bug in configure script])], [AC_MSG_NOTICE([Not linking against arb which is contained in FLINT 3 now])])
+  # ANTIC is part of FLINT 3 so no need to check for ANTIC headers.
+  antic_symbol="no_such_symbol"
 ], [
-  AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
-  AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
+  AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, [], [AC_MSG_ERROR([antic headers not found])])
+  antic_symbol="nf_init"
+])
+
+AC_CHECK_LIB(antic, $antic_symbol, [
+  AS_IF([test "x$HAVE_FLINT" = "x3"], [
+    AC_MSG_ERROR([bug in build system, we should not detect ANTIC but we detected it])
+  ], [
+    # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
+    AC_REPLACE_FUNCS(nf_init_randtest)
+    # Unconditionally patch nf_elem_scalar_div_fmpq which has aliasing issues in ANTIC, https://github.com/wbhart/antic/pull/48
+    AC_LIBOBJ(EANTIC_nf_elem_scalar_div_fmpq)
+    # Unconditionally patch fmpq_poly_add_fmpq which was fixed in https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
+    AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
+    # Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
+    AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
+  ])
+], [
+  AS_IF([test "x$HAVE_FLINT" = "x3"], [
+    AC_MSG_NOTICE([not linking against libantic because it is shipped with FLINT 3 now])
+  ], [
+    AC_MSG_ERROR([libantic not found])
+  ])
+])
   
-  # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
-  AC_REPLACE_FUNCS(nf_init_randtest)
-  # Unconditionally patch nf_elem_scalar_div_fmpq which has aliasing issues in ANTIC, https://github.com/wbhart/antic/pull/48
-  AC_LIBOBJ(EANTIC_nf_elem_scalar_div_fmpq)
-  # Unconditionally patch fmpq_poly_add_fmpq which was fixed in https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
-  AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
-  # Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
-  AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
-  
-  AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
-  AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
+## Check that Arb is available
+AS_IF([test "x$HAVE_FLINT" = "x3"], [
+  # Arb is part of FLINT 3 so no need to check for Arb headers.
+  arb_symbol="no_such_symbol"
+], [
+  AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, [], [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
+  arb_symbol="arb_init"
+])
+
+AC_SEARCH_LIBS($arb_symbol, [arb flint-arb], [
+  AS_IF([test "x$HAVE_FLINT" = "x3"], [
+    AC_MSG_ERROR([bug in build system, we should not detect Arb but we detected it])
+  ], [])
+], [
+  AS_IF([test "x$HAVE_FLINT" = "x3"], [
+    AC_MSG_NOTICE([not linking against libarb because it is shipped with FLINT 3 now])
+  ], [
+    AC_MSG_ERROR([libarb not found])
+  ])
 ])
 
 AC_LANG_PUSH([C++])
