@@ -9,6 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
 #include "../e-antic/fmpz_poly_extra.h"
 
 slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol)

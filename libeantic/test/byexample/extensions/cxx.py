@@ -156,8 +156,8 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
                 return
 
             lines = source.split('\n')
-            definitions = [line for line in lines if line.startswith('#include')]
-            executables = [line for line in lines if not line.startswith('#include') and line]
+            definitions = [line for line in lines if line.startswith('#')]
+            executables = [line for line in lines if not line.startswith('#') and line]
 
             if executables and not executables[-1].endswith(';'):
                 definitions.append("#include <iostream>")

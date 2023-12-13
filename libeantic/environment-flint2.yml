@@ -1,10 +1,12 @@
-# This file lists the dependencies needed to build and test all of e-antic.
+# This file lists the dependencies needed to build and test all of libeantic.
 # Create a Conda environment with these dependencies preinstalled with:
-# conda env create -f environment.yml
+# conda env create -f environment-flint2.yml
 name: e-antic-build
 channels:
   - conda-forge
 dependencies:
+  - arb
+  - antic
   - automake
   - benchmark
   # byexample 10.5 is not working on macOS: https://github.com/byexamples/byexample/issues/220
@@ -15,7 +17,7 @@ dependencies:
   - coreutils
   - c-compiler
   - cxx-compiler
-  - libflint=3
+  - libflint=2
   - gmp
   - libtool
   - make

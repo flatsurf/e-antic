@@ -9,7 +9,13 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 
 #include "../e-antic/renf_elem.h"
 

@@ -9,6 +9,8 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
 #ifdef KIND
 
 #define XPASTE2(X,Y) X ## Y

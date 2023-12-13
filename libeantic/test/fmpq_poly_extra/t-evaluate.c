@@ -9,6 +9,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
+#include <flint/fmpq.h>
+
 #include "../../e-antic/fmpq_poly_extra.h"
 
 int main(void)
