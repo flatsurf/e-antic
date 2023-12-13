@@ -7,8 +7,7 @@ channels:
 dependencies:
   - automake
   - benchmark
-  # byexample 10.5 is not working on macOS: https://github.com/byexamples/byexample/issues/220
-  - byexample>=10.4,<10.5
+  - byexample>=10.4
   - boost-cpp
   # Our byexample setup uses cppyy to run C++ code samples.
   - cppyy>=3,<4
