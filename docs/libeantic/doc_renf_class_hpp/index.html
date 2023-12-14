@@ -8,7 +8,7 @@
     <title>renf_class - number fields - e-antic</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
         <link href="../extra.css" rel="stylesheet" />
     
       <script>
@@ -18,12 +18,11 @@
         var mkdocs_page_url = "/e-antic/libeantic/doc_renf_class_hpp/";
       </script>
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -36,7 +35,7 @@
           <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo" alt="Logo"/>
         </a><div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -86,9 +85,9 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>libeanticxx &raquo;</li>
-      <li>renf_class - number fields</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">libeanticxx</li>
+      <li class="breadcrumb-item active">renf_class - number fields</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -146,8 +145,13 @@ auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
 <h3 id="boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-functionstring-slong-emb-slong-prec"><code>boost::intrusive_ptr&lt;const renf_class&gt;</code> <code>make(const string&amp; minpoly, const string&amp; gen, const function&lt;string (slong)&gt;</code> <code>emb, slong prec)</code><a class="headerlink" href="#boostintrusive_ptrconst-renf_class-makeconst-string-minpoly-const-string-gen-const-functionstring-slong-emb-slong-prec" title="Permanent link">&para;</a></h3>
 <p>Return the number field obtained by adjoining the root of <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-minpoly">minpoly</a> which is approximately <a href="/e-antic/libeantic/doc_renf_class_hpp#parameter-emb">emb</a>.</p>
 <pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#if __FLINT_RELEASE &lt; 30000
 #include &lt;arb.h&gt;
 #include &lt;arf.h&gt;
+#else
+#include &lt;flint/arb.h&gt;
+#include &lt;flint/arf.h&gt;
+#endif
 
 const auto emb = [](slong prec) {
     arb_t emb;
@@ -283,16 +287,17 @@ std::cout &lt;&lt; *K;
     
   </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../extra.js" defer></script>
-      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../extra.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
-        };
+        });
     </script>
 
 </body>
