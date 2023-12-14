@@ -9,6 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/fmpz_mod.h>
 #include <flint/fmpz_mod_poly.h>
 
 #include "../e-antic/fmpz_poly_extra.h"

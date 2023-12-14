@@ -11,7 +11,7 @@ dependencies:
   - benchmark
   - boost-cpp
   - coreutils
-  - cppyy>=2.1.0,<3
+  - cppyy>=3,<4
   - cxx-compiler
   - gmpxxyy
   - ipywidgets
@@ -19,6 +19,7 @@ dependencies:
   - libtool
   - make
   - pytest
+  - setuptools
   - sagelib
   # sagelib<9.2 does not explicitly install libiconv which is needed in lots of places.
   - libiconv

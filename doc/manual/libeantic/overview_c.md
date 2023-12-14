@@ -34,7 +34,12 @@ fmpq_poly_set_str_pretty(poly, "a^3 - 3*a + 1", "a");
 We fix one of its roots which is approximately 0.34.
 
 ```c
+#include <flint/flint.h>
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 
 arb_t emb;
 arb_init(emb);

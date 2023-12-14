@@ -50,25 +50,41 @@ AC_CHECK_LIB(flint, fmpz_init, [], [AC_MSG_ERROR([libflint not found])])
 
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <flint/flint.h>
-#if __FLINT_RELEASE < 20600
-#error FLINT must be at least 2.6.0
+#if __FLINT_RELEASE < 30000
+#error FLINT must be at least 3.0.0
 #endif
-])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
+])], [
+  AM_CONDITIONAL([HAVE_LIBFLINT3], [true])
+  AM_CONDITIONAL([HAVE_LIBANTIC], [false])
+  AM_CONDITIONAL([HAVE_LIBARB], [false])
+], [
+  # We are now trying to build against the legacy FLINT 2.
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+  #include <flint/flint.h>
+  #if __FLINT_RELEASE < 20600
+  #error FLINT must be at least 2.6.0
+  #endif
+  ])], [], [AC_MSG_ERROR([libflint version must be at least 2.6.0])])
 
-AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
-AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
+  AM_CONDITIONAL([HAVE_LIBFLINT3], [false])
 
-# Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
-AC_REPLACE_FUNCS(nf_init_randtest)
-# Unconditionally patch nf_elem_scalar_div_fmpq which has aliasing issues in ANTIC, https://github.com/wbhart/antic/pull/48
-AC_LIBOBJ(EANTIC_nf_elem_scalar_div_fmpq)
-# Unconditionally patch fmpq_poly_add_fmpq which was fixed in https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
-AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
-# Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
-AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
-
-AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
-AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
+  AC_CHECK_HEADERS(antic/nf.h antic/nf_elem.h, , [AC_MSG_ERROR([antic headers not found])])
+  AC_CHECK_LIB(antic, nf_init, [], [AC_MSG_ERROR([libantic not found])])
+  AM_CONDITIONAL([HAVE_LIBANTIC], [true])
+  
+  # Check if we need to provide our own nf_init_randtest which was introduced in https://github.com/wbhart/antic/pull/47
+  AC_REPLACE_FUNCS(nf_init_randtest)
+  # Unconditionally patch nf_elem_scalar_div_fmpq which has aliasing issues in ANTIC, https://github.com/wbhart/antic/pull/48
+  AC_LIBOBJ(EANTIC_nf_elem_scalar_div_fmpq)
+  # Unconditionally patch fmpq_poly_add_fmpq which was fixed in https://github.com/wbhart/flint2/commit/17d26d4c957828f3c98c15ddec85108f841d3438
+  AC_LIBOBJ(EANTIC_fmpq_poly_add_fmpq)
+  # Unconditionally patch nf_elem_add_fmpq so it uses our patched fmpq_poly_add_fmpq
+  AC_LIBOBJ(EANTIC_nf_elem_add_fmpq)
+  
+  AC_CHECK_HEADERS(arb.h arb_poly.h arf.h, , [AC_MSG_ERROR([Arb headers not found. If your arb headers are in a non-standard location, you might need to adapt your CPPFLAGS, e.g., by adding -I/usr/include/arb to the CPPFLAGS environment variable.])])
+  AC_SEARCH_LIBS(arb_init, [arb flint-arb],[], [AC_MSG_ERROR([libarb not found])])
+  AM_CONDITIONAL([HAVE_LIBARB], [true])
+])
 
 AC_LANG_PUSH([C++])
 AX_CXX_COMPILE_STDCXX(14)

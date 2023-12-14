@@ -9,6 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
+#include <stdlib.h>
+
 #include "../../e-antic/renf.h"
 #include "../../e-antic/fmpz_poly_extra.h"
 #include "../../e-antic/fmpq_poly_extra.h"

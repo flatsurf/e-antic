@@ -9,9 +9,16 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <math.h>
+#include <cmath>
+#include <cfloat>
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arf.h>
+#else
+#include <flint/arf.h>
+#endif
 
 #include "../rand_generator.hpp"
 #include "../renf_generator.hpp"
@@ -24,7 +31,7 @@ static void d_get_fmpq(double d, fmpq_t q)
     arf_t a;
     fmpz_t man, exp, quo;
 
-    REQUIRE(isnormal(d));
+    REQUIRE(std::isnormal(d));
 
     arf_init(a);
     fmpz_init(man);

@@ -21,10 +21,18 @@
 #include "local.h"
 
 #include <flint/fmpq_poly.h>
+
+#if __FLINT_RELEASE < 30000
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
 #include <arb.h>
 #include <arb_poly.h>
+#else
+#include <flint/nf.h>
+#include <flint/nf_elem.h>
+#include <flint/arb.h>
+#include <flint/arb_poly.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
