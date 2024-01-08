@@ -35,7 +35,7 @@ easier to test this in a SageMath doctest.)::
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2022 Julian Rüth
+#                      2019-2023 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,12 @@ easier to test this in a SageMath doctest.)::
 #####################################################################
 
 import os
-import cppyy
+import warnings
+
+with warnings.catch_warnings():
+    # Ignore deprecation warnings from cppyy calling into pkg_resources
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import cppyy
 
 from cppyythonizations.printing import enable_pretty_printing
 from cppyythonizations.pickling.cereal import enable_cereal
@@ -91,7 +96,7 @@ cppyy.py.add_pythonization(filtered("renf_elem_class")(enable_arithmetic), "eant
 
 def enable_intrusive_serialization(proxy, name):
     r"""
-    Enable seralization for an eantic::renf_class& as returned by
+    Enable serialization for an eantic::renf_class& as returned by
     renf_class::parent().
     """
     def reduce(self):

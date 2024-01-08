@@ -22,6 +22,8 @@ jobs:
         - on: ubuntu-22.04
           libflint: 2.9
         - on: ubuntu-22.04
+          libflint: 3.0
+        - on: ubuntu-22.04
           libflint: 2.9
           sanitizer: address
         - on: ubuntu-22.04
@@ -30,9 +32,18 @@ jobs:
         - on: ubuntu-22.04
           libflint: 2.9
           sanitizer: valgrind
+        - on: ubuntu-22.04
+          libflint: 3.0
+          sanitizer: address
+        - on: ubuntu-22.04
+          libflint: 3.0
+          sanitizer: undefined
+        - on: ubuntu-22.04
+          libflint: 3.0
+          sanitizer: valgrind
         # This test is not terribly useful and very flaky. It should be replaced with something like https://github.com/flatsurf/sage-flatsurf/pull/190
         # Note that we should also run pyeantic tests here.
-        # - on: ubuntu-20.04
+        # - on: ubuntu-22.04
         #   environment: binder
         - on: macos-11
           libflint: 2.6
@@ -43,10 +54,18 @@ jobs:
         - on: macos-11
           libflint: 2.9
         - on: macos-11
+          libflint: 3.0
+        - on: macos-11
           libflint: 2.9
           sanitizer: address
         - on: macos-11
           libflint: 2.9
+          sanitizer: undefined
+        - on: macos-11
+          libflint: 3.0
+          sanitizer: address
+        - on: macos-11
+          libflint: 3.0
           sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
@@ -67,13 +86,20 @@ jobs:
           sudo apt install -y libc6-dbg
           mamba install valgrind
         if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: install dependencies
+      - name: install dependencies (FLINT 3)
         shell: bash -l {0}
         run: |
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba install libflint=${{ matrix.libflint }}
           conda list
-        if: ${{ matrix.environment != 'binder' }}
+        if: startsWith(matrix.libflint, '3')
+      - name: install dependencies (FLINT 2)
+        shell: bash -l {0}
+        run: |
+          mamba env update --quiet -n test -f libeantic/environment-flint2.yml
+          mamba install libflint=${{ matrix.libflint }}
+          conda list
+        if: startsWith(matrix.libflint, '2')
       - name: Create binder environment
         shell: bash -l {0}
         run: |
@@ -109,10 +135,6 @@ jobs:
       matrix:
         include:
           - on: ubuntu-22.04
-            # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
-            python: "3.7"
-            sagelib: "9.1"
-          - on: ubuntu-22.04
             # SageMath 9.2 shipped with Python 3.8 so we test that this combination works.
             python: "3.8"
             sagelib: "9.2"
@@ -129,13 +151,29 @@ jobs:
             python: "3.9"
             sagelib: "9.5"
           - on: ubuntu-22.04
-            # We test the latest SageMath with the latest Python.
+            # SageMath 9.6 shipped with Python 3.10 so we test that this combination works.
             python: "3.10"
-            sagelib: "9.5"
-          - on: macos-11
-            # SageMath 9.1 shipped with Python 3.7 so we test that this combination works.
-            python: "3.7"
-            sagelib: "9.1"
+            sagelib: "9.6"
+          - on: ubuntu-22.04
+            # SageMath 9.7 shipped with Python 3.10 so we test that this combination works.
+            python: "3.10"
+            sagelib: "9.7"
+          - on: ubuntu-22.04
+            # SageMath 9.8 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "9.8"
+          - on: ubuntu-22.04
+            # SageMath 10.0 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.0"
+          - on: ubuntu-22.04
+            # SageMath 10.1 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.1"
+          - on: ubuntu-22.04
+            # SageMath 10.2 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.2"
           - on: macos-11
             # SageMath 9.2 shipped with Python 3.8 so we test that this combination works.
             python: "3.8"
@@ -156,9 +194,33 @@ jobs:
             # We test the latest SageMath with the latest Python.
             python: "3.10"
             sagelib: "9.6"
-          - on: ubuntu-22.04
+          - on: macos-11
+            # SageMath 9.6 shipped with Python 3.10 so we test that this combination works.
             python: "3.10"
             sagelib: "9.6"
+          - on: macos-11
+            # SageMath 9.7 shipped with Python 3.10 so we test that this combination works.
+            python: "3.10"
+            sagelib: "9.7"
+          - on: macos-11
+            # SageMath 9.8 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "9.8"
+          - on: macos-11
+            # SageMath 10.0 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.0"
+          - on: macos-11
+            # SageMath 10.1 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.1"
+          - on: macos-11
+            # SageMath 10.2 shipped with Python 3.11 so we test that this combination works.
+            python: "3.11"
+            sagelib: "10.2"
+          - on: ubuntu-22.04
+            python: "3.11"
+            sagelib: "10.2"
             sanitizer: valgrind
           # Needs libsanitizer=11, with the default sanitizer, we get "ASan is ignoring requested __asan_handle_no_return" when importing SageMath and then fail to find the roots of some polynomials.
           # - on: ubuntu-20.04
@@ -201,7 +263,7 @@ jobs:
         run: |
           mamba install -n test sagelib=${{ matrix.sagelib }}
           echo "sagelib ==${{ matrix.sagelib }}" >> $CONDA_PREFIX/conda-meta/pinned
-          mamba env update --quiet -n test -f libeantic/environment.yml
+          mamba env update --quiet -n test -f libeantic/environment-flint2.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
           conda list
         if: ${{ matrix.environment != 'binder' }}
@@ -259,9 +321,9 @@ jobs:
       - name: install dependencies
         shell: bash -l {0}
         run: |
+          mamba env update --quiet -n test -f doc/environment.yml
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
-          mamba env update --quiet -n test -f doc/environment.yml
           conda list
       - name: make distcheck
         shell: bash -l {0}

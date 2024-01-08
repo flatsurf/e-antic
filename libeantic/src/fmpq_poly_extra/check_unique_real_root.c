@@ -9,6 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/fmpz.h>
+#include <flint/fmpq.h>
+#include <flint/fmpz_vec.h>
 
 #include "../e-antic/fmpz_poly_extra.h"
 #include "../e-antic/fmpq_poly_extra.h"

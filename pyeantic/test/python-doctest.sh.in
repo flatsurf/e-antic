@@ -23,7 +23,7 @@
 set -ex
 
 # We cannot run pytest directly since it would be invoked through its shebang
-# which makes macOS sanitize some environment variables. Instead, we go thorugh
+# which makes macOS sanitize some environment variables. Instead, we go through
 # our bin/python wrapper to set the necessary environment variables and invoke
 # the Python binary to run pytest which keeps our environment intact on macOS.
 

@@ -9,18 +9,18 @@ concurrency:
 
 jobs:
   build-manual:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
       - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest", python-version: "3.9" }
+        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest", python-version: "3.10" }
       - name: install dependencies
         shell: bash -l {0}
         run: |
+          mamba env update --quiet -n test -f doc/environment.yml
           mamba env update --quiet -n test -f libeantic/environment.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
-          mamba env update --quiet -n test -f doc/environment.yml
           conda list
       - name: build e-antic
         shell: bash -l {0}
@@ -47,7 +47,9 @@ jobs:
           # Strangely, the linkchecker modules are installed writable and linkchecker then refuses to load them.
           chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"` || true
 
-          linkchecker --check-extern http://localhost:8880/e-antic/libeantic
+          # Do not fail if there are 302 redirects.
+          # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
+          linkchecker --check-extern http://localhost:8880/e-antic/libeantic --no-warnings --ignore gmplib.org
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

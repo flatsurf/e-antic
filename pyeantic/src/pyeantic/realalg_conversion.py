@@ -10,8 +10,8 @@ This module provides conversion from and to ``realalg``.
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2019 Vincent Delecroix
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C)      2019 Vincent Delecroix
+#        Copyright (C) 2019-2023 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,12 @@ This module provides conversion from and to ``realalg``.
 #  along with e-antic. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
 
-import realalg
+import warnings
+with warnings.catch_warnings():
+    # Ignore deprecation warnings, see https://github.com/MarkCBell/realalg/pull/6
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import realalg
+
 
 import numbers
 from .cppyy_eantic import eantic
@@ -52,7 +57,7 @@ def realalg_nf_to_eantic(K, name='a'):
     r"""
     Convert a realalg real number field to eantic
 
-    >>> import realalg  # random output due to deprecation warnings
+    >>> import realalg  # random output as it prints a deprecation warning, see https://github.com/MarkCBell/realalg/pull/6
     >>> from pyeantic.realalg_conversion import realalg_nf_to_eantic
     >>> R = realalg.RealNumberField([-2,0,1])  # random output as it prints a deprecation warning in SageMath
     >>> realalg_nf_to_eantic(R)

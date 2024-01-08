@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   compiler-warnings:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         compiler:
@@ -30,7 +30,8 @@ jobs:
             cpp: clang-cpp
             cxx: clang++
             # We need -Wno-reselved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
-            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement
+            # We need -Wno-unsafe-buffer-usage since we need unsafe pointer arithmetic to extend FLINT (efficiently.)
+            cflags: -Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-unsafe-buffer-usage
             cxxflags: -Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation
     steps:
       - uses: actions/checkout@v2
@@ -58,6 +59,22 @@ jobs:
 
           # Build library and its tests (but do not run any tests.)
           make check TESTS= CFLAGS="$CFLAGS ${{ matrix.debug }} ${{ matrix.cflags }}" CXXFLAGS="$CXXFLAGS ${{ matrix.debug }} ${{ matrix.cxxflags }}"
+  codespell:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { submodules: recursive }
+      - uses: conda-incubator/setup-miniconda@v2
+        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
+      - name: install codespell
+        shell: bash -l {0}
+        run: |
+          mamba install -y codespell
+      - name: run codespell
+        shell: bash -l {0}
+        run: |
+          codespell `git ls-files`
+
 
 env:
   MAKEFLAGS: -j2
