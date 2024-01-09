@@ -4,6 +4,16 @@ e-antic Change Log
 
 .. current developments
 
+v2.0.1
+====================
+
+**Fixed:**
+
+* Fixed segfault when using non-intrusive pointers to ``renf_class`` such as the ones returned by ``parent()`` from Python.
+* Fixed compilation with GCC 13.2.1.
+
+
+
 v2.0.0
 ====================
 
