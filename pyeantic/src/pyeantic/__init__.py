@@ -1,7 +1,7 @@
 r"""
 Python Wrappers for E-ANTIC
 
->>> import pyeantic
+>>> import pyeantic  # random output due to deprecation warnings
 """
 ######################################################################
 #  This file is part of e-antic.
