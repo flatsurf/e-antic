@@ -151,7 +151,9 @@ cppyy.include("e-antic/cppyy.hpp")
 from cppyy.gbl import eantic, boost
 
 eantic.renf = lambda *args: unwrap_intrusive_ptr(eantic.renf_class.make(*args))
-eantic.renf_class.make.__sig2exc__ = True
+if hasattr(eantic.renf_class.make, "__sig2exc__"):
+    # cppyy on PyPy does not support sig2exc yet, see https://github.com/wlav/cppyy/issues/209
+    eantic.renf_class.make.__sig2exc__ = True
 
 def for_eantic(x):
     r"""
