@@ -4,6 +4,15 @@ e-antic Change Log
 
 .. current developments
 
+v2.0.2
+====================
+
+**Fixed:**
+
+* Fixed exception being thrown by PyPy due to https://github.com/wlav/cppyy/issues/209.
+
+
+
 v2.0.1
 ====================
 
