@@ -198,6 +198,77 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         }
     }
 
+    SECTION("Addition and Subtraction of Products")
+    {
+        renf_elem_class c(a);
+
+        c.iaddmul(static_cast<short>(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(static_cast<short>(2), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(static_cast<unsigned short>(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(static_cast<unsigned short>(2), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2u, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2u, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2l, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2l, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2ul, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2ul, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2ll, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2ll, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(2ull, a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(2ull, a);
+        REQUIRE(c == a);
+
+        c.iaddmul(mpz_class(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(mpz_class(2), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(mpq_class(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(mpq_class(2), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(renf_elem_class(2), a);
+        REQUIRE(c == a);
+    }
+
     SECTION("Build Element as Sum of Terms")
     {
         auto c = K.zero();
