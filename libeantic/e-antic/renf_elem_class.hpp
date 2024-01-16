@@ -509,7 +509,7 @@ public:
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
     /// auto a = K->gen();
     /// std::strstream s;
-    /// s << a;
+    /// s << a << std::ends;
     /// std::cout << s.str();
     /// // -> (x ~ 1.4142136)
     ///

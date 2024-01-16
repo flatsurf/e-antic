@@ -4,7 +4,6 @@
 name: pyeantic-build
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - antic
   - arb
@@ -12,18 +11,18 @@ dependencies:
   - benchmark
   - boost-cpp
   - coreutils
-  - cppyy>=2.1.0,<3
+  - cppyy>=3,<4
   - cxx-compiler
   - gmpxxyy
   - ipywidgets
   - libflint
   - libtool
+  - make
   - pytest
+  - setuptools
   - sagelib
   # sagelib<9.2 does not explicitly install libiconv which is needed in lots of places.
   - libiconv
-  # work around https://github.com/conda-forge/fontconfig-feedstock/issues/54#issuecomment-1086911517
-  - fontconfig 2.13.96=*_1|<2.13.96
   - sympy
   - cppyythonizations
   # valgrind is only needed for make check-valgrind

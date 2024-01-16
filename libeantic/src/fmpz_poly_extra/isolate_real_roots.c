@@ -10,6 +10,10 @@
 */
 
 #include <assert.h>
+#include <stdlib.h>
+
+#include <flint/fmpz_vec.h>
+#include <flint/fmpq.h>
 
 #include "../e-antic/fmpz_poly_extra.h"
 

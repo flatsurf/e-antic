@@ -3,7 +3,7 @@ Make e-antic accessible from Python through cppyy
 
 EXAMPLES::
 
-    >>> from pyeantic import eantic
+    >>> from pyeantic import eantic  # random output due to deprecation warnings
     >>> K = eantic.renf("x^2 - 2", "x", "[1.4 +/- 1]")
     >>> x = eantic.renf_elem(K, "x"); x
     (x ~ 1.4142136)
@@ -35,7 +35,7 @@ easier to test this in a SageMath doctest.)::
 #  This file is part of e-antic.
 #
 #        Copyright (C)      2019 Vincent Delecroix
-#                      2019-2022 Julian Rüth
+#                      2019-2023 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,12 @@ easier to test this in a SageMath doctest.)::
 #####################################################################
 
 import os
-import cppyy
+import warnings
+
+with warnings.catch_warnings():
+    # Ignore deprecation warnings from cppyy calling into pkg_resources
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import cppyy
 
 from cppyythonizations.printing import enable_pretty_printing
 from cppyythonizations.pickling.cereal import enable_cereal
@@ -91,7 +96,7 @@ cppyy.py.add_pythonization(filtered("renf_elem_class")(enable_arithmetic), "eant
 
 def enable_intrusive_serialization(proxy, name):
     r"""
-    Enable seralization for an eantic::renf_class& as returned by
+    Enable serialization for an eantic::renf_class& as returned by
     renf_class::parent().
     """
     def reduce(self):
@@ -100,12 +105,35 @@ def enable_intrusive_serialization(proxy, name):
     proxy.__reduce__ = reduce
 
 def unwrap_intrusive_ptr(K):
+    r"""
+    Return a reference to a ``renf_class`` that makes sure that keeps itself
+    alive by holding on to an intrusive pointer to that same ``renf_class``.
+
+    INPUT:
+
+    - ``K`` -- a reference or pointer or intrusive pointer to a ``renf_class``
+
+    EXAMPLES:
+
+    Without this machinery, the following would be a segfault because ``K``
+    just immediately gets garbage collected again::
+
+        sage: from pyeantic import eantic
+        sage: K = eantic.renf("x^2 - 2", "x", "1 +/- 1")
+        sage: K.gen().parent()
+        NumberField(x^2 - 2, [1.41421356237309504880168872420969807857 +/- 2.22e-39])
+
+    """
     if isinstance(K, eantic.renf_class):
         K = cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class'](K)
-    if isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
-        K = K.get()
-        K.__intrusive__ = K
-    return K
+
+    if not isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
+        raise TypeError("argument must be an intrusive_ptr to a renf_class")
+
+    wrapped = K.get()
+    wrapped.__lifeline = K
+
+    return wrapped
 
 def intrusive_ptr_deserialize(intrusive):
     cppyy.include('e-antic/cereal.hpp')
@@ -123,7 +151,9 @@ cppyy.include("e-antic/cppyy.hpp")
 from cppyy.gbl import eantic, boost
 
 eantic.renf = lambda *args: unwrap_intrusive_ptr(eantic.renf_class.make(*args))
-eantic.renf_class.make.__sig2exc__ = True
+if hasattr(eantic.renf_class.make, "__sig2exc__"):
+    # cppyy on PyPy does not support sig2exc yet, see https://github.com/wlav/cppyy/issues/209
+    eantic.renf_class.make.__sig2exc__ = True
 
 def for_eantic(x):
     r"""
@@ -175,7 +205,8 @@ def make_renf_elem_class(*args):
         return eantic.renf_elem_class()
 
     K = args[0]
-    K = unwrap_intrusive_ptr(K)
+    if isinstance(K, cppyy.gbl.boost.intrusive_ptr['const eantic::renf_class']):
+        K = unwrap_intrusive_ptr(K)
 
     if len(args) == 1:
         if isinstance(K, eantic.renf_class):

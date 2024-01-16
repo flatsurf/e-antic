@@ -9,6 +9,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
+#include <flint/fmpq.h>
+
 #include "../../e-antic/fmpq_poly_extra.h"
 
 int main(void)
@@ -96,7 +100,7 @@ int main(void)
         arf_clear(d);
     }
 
-    /* check evaluate_arb agains exact evaluate_fmpq */
+    /* check evaluate_arb against exact evaluate_fmpq */
     for (iter = 0; iter < 1000; iter++)
     {
         fmpq_poly_t p;

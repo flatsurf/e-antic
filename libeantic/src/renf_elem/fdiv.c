@@ -9,7 +9,13 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 
 #include "../e-antic/renf_elem.h"
 
@@ -87,7 +93,7 @@ void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
     }
     else
     {
-        /* For a rational divisior it's faster to perform exact division and
+        /* For a rational divisor it's faster to perform exact division and
          * then take the floor of the result. */
         renf_elem_t quotient;
         renf_elem_init(quotient, nf);

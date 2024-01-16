@@ -509,10 +509,19 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpz_clas
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
+    fmpz_t coeff;
     fmpq_poly_t p;
     fmpq_poly_init(p);
     for (size_t i = 0; i < coefficients.size(); i++)
+    {
+#if __FLINT_RELEASE < 30000
         fmpq_poly_set_coeff_mpz(p, static_cast<slong>(i), coefficients[i].__get_mp());
+#else
+        fmpz_init_set_readonly(coeff, coefficients[i].__get_mp());
+        fmpq_poly_set_coeff_fmpz(p, static_cast<slong>(i), coeff);
+        fmpz_clear_readonly(coeff);
+#endif
+    }
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
@@ -524,9 +533,19 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpq_clas
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
+    fmpq_t coeff;
     fmpq_poly_t p;
     fmpq_poly_init(p);
+#if __FLINT_RELEASE < 30000
     fmpq_poly_set_array_mpq(p, reinterpret_cast<const mpq_t*>(&coefficients[0]), coefficients.size());
+#else
+    for (size_t i = 0; i < coefficients.size(); i++)
+    {
+        fmpq_init_set_readonly(coeff, coefficients[i].__get_mp());
+        fmpq_poly_set_coeff_fmpq(p, static_cast<slong>(i), coeff);
+        fmpq_clear_readonly(coeff);
+    }
+#endif
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);

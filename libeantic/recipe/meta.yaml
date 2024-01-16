@@ -1,4 +1,4 @@
-{% set version = '1.3.0' %}
+{% set version = '2.0.2' %}
 {% set build_number = '0' %}
 
 package:
@@ -19,6 +19,7 @@ requirements:
   build:
     - libtool
     - automake
+    - make
     - {{ compiler('cxx') }}
   host:
     - antic

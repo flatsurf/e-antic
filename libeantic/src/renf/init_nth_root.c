@@ -11,6 +11,7 @@
 
 
 #include <assert.h>
+#include <stdlib.h>
 
 #include "../e-antic/renf.h"
 

@@ -108,8 +108,13 @@ public:
     /// This minimal polynomial does not have to be totally real or monic.
     /// ```
     /// #include <e-antic/renf_class.hpp>
+    /// #if __FLINT_RELEASE < 30000
     /// #include <arb.h>
     /// #include <arf.h>
+    /// #else
+    /// #include <flint/arb.h>
+    /// #include <flint/arf.h>
+    /// #endif
     ///
     /// const auto emb = [](slong prec) {
     ///     arb_t emb;
