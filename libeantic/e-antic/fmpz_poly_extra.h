@@ -36,8 +36,10 @@ extern "C" {
 /// [`a`, `b`] becomes the interval [0,1]
 LIBEANTIC_API void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
 
+#if __FLINT_RELEASE < 30000
 /// Set `p` to be a random irreducible polynomial
 LIBEANTIC_API void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+#endif
 
 /// Set the polynomial `p` from the string `s` using `var` as variable name
 LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var);
