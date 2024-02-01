@@ -14,6 +14,7 @@
 
 #include "../e-antic/fmpz_poly_extra.h"
 
+#if __FLINT_RELEASE < 30000
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits)
 {
     slong i;
@@ -58,3 +59,4 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
 #endif
     fmpz_clear(c);
 }
+#endif
