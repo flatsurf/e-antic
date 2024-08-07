@@ -27,9 +27,8 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6, 2.7, 2.8, or 2.9](https://flintlib.org)
- - [Arb](https://arblib.org/)
- - [ANTIC](https://github.com/wbhart/antic)
+ - either [FLINT 2.6, 2.7, 2.8, or 2.9](https://flintlib.org), [Arb](https://arblib.org/), and [ANTIC](https://github.com/wbhart/antic),
+ - or [FLINT 3.x](https://flintlib.org);
  - [Boost](https://www.boost.org/) for the C++ library
  - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
