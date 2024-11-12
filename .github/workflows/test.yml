@@ -41,10 +41,6 @@ jobs:
         - on: ubuntu-22.04
           libflint: 3.0
           sanitizer: valgrind
-        # This test is not terribly useful and very flaky. It should be replaced with something like https://github.com/flatsurf/sage-flatsurf/pull/190
-        # Note that we should also run pyeantic tests here.
-        # - on: ubuntu-22.04
-        #   environment: binder
         - on: macos-11
           libflint: 2.6
         - on: macos-11
@@ -100,15 +96,6 @@ jobs:
           mamba install libflint=${{ matrix.libflint }}
           conda list
         if: startsWith(matrix.libflint, '2')
-      - name: Create binder environment
-        shell: bash -l {0}
-        run: |
-          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
-          mamba install -n test --quiet -y pytest pytest-xdist byexample py
-          mamba env update -n test --quiet -f repo2docker.yml
-          mamba env update -n test --quiet -f binder/environment.yml
-          conda list
-        if: ${{ matrix.environment == 'binder' }}
       - name: configure & build & test
         shell: bash -l {0}
         run: |
@@ -246,7 +233,7 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"`
           echo "::set-output name=linker::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined"`
       - uses: conda-incubator/setup-miniconda@v2
@@ -266,16 +253,6 @@ jobs:
           mamba env update --quiet -n test -f libeantic/environment-flint2.yml
           mamba env update --quiet -n test -f pyeantic/environment.yml
           conda list
-        if: ${{ matrix.environment != 'binder' }}
-      - name: Create binder environment
-        shell: bash -l {0}
-        run: |
-          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
-          mamba install -n test --quiet -y pytest pytest-xdist byexample
-          mamba env update -n test --quiet -f repo2docker.yml
-          mamba env update -n test --quiet -f binder/environment.yml
-          conda list
-        if: ${{ matrix.environment == 'binder' }}
       - name: make ${{ matrix.target }}
         shell: bash -l {0}
         run: |
