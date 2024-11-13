@@ -1,0 +1,82 @@
+[project]
+channels = ["conda-forge"]
+description = "(Real Embedded) Algebraic Number Theory"
+name = "e-antic"
+platforms = ["linux-64", "osx-64"]
+
+[environments]
+libflatsurf-flint-26 = ["libflatsurf", "flint-26"]
+libflatsurf-flint-27 = ["libflatsurf", "flint-27"]
+libflatsurf-flint-28 = ["libflatsurf", "flint-28"]
+libflatsurf-flint-29 = ["libflatsurf", "flint-29"]
+pyflatsurf-sagemath-92 = ["pyflatsurf", "sagemath-92"]
+pyflatsurf-sagemath-93 = ["pyflatsurf", "sagemath-93"]
+pyflatsurf-sagemath-94 = ["pyflatsurf", "sagemath-94"]
+pyflatsurf-sagemath-95 = ["pyflatsurf", "sagemath-95"]
+pyflatsurf-sagemath-96 = ["pyflatsurf", "sagemath-96"]
+pyflatsurf-sagemath-97 = ["pyflatsurf", "sagemath-97"]
+pyflatsurf-sagemath-98 = ["pyflatsurf", "sagemath-98"]
+pyflatsurf-sagemath-100 = ["pyflatsurf", "sagemath-100"]
+pyflatsurf-sagemath-101 = ["pyflatsurf", "sagemath-101"]
+pyflatsurf-sagemath-102 = ["pyflatsurf", "sagemath-102"]
+pyflatsurf-sagemath-103 = ["pyflatsurf", "sagemath-103"]
+doc = []
+dev = ["dev", "libflatsurf", "pyflatsurf"]
+
+[tasks]
+bootstrap = { cmd = "./bootstrap", inputs = ["**/*.ac"], outputs = ["configure", "libeantic/configure", "pyeantic/configure", "doc/configure"] }
+
+[feature.libflatsurf.tasks]
+libflatsurf-configure = { cmd = "./configure --without-benchmark --without-byexample", cwd = "libeantic", depends-on = ["bootstrap"], inputs = ["configure", "**/*.in"] }
+libflatsurf-build = { cmd = "make", cwd = "libeantic", depends-on = ["libflatsurf-configure"], env = { MAKEFLAGS = "-j$(nproc)" } }
+libflatsurf-check = { cmd = "make check", cwd = "libeantic", depends-on = ["libflatsurf-build"], env = { MAKEFLAGS = "-j$(nproc)" } }
+
+[feature.dev.tasks]
+build = "pixi run libflatsurf-build"
+test = "pixi run libflatsurf-check"
+
+[dependencies]
+automake = "*"
+make = "*"
+libtool = "*"
+coreutils = "*"
+
+[feature.libflatsurf.dependencies]
+c-compiler = "*"
+cxx-compiler = "*"
+gmp = "*"
+libflint = "*"
+boost-cpp = "*"
+# benchmark = "*"
+# byexample = ">=10.4"
+# cppyy = ">=3,<4"
+# py = "*"
+
+[feature.pyflatsurf]
+
+[feature.dev.dependencies]
+libflint = "3.*"
+
+[feature.flint-26.dependencies]
+libflint = "2.6"
+
+[feature.flint-27.dependencies]
+libflint = "2.7"
+
+[feature.flint-28.dependencies]
+libflint = "2.8"
+
+[feature.flint-29.dependencies]
+libflint = "2.9"
+
+[feature.sagemath-92]
+[feature.sagemath-93]
+[feature.sagemath-94]
+[feature.sagemath-95]
+[feature.sagemath-96]
+[feature.sagemath-97]
+[feature.sagemath-98]
+[feature.sagemath-100]
+[feature.sagemath-101]
+[feature.sagemath-102]
+[feature.sagemath-103]
