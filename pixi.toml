@@ -5,35 +5,38 @@ name = "e-antic"
 platforms = ["linux-64", "osx-64"]
 
 [environments]
-libflatsurf-flint-26 = ["libflatsurf", "flint-26"]
-libflatsurf-flint-27 = ["libflatsurf", "flint-27"]
-libflatsurf-flint-28 = ["libflatsurf", "flint-28"]
-libflatsurf-flint-29 = ["libflatsurf", "flint-29"]
-pyflatsurf-sagemath-92 = ["pyflatsurf", "sagemath-92"]
-pyflatsurf-sagemath-93 = ["pyflatsurf", "sagemath-93"]
-pyflatsurf-sagemath-94 = ["pyflatsurf", "sagemath-94"]
-pyflatsurf-sagemath-95 = ["pyflatsurf", "sagemath-95"]
-pyflatsurf-sagemath-96 = ["pyflatsurf", "sagemath-96"]
-pyflatsurf-sagemath-97 = ["pyflatsurf", "sagemath-97"]
-pyflatsurf-sagemath-98 = ["pyflatsurf", "sagemath-98"]
-pyflatsurf-sagemath-100 = ["pyflatsurf", "sagemath-100"]
-pyflatsurf-sagemath-101 = ["pyflatsurf", "sagemath-101"]
-pyflatsurf-sagemath-102 = ["pyflatsurf", "sagemath-102"]
-pyflatsurf-sagemath-103 = ["pyflatsurf", "sagemath-103"]
+libeantic-flint-26 = ["libeantic", "flint-26"]
+libeantic-flint-27 = ["libeantic", "flint-27"]
+libeantic-flint-28 = ["libeantic", "flint-28"]
+libeantic-flint-29 = ["libeantic", "flint-29"]
+pyeantic-sagemath-92 = ["pyeantic", "sagemath-92"]
+pyeantic-sagemath-93 = ["pyeantic", "sagemath-93"]
+pyeantic-sagemath-94 = ["pyeantic", "sagemath-94"]
+pyeantic-sagemath-95 = ["pyeantic", "sagemath-95"]
+pyeantic-sagemath-96 = ["pyeantic", "sagemath-96"]
+pyeantic-sagemath-97 = ["pyeantic", "sagemath-97"]
+pyeantic-sagemath-98 = ["pyeantic", "sagemath-98"]
+pyeantic-sagemath-100 = ["pyeantic", "sagemath-100"]
+pyeantic-sagemath-101 = ["pyeantic", "sagemath-101"]
+pyeantic-sagemath-102 = ["pyeantic", "sagemath-102"]
+pyeantic-sagemath-103 = ["pyeantic", "sagemath-103"]
 doc = []
-dev = ["dev", "libflatsurf", "pyflatsurf"]
+dev = ["dev", "libeantic", "pyeantic", "sagemath-103", "doc"]
 
 [tasks]
 bootstrap = { cmd = "./bootstrap", inputs = ["**/*.ac"], outputs = ["configure", "libeantic/configure", "pyeantic/configure", "doc/configure"] }
 
-[feature.libflatsurf.tasks]
-libflatsurf-configure = { cmd = "./configure --without-benchmark --without-byexample", cwd = "libeantic", depends-on = ["bootstrap"], inputs = ["configure", "**/*.in"] }
-libflatsurf-build = { cmd = "make", cwd = "libeantic", depends-on = ["libflatsurf-configure"], env = { MAKEFLAGS = "-j$(nproc)" } }
-libflatsurf-check = { cmd = "make check", cwd = "libeantic", depends-on = ["libflatsurf-build"], env = { MAKEFLAGS = "-j$(nproc)" } }
+[feature.libeantic.tasks]
+libeantic-configure = { cmd = "./configure --without-benchmark --without-byexample", cwd = "libeantic", depends-on = ["bootstrap"], inputs = ["configure", "**/*.in"] }
+libeantic-build = { cmd = "make", cwd = "libeantic", depends-on = ["libeantic-configure"], env = { MAKEFLAGS = "-j$(nproc)" } }
+libeantic-check = { cmd = "make check", cwd = "libeantic", depends-on = ["libeantic-build"], env = { MAKEFLAGS = "-j$(nproc)" } }
+pyeantic-configure = { cmd = "./configure --without-sage", cwd = "pyeantic", depends-on = ["bootstrap"], inputs = ["configure", "**/*.in"] }
+pyeantic-check = { cmd = "make check", cwd = "pyeantic", depends-on = ["pyeantic-configure", "libeantic-build"], env = { MAKEFLAGS = "-j$(nproc)" } }
 
 [feature.dev.tasks]
-build = "pixi run libflatsurf-build"
-test = "pixi run libflatsurf-check"
+build = "pixi run libeantic-build"
+test = "pixi run libeantic-check && pixi run pyeantic-check"
+distcheck = { cmd = "./configure && make distcheck", depends-on = ["bootstrap"], env = { MAKEFLAGS = "-j$(nproc)" } }
 
 [dependencies]
 automake = "*"
@@ -41,7 +44,7 @@ make = "*"
 libtool = "*"
 coreutils = "*"
 
-[feature.libflatsurf.dependencies]
+[feature.libeantic.dependencies]
 c-compiler = "*"
 cxx-compiler = "*"
 gmp = "*"
@@ -52,10 +55,25 @@ boost-cpp = "*"
 # cppyy = ">=3,<4"
 # py = "*"
 
-[feature.pyflatsurf]
+[feature.pyeantic.dependencies]
+python = "*"
+cppyy = "*"
+cppyythonizations = "*"
+pytest = "*"
+setuptools = "*"
+
+[feature.pyeantic.pypi-dependencies]
+pyeantic = { path = "pyeantic/src", editable = true }
+
+[feature.doc.dependencies]
+sphinx = "*"
+standardese = "*"
+mkdocs = "*"
 
 [feature.dev.dependencies]
 libflint = "3.*"
+benchmark = "*"
+byexample = "*"
 
 [feature.flint-26.dependencies]
 libflint = "2.6"
@@ -79,4 +97,6 @@ libflint = "2.9"
 [feature.sagemath-100]
 [feature.sagemath-101]
 [feature.sagemath-102]
-[feature.sagemath-103]
+[feature.sagemath-103.dependencies]
+gmpxxyy = "*"
+sagelib = "10.3"
