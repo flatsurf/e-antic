@@ -1,3 +1,49 @@
+# TODO: Move most of this into the README or documentation and link to it from here.
+
+# This file describes the [pixi](https://pixi.sh) interface to e-antic.
+#
+# pixi is a tool for developers so that we can all use the same workflows in
+# the same defined environment.
+# 
+# If you have not used pixi before, the most relevant pixi command is:
+#
+#    pixi run TASK
+#
+# Specifically:
+#
+#    pixi run test
+#
+# Which builds libeantic and runs the libeantic and pyeantic test suites.
+#
+# Run `pixi task list` to see the available tasks.
+#
+# The tasks follow a naming scheme that corresponds to the GitHub workflows
+# defined in .github/workflows, i.e.,
+# * `test-libeantic-*` runs a libeantic test suite
+# * `test-pyeantic-*` runs a pyeantic test suite
+# * `lint-*` performs one of the code linting tasks
+# * `integration-*` performs an integration test with a downstream package
+# * `coverage` determines code coverage of our test suites
+# * `doc` produces our documentation
+#
+# A number of tasks are conveniences for developers, they do not follow this
+# naming scheme and are defined in the `[feature.dev.tasks]` section below.
+#
+# All tasks rely on more fine-grained tasks that are often more useful during development such as:
+# * `pixi run libeantic-check` build libeantic and run its test suite
+# * `pixi run pyeantic-check` build libeantic and run the pyeantic test suite
+#
+# For experimentation, we also provide `pixi run sage` which spawn a SageMath
+# session with the local libeantic and pyeantic installed.
+#
+# More experienced developers may also want to drop into a pixi shell and invoke `configure` and `make` directly:
+#
+#     pixi shell -e dev
+#     ./bootstrap
+#     cd libeantic
+#     ./configure
+#     MAKEFLAGS="-j$(nproc)" make check
+
 [project]
 channels = ["conda-forge"]
 description = "(Real Embedded) Algebraic Number Theory"
@@ -23,8 +69,10 @@ pyeantic-sagemath-103 = ["pyeantic", "sagemath-103"]
 doc = []
 dev = ["dev", "libeantic", "pyeantic", "sagemath-103", "doc"]
 
-[tasks]
-bootstrap = { cmd = "./bootstrap", inputs = ["**/*.ac"], outputs = ["configure", "libeantic/configure", "pyeantic/configure", "doc/configure"] }
+[tasks.bootstrap]
+cmd = "./bootstrap"
+inputs = ["configure.ac", "{libeantic,pyeantic,doc}/configure.ac", "Makefile.am", "{libeantic,pyeantic,doc}/**/Makefile.am"]
+outputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 
 [feature.libeantic.tasks]
 libeantic-configure = { cmd = "./configure --without-benchmark --without-byexample", cwd = "libeantic", depends-on = ["bootstrap"], inputs = ["configure", "**/*.in"] }
@@ -34,9 +82,19 @@ pyeantic-configure = { cmd = "./configure --without-sage", cwd = "pyeantic", dep
 pyeantic-check = { cmd = "make check", cwd = "pyeantic", depends-on = ["pyeantic-configure", "libeantic-build"], env = { MAKEFLAGS = "-j$(nproc)" } }
 
 [feature.dev.tasks]
-build = "pixi run libeantic-build"
-test = "pixi run libeantic-check && pixi run pyeantic-check"
-distcheck = { cmd = "./configure && make distcheck", depends-on = ["bootstrap"], env = { MAKEFLAGS = "-j$(nproc)" } }
+build = { depends-on = ["libeantic-build"] }
+test = { depends-on = ["libeantic-check", "pyeantic-check"] }
+sage = "TODO"
+
+[feature.dev.tasks.configure]
+cmd = "./configure"
+inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
+outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
+
+[feature.dev.tasks.test-distcheck]
+cmd = "make distcheck"
+depends-on = ["configure"]
+env = { MAKEFLAGS = "-j$(nproc)" }
 
 [dependencies]
 automake = "*"
@@ -87,16 +145,68 @@ libflint = "2.8"
 [feature.flint-29.dependencies]
 libflint = "2.9"
 
-[feature.sagemath-92]
-[feature.sagemath-93]
-[feature.sagemath-94]
-[feature.sagemath-95]
-[feature.sagemath-96]
-[feature.sagemath-97]
-[feature.sagemath-98]
-[feature.sagemath-100]
-[feature.sagemath-101]
-[feature.sagemath-102]
-[feature.sagemath-103.dependencies]
+[feature.sagemath-92.dependencies]
+sagelib = "9.2"
 gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-93.dependencies]
+sagelib = "9.3"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-94.dependencies]
+sagelib = "9.4"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-95.dependencies]
+sagelib = "9.5"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-96.dependencies]
+sagelib = "9.6"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-97.dependencies]
+sagelib = "9.7"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-98.dependencies]
+sagelib = "9.8"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-100.dependencies]
+sagelib = "10.0"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-101.dependencies]
+sagelib = "10.1"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-102.dependencies]
+sagelib = "10.2"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.sagemath-103.dependencies]
 sagelib = "10.3"
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
