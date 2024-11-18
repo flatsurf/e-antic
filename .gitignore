@@ -53,6 +53,9 @@ t-*
 /e-antic*.tar.gz
 /rever
 
+# distcheck artifacts
+/e-antic-*
+
 # Jupyter checkpoints
 .ipynb_checkpoints
 
