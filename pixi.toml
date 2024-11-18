@@ -13,7 +13,9 @@
 #
 # Run `pixi task list` to see the available tasks.
 #
-# Most tasks are used somewhere in our GitHub Continuous Integration setup.
+# Most tasks are used somewhere in our GitHub Continuous Integration setup, see
+# .github/workflows/.
+#
 # Some tasks are particularly useful during development:
 #
 # * `pixi run test` build e-antic and run the libeantic and pyeantic test suites
