@@ -111,7 +111,7 @@ depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
 
 [feature.libeantic.tasks.build-libeantic]
-cmd = "make"
+cmd = "make check TESTS="
 cwd = "libeantic"
 depends-on = ["configure-libeantic"]
 
@@ -182,12 +182,12 @@ compile-commands = { cmd = "pixi run dev-compile-commands" }
 dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libeantic"] }
 
 [feature.dev.tasks.configure]
-cmd = "./configure"
+cmd = "./configure --without-doc"
 inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
 
 [feature.dev.tasks.distcheck]
-cmd = "make distcheck"
+cmd = "make distcheck DISTCHECK_CONFIGURE_FLAGS='--without-doc'"
 depends-on = ["configure"]
 
 [feature.dev.tasks.compiler-warnings-clang]
