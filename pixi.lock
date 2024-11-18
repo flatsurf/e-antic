@@ -42,6 +42,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/asttokens-2.4.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/autoconf-2.71-pl5321h2b4cb7a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/automake-1.17-pl5321ha770c72_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/bashlex-0.18-py312h7900ff3_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/bdw-gc-8.0.6-h4bd325d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/benchmark-1.8.5-he02047a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/binutils-2.43-h4852527_2.conda
@@ -61,10 +62,12 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-tools-19.1.3-default_hb5137d0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clangdev-19.1.3-default_hb5137d0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clangxx-19.1.3-default_ha78316a_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.1.7-unix_pyh707e725_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cliquer-1.22-hd590300_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/codespell-2.3.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/compiledb-0.10.1-py_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/coreutils-9.5-hd590300_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-3.1.2-py312h4f81662_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-backend-1.15.2-py312h8572e83_1.conda
@@ -224,6 +227,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rw-0.9-hd590300_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/sagelib-10.3-py312h6627be4_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-75.5.0-pyhff2d567_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/shutilwhich-1.1.0-py_1.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/singular-4.3.2.p8-h33f5c3f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.16.0-pyh6c4a22f_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/stack_data-0.6.2-pyhd8ed1ab_0.conda
@@ -251,6 +255,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/asttokens-2.4.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/autoconf-2.71-pl5321hed12c24_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/automake-1.17-pl5321h694c41f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/bashlex-0.18-py312hb401068_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/bdw-gc-8.0.6-h940c156_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-64/benchmark-1.8.5-hf036a51_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/boost-cpp-1.85.0-hfcd56d9_4.conda
@@ -273,10 +278,12 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clangxx-17.0.6-default_he371ed4_7.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clangxx_impl_osx-64-17.0.6-hc3430b7_21.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clangxx_osx-64-17.0.6-hb91bd55_21.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.1.7-unix_pyh707e725_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cliquer-1.22-h10d778d_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/codespell-2.3.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/compiledb-0.10.1-py_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-64/compiler-rt-17.0.6-h1020d70_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_osx-64-17.0.6-hf2b8a54_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
@@ -429,6 +436,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/rw-0.9-h10d778d_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sagelib-10.3-py312hcc179ff_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-75.5.0-pyhff2d567_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/shutilwhich-1.1.0-py_1.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sigtool-0.1.3-h88f4db0_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-64/singular-4.3.2.p8-h0d51a9f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.16.0-pyh6c4a22f_0.tar.bz2
@@ -7126,6 +7134,42 @@ packages:
   size: 13705
   timestamp: 1592338491389
 - kind: conda
+  name: bashlex
+  version: '0.18'
+  build: py312h7900ff3_2
+  build_number: 2
+  subdir: linux-64
+  url: https://conda.anaconda.org/conda-forge/linux-64/bashlex-0.18-py312h7900ff3_2.conda
+  sha256: 5c005d24386f0e045ba270cff5ace52c52ecd5a1ed245efc1ded3837c1fde959
+  md5: b8e14ce60245f510d941adeac10ae896
+  depends:
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  license: GPL-3.0-only
+  license_family: GPL
+  purls:
+  - pkg:pypi/bashlex?source=hash-mapping
+  size: 157555
+  timestamp: 1725526503655
+- kind: conda
+  name: bashlex
+  version: '0.18'
+  build: py312hb401068_2
+  build_number: 2
+  subdir: osx-64
+  url: https://conda.anaconda.org/conda-forge/osx-64/bashlex-0.18-py312hb401068_2.conda
+  sha256: 6c2f12b690d3638146a856948855cffb43090e5c72d9436fe6234101b10f86fc
+  md5: 96ebd9d4bd0d6839e454a6da6dc9ac43
+  depends:
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  license: GPL-3.0-only
+  license_family: GPL
+  purls:
+  - pkg:pypi/bashlex?source=hash-mapping
+  size: 158840
+  timestamp: 1725526568321
+- kind: conda
   name: bdw-gc
   version: 8.0.6
   build: h4bd325d_0
@@ -8473,6 +8517,26 @@ packages:
   - pkg:pypi/comm?source=hash-mapping
   size: 12134
   timestamp: 1710320435158
+- kind: conda
+  name: compiledb
+  version: 0.10.1
+  build: py_0
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/compiledb-0.10.1-py_0.tar.bz2
+  sha256: f7ecbfd8b0b9af09ec074b65dcca5a4efa446db572ae289d667f1569ed0e12a5
+  md5: a2d55a9b1dfda3667b4a3d7a108620bc
+  depends:
+  - bashlex
+  - click
+  - python >=3.6
+  - shutilwhich
+  license: GPL-3.0-or-later
+  license_family: GPL
+  purls:
+  - pkg:pypi/compiledb?source=hash-mapping
+  size: 29107
+  timestamp: 1591253213803
 - kind: conda
   name: compiler-rt
   version: 14.0.6
@@ -23657,6 +23721,24 @@ packages:
   - pkg:pypi/setuptools?source=hash-mapping
   size: 772480
   timestamp: 1731707561164
+- kind: conda
+  name: shutilwhich
+  version: 1.1.0
+  build: py_1
+  build_number: 1
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/shutilwhich-1.1.0-py_1.tar.bz2
+  sha256: 31e20adc675a6b899673d0791d6b23527b31d72610d7ce92580046b6618d2bc0
+  md5: d3df980e058a5408318ecd0ac330aaf9
+  depends:
+  - python
+  license: PSF 2
+  license_family: PSF
+  purls:
+  - pkg:pypi/shutilwhich?source=hash-mapping
+  size: 10085
+  timestamp: 1531376573064
 - kind: conda
   name: sigtool
   version: 0.1.3

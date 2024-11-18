@@ -19,6 +19,7 @@
 # * `pixi run test` build e-antic and run the libeantic and pyeantic test suites
 # * `pixi run sage` build e-antic and spawn SageMath with the local libeantic and pyeantic installed
 # * `pixi run doc` to build and preview the documentation
+# * `pixi run compile-commands` to generate a compile_commands.json that your IDE might be able to use to make sense of this project
 #
 # More experienced developers may also want to drop into a pixi shell with the
 # relevant dependencies installed and invoke `configure` and `make` directly:
@@ -161,6 +162,14 @@ dev-sage = { cmd = "sage" , env = { PATH = "./pyeantic/test/bin/:$PATH"}, depend
 clean = { cmd = "pixi run dev-clean" }
 dev-clean = { cmd = "make clean", depends-on = ["configure"] }
 
+# "compile-commands" is a shortcut that generates a compile_commands.json that many
+# IDEs expect to make sense of C/C++ code.
+# This shortcut should run with its dependencies in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+compile-commands = { cmd = "pixi run dev-compile-commands" }
+dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libeantic"] }
+
 [feature.dev.tasks.configure]
 cmd = "./configure"
 inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
@@ -293,6 +302,7 @@ py = "*"
 sagelib = "10.3"
 codespell = "*"
 clangdev = "*"
+compiledb = "*"
 
 [feature.dev.target.linux.dependencies]
 # A recent functioning valgrind is only available on conda-forge linux builds.

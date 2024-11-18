@@ -42,8 +42,6 @@ INSTALL
 # editors temporary files
 *.swp
 tmp/
-compile_commands.json
-compile_flags.txt
 .ccls-cache/
 *~
 
