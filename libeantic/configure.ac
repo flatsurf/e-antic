@@ -92,24 +92,30 @@ AC_CHECK_HEADER(gmpxx.h, , [AC_MSG_ERROR([gmpxx header not found (GMP needs to b
 AC_CHECK_HEADERS(boost/lexical_cast.hpp, , [AC_MSG_ERROR([boost headers not found])])
 
 dnl Our benchmarks use Google's C++ benchmark library.
-dnl We fail if they cannot be found but let the user disable it explicitly.
 AC_ARG_WITH([benchmark], AS_HELP_STRING([--without-benchmark], [Do not build C++ benchmarks that require google/benchmark]))
 AS_IF([test "x$with_benchmark" != "xno"],
       [
-       with_benchmark=yes
-       AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([benchmark headers not found; run --without-benchmark to disable building of benchmark/]))
+       AC_CHECK_HEADERS([benchmark/benchmark.h],
+                        [
+                         with_benchmark=yes
+                        ], [
+                         AS_IF([test "x$with_benchmark" = "xyes"], AC_MSG_ERROR([benchmark headers not found]), AC_MSG_WARN([benchmark headers not found; disabled building of benchmark/]))
+                        ])
       ], [])
 AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
 
 dnl We test C/C++ code snippets with byexample which requires cppyy.
-dnl We fail if byexample cannot be found but let the user disable it explicitly.
 AC_ARG_WITH([byexample], AS_HELP_STRING([--without-byexample], [Do not test C/C++ code snippets with byexample]))
 AS_IF([test "x$with_byexample" != "xno"],
       [
-       with_byexample=yes
        AC_MSG_CHECKING([for byexample])
-       AS_IF([byexample --version 2> /dev/null], , AC_MSG_ERROR([byexample for make check not found; run --without-byexample to disable byexample tests in make check]))
-       AC_MSG_RESULT([yes])
+       AS_IF([byexample --version 2> /dev/null],
+             [
+              AC_MSG_RESULT([yes])
+              with_byexample=yes
+             ], [
+              AS_IF([test "x$with_byexample" = "xyes"], AC_MSG_ERROR([byexample for make check not found]), AC_MSG_WARN([byexample not found; disabled byexample in make check]))
+             ])
       ], [])
 AM_CONDITIONAL([HAVE_BYEXAMPLE], [test "x$with_byexample" = "xyes"])
 
