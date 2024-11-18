@@ -29,6 +29,17 @@
 #     cd libeantic
 #     ./configure
 #     make check
+#
+# Why don't we add all things to the Makefiles but use pixi tasks?
+#
+# Pixi allows us to ship a very opinionated setup to developers of e-antic,
+# namely a number of opinionated scripts with corresponding tested (and
+# opinionated) dependencies.
+# This is a nice convenience for developers. Packagers do, however, prefer a
+# system that is as minimalistic as possible. Any opionated bit in the build
+# system, such as setting compiler flags, usually needs to be patched out by
+# software distributions. That's why our Makefiles are trying to follow the
+# autoconfiscated standards as closely as possible.
 
 [project]
 # The saraedum channel is needed because we use an inofficial standardese build
