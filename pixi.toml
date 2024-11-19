@@ -340,71 +340,79 @@ sphinx_rtd_theme = "*"
 linkchecker = "*"
 
 [feature.flint-26.dependencies]
-libflint = "2.6"
+libflint = "2.6.*"
+antic = "*"
+arb = "*"
 
 [feature.flint-27.dependencies]
-libflint = "2.7"
+libflint = "2.7.*"
+antic = "*"
+arb = "*"
 
 [feature.flint-28.dependencies]
-libflint = "2.8"
+libflint = "2.8.*"
+antic = "*"
+arb = "*"
 
 [feature.flint-29.dependencies]
-libflint = "2.9"
+libflint = "2.9.*"
+antic = "*"
+arb = "*"
 
 [feature.flint-30.dependencies]
-libflint = "3.0"
+libflint = "3.0.*"
 
 [feature.sagemath-92.dependencies]
 # SageMath 9.2 shipped with Python 3.8 so we make sure that these compatible versions are installed.
-python = "3.8"
+python = "3.8.*"
 sagelib = "9.2"
 
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
-python = "3.9"
+python = "3.9.*"
 sagelib = "9.3"
 
 [feature.sagemath-94.dependencies]
 # SageMath 9.4 shipped with Python 3.9 so we make sure that these compatible versions are installed.
-python = "3.9"
+python = "3.9.*"
 sagelib = "9.4"
 
 [feature.sagemath-95.dependencies]
 # SageMath 9.5 shipped with Python 3.9 so we make sure that these compatible versions are installed.
-python = "3.9"
+python = "3.9.*"
 sagelib = "9.5"
 
 [feature.sagemath-96.dependencies]
 # SageMath 9.6 shipped with Python 3.10 so we make sure that these compatible versions are installed.
-python = "3.10"
+python = "3.10.*"
 sagelib = "9.6"
 
 [feature.sagemath-97.dependencies]
 # SageMath 9.7 shipped with Python 3.10 so we make sure that these compatible versions are installed.
-python = "3.10"
+python = "3.10.*"
 sagelib = "9.7"
 
 [feature.sagemath-98.dependencies]
 # SageMath 9.8 shipped with Python 3.11 so we make sure that these compatible versions are installed.
-python = "3.11"
+python = "3.11.*"
 sagelib = "9.8"
 
 [feature.sagemath-100.dependencies]
 # SageMath 10.0 shipped with Python 3.11 so we make sure that these compatible versions are installed.
-python = "3.11"
+python = "3.11.*"
 sagelib = "10.0"
 
 [feature.sagemath-101.dependencies]
 # SageMath 10.1 shipped with Python 3.11 so we make sure that these compatible versions are installed.
-python = "3.11"
+python = "3.11.*"
 sagelib = "10.1"
 
 [feature.sagemath-102.dependencies]
 # SageMath 10.2 shipped with Python 3.11 so we make sure that these compatible versions are installed.
-python = "3.11"
+python = "3.11.*"
 sagelib = "10.2"
 
 [feature.sagemath-103.dependencies]
 # SageMath 10.3 shipped with Python 3.11 so we make sure that these compatible versions are installed.
-python = "3.11"
+python = "3.11.*"
 sagelib = "10.3"
