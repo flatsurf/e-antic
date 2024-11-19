@@ -9,7 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 static void arb_div_fmpq(arb_t a, const arb_t b, const fmpq_t c, slong prec)
 {

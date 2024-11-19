@@ -10,7 +10,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, mp_limb_signed_t len, const arb_t a, mp_limb_signed_t prec)
 {

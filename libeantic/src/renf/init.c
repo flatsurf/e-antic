@@ -11,8 +11,10 @@
 
 #include <stdlib.h>
 
-#include "../e-antic/renf.h"
-#include "../e-antic/fmpq_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf.h"
+#include "../../e-antic/fmpq_poly_extra.h"
 
 void renf_init(renf_t nf, fmpq_poly_t pol, arb_t emb, slong prec)
 {

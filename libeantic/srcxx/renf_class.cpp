@@ -17,6 +17,8 @@
 #include <type_traits>
 #include <unordered_set>
 
+#include "../e-antic/config.h"
+
 #include "../e-antic/renf_class.hpp"
 #include "../e-antic/renf_elem_class.hpp"
 #include "../e-antic/fmpq_poly_extra.h"

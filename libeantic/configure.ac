@@ -124,7 +124,7 @@ AC_LANG_POP([C++])
 AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only export a curated list of symbols in the shared library.]))
 AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
 
-AC_CONFIG_HEADERS([e-antic/config.h])
+AC_CONFIG_HEADERS([e-antic/config.generated.h])
 AC_CONFIG_FILES([Makefile src/Makefile srcxx/Makefile test/Makefile benchmark/Makefile test/byexample/Makefile])
 
 AC_OUTPUT

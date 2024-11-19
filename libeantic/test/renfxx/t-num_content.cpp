@@ -11,9 +11,11 @@
 */
 
 #include <cstdlib>
-#include <exception>
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_class.hpp"
+#include "../../e-antic/renf_elem_class.hpp"
 
 using namespace eantic;
 

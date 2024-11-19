@@ -20,7 +20,12 @@
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "../e-antic/e-antic.hpp"
+#include "../e-antic/config.h"
+
+#include "../e-antic/renf_class.hpp"
+#include "../e-antic/renf_elem_class.hpp"
+
+#include "../e-antic/renf_elem.h"
 #include "../e-antic/fmpq_poly_extra.h"
 
 namespace eantic {

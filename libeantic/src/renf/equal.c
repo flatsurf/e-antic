@@ -9,7 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/renf.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf.h"
 
 static __inline__
 int nf_equal(const nf_t nf1, const nf_t nf2)

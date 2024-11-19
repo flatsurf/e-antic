@@ -10,7 +10,9 @@
 */
 
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf)
 {

@@ -9,8 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include "../../e-antic/config.h"
 
-#include "../e-antic/renf.h"
+#include "../../e-antic/renf.h"
 
 void renf_init_set(renf_t dest, const renf_t src)
 {

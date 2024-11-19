@@ -9,7 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem_class.hpp"
 
 using namespace eantic;
 

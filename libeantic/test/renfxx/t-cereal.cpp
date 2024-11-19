@@ -9,12 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/cereal.hpp"
 
 #include "../rand_generator.hpp"

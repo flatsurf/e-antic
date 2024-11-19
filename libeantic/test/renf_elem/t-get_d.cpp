@@ -20,6 +20,8 @@
 #include <flint/arf.h>
 #endif
 
+#include "../../e-antic/config.h"
+
 #include "../rand_generator.hpp"
 #include "../renf_generator.hpp"
 #include "../renf_elem_generator.hpp"
