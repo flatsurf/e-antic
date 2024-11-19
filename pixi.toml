@@ -188,6 +188,7 @@ dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS
 cmd = "./configure --without-doc"
 inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
+depends-on = ["bootstrap"]
 
 [feature.dev.tasks.distcheck]
 cmd = "make distcheck DISTCHECK_CONFIGURE_FLAGS='--without-doc'"
