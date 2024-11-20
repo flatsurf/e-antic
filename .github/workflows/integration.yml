@@ -18,7 +18,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.30.0 }
       - name: build normaliz
-        shell: pixi run bash -e libeantic-flint-30
+        shell: pixi run -e libeantic-flint-30 bash -e {0}
         run: |
           cd normaliz
 
