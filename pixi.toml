@@ -76,6 +76,8 @@ env-coverage = ["coverage", "libeantic", "pyeantic"]
 ##############
 [activation.env]
 MAKEFLAGS = "-j$(nproc)"
+CFLAGS = "-g3"
+CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
 
 [feature.address-sanitizer.activation.env]
 CFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
