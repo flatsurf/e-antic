@@ -32,16 +32,92 @@ The dependencies are:
  - [Boost](https://www.boost.org/) for the C++ library
  - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
+## Build and Develop e-antic with pixi
+
+If you have cloned the source repository, make sure to pull in all the
+third-party header-only libraries by running:
+
+```
+git submodule update --init
+```
+
+If you are distributing e-antic or you are a purist who wants to interact with
+autotools directly, then you should skip to the [next
+section](#build-from-the-source-code-repository-or-tarball). Otherwise, we
+strongly recommend that you install [pixi](https://pixi.sh) and follow the
+instructions in this section to build e-antic.
+
+<details>
+<summary>What is pixi?</summary>
+pixi is a tool based on
+[conda](https://en.wikipedia.org/wiki/Conda_(package_manager)) &
+[conda-forge](https://conda-forge.org) for developers so that we can all use
+the same workflows in the same defined environments.
+
+pixi allows us to ship a very opinionated setup to developers of e-antic,
+namely a number of opinionated scripts with corresponding tested (and
+opinionated) dependencies.
+
+This makes the whole development experience much more reliable and
+reproducible, e.g., the CI on GitHub Pull Requests runs with the exact same
+setup, so if something fails there, you can just run the CI command to get
+exactly the same behavior locally.
+
+Why don't we add all things to the Makefiles but use pixi tasks?
+
+Packagers do prefer a system that is as minimalistic as possible. Any
+opinionated bit in the build system, such as setting compiler flags, usually
+needs to be patched out by software distributions. That's why our Makefiles are
+trying to follow the autoconfiscated standards as closely as possible. And
+essentially all that pixi does is to call these Makefiles without you having to
+figure out how everything works in detail.
+
+</details>
+
+If you have not used pixi before, the most relevant pixi command is:
+
+```sh
+pixi run TASK
+```
+
+Run `pixi task list` to see the available tasks.
+
+All tasks are defined in the `pixi.toml` file and most are used somewhere in
+our GitHub Continuous Integration setup, see .github/workflows/.
+
+Some tasks are particularly useful during development:
+
+* `pixi run test` build e-antic and run the libeantic and pyeantic test suites
+* `pixi run sage` build e-antic and spawn SageMath with the local libeantic and pyeantic installed
+* `pixi run doc` to build and preview the documentation
+* `pixi run compile-commands` to generate a `compile_commands.json` that your IDE might be able to use to make sense of this project
+
+More experienced developers may not want to use these scripts most of the time.
+You can also just use the curated list of dependencies that pixi provides and
+drop into a shell with these dependencies installed. For example, to run the
+libeantic test suite directly, you could do:
+
+```sh
+pixi shell -e dev
+./bootstrap
+cd libeantic
+./configure
+make check
+```
+
+Note that the following section contains more details about this `configure &&
+make` workflow that might be of interest to you.
+
 ## Build from the Source Code Repository or a Tarball
 
-If you have cloned the source directory you will need to setup the
-configure script and Makefile using autotools. That is
+If you have cloned the source directory and you decided not to use pixi, you
+will need to setup the configure script and Makefile using autotools. That is
 
     git submodule update --init
     ./bootstrap
 
 If you obtained a tarball of the sources or if the preceding step
-worked, you just have to do
+worked, you can now run
 
     ./configure
     make

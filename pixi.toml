@@ -1,45 +1,5 @@
-# TODO: Move most of this into the README or documentation and link to it from here.
-
-# This file describes the [pixi](https://pixi.sh) interface to e-antic.
-#
-# pixi is a tool for developers so that we can all use the same workflows in
-# the same defined environment.
-# 
-# If you have not used pixi before, the most relevant pixi command is:
-#
-#    pixi run TASK
-#
-# Run `pixi task list` to see the available tasks.
-#
-# Most tasks are used somewhere in our GitHub Continuous Integration setup, see
-# .github/workflows/.
-#
-# Some tasks are particularly useful during development:
-#
-# * `pixi run test` build e-antic and run the libeantic and pyeantic test suites
-# * `pixi run sage` build e-antic and spawn SageMath with the local libeantic and pyeantic installed
-# * `pixi run doc` to build and preview the documentation
-# * `pixi run compile-commands` to generate a compile_commands.json that your IDE might be able to use to make sense of this project
-#
-# More experienced developers may also want to drop into a pixi shell with the
-# relevant dependencies installed and invoke `configure` and `make` directly:
-#
-#     pixi shell -e dev
-#     ./bootstrap
-#     cd libeantic
-#     ./configure
-#     make check
-#
-# Why don't we add all things to the Makefiles but use pixi tasks?
-#
-# Pixi allows us to ship a very opinionated setup to developers of e-antic,
-# namely a number of opinionated scripts with corresponding tested (and
-# opinionated) dependencies.
-# This is a nice convenience for developers. Packagers do, however, prefer a
-# system that is as minimalistic as possible. Any opionated bit in the build
-# system, such as setting compiler flags, usually needs to be patched out by
-# software distributions. That's why our Makefiles are trying to follow the
-# autoconfiscated standards as closely as possible.
+# This file describes the [pixi](https://pixi.sh) interface to e-antic, see the
+# README for how to use pixi with e-antic.
 
 [project]
 # The saraedum channel is needed because we use an unofficial standardese build
