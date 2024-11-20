@@ -96,21 +96,25 @@ following commands:
     figure out how everything works in detail.
 </details>
 
-More experienced developers may not want to use these tasks. You can also just
-use the curated list of dependencies that pixi provides and drop into a shell
-with these dependencies installed. For example, to run the libeantic test suite
-directly, you could do:
+<details>
+    <summary>Can I use configure & make with pixi?</summary>
 
-```sh
-pixi shell -e dev
-./bootstrap
-cd libeantic
-./configure
-make check
-```
+    More experienced developers may not want to use these tasks. You can also just
+    use the curated list of dependencies that pixi provides and drop into a shell
+    with these dependencies installed. For example, to run the libeantic test suite
+    directly, you could do:
 
-Note that the following section contains more details about this `configure &&
-make` workflow that might be of interest to you.
+    ```sh
+    pixi shell -e dev
+    ./bootstrap
+    cd libeantic
+    ./configure
+    make check
+    ```
+
+    Note that the following section contains more details about this `configure &&
+    make` workflow that might be of interest to you.
+</details>
 
 ## Build from the Source Code Repository or a Tarball
 
