@@ -90,7 +90,8 @@ cwd = "libeantic"
 depends-on = ["build-libeantic"]
 
 [feature.pyeantic.tasks.configure-pyeantic]
-cmd = "./configure --with-sage --with-realalg"
+# TODO: Revert this import hack.
+cmd = "./configure --with-sage --with-realalg && python -c 'import cppyy'"
 cwd = "pyeantic"
 depends-on = ["bootstrap"]
 inputs = ["pyeantic/configure", "pyeantic/**/*.in"]
