@@ -129,7 +129,7 @@ cwd = "libeantic"
 depends-on = ["build-libeantic"]
 
 [feature.pyeantic.tasks.configure-pyeantic]
-cmd = "./configure"
+cmd = "./configure --with-sage --with-realalg"
 cwd = "pyeantic"
 depends-on = ["bootstrap"]
 inputs = ["pyeantic/configure", "pyeantic/**/*.in"]
@@ -219,10 +219,14 @@ depends-on = "configure-libeantic"
 # We need -Wno-dangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
 env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-dangling-reference" }
 
-[feature.address-sanitizer.tasks.configure-libeantic]
-# The benchmark build is not set up to work with a sanitizer.
-# The sanitizers report too many false positives when running the (Python) byexample tests.
-cmd = "./configure --without-benchmark --without-byexample"
+[feature.dev.tasks.configure-libeantic]
+cmd = "./configure --with-byexample --with-benchmark"
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.dev.target.linux.tasks.configure-libeantic]
+cmd = "./configure --with-byexample --with-benchmark --with-version-script"
 cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
