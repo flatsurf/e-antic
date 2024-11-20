@@ -25,7 +25,7 @@ jobs:
         - { task: "test-libeantic", environment: "libeantic-flint-30", on: "macos-13" }
         - { task: "test-libeantic", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
-        - { task: "test-libeantic-valgrind", environment" "dev", on: "ubuntu-24.04" }
+        - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "macos-13" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "ubuntu-24.04" }
