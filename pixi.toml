@@ -227,6 +227,13 @@ cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
 
+[feature.coverage.tasks.configure-libeantic]
+# The gcov build has visibility issues when the version script is enabled.
+cmd = "./configure"
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
 [feature.doc.tasks.configure-doc]
 cmd = "./configure --prefix=\"$CONDA_PREFIX\""
 cwd = "doc"
