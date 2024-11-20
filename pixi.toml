@@ -376,6 +376,8 @@ sagelib = "9.2"
 # SageMath 9.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
+# SageMath 9.2 does not come with pip which is needed for feature detection
+pip = "*"
 
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
