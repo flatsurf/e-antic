@@ -66,8 +66,8 @@ opinionated) dependencies.
 
 This makes the whole development experience much more reliable and
 reproducible, e.g., the CI on GitHub Pull Requests runs with the exact same
-setup, so if something fails there, you can just run the CI command to get
-exactly the same behavior locally.
+setup, so if something fails there, you can just run the CI command to
+hopefully get exactly the same behavior locally.
 </details>
 
 <details>
