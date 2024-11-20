@@ -16,7 +16,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.30.0 }
       - name: make check
-        run: pixi run -e coverage test
+        run: pixi run -e env-coverage test
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: create & post coverage report
