@@ -214,9 +214,8 @@ make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -DNDEBUG\" CXXFLAGS=
 """
 cwd = "libeantic"
 depends-on = "configure-libeantic"
-# We need -Wno-reserved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
-# We need -Wno-unsafe-buffer-usage since we need unsafe pointer arithmetic to extend FLINT (efficiently.)
-env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-documentation" }
+# We need -Wno-dangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
+env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-dangling-reference" }
 
 [feature.address-sanitizer.tasks.configure-libeantic]
 # The benchmark build is not set up to work with a sanitizer.
