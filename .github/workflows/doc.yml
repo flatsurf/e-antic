@@ -16,7 +16,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.30.0 }
       - run: |
-          pixi run doc
+          pixi run -e doc build-doc
           touch doc/manual/generated/html/.nojekyll
       - name: detect broken links
         run: pixi run -e doc test-doc-linkchecker
