@@ -159,29 +159,6 @@ For more detailed but generic instructions please refer to the INSTALL file.
 See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
 for installation instructions.
 
-## Build with conda-forge Dependencies
-
-To build all of e-antic, you need a fairly recent C++ compiler and probably
-some packages that might not be readily available on your system. If you don't
-want to use your distribution's packages, you can use these dependencies from
-[conda-forge](https://conda-forge.org). Download and install
-[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
-
-    mamba create -n e-antic-build ccache
-    mamba env update -n e-antic-build -f libeantic/environment.yml
-    mamba env update -n e-antic-build -f pyeantic/environment.yml
-    mamba env update -n e-antic-build -f doc/environment.yml
-    conda activate e-antic-build
-    export CC="ccache cc"  # to speed up future compilation
-    export CXX="ccache c++"  # to speed up future compilation
-    git clone --recurse-submodules https://github.com/flatsurf/e-antic.git
-    cd e-antic
-    ./bootstrap
-    ./configure --prefix="$CONDA_PREFIX"
-    make
-    make check  # to run our test suite
-    make html  # to build the documentation
-
 ## How to Cite this Project
 
 If you have used this project in the preparation of a publication, please cite
