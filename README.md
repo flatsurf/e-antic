@@ -43,7 +43,7 @@ git submodule update --init
 
 If you are distributing e-antic or you are a purist who wants to interact with
 autotools directly, then you should skip to the [next
-section](#build-from-the-source-code-repository-or-tarball). Otherwise, we
+section](#build-from-the-source-code-repository-or-a-tarball). Otherwise, we
 strongly recommend that you install [pixi](https://pixi.sh) and then use the
 following commands:
 
