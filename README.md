@@ -53,67 +53,67 @@ following commands:
 * `pixi run compile-commands` to generate a `compile_commands.json` that your IDE might be able to use to make sense of this project
 
 <details>
-    <summary>What is pixi?</summary>
+<summary>What is pixi?</summary>
 
-    pixi is a tool based on
-    [conda](https://en.wikipedia.org/wiki/Conda_(package_manager)) &
-    [conda-forge](https://conda-forge.org) for developers so that we can all use
-    the same workflows in the same defined environments.
+pixi is a tool based on
+[conda](https://en.wikipedia.org/wiki/Conda_(package_manager)) &
+[conda-forge](https://conda-forge.org) for developers so that we can all use
+the same workflows in the same defined environments.
 
-    pixi allows us to ship a very opinionated setup to developers of e-antic,
-    namely a number of opinionated scripts with corresponding tested (and
-    opinionated) dependencies.
+pixi allows us to ship a very opinionated setup to developers of e-antic,
+namely a number of opinionated scripts with corresponding tested (and
+opinionated) dependencies.
 
-    This makes the whole development experience much more reliable and
-    reproducible, e.g., the CI on GitHub Pull Requests runs with the exact same
-    setup, so if something fails there, you can just run the CI command to get
-    exactly the same behavior locally.
+This makes the whole development experience much more reliable and
+reproducible, e.g., the CI on GitHub Pull Requests runs with the exact same
+setup, so if something fails there, you can just run the CI command to get
+exactly the same behavior locally.
 </details>
 
 <details>
-    <summary>How do I use pixi?</summary>
+<summary>How do I use pixi?</summary>
 
-    If you have not used pixi before, the most relevant pixi command is:
+If you have not used pixi before, the most relevant pixi command is:
 
-    ```sh
-    pixi run TASK
-    ```
+```sh
+pixi run TASK
+```
 
-    Run `pixi task list` to see the available tasks.
+Run `pixi task list` to see the available tasks.
 
-    All tasks are defined in the `pixi.toml` file and most are used somewhere in
-    our GitHub Continuous Integration setup, see .github/workflows/.
+All tasks are defined in the `pixi.toml` file and most are used somewhere in
+our GitHub Continuous Integration setup, see .github/workflows/.
 </details>
 
 <details>
-    <summary>Why don't we add all things to the Makefiles but use pixi tasks?</summary>
+<summary>Why don't we add all things to the Makefiles but use pixi tasks?</summary>
 
-    Packagers do prefer a system that is as minimalistic as possible. Any
-    opinionated bit in the build system, such as setting compiler flags, usually
-    needs to be patched out by software distributions. That's why our Makefiles are
-    trying to follow the autoconfiscated standards as closely as possible. And
-    essentially all that pixi does is to call these Makefiles without you having to
-    figure out how everything works in detail.
+Packagers do prefer a system that is as minimalistic as possible. Any
+opinionated bit in the build system, such as setting compiler flags, usually
+needs to be patched out by software distributions. That's why our Makefiles are
+trying to follow the autoconfiscated standards as closely as possible. And
+essentially all that pixi does is to call these Makefiles without you having to
+figure out how everything works in detail.
 </details>
 
 <details>
-    <summary>Can I use configure & make with pixi?</summary>
+<summary>Can I use configure & make with pixi?</summary>
 
-    More experienced developers may not want to use these tasks. You can also just
-    use the curated list of dependencies that pixi provides and drop into a shell
-    with these dependencies installed. For example, to run the libeantic test suite
-    directly, you could do:
+More experienced developers may not want to use these tasks. You can also just
+use the curated list of dependencies that pixi provides and drop into a shell
+with these dependencies installed. For example, to run the libeantic test suite
+directly, you could do:
 
-    ```sh
-    pixi shell -e dev
-    ./bootstrap
-    cd libeantic
-    ./configure
-    make check
-    ```
+```sh
+pixi shell -e dev
+./bootstrap
+cd libeantic
+./configure
+make check
+```
 
-    Note that the following section contains more details about this `configure &&
-    make` workflow that might be of interest to you.
+Note that the following section contains more details about this `configure &&
+make` workflow that might be of interest to you.
 </details>
 
 ## Build from the Source Code Repository or a Tarball
