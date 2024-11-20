@@ -42,7 +42,7 @@
 # autoconfiscated standards as closely as possible.
 
 [project]
-# The saraedum channel is needed because we use an inofficial standardese build
+# The saraedum channel is needed because we use an unofficial standardese build
 channels = ["conda-forge", "saraedum"]
 description = "(Real Embedded) Algebraic Number Theory"
 name = "e-antic"
