@@ -123,7 +123,7 @@ depends-on = ["build-libeantic"]
 
 [feature.pyeantic.tasks.test-libeantic-valgrind]
 cmd = "make check-valgrind"
-cwd = "pyeantic"
+cwd = "libeantic"
 depends-on = ["build-libeantic"]
 
 [feature.pyeantic.tasks.configure-pyeantic]
