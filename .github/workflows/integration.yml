@@ -20,6 +20,8 @@ jobs:
       - name: build normaliz
         shell: pixi run -e libeantic-flint-30 bash -e {0}
         run: |
+          conda install --quiet --yes nauty
+
           cd normaliz
 
           autoreconf --install
