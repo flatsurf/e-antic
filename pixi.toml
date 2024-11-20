@@ -54,17 +54,17 @@ libeantic-flint-27 = ["libeantic", "flint-27"]
 libeantic-flint-28 = ["libeantic", "flint-28"]
 libeantic-flint-29 = ["libeantic", "flint-29"]
 libeantic-flint-30 = ["libeantic", "flint-30"]
-pyeantic-sagemath-92 = ["libeantic", "pyeantic", "sagemath-92", "flint-26"]
-pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93", "flint-27"]
-pyeantic-sagemath-94 = ["libeantic", "pyeantic", "sagemath-94", "flint-27"]
-pyeantic-sagemath-95 = ["libeantic", "pyeantic", "sagemath-95", "flint-28"]
-pyeantic-sagemath-96 = ["libeantic", "pyeantic", "sagemath-96", "flint-28"]
-pyeantic-sagemath-97 = ["libeantic", "pyeantic", "sagemath-97", "flint-28"]
-pyeantic-sagemath-98 = ["libeantic", "pyeantic", "sagemath-98", "flint-28"]
-pyeantic-sagemath-100 = ["libeantic", "pyeantic", "sagemath-100", "flint-28"]
-pyeantic-sagemath-101 = ["libeantic", "pyeantic", "sagemath-101", "flint-28"]
-pyeantic-sagemath-102 = ["libeantic", "pyeantic", "sagemath-102", "flint-29"]
-pyeantic-sagemath-103 = ["libeantic", "pyeantic", "sagemath-103", "flint-30"]
+pyeantic-sagemath-92 = ["libeantic", "pyeantic", "sagemath-92"]
+pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93"]
+pyeantic-sagemath-94 = ["libeantic", "pyeantic", "sagemath-94"]
+pyeantic-sagemath-95 = ["libeantic", "pyeantic", "sagemath-95"]
+pyeantic-sagemath-96 = ["libeantic", "pyeantic", "sagemath-96"]
+pyeantic-sagemath-97 = ["libeantic", "pyeantic", "sagemath-97"]
+pyeantic-sagemath-98 = ["libeantic", "pyeantic", "sagemath-98"]
+pyeantic-sagemath-100 = ["libeantic", "pyeantic", "sagemath-100"]
+pyeantic-sagemath-101 = ["libeantic", "pyeantic", "sagemath-101"]
+pyeantic-sagemath-102 = ["libeantic", "pyeantic", "sagemath-102"]
+pyeantic-sagemath-103 = ["libeantic", "pyeantic", "sagemath-103"]
 doc = ["doc", "libeantic", "pyeantic"]
 dev = ["dev", "libeantic", "pyeantic"]
 env-address-sanitizer = ["address-sanitizer", "libeantic", "pyeantic"]
@@ -365,51 +365,81 @@ libflint = "3.0.*"
 # SageMath 9.2 shipped with Python 3.8 so we make sure that these compatible versions are installed.
 python = "3.8.*"
 sagelib = "9.2"
+# SageMath 9.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
 sagelib = "9.3"
+# SageMath 9.3 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-94.dependencies]
 # SageMath 9.4 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
 sagelib = "9.4"
+# SageMath 9.4 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-95.dependencies]
 # SageMath 9.5 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
 sagelib = "9.5"
+# SageMath 9.5 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-96.dependencies]
 # SageMath 9.6 shipped with Python 3.10 so we make sure that these compatible versions are installed.
 python = "3.10.*"
 sagelib = "9.6"
+# SageMath 9.6 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-97.dependencies]
 # SageMath 9.7 shipped with Python 3.10 so we make sure that these compatible versions are installed.
 python = "3.10.*"
 sagelib = "9.7"
+# SageMath 9.7 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-98.dependencies]
 # SageMath 9.8 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
 sagelib = "9.8"
+# SageMath 9.8 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-100.dependencies]
 # SageMath 10.0 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
 sagelib = "10.0"
+# SageMath 10.0 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-101.dependencies]
 # SageMath 10.1 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
 sagelib = "10.1"
+# SageMath 10.1 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-102.dependencies]
 # SageMath 10.2 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
 sagelib = "10.2"
+# SageMath 10.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
 
 [feature.sagemath-103.dependencies]
 # SageMath 10.3 shipped with Python 3.11 so we make sure that these compatible versions are installed.
