@@ -1,5 +1,3 @@
-# TODO: To force rebuilds when configure runs, i.e., when the environment changes, make sure all .c and .cxx files include config.h
-
 # TODO: Move most of this into the README or documentation and link to it from here.
 
 # This file describes the [pixi](https://pixi.sh) interface to e-antic.
