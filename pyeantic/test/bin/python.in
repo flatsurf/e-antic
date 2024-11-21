@@ -39,4 +39,4 @@ if [ ! -z "$EANTIC_DYLD_INSERT_LIBRARIES" ]; then
   fi
 fi
 
-exec python3 $@
+exec python3 "$@"
