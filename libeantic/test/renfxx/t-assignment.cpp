@@ -10,7 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
 
 #include "../external/catch2/single_include/catch2/catch.hpp"
 

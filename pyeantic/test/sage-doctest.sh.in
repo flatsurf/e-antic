@@ -33,8 +33,10 @@ set -ex
 # record the set environment variables and set them locally. This is a hack,
 # but we could not find any better way to work around the paranoic measures in
 # macOS.
+# On some systems, an environment variable '?' is reported that 'export' cannot
+# set so we ignore such variables.
 OLD_PATH=$PATH
-source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"'"%(key, value) for (key, value) in os.environ.items()]))')
+source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"' || echo 'ignoring environment variable that could not be set'"%(key, value) for (key, value) in os.environ.items()]))')
 export PATH=$OLD_PATH
 
 export PYTHONPATH="@abs_srcdir@/disable-pytest:$PYTHONPATH"

@@ -53,7 +53,6 @@ html_logo = 'https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=tr
 
 html_theme_options = {
     'logo_only': True,
-    'display_version': False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

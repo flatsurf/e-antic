@@ -9,8 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include "../../e-antic/config.h"
 
-#include "../e-antic/renf.h"
+#include "../../e-antic/renf.h"
 
 int renf_set_immutable(renf_t nf, int immutable)
 {

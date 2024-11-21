@@ -12,6 +12,8 @@
 
 #include <stdlib.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf_elem.h"
 
 static int sgn(int a) {

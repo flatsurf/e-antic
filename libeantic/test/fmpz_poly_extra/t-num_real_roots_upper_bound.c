@@ -13,6 +13,8 @@
 
 #include <flint/fmpq_vec.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/fmpz_poly_extra.h"
 
 int main(void)

@@ -17,7 +17,9 @@
 #include <flint/fmpq_poly.h>
 #include <flint/fmpq.h>
 
-#include "../e-antic/fmpq_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpq_poly_extra.h"
 
 static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
 {

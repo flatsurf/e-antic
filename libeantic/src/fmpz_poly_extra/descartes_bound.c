@@ -14,7 +14,9 @@
 
 #include <flint/fmpz_vec.h>
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol)
 {

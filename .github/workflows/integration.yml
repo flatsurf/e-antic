@@ -4,49 +4,15 @@ on:
   pull_request: { branches: [ "master" ] }
 
 concurrency:
-  group: normaliz-${{ github.ref }}
+  group: integration-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   test-normaliz:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
-      - uses: actions/checkout@v2
-        with: { submodules: recursive, repository: Normaliz/Normaliz, path: normaliz }
-      - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
-      - name: install dependencies
-        shell: bash -l {0}
-        run: |
-          # Currently, normaliz does not support FLINT3.
-          mamba env update --quiet -n test -f libeantic/environment-flint2.yml
-          mamba install --quiet --yes nauty
-          conda list
-      - name: install e-antic
-        shell: bash -l {0}
-        run: |
-          ./bootstrap
-          pushd libeantic
-          export CFLAGS="$CFLAGS -UNDEBUG"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG"
-          ./configure --prefix="$CONDA_PREFIX" --without-benchmark --with-version-script --without-doc
-          make
-          make install
-          popd
-      - name: build normaliz
-        shell: bash -l {0}
-        run: |
-          pushd normaliz
-          autoreconf --install
-          chmod +x configure
-          ./configure --prefix="$CONDA_PREFIX" --with-e-antic="$CONDA_PREFIX" --with-nauty="$CONDA_PREFIX" --with-flint="$CONDA_PREFIX" --with-gmp="$CONDA_PREFIX"
-          make
-          make check
-          popd
-      - uses: flatsurf/actions/show-logs@main
-        if: ${{ always() }}
-
-env:
-  MAKEFLAGS: -j2
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with: { pixi-version: v0.30.0 }
+      - run: pixi run -e libeantic-normaliz-integration check-normaliz

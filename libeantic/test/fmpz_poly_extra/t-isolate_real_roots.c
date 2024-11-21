@@ -18,6 +18,8 @@
 #include <flint/fmpq_vec.h>
 #include <flint/fmpq_poly.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/fmpz_poly_extra.h"
 
 /* check that a (= approximation of polynomial root) is in between */

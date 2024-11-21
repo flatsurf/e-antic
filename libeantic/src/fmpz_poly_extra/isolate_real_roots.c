@@ -15,7 +15,9 @@
 #include <flint/fmpz_vec.h>
 #include <flint/fmpq.h>
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 /* isolate the real roots of pol contained in [0,1] */
 /* using VCA (Vincent-Collins-Akritas) method       */

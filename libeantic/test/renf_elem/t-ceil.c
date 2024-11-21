@@ -11,6 +11,8 @@
 
 #include <stdlib.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf_elem.h"
 
 static int check_ceil(renf_elem_t a, renf_t nf, int ans, const char * s)

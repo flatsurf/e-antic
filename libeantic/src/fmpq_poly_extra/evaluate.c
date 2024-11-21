@@ -10,8 +10,10 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/fmpq_poly_extra.h"
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpq_poly_extra.h"
+#include "../../e-antic/fmpz_poly_extra.h"
 
 static void _fmpq_poly_evaluate_arf(arf_t res, const fmpq_poly_t pol, const arf_t a, mp_limb_signed_t prec)
 {
