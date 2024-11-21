@@ -5,4 +5,4 @@
 # This is an evil hack that replaces "exec X" with "exec python X" in the
 # actual script that launches sage.
 # Currently, we only use this in the pixi run sage script and not in any of the actual testing.
-bash -c "$(sed 's/\bexec \([^[:space:]]*\)/exec python $(which \1)/' $(which sage))" "$@"
+bash -c "$(sed 's/\([[:space:]]\)exec \([^[:space:]]*\)/\1exec python $(which \2)/' $(which sage))" "$@"
