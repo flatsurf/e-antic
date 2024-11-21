@@ -27,7 +27,8 @@ jobs:
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "macos-13" }
+        # The SageMath doctest runner is not functional in the 9.2 build on conda-forge.
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "macos-13" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-13" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "ubuntu-24.04" }
