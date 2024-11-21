@@ -14,7 +14,7 @@ jobs:
       matrix:
         task: ["codespell", "compiler-warnings-clang", "compiler-warnings-gcc"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with: { submodules: recursive }
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.30.0 }
