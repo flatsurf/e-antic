@@ -63,13 +63,13 @@ inputs = ["configure.ac", "{libeantic,pyeantic,doc}/configure.ac", "Makefile.am"
 outputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 
 [feature.libeantic.tasks.configure-libeantic]
-cmd = "./configure"
+cmd = './configure --prefix="$CONDA_PREFIX"'
 cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
 
 [feature.libeantic.target.linux.tasks.configure-libeantic]
-cmd = "./configure --with-version-script"
+cmd = './configure --prefix="$CONDA_PREFIX" --with-version-script'
 cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
@@ -90,7 +90,7 @@ cwd = "libeantic"
 depends-on = ["build-libeantic"]
 
 [feature.pyeantic.tasks.configure-pyeantic]
-cmd = "./configure --with-sage --with-realalg"
+cmd = './configure --prefix="$CONDA_PREFIX" --with-sage --with-realalg'
 cwd = "pyeantic"
 depends-on = ["bootstrap"]
 inputs = ["pyeantic/configure", "pyeantic/**/*.in"]
@@ -146,7 +146,7 @@ compile-commands = { cmd = "pixi run dev-compile-commands" }
 dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libeantic"] }
 
 [feature.dev.tasks.configure]
-cmd = "./configure --without-doc"
+cmd = './configure --prefix="$CONDA_PREFIX" --without-doc'
 inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
 depends-on = ["bootstrap"]
@@ -181,25 +181,19 @@ depends-on = "configure-libeantic"
 env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-dangling-reference" }
 
 [feature.dev.tasks.configure-libeantic]
-cmd = "./configure --with-byexample --with-benchmark"
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark'
 cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
 
 [feature.dev.target.linux.tasks.configure-libeantic]
-cmd = "./configure --with-byexample --with-benchmark --with-version-script"
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark --with-version-script'
 cwd = "libeantic"
 depends-on = ["bootstrap"]
 inputs = ["libeantic/configure", "libeantic/**/*.in"]
 
 [feature.coverage.tasks.configure-libeantic]
 # The gcov build has visibility issues when the version script is enabled.
-cmd = "./configure"
-cwd = "libeantic"
-depends-on = ["bootstrap"]
-inputs = ["libeantic/configure", "libeantic/**/*.in"]
-
-[feature.integration.tasks.configure-libeantic]
 cmd = './configure --prefix="$CONDA_PREFIX"'
 cwd = "libeantic"
 depends-on = ["bootstrap"]
@@ -238,7 +232,7 @@ make check
 depends-on = "install-libeantic"
 
 [feature.doc.tasks.configure-doc]
-cmd = "./configure --prefix=\"$CONDA_PREFIX\""
+cmd = './configure --prefix="$CONDA_PREFIX"'
 cwd = "doc"
 depends-on = ["bootstrap"]
 inputs = ["doc/configure", "doc/**/*.in"]
