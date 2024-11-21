@@ -376,6 +376,10 @@ antic = "*"
 # SageMath 9.2 does not come with pip which is needed for feature detection
 pip = "*"
 
+[feature.sagemath-92.target.osx-64.dependencies]
+# some of the older cppyy builds on conda-forge for macOS have trouble with libcxx 17 so we stick to an older version.
+libcxx = "16.*"
+
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
@@ -383,6 +387,11 @@ sagelib = "9.3"
 # SageMath 9.3 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
+
+[feature.sagemath-93.target.osx-64.dependencies]
+# some of the older cppyy builds on conda-forge for macOS have trouble with libcxx 17 so we stick to an older version.
+libcxx = "16.*"
+
 
 [feature.sagemath-94.dependencies]
 # SageMath 9.4 shipped with Python 3.9 so we make sure that these compatible versions are installed.
@@ -392,6 +401,10 @@ sagelib = "9.4"
 arb = "*"
 antic = "*"
 
+[feature.sagemath-94.target.osx-64.dependencies]
+# some of the older cppyy builds on conda-forge for macOS have trouble with libcxx 17 so we stick to an older version.
+libcxx = "16.*"
+
 [feature.sagemath-95.dependencies]
 # SageMath 9.5 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
@@ -400,6 +413,10 @@ sagelib = "9.5"
 arb = "*"
 antic = "*"
 
+[feature.sagemath-95.target.osx-64.dependencies]
+# some of the older cppyy builds on conda-forge for macOS have trouble with libcxx 17 so we stick to an older version.
+libcxx = "16.*"
+
 [feature.sagemath-96.dependencies]
 # SageMath 9.6 shipped with Python 3.10 so we make sure that these compatible versions are installed.
 python = "3.10.*"
@@ -407,6 +424,10 @@ sagelib = "9.6"
 # SageMath 9.6 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
+
+[feature.sagemath-96.target.osx-64.dependencies]
+# some of the older cppyy builds on conda-forge for macOS have trouble with libcxx 17 so we stick to an older version.
+libcxx = "16.*"
 
 [feature.sagemath-97.dependencies]
 # SageMath 9.7 shipped with Python 3.10 so we make sure that these compatible versions are installed.
