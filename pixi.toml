@@ -129,7 +129,7 @@ dev-test = { depends-on = ["test-libeantic", "test-pyeantic"] }
 # To achieve this, we need to split it into two tasks like this (otherwise,
 # pixi is going to ask which environment the dependencies should run in.)
 sage = { cmd = "pixi run dev-sage" }
-dev-sage = { cmd = "sage" , env = { PATH = "./pyeantic/test/bin/:$PATH"}, depends-on = ["build-libeantic", "build-pyeantic"] }
+dev-sage = { cmd = "pyeantic-sage" , env = { PATH = "./pyeantic/test/bin/:$PATH"}, depends-on = ["build-libeantic", "build-pyeantic"] }
 
 # "clean" is a shortcut that should (together with its dependencies) run in the "dev" environment.
 # To achieve this, we need to split it into two tasks like this (otherwise,
