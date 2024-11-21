@@ -114,6 +114,7 @@ AS_IF([test "x$with_byexample" != "xno"],
               AC_MSG_RESULT([yes])
               with_byexample=yes
              ], [
+              AC_MSG_RESULT([no])
               AS_IF([test "x$with_byexample" = "xyes"], AC_MSG_ERROR([byexample for make check not found]), AC_MSG_WARN([byexample not found; disabled byexample in make check]))
              ])
       ], [])

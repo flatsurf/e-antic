@@ -56,7 +56,11 @@ AS_IF([test "x$with_sage" != "xno" && test "x$with_pytest" = "xyes"],
                      AC_MSG_RESULT([yes])
                      with_sage=yes
                     ], AS_IF([test "x$with_sage" = "xyes"], AC_MSG_ERROR([gmpxxyy not found but required by --with-sage]), AC_MSG_WARN([gmpxxyy not found; disabled SageMath specific tests in make check])))
-             ], AS_IF([test "x$with_sage" = "xyes"], AC_MSG_ERROR([SageMath not found]), AC_MSG_WARN([SageMath for not found; disabled SageMath specific tests in make check])))
+             ],
+             [
+              AC_MSG_RESULT([no])
+              AS_IF([test "x$with_sage" = "xyes"], AC_MSG_ERROR([SageMath not found]), AC_MSG_WARN([SageMath for not found; disabled SageMath specific tests in make check])))
+             ]
       ], [])
 AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
 
@@ -69,7 +73,11 @@ AS_IF([test "x$with_realalg" != "xno" && test "$x$with_pytest" = "$xyes"],
              [
               AC_MSG_RESULT([yes])
               with_realalg=yes
-             ], AS_IF([test "x$with_realalg" = "xyes"], AC_MSG_ERROR([realalg not found]), AC_MSG_WARN([realalg not found; disabled realalg specific tests in make check])))
+             ],
+             [
+              AC_MSG_RESULT([no])
+              AS_IF([test "x$with_realalg" = "xyes"], AC_MSG_ERROR([realalg not found]), AC_MSG_WARN([realalg not found; disabled realalg specific tests in make check])))
+             ]
       ], [])
 AM_CONDITIONAL([HAVE_REALALG], [test "x$with_realalg" = "xyes"])
 
