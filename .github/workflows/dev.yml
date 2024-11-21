@@ -37,4 +37,6 @@ jobs:
 
           sleep 1
         done
+      # standardese has not been built for macOS
+      if: startsWith(matrix.on, 'ubuntu')
     - run: pixi run clean
