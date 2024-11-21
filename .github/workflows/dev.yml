@@ -38,5 +38,3 @@ jobs:
           sleep 1
         done
     - run: pixi run clean
-
-build, clean, compile-commands, sage, test
