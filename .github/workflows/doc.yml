@@ -11,7 +11,7 @@ jobs:
   build-manual:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with: { submodules: recursive }
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.30.0 }
@@ -20,7 +20,7 @@ jobs:
           touch doc/manual/generated/html/.nojekyll
       - name: detect broken links
         run: pixi run -e doc test-doc-linkchecker
-      - uses: JamesIves/github-pages-deploy-action@3.7.1
+      - uses: JamesIves/github-pages-deploy-action@v4.6.9
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
