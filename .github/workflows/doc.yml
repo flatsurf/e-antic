@@ -22,8 +22,7 @@ jobs:
         run: pixi run -e doc test-doc-linkchecker
       - uses: JamesIves/github-pages-deploy-action@v4.6.9
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: doc/manual/generated/html/e-antic
-          TARGET_FOLDER: docs
+          branch: gh-pages
+          folder: doc/manual/generated/html/e-antic
+          target-folder: docs
         if: ${{ github.event_name == 'push' }}
