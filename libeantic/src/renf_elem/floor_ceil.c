@@ -9,8 +9,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/renf_elem.h"
-
+#include "../../e-antic/config.h"
 
 #define KIND floor
 #define ARF_INT arf_floor

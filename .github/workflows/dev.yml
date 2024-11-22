@@ -1,0 +1,42 @@
+name: Developer Tasks
+on:
+  push: { branches: [ "master" ] }
+  pull_request: { branches: [ "master" ] }
+
+concurrency:
+  group: dev-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.on }}
+    strategy:
+      matrix:
+        on: ["ubuntu-24.04", "macos-13"]
+    steps:
+    - uses: actions/checkout@v4
+      with: { submodules: recursive }
+    - uses: prefix-dev/setup-pixi@v0.8.1
+      with: { pixi-version: v0.30.0 }
+    - run: pixi run build
+    - run: pixi run compile-commands
+    - run: pixi run sage -c 'import pyeantic'
+    - run: |
+        pixi run doc &
+
+        doc=$!
+
+        while true; do
+          if ! kill -0 $doc; then
+            exit 1
+          fi
+
+          if curl http://localhost:8880/; then
+            exit 0
+          fi
+
+          sleep 1
+        done
+      # standardese has not been built for macOS
+      if: startsWith(matrix.on, 'ubuntu')
+    - run: pixi run clean

@@ -23,14 +23,16 @@ class vpath_egg_info(egg_info):
 
 setup(
     name='pyeantic',
-    version='@PACKAGE_VERSION@',
+    version='2.0.2',
     packages=['pyeantic'],
     license='GPL 2.0+',
     install_requires=[
-        'cppyy'
+        'cppyy',
+        'cppyythonizations',
     ],
-    long_description=open('@abs_top_srcdir@/../README.md').read(),
+    long_description=open(os.path.join(os.path.dirname(__file__), '../../README.md')).read(),
     include_package_data=True,
     cmdclass={'egg_info': vpath_egg_info},
-    package_dir={"": os.path.relpath('@abs_top_srcdir@/src/')},
+    package_dir={"": os.path.relpath(os.path.dirname(__file__))},
+    package_data={"": ["../../COPYING"]},
 )

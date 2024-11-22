@@ -9,9 +9,11 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include <string.h>
+#include <stdio.h>
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 void renf_elem_print_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {

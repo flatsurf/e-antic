@@ -17,7 +17,9 @@
 #include <flint/arb.h>
 #endif
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf)
 {

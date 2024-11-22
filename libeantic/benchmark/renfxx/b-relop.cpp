@@ -11,9 +11,11 @@
 
 #include <benchmark/benchmark.h>
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem_class.hpp"
+
 #include "number_fields.hpp"
-#include "renf_elem_class_pool.hpp"
 
 using benchmark::DoNotOptimize;
 using benchmark::State;

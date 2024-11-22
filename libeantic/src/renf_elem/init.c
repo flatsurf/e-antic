@@ -10,6 +10,8 @@
 */
 
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf_elem.h"
 
 void renf_elem_init(renf_elem_t a, const renf_t nf)

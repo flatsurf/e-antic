@@ -11,6 +11,8 @@
 
 #include <flint/flint.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf.h"
 #include "../../e-antic/renf_elem.h"
 
