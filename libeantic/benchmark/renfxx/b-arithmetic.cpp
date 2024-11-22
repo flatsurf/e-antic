@@ -131,6 +131,76 @@ static void RationalSubtraction(State& state)
 BENCHMARK(RationalSubtraction)->Arg(1)->Arg(2)->Arg(4);
 
 template <typename T>
+static void TrivialAdditionOfProduct(State& state)
+{
+    renf_elem_class a;
+    T b = T(2);
+    renf_elem_class c = make_number_field(state.range(0))->gen();
+
+    for (auto _ : state)
+        DoNotOptimize(a += b * c);
+}
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, int)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, long long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, mpz_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, mpq_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialAdditionOfProduct, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
+
+// This should be much faster than the "Trivial" invocation of += above.
+template <typename T>
+static void SpecializedAdditionOfProduct(State& state)
+{
+    renf_elem_class a;
+    T b = T(2);
+    renf_elem_class c = make_number_field(state.range(0))->gen();
+
+    for (auto _ : state)
+        DoNotOptimize(a.iaddmul(b, c));
+}
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, int)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, long long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, mpz_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, mpq_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedAdditionOfProduct, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
+
+template <typename T>
+static void TrivialSubtractionOfProduct(State& state)
+{
+    renf_elem_class a;
+    T b = T(2);
+    renf_elem_class c = make_number_field(state.range(0))->gen();
+
+    for (auto _ : state)
+        DoNotOptimize(a -= b * c);
+}
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, int)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, long long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, mpz_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, mpq_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(TrivialSubtractionOfProduct, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
+
+// This should be much faster than the "Trivial" invocation of -= above.
+template <typename T>
+static void SpecializedSubtractionOfProduct(State& state)
+{
+    renf_elem_class a;
+    T b = T(2);
+    renf_elem_class c = make_number_field(state.range(0))->gen();
+
+    for (auto _ : state)
+        DoNotOptimize(a.isubmul(b, c));
+}
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, int)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, long long)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, mpz_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, mpq_class)->Arg(1)->Arg(2)->Arg(4);
+BENCHMARK_TEMPLATE(SpecializedSubtractionOfProduct, renf_elem_class)->Arg(1)->Arg(2)->Arg(4);
+
+template <typename T>
 static void TrivialDivision(State& state)
 {
     renf_elem_class lhs = make_number_field(state.range(0))->gen();
