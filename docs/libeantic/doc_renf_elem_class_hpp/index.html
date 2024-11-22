@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://flatsurf.github.io/e-antic/libeantic/doc_renf_elem_class_hpp/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>renf_elem_class - number field elements - e-antic</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "renf_elem_class - number field elements";
+        var mkdocs_page_input_path = "doc_renf_elem_class_hpp.md";
+        var mkdocs_page_url = "/e-antic/libeantic/doc_renf_elem_class_hpp/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">libeantic</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../overview_c/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../doc_renf_h/">renf — number fields</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../doc_renf_elem_h/">renf_elem — number field elements</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">libeanticxx</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../overview_cxx/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../doc_renf_class_hpp/">renf_class - number fields</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">renf_elem_class - number field elements</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#class-renf_elem_class">Class renf_elem_class</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">pyeantic</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="/e-antic/pyeantic">Manual</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">e-antic</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">libeanticxx</li>
+      <li class="breadcrumb-item active">renf_elem_class - number field elements</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="renf_elem_classhpp-elements-of-real-embedded-number-fields">renf_elem_class.hpp — Elements of Real Embedded Number Fields<a class="headerlink" href="#renf_elem_classhpp-elements-of-real-embedded-number-fields" title="Permanent link">&para;</a></h1>
+<h2 id="class-renf_elem_class">Class <code>renf_elem_class</code><a class="headerlink" href="#class-renf_elem_class" title="Permanent link">&para;</a></h2>
+<p>An element of a Real Embedded Number Field.</p>
+<p>Each element lives in a fixed number field. If the number field is an extension of the rationals of degree $d$, its elements are represented by rational polynomials of degree $d - 1$.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+auto a = eantic::renf_elem_class(*K, std::vector{-1, 1});
+std::cout &lt;&lt; a;
+// -&gt; (x-1 ~ 0.41421356)
+</code></pre>
+<p>The underlying data can be accessed directly, e.g., with <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#vectormpz_class-num_vector-const">num_vector</a> and <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#mpz_class-den-const">den</a>.</p>
+<p>Note that elements do not need to worry about the lifetime of the number field they are contained in. The number field will be kept alive by smart pointers as long as elements in it are around:</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto gen = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")-&gt;gen();
+std::cout &lt;&lt; gen;
+// -&gt; (x ~ 1.4142136)
+</code></pre>
+<h3 id="renf_elem_class"><code>renf_elem_class()</code><a class="headerlink" href="#renf_elem_class" title="Permanent link">&para;</a></h3>
+<p>Create the zero element of the rationals.</p>
+<h3 id="renf_elem_classintegerrational"><code>renf_elem_class(integer/rational)</code><a class="headerlink" href="#renf_elem_classintegerrational" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class(short)
+
+(2) renf_elem_class(unsigned short)
+
+(3) renf_elem_class(int)
+
+(4) renf_elem_class(unsigned int)
+
+(5) renf_elem_class(long)
+
+(6) renf_elem_class(unsigned long)
+
+(7) renf_elem_class(long long)
+
+(8) renf_elem_class(unsigned long long)
+
+(9) renf_elem_class(const mpz_class&amp;)
+
+(10) renf_elem_class(const fmpz_t)
+
+(11) renf_elem_class(const mpq_class&amp;)
+
+(12) renf_elem_class(const fmpq_t)
+
+</code></pre>
+<p>Create an element in the rationals.</p>
+<p>These are shortcuts equivalent to calling <code>renf_elem_class(*renf_class::make(), value)</code>.</p>
+<h3 id="renf_elem_classconst-renf_class-k"><code>renf_elem_class(const renf_class&amp; k)</code><a class="headerlink" href="#renf_elem_classconst-renf_class-k" title="Permanent link">&para;</a></h3>
+<p>Create the zero element in the field <code>k</code>.</p>
+<h3 id="renf_elem_classconst-renf_class-integerrational"><code>renf_elem_class(const renf_class&amp;, integer/rational)</code><a class="headerlink" href="#renf_elem_classconst-renf_class-integerrational" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class(const renf_class&amp; k, short)
+
+(2) renf_elem_class(const renf_class&amp; k, unsigned short)
+
+(3) renf_elem_class(const renf_class&amp; k, int)
+
+(4) renf_elem_class(const renf_class&amp; k, unsigned int)
+
+(5) renf_elem_class(const renf_class&amp; k, long)
+
+(6) renf_elem_class(const renf_class&amp; k, unsigned long)
+
+(7) renf_elem_class(const renf_class&amp; k, long long)
+
+(8) renf_elem_class(const renf_class&amp; k, unsigned long long)
+
+(9) renf_elem_class(const renf_class&amp; k, const mpz_class&amp;)
+
+(10) renf_elem_class(const renf_class&amp; k, const fmpz_t)
+
+(11) renf_elem_class(const renf_class&amp; k, const mpq_class&amp;)
+
+(12) renf_elem_class(const renf_class&amp; k, const fmpq_t)
+
+</code></pre>
+<p>Create a rational element in the field <code>k</code>.</p>
+<h3 id="renf_elem_classconst-renf_class-k-const-renf_elem_class"><code>renf_elem_class(const renf_class&amp; k, const renf_elem_class&amp;)</code><a class="headerlink" href="#renf_elem_classconst-renf_class-k-const-renf_elem_class" title="Permanent link">&para;</a></h3>
+<p>Create an element in the field <code>k</code> from an existing element.</p>
+<p>This attempts to coerce the element into the field <code>k</code>. Currently, this is only implemented in trivial cases.</p>
+<h3 id="renf_elem_classconst-renf_class-k-const-string"><code>renf_elem_class(const renf_class&amp; k, const string&amp;)</code><a class="headerlink" href="#renf_elem_classconst-renf_class-k-const-string" title="Permanent link">&para;</a></h3>
+<p>Create an element in the field <code>k</code> from a string representation of its underlying polynomial.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+eantic::renf_elem_class(*K, "x") == K-&gt;gen()
+// -&gt; true
+</code></pre>
+<h3 id="renf_elem_classvectorintegerrational"><code>renf_elem_class(vector&lt;integer/rational&gt;)</code><a class="headerlink" href="#renf_elem_classvectorintegerrational" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class(const renf_class&amp; k, const vector&lt;int&gt; &amp;)
+
+(2) renf_elem_class(const renf_class&amp; k, const vector&lt;unsigned int&gt; &amp;)
+
+(3) renf_elem_class(const renf_class&amp; k, const vector&lt;long&gt; &amp;)
+
+(4) renf_elem_class(const renf_class&amp; k, const vector&lt;unsigned long&gt; &amp;)
+
+(5) renf_elem_class(const renf_class&amp; k, const vector&lt;mpz_class&gt; &amp;)
+
+(6) renf_elem_class(const renf_class&amp; k, const vector&lt;mpq_class&gt; &amp;)
+
+</code></pre>
+<p>Create the element $\sum c_i a^i$ where $a$ is the generator.</p>
+<p>The number of coefficients must not exceed the degree of the field.</p>
+<h3 id="operatorintegerrational"><code>operator=(integer/rational)</code><a class="headerlink" href="#operatorintegerrational" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class&amp; operator=(short)
+
+(2) renf_elem_class&amp; operator=(unsigned short)
+
+(3) renf_elem_class&amp; operator=(int)
+
+(4) renf_elem_class&amp; operator=(unsigned int)
+
+(5) renf_elem_class&amp; operator=(long)
+
+(6) renf_elem_class&amp; operator=(unsigned long)
+
+(7) renf_elem_class&amp; operator=(long long)
+
+(8) renf_elem_class&amp; operator=(unsigned long long)
+
+(9) renf_elem_class&amp; operator=(const mpz_class&amp;)
+
+(10) renf_elem_class&amp; operator=(const mpq_class&amp;)
+
+(11) renf_elem_class&amp; operator=(const fmpz_t)
+
+(12) renf_elem_class&amp; operator=(const fmpq_t)
+
+</code></pre>
+<p>Reset this element to a rational number.</p>
+<p>The <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#const-renf_class-parent-const">parent</a> of the element is not preserved, i.e., it’s always the rational field. To create a rational element in the number field, use the corresponding constructor.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+auto a = K-&gt;gen();
+a.parent() == *K
+// -&gt; true
+a = 1;
+a.parent() == *K
+// -&gt; false
+a = eantic::renf_elem_class(*K, 1);
+a.parent() == *K
+// -&gt; true
+</code></pre>
+<h3 id="operatornumber-field-element"><code>operator=(number field element)</code><a class="headerlink" href="#operatornumber-field-element" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class&amp; operator=(const renf_elem_class&amp;)
+
+(2) renf_elem_class&amp; operator=(renf_elem_class&amp;&amp;)
+
+</code></pre>
+<p>Reset this element to another element.</p>
+<p>The <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#const-renf_class-parent-const">parent</a> of the element is not preserved, i.e., the resulting parent is always the parent of the argument.</p>
+<h3 id="const-renf_class-parent-const"><code>const renf_class&amp; parent() const</code><a class="headerlink" href="#const-renf_class-parent-const" title="Permanent link">&para;</a></h3>
+<p>Return the containing number field.</p>
+<h3 id="bool-is_zero-const"><code>bool is_zero() const</code><a class="headerlink" href="#bool-is_zero-const" title="Permanent link">&para;</a></h3>
+<p>Return whether this element is the zero element in its field.</p>
+<h3 id="bool-is_one-const"><code>bool is_one() const</code><a class="headerlink" href="#bool-is_one-const" title="Permanent link">&para;</a></h3>
+<p>Return whether this element is the one element in its field.</p>
+<h3 id="bool-is_integer-const"><code>bool is_integer() const</code><a class="headerlink" href="#bool-is_integer-const" title="Permanent link">&para;</a></h3>
+<p>Return whether this element is a rational integer.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+K-&gt;gen().is_integer()
+// -&gt; false
+
+K-&gt;one().is_integer()
+// -&gt; true
+</code></pre>
+<h3 id="bool-is_rational-const"><code>bool is_rational() const</code><a class="headerlink" href="#bool-is_rational-const" title="Permanent link">&para;</a></h3>
+<p>Return whether this element is a rational number.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+K-&gt;gen().is_rational()
+// -&gt; false
+
+K-&gt;one().is_rational()
+// -&gt; true
+</code></pre>
+<h3 id="mpz_class-num-const"><code>mpz_class num() const</code><a class="headerlink" href="#mpz_class-num-const" title="Permanent link">&para;</a></h3>
+<p>Return the numerator of this element.</p>
+<p>The element must be rational for this to work, see <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#mpz_class-num_content-const">num_content</a> for non-rational elements.</p>
+<h3 id="mpz_class-den-const"><code>mpz_class den() const</code><a class="headerlink" href="#mpz_class-den-const" title="Permanent link">&para;</a></h3>
+<p>Return the denominator of this element.</p>
+<p>For non-rational elements, this returns the least common multiple of the denominators of the coefficients when written as $\sum c_i a^i$ where $a$ is the field generator.</p>
+<h3 id="operator-mpz_class-const"><code>operator mpz_class() const</code><a class="headerlink" href="#operator-mpz_class-const" title="Permanent link">&para;</a></h3>
+<p>Convert this element to a <a href="https://gmplib.org/manual/C_002b_002b-Interface-Integers">GMP integer</a>.</p>
+<p>The element must be <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#bool-is_integer-const">an integer</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; static_cast&lt;mpz_class&gt;(K-&gt;one());
+// -&gt; 1
+</code></pre>
+<h3 id="operator-mpq_class-const"><code>operator mpq_class() const</code><a class="headerlink" href="#operator-mpq_class-const" title="Permanent link">&para;</a></h3>
+<p>Convert this element to a <a href="https://gmplib.org/manual/C_002b_002b-Interface-Rationals">GMP rational number</a>.</p>
+<p>The element must be <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#bool-is_rational-const">a rational</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; static_cast&lt;mpq_class&gt;(K-&gt;one());
+// -&gt; 1
+</code></pre>
+<h3 id="vectormpz_class-num_vector-const"><code>vector&lt;mpz_class&gt;</code> <code>num_vector() const</code><a class="headerlink" href="#vectormpz_class-num_vector-const" title="Permanent link">&para;</a></h3>
+<p>Return the numerators of the coefficients of this element when written as $\sum c_i a^i$ where $a$ is the field generator.</p>
+<h3 id="string-to_string-const"><code>string to_string() const</code><a class="headerlink" href="#string-to_string-const" title="Permanent link">&para;</a></h3>
+<pre><code>(1) string to_string(int flags) const
+
+(2) operator std::string() const
+
+</code></pre>
+<p>Return a string representation of this element.</p>
+<p>The optional flag of <code>to_string()</code> is passed on to <a href="/e-antic/libeantic/doc_renf_elem_h#char-renf_elem_get_str_prettyrenf_elem_t-a-char-var-renf_t-nf-slong-n-int-flag">renf_elem_get_str_pretty</a> internally. Other than that, <code>to_string()</code> and the explicit string conversion are just aliases of each other:</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+K-&gt;gen().to_string() == static_cast&lt;std::string&gt;(K-&gt;gen())
+// -&gt; true
+</code></pre>
+<h3 id="mpz_class-num_content-const"><code>mpz_class num_content() const</code><a class="headerlink" href="#mpz_class-num_content-const" title="Permanent link">&para;</a></h3>
+<p>Return the greatest common divisor of <a href="/e-antic/libeantic/doc_renf_elem_class_hpp#vectormpz_class-num_vector-const">num_vector</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; (4*K-&gt;gen() + 2).num_content();
+// -&gt; 2
+std::cout &lt;&lt; K-&gt;zero().num_content();
+// -&gt; 0
+</code></pre>
+<h3 id="mpz_class-floor-const"><code>mpz_class floor() const</code><a class="headerlink" href="#mpz_class-floor-const" title="Permanent link">&para;</a></h3>
+<p>Return the integer floor of this element.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; K-&gt;gen().floor();
+// -&gt; 1
+std::cout &lt;&lt; (-K-&gt;gen()).floor();
+// -&gt; -2
+</code></pre>
+<h3 id="mpz_class-ceil-const"><code>mpz_class ceil() const</code><a class="headerlink" href="#mpz_class-ceil-const" title="Permanent link">&para;</a></h3>
+<p>Return the integer ceil of this element.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; K-&gt;gen().ceil();
+// -&gt; 2
+std::cout &lt;&lt; (-K-&gt;gen()).ceil();
+// -&gt; -1
+</code></pre>
+<h3 id="int-sgn-const"><code>int sgn() const</code><a class="headerlink" href="#int-sgn-const" title="Permanent link">&para;</a></h3>
+<p>Return the sign of this element.</p>
+<p>Returns one of <code>-1</code>, <code>0</code> or <code>+1</code>.</p>
+<h3 id="operator-double-const"><code>operator double() const</code><a class="headerlink" href="#operator-double-const" title="Permanent link">&para;</a></h3>
+<p>Return the double closest to this element.</p>
+<p>Ties are broken with <a href="https://arblib.org/arf.html#c.ARF_RND_NEAR">ARF_RND_NEAR</a>.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; static_cast&lt;double&gt;(K-&gt;gen());
+// -&gt; 1.41421
+</code></pre>
+<h3 id="renf_elem_class-operator-const"><code>renf_elem_class operator-() const</code><a class="headerlink" href="#renf_elem_class-operator-const" title="Permanent link">&para;</a></h3>
+<p>Return the negative of this element.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+std::cout &lt;&lt; -K-&gt;gen();
+// -&gt; (-x ~ -1.4142136)
+</code></pre>
+<h3 id="renf_elem_class-operator-const_1"><code>renf_elem_class operator+() const</code><a class="headerlink" href="#renf_elem_class-operator-const_1" title="Permanent link">&para;</a></h3>
+<p>Return the positive of this element.</p>
+<p>Returns the element unchanged.</p>
+<h3 id="operator-bool-const"><code>operator bool() const</code><a class="headerlink" href="#operator-bool-const" title="Permanent link">&para;</a></h3>
+<p>Return whether this element is non-zero.</p>
+<pre><code>#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+bool(K-&gt;gen())
+// -&gt; true
+</code></pre>
+<h3 id="arithmetic-in-the-number-field">Arithmetic in the Number Field<a class="headerlink" href="#arithmetic-in-the-number-field" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class&amp; operator+=(const renf_elem_class&amp;)
+
+(2) renf_elem_class&amp; operator-=(const renf_elem_class&amp;)
+
+(3) renf_elem_class&amp; operator*=(const renf_elem_class&amp;)
+
+(4) renf_elem_class&amp; operator/=(const renf_elem_class&amp;)
+
+</code></pre>
+<p>ELements in a number field support the usual arithmetic operators <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>.</p>
+<p>Internally, these operators are derived from the corresponding inplace operators <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>. Note that arithmetic between elements in different number fields is currently only supported in trivial cases.</p>
+<h3 id="relational-operators">Relational Operators<a class="headerlink" href="#relational-operators" title="Permanent link">&para;</a></h3>
+<pre><code>(1) friend bool operator==(const renf_elem_class&amp;, const renf_elem_class&amp;)
+
+(2) friend bool operator&lt;(const renf_elem_class&amp;, const renf_elem_class&amp;)
+
+</code></pre>
+<p>Elements can be compared with the usual operators <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>.</p>
+<p>Internally, these operators are all derived from the definition of <code>==</code> and <code>&lt;</code>.</p>
+<h3 id="mpz_class-floordivconst-renf_elem_class-rhs-const"><code>mpz_class floordiv(const renf_elem_class&amp; rhs) const</code><a class="headerlink" href="#mpz_class-floordivconst-renf_elem_class-rhs-const" title="Permanent link">&para;</a></h3>
+<p>Return the integer floor of the division of this element by <code>rhs</code>.</p>
+<h3 id="renf_elem_class-powint-exponent-const"><code>renf_elem_class pow(int exponent) const</code><a class="headerlink" href="#renf_elem_class-powint-exponent-const" title="Permanent link">&para;</a></h3>
+<p>Return an integer power of this element.</p>
+<h3 id="arithmetic-with-integers-rationals">Arithmetic with Integers &amp; Rationals<a class="headerlink" href="#arithmetic-with-integers-rationals" title="Permanent link">&para;</a></h3>
+<pre><code>(1) renf_elem_class&amp; operator+=(short)
+
+(2) renf_elem_class&amp; operator-=(short)
+
+(3) renf_elem_class&amp; operator*=(short)
+
+(4) renf_elem_class&amp; operator/=(short)
+
+(5) renf_elem_class&amp; operator+=(unsigned short)
+
+(6) renf_elem_class&amp; operator-=(unsigned short)
+
+(7) renf_elem_class&amp; operator*=(unsigned short)
+
+(8) renf_elem_class&amp; operator/=(unsigned short)
+
+(9) renf_elem_class&amp; operator+=(int)
+
+(10) renf_elem_class&amp; operator-=(int)
+
+(11) renf_elem_class&amp; operator*=(int)
+
+(12) renf_elem_class&amp; operator/=(int)
+
+(13) renf_elem_class&amp; operator+=(unsigned int)
+
+(14) renf_elem_class&amp; operator-=(unsigned int)
+
+(15) renf_elem_class&amp; operator*=(unsigned int)
+
+(16) renf_elem_class&amp; operator/=(unsigned int)
+
+(17) renf_elem_class&amp; operator+=(long)
+
+(18) renf_elem_class&amp; operator-=(long)
+
+(19) renf_elem_class&amp; operator*=(long)
+
+(20) renf_elem_class&amp; operator/=(long)
+
+(21) renf_elem_class&amp; operator+=(unsigned long)
+
+(22) renf_elem_class&amp; operator-=(unsigned long)
+
+(23) renf_elem_class&amp; operator*=(unsigned long)
+
+(24) renf_elem_class&amp; operator/=(unsigned long)
+
+(25) renf_elem_class&amp; operator+=(long long)
+
+(26) renf_elem_class&amp; operator-=(long long)
+
+(27) renf_elem_class&amp; operator*=(long long)
+
+(28) renf_elem_class&amp; operator/=(long long)
+
+(29) renf_elem_class&amp; operator+=(unsigned long long)
+
+(30) renf_elem_class&amp; operator-=(unsigned long long)
+
+(31) renf_elem_class&amp; operator*=(unsigned long long)
+
+(32) renf_elem_class&amp; operator/=(unsigned long long)
+
+(33) renf_elem_class&amp; operator+=(const mpz_class&amp;)
+
+(34) renf_elem_class&amp; operator-=(const mpz_class&amp;)
+
+(35) renf_elem_class&amp; operator*=(const mpz_class&amp;)
+
+(36) renf_elem_class&amp; operator/=(const mpz_class&amp;)
+
+(37) renf_elem_class&amp; operator+=(const mpq_class&amp;)
+
+(38) renf_elem_class&amp; operator-=(const mpq_class&amp;)
+
+(39) renf_elem_class&amp; operator*=(const mpq_class&amp;)
+
+(40) renf_elem_class&amp; operator/=(const mpq_class&amp;)
+
+</code></pre>
+<p>Elements in a number field and integers/rationals can be combined with the usual arithmetic operators <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> and the corresponding inplace operators <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>.</p>
+<h3 id="relational-operators-with-integers-rationals">Relational Operators with Integers &amp; Rationals<a class="headerlink" href="#relational-operators-with-integers-rationals" title="Permanent link">&para;</a></h3>
+<pre><code>(1) friend bool operator==(const renf_elem_class&amp;, short)
+
+(2) friend bool operator&lt;(const renf_elem_class&amp;, short)
+
+(3) friend bool operator&gt;(const renf_elem_class&amp;, short)
+
+(4) friend bool operator==(const renf_elem_class&amp;, unsigned short)
+
+(5) friend bool operator&lt;(const renf_elem_class&amp;, unsigned short)
+
+(6) friend bool operator&gt;(const renf_elem_class&amp;, unsigned short)
+
+(7) friend bool operator==(const renf_elem_class&amp;, int)
+
+(8) friend bool operator&lt;(const renf_elem_class&amp;, int)
+
+(9) friend bool operator&gt;(const renf_elem_class&amp;, int)
+
+(10) friend bool operator==(const renf_elem_class&amp;, unsigned int)
+
+(11) friend bool operator&lt;(const renf_elem_class&amp;, unsigned int)
+
+(12) friend bool operator&gt;(const renf_elem_class&amp;, unsigned int)
+
+(13) friend bool operator==(const renf_elem_class&amp;, long)
+
+(14) friend bool operator&lt;(const renf_elem_class&amp;, long)
+
+(15) friend bool operator&gt;(const renf_elem_class&amp;, long)
+
+(16) friend bool operator==(const renf_elem_class&amp;, unsigned long)
+
+(17) friend bool operator&lt;(const renf_elem_class&amp;, unsigned long)
+
+(18) friend bool operator&gt;(const renf_elem_class&amp;, unsigned long)
+
+(19) friend bool operator==(const renf_elem_class&amp;, long long)
+
+(20) friend bool operator&lt;(const renf_elem_class&amp;, long long)
+
+(21) friend bool operator&gt;(const renf_elem_class&amp;, long long)
+
+(22) friend bool operator==(const renf_elem_class&amp;, unsigned long long)
+
+(23) friend bool operator&lt;(const renf_elem_class&amp;, unsigned long long)
+
+(24) friend bool operator&gt;(const renf_elem_class&amp;, unsigned long long)
+
+(25) friend bool operator==(const renf_elem_class&amp;, const mpz_class&amp;)
+
+(26) friend bool operator&lt;(const renf_elem_class&amp;, const mpz_class&amp;)
+
+(27) friend bool operator&gt;(const renf_elem_class&amp;, const mpz_class&amp;)
+
+(28) friend bool operator==(const renf_elem_class&amp;, const mpq_class&amp;)
+
+(29) friend bool operator&lt;(const renf_elem_class&amp;, const mpq_class&amp;)
+
+(30) friend bool operator&gt;(const renf_elem_class&amp;, const mpq_class&amp;)
+
+</code></pre>
+<p>Elements in a number field and integers/rationals can be compared with the usual relational operators <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>.</p>
+<h3 id="io">I/O<a class="headerlink" href="#io" title="Permanent link">&para;</a></h3>
+<pre><code>(1) friend ostream&amp; operator&lt;&lt;(ostream&amp;, const renf_elem_class&amp;)
+
+(2) friend istream&amp; operator&gt;&gt;(istream&amp;, renf_elem_class&amp;)
+
+</code></pre>
+<p>Elements can be written to streams and read from streams.</p>
+<p>However, reading non-rational elements from a stream is discouraged as it relies on the deprecated <code>set_pword()</code> method.</p>
+<pre><code>#include &lt;strstream&gt;
+#include &lt;e-antic/renf_class.hpp&gt;
+#include &lt;e-antic/renf_elem_class.hpp&gt;
+
+auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
+auto a = K-&gt;gen();
+std::strstream s;
+s &lt;&lt; a &lt;&lt; std::ends;
+std::cout &lt;&lt; s.str();
+// -&gt; (x ~ 1.4142136)
+
+s.seekp(0);
+// Before we can read from the stream, we must attach the number field to it.
+K-&gt;set_pword(s);
+s &gt;&gt; a;
+</code></pre>
+<h3 id="friend-void-swaprenf_elem_class-lhs-renf_elem_class-rhs"><code>friend void swap(renf_elem_class&amp; lhs, renf_elem_class&amp; rhs)</code><a class="headerlink" href="#friend-void-swaprenf_elem_class-lhs-renf_elem_class-rhs" title="Permanent link">&para;</a></h3>
+<p>Efficiently swap two number field elements.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../doc_renf_class_hpp/" class="btn btn-neutral float-left" title="renf_class - number fields"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../doc_renf_class_hpp/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../extra.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

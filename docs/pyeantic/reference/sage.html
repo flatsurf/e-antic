@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SageMath Interface &mdash; pyeantic 2.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/extra.css?v=f4598618" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c2377ec0"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Realalg Interface" href="realalg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="realalg.html">Realalg Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SageMath Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pyeantic.real_embedded_number_field.CoercionNumberFieldRenf"><code class="docutils literal notranslate"><span class="pre">CoercionNumberFieldRenf</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.CoercionNumberFieldRenf.section"><code class="docutils literal notranslate"><span class="pre">CoercionNumberFieldRenf.section()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.Element"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.Element</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.an_element"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.an_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.characteristic"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.characteristic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.degree"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.degree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.gen"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.gen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.is_field"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.is_field()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.random_element"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField.random_element()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberFieldElement</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberFieldElement.minpoly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.vector"><code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberFieldElement.vector()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyeantic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SageMath Interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/sage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyeantic.real_embedded_number_field">
+<span id="sagemath-interface"></span><span id="sage-interface"></span><h1>SageMath Interface<a class="headerlink" href="#module-pyeantic.real_embedded_number_field" title="Link to this heading"></a></h1>
+<p>Real Embedded Number Fields for SageMath</p>
+<p>This wraps e-antic for SageMath providing number fields with less of a focus
+on number theory but fast exact ball arithmetic of the kind that is usually
+required for classical geometry.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.CoercionNumberFieldRenf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyeantic.real_embedded_number_field.</span></span><span class="sig-name descname"><span class="pre">CoercionNumberFieldRenf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.CoercionNumberFieldRenf" title="Link to this definition"></a></dt>
+<dd><p>A coercion from <a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField" title="pyeantic.real_embedded_number_field.RealEmbeddedNumberField"><code class="xref py py-class docutils literal notranslate"><span class="pre">RealEmbeddedNumberField</span></code></a> to a SageMath
+<code class="docutils literal notranslate"><span class="pre">NumberField</span></code>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">KK</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">coercion</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">convert_map_from</span><span class="p">(</span><span class="n">KK</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic.real_embedded_number_field</span> <span class="kn">import</span> <span class="n">CoercionNumberFieldRenf</span>
+<span class="n">sage</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coercion</span><span class="p">,</span> <span class="n">CoercionNumberFieldRenf</span><span class="p">)</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.CoercionNumberFieldRenf.section">
+<span class="sig-name descname"><span class="pre">section</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.CoercionNumberFieldRenf.section" title="Link to this definition"></a></dt>
+<dd><p>Return the inverse of this coercion.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from pyeantic import RealEmbeddedNumberField
+sage: K = NumberField(x**2 - 2, &#39;a&#39;, embedding=sqrt(AA(2)))
+sage: KK = RealEmbeddedNumberField(K)
+sage: K.coerce_map_from(KK).section()
+Conversion map:
+  From: Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+  To:   Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyeantic.real_embedded_number_field.</span></span><span class="sig-name descname"><span class="pre">RealEmbeddedNumberField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField" title="Link to this definition"></a></dt>
+<dd><p>See <code class="docutils literal notranslate"><span class="pre">RealEmbeddedNumberField</span></code> in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> for details.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.Element">
+<span class="sig-name descname"><span class="pre">Element</span></span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.Element" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement" title="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">RealEmbeddedNumberFieldElement</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.an_element">
+<span class="sig-name descname"><span class="pre">an_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.an_element" title="Link to this definition"></a></dt>
+<dd><p>Return a typical element in this number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="p">(</span><span class="n">a</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.characteristic">
+<span class="sig-name descname"><span class="pre">characteristic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.characteristic" title="Link to this definition"></a></dt>
+<dd><p>Return zero, the  characteristic of this number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">characteristic</span><span class="p">()</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.degree" title="Link to this definition"></a></dt>
+<dd><p>Return the absolute degree of this number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span>
+<span class="mi">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.gen">
+<span class="sig-name descname"><span class="pre">gen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.gen" title="Link to this definition"></a></dt>
+<dd><p>Return the generator of this number field, i.e., a root of its defining
+polynomial.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span>
+<span class="p">(</span><span class="n">a</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.is_field">
+<span class="sig-name descname"><span class="pre">is_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.is_field" title="Link to this definition"></a></dt>
+<dd><p>Return whether this number field is a field, i.e., return <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">is_field</span><span class="p">()</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberField.random_element">
+<span class="sig-name descname"><span class="pre">random_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField.random_element" title="Link to this definition"></a></dt>
+<dd><p>Return a randomly generated element in this number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="ow">is</span> <span class="n">K</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyeantic.real_embedded_number_field.</span></span><span class="sig-name descname"><span class="pre">RealEmbeddedNumberFieldElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement" title="Link to this definition"></a></dt>
+<dd><p>An element of a <a class="reference internal" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberField" title="pyeantic.real_embedded_number_field.RealEmbeddedNumberField"><code class="xref py py-class docutils literal notranslate"><span class="pre">RealEmbeddedNumberField</span></code></a>, i.e., a wrapper of
+e-antic’s <code class="docutils literal notranslate"><span class="pre">renf_elem_class</span></code>.</p>
+<p>..NOTES:</p>
+<p>This class wraps a <code class="docutils literal notranslate"><span class="pre">renf_elem_class</span></code> (which, at no additional runtime
+cost wraps a <code class="docutils literal notranslate"><span class="pre">renf_elem</span></code>.) At the moment it’s not possible to use a
+<code class="docutils literal notranslate"><span class="pre">renf_elem_class</span></code> directly in SageMath. Changing this might lead to a
+slight improvement in performance.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>  <span class="c1"># random output due to deprecation warnings</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Verify that #192 has been resolved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.&lt;</span><span class="n">x</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="p">[]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.&lt;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">(</span><span class="n">b</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.&lt;</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="p">[]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.&lt;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">(</span><span class="n">b</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Verify that #226 has been resolved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: K.&lt;a&gt; = NumberField(x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58 \
+....: - 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46 \
+....: - 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36 \
+....: + 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26 \
+....: - 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16 \
+....: + 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71, \
+....: embedding=1.999510553370486)
+sage: from pyeantic import RealEmbeddedNumberField
+sage: RealEmbeddedNumberField(K)
+Real Embedded Number Field in a with defining polynomial x^70 - 71*x^68 + 2414*x^66 - 52327*x^64 + 812240*x^62 - 9613968*x^60 + 90223392*x^58
+- 689161713*x^56 + 4364690849*x^54 - 23231419035*x^52 + 104960312886*x^50 - 405528481605*x^48 + 1347179362620*x^46
+- 3862867084860*x^44 + 9584557428600*x^42 - 20606798471490*x^40 + 38403578969595*x^38 - 61997934676405*x^36
++ 86563154076490*x^34 - 104261288816825*x^32 + 107941099010360*x^30 - 95604973409176*x^28 + 72014135814704*x^26
+- 45791597230002*x^24 + 24357232569150*x^22 - 10717182330426*x^20 + 3847193657076*x^18 - 1107525446734*x^16
++ 250205084312*x^14 - 43138807640*x^12 + 5471263408*x^10 - 485354012*x^8 + 28001193*x^6 - 937839*x^4 + 14910*x^2 - 71
+with a = 1.999510553370486?
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly">
+<span class="sig-name descname"><span class="pre">minpoly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.minpoly" title="Link to this definition"></a></dt>
+<dd><p>Return the minimal polynomial of this element over the rationals.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span><span class="o">.</span><span class="n">minpoly</span><span class="p">()</span>
+<span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.vector">
+<span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.real_embedded_number_field.RealEmbeddedNumberFieldElement.vector" title="Link to this definition"></a></dt>
+<dd><p>Return a vector representation of this element in terms of the basis of
+the number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">pyeantic</span> <span class="kn">import</span> <span class="n">RealEmbeddedNumberField</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">RealEmbeddedNumberField</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="realalg.html" class="btn btn-neutral float-left" title="Realalg Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, the e-antic authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
