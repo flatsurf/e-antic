@@ -1,6 +1,6 @@
 # autotools and build stuff
 Makefile
-config.h
+config.generated.h
 ar-lib
 stamp-h*
 build/
@@ -11,7 +11,7 @@ build/
 *.o
 *.trs
 Makefile.in
-config.h.in
+config.generated.h.in
 .deps
 .dirstamp
 .libs
@@ -42,8 +42,6 @@ INSTALL
 # editors temporary files
 *.swp
 tmp/
-compile_commands.json
-compile_flags.txt
 .ccls-cache/
 *~
 
@@ -55,5 +53,18 @@ t-*
 /e-antic*.tar.gz
 /rever
 
+# distcheck artifacts
+/e-antic-*
+
 # Jupyter checkpoints
 .ipynb_checkpoints
+
+# pixi environments
+.pixi
+
+# Python
+*.egg-info
+__pycache__
+
+# caches
+.cache

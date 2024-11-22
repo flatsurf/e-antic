@@ -1,5 +1,7 @@
 #include <flint/flint.h>
 
+#include "../e-antic/config.h"
+
 #define CATCH_CONFIG_RUNNER
 #include "external/catch2/single_include/catch2/catch.hpp"
 

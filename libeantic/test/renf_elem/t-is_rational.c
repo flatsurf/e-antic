@@ -11,6 +11,8 @@
 
 #include <stdlib.h>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf_elem.h"
 
 int main(void)

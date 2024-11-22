@@ -11,7 +11,9 @@
 
 #include <flint/fmpz_vec.h>
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len)
 {

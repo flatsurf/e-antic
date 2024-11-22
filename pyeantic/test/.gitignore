@@ -5,3 +5,4 @@
 /test-env.sh
 /sage-doctest.sh
 /python-doctest.sh
+/realalg-doctest.sh

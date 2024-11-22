@@ -27,22 +27,105 @@ This repository contains two related projects:
 
 The dependencies are:
 
- - [FLINT 2.6, 2.7, 2.8, or 2.9](https://flintlib.org)
- - [Arb](https://arblib.org/)
- - [ANTIC](https://github.com/wbhart/antic)
+ - either [FLINT 2.6, 2.7, 2.8, or 2.9](https://flintlib.org), [Arb](https://arblib.org/), and [ANTIC](https://github.com/wbhart/antic),
+ - or [FLINT 3.x](https://flintlib.org);
  - [Boost](https://www.boost.org/) for the C++ library
  - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
+## Build and Develop e-antic with pixi
+
+If you have cloned the source repository, make sure to pull in all the
+third-party header-only libraries by running:
+
+```
+git submodule update --init
+```
+
+If you are distributing e-antic or you are a purist who *only* wants to
+interact with autotools directly, then you should skip to the [next
+section](#build-from-the-source-code-repository-or-a-tarball). Otherwise, we
+strongly recommend that you install [pixi](https://pixi.sh) and then use the
+following commands:
+
+* `pixi run test` build e-antic and run the libeantic and pyeantic test suites
+* `pixi run sage` build e-antic and spawn SageMath with the local libeantic and pyeantic installed
+* `pixi run doc` to build and preview the documentation
+* `pixi run compile-commands` to generate a `compile_commands.json` that your IDE might be able to use to make sense of this project
+
+<details>
+<summary>What is pixi?</summary>
+
+pixi is a tool based on
+[conda](https://en.wikipedia.org/wiki/Conda_(package_manager)) &
+[conda-forge](https://conda-forge.org) for developers so that we can all use
+the same workflows in the same defined environments.
+
+pixi allows us to ship a very opinionated setup to developers of e-antic,
+namely a number of opinionated scripts with corresponding tested (and
+opinionated) dependencies.
+
+This makes the whole development experience much more reliable and
+reproducible, e.g., the CI on GitHub Pull Requests runs with the exact same
+setup, so if something fails there, you can just run the CI command to
+hopefully get exactly the same behavior locally.
+</details>
+
+<details>
+<summary>How do I use pixi?</summary>
+
+If you have not used pixi before, the most relevant pixi command is:
+
+```sh
+pixi run TASK
+```
+
+Run `pixi task list` to see the available tasks.
+
+All tasks are defined in the `pixi.toml` file and most are used somewhere in
+our GitHub Continuous Integration setup, see .github/workflows/.
+</details>
+
+<details>
+<summary>Why don't we add all things to the Makefiles but use pixi tasks?</summary>
+
+Packagers do prefer a system that is as minimalistic as possible. Any
+opinionated bit in the build system, such as setting compiler flags, usually
+needs to be patched out by software distributions. That's why our Makefiles are
+trying to follow the autoconfiscated standards as closely as possible. And
+essentially all that pixi does is to call these Makefiles without you having to
+figure out how everything works in detail.
+</details>
+
+<details>
+<summary>Can I use configure & make with pixi?</summary>
+
+More experienced developers may not want to use these tasks. You can also just
+use the curated list of dependencies that pixi provides and drop into a shell
+with these dependencies installed. For example, to run the libeantic test suite
+directly, you could do:
+
+```sh
+pixi shell -e dev
+./bootstrap
+cd libeantic
+./configure
+make check
+```
+
+Note that the following section contains more details about this `configure &&
+make` workflow that might be of interest to you.
+</details>
+
 ## Build from the Source Code Repository or a Tarball
 
-If you have cloned the source directory you will need to setup the
-configure script and Makefile using autotools. That is
+If you have cloned the source directory and you decided not to use pixi, you
+will need to setup the configure script and Makefile using autotools. That is
 
     git submodule update --init
     ./bootstrap
 
 If you obtained a tarball of the sources or if the preceding step
-worked, you just have to do
+worked, you can now run
 
     ./configure
     make
@@ -83,37 +166,6 @@ For more detailed but generic instructions please refer to the INSTALL file.
 
 See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
 for installation instructions.
-
-## Run with binder in the Cloud
-
-You can try out the projects in this repository in a very limited environment
-online by clicking the following links:
-
-* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/2.0.2?filepath=binder%2FSample.libeantic.ipynb)
-* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/2.0.2?filepath=binder%2FSample.pyeantic.ipynb)
-
-## Build with conda-forge Dependencies
-
-To build all of e-antic, you need a fairly recent C++ compiler and probably
-some packages that might not be readily available on your system. If you don't
-want to use your distribution's packages, you can use these dependencies from
-[conda-forge](https://conda-forge.org). Download and install
-[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
-
-    mamba create -n e-antic-build ccache
-    mamba env update -n e-antic-build -f libeantic/environment.yml
-    mamba env update -n e-antic-build -f pyeantic/environment.yml
-    mamba env update -n e-antic-build -f doc/environment.yml
-    conda activate e-antic-build
-    export CC="ccache cc"  # to speed up future compilation
-    export CXX="ccache c++"  # to speed up future compilation
-    git clone --recurse-submodules https://github.com/flatsurf/e-antic.git
-    cd e-antic
-    ./bootstrap
-    ./configure --prefix="$CONDA_PREFIX"
-    make
-    make check  # to run our test suite
-    make html  # to build the documentation
 
 ## How to Cite this Project
 

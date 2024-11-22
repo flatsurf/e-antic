@@ -12,6 +12,8 @@
 
 #include <limits>
 
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf_elem.h"
 
 #include "rand_generator.hpp"

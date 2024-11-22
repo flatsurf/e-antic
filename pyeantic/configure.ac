@@ -23,8 +23,6 @@ AX_VALGRIND_CHECK()
 dnl We want to build a Python module powered by cppyy
 AM_PATH_PYTHON([3.6], [have_python=yes], [have_python=no])
 
-dnl Our Python library relies on cppyy. It can be built without since it is a
-dnl pure Python package but we cannot test it if cppyy is not present.
 AC_ARG_WITH([pytest], AS_HELP_STRING([--without-pytest], [Do not run Python tests]))
 AS_IF([test "x$with_pytest" != "xno" && test "x$have_python" = "xyes"],
       [
@@ -32,6 +30,9 @@ AS_IF([test "x$with_pytest" != "xno" && test "x$have_python" = "xyes"],
        AC_MSG_CHECKING([for pytest module])
        AS_IF([$PYTHON -c 'import pytest'], , AC_MSG_ERROR([pytest for make check not found; run --without-pytest to disable Python tests in make check]))
        AC_MSG_RESULT([yes])
+
+       dnl Our Python library relies on cppyy. It can be built without since it is a
+       dnl pure Python package but we cannot test it if cppyy is not present.
        AC_MSG_CHECKING([for cppyy])
        AS_IF([$PYTHON -c 'import cppyy'], , AC_MSG_ERROR([cppyy for make check not found; run --without-pytest to disable Python tests in make check]))
        AC_MSG_RESULT([yes])
@@ -45,13 +46,21 @@ dnl Some bits require SageMath to be installed. We can build without it since it
 AC_ARG_WITH([sage], AS_HELP_STRING([--without-sage], [Do not run SageMath tests]))
 AS_IF([test "x$with_sage" != "xno" && test "x$with_pytest" = "xyes"],
       [
-       with_sage=yes
        AC_MSG_CHECKING([for sage module])
-       AS_IF([$PYTHON -c 'import sage'], , AC_MSG_ERROR([SageMath for make check not found; run --without-sage to disable SageMath tests in make check]))
-       AC_MSG_RESULT([yes])
-       AC_MSG_CHECKING([for gmpxxyy])
-       AS_IF([$PYTHON -c 'import gmpxxyy'], , AC_MSG_ERROR([gmpxxyy for make check not found; run --without-sage to disable SageMath tests in make check]))
-       AC_MSG_RESULT([yes])
+       AS_IF([$PYTHON -c 'import sage'],
+             [
+              AC_MSG_RESULT([yes])
+              AC_MSG_CHECKING([for gmpxxyy])
+              AS_IF([$PYTHON -c 'import gmpxxyy'],
+                    [
+                     AC_MSG_RESULT([yes])
+                     with_sage=yes
+                    ], AS_IF([test "x$with_sage" = "xyes"], AC_MSG_ERROR([gmpxxyy not found but required by --with-sage]), AC_MSG_WARN([gmpxxyy not found; disabled SageMath specific tests in make check])))
+             ],
+             [
+              AC_MSG_RESULT([no])
+              AS_IF([test "x$with_sage" = "xyes"], AC_MSG_ERROR([SageMath not found]), AC_MSG_WARN([SageMath for not found; disabled SageMath specific tests in make check]))
+             ])
       ], [])
 AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
 
@@ -59,10 +68,16 @@ dnl We do not need realalg to build a converter for realalg but we need it to te
 AC_ARG_WITH([realalg], AS_HELP_STRING([--without-realalg], [Do not run realalg tests]))
 AS_IF([test "x$with_realalg" != "xno" && test "$x$with_pytest" = "$xyes"],
       [
-       with_realalg=yes
        AC_MSG_CHECKING([for realalg module])
-       AS_IF([$PYTHON -c 'import realalg'], , AC_MSG_ERROR([realalg for make check not found; run --without-realalg to disable realalg tests in make check]))
-       AC_MSG_RESULT([yes])
+       AS_IF([$PYTHON -c 'import realalg'],
+             [
+              AC_MSG_RESULT([yes])
+              with_realalg=yes
+             ],
+             [
+              AC_MSG_RESULT([no])
+              AS_IF([test "x$with_realalg" = "xyes"], AC_MSG_ERROR([realalg not found]), AC_MSG_WARN([realalg not found; disabled realalg specific tests in make check]))
+             ])
       ], [])
 AM_CONDITIONAL([HAVE_REALALG], [test "x$with_realalg" = "xyes"])
 
