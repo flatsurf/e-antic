@@ -274,7 +274,10 @@ trap "kill $SERVER_PID" EXIT
 sleep 1
 
 # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
-linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org
+# Ignore flatsurf.github.io since mkdocs renders canonical URLs into our
+# metadata that the linkchecker then fails to verify (because the canonical
+# page might not be deployed yet at the time of this test.)
+linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org  --ignore flatsurf.github.io
 '
 """
 cwd = "doc"
