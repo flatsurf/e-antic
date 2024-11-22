@@ -1,0 +1,457 @@
+# This file describes the [pixi](https://pixi.sh) interface to e-antic, see the
+# README for how to use pixi with e-antic.
+
+[project]
+# The saraedum channel is needed because we use an unofficial standardese build
+channels = ["conda-forge", "saraedum"]
+description = "(Real Embedded) Algebraic Number Theory"
+name = "e-antic"
+platforms = ["linux-64", "osx-64"]
+
+[environments]
+libeantic-flint-26 = ["libeantic", "flint-26"]
+libeantic-flint-27 = ["libeantic", "flint-27"]
+libeantic-flint-28 = ["libeantic", "flint-28"]
+libeantic-flint-29 = ["libeantic", "flint-29"]
+libeantic-flint-30 = ["libeantic", "flint-30"]
+libeantic-normaliz-integration = ["normaliz-integration", "integration", "libeantic", "flint-30"]
+pyeantic-sagemath-92 = ["libeantic", "pyeantic", "sagemath-92"]
+pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93"]
+pyeantic-sagemath-94 = ["libeantic", "pyeantic", "sagemath-94"]
+pyeantic-sagemath-95 = ["libeantic", "pyeantic", "sagemath-95"]
+pyeantic-sagemath-96 = ["libeantic", "pyeantic", "sagemath-96"]
+pyeantic-sagemath-97 = ["libeantic", "pyeantic", "sagemath-97"]
+pyeantic-sagemath-98 = ["libeantic", "pyeantic", "sagemath-98"]
+pyeantic-sagemath-100 = ["libeantic", "pyeantic", "sagemath-100"]
+pyeantic-sagemath-101 = ["libeantic", "pyeantic", "sagemath-101"]
+pyeantic-sagemath-102 = ["libeantic", "pyeantic", "sagemath-102"]
+pyeantic-sagemath-103 = ["libeantic", "pyeantic", "sagemath-103"]
+doc = ["doc", "libeantic", "pyeantic"]
+dev = ["dev", "libeantic", "pyeantic"]
+env-address-sanitizer = ["address-sanitizer", "libeantic", "pyeantic"]
+env-undefined-sanitizer = ["undefined-sanitizer", "libeantic", "pyeantic"]
+env-coverage = ["coverage", "libeantic", "pyeantic"]
+
+##############
+# ACTIVATION #
+##############
+[activation.env]
+MAKEFLAGS = "-j$(nproc)"
+CFLAGS = "-g3"
+CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+
+[feature.address-sanitizer.activation.env]
+CFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
+LDFLAGS = "-fsanitize=address"
+
+[feature.undefined-sanitizer.activation.env]
+CFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
+LDFLAGS = "-fsanitize=undefined"
+
+[feature.coverage.activation.env]
+CFLAGS = "-coverage -O0 -UNDEBUG"
+CXXFLAGS = "-coverage -O0 -UNDEBUG"
+
+#########
+# TASKS #
+#########
+[tasks.bootstrap]
+cmd = "./bootstrap"
+inputs = ["configure.ac", "{libeantic,pyeantic,doc}/configure.ac", "Makefile.am", "{libeantic,pyeantic,doc}/**/Makefile.am"]
+outputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
+
+[feature.libeantic.tasks.configure-libeantic]
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.libeantic.target.linux.tasks.configure-libeantic]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-version-script'
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.libeantic.tasks.build-libeantic]
+cmd = "make check TESTS="
+cwd = "libeantic"
+depends-on = ["configure-libeantic"]
+
+[feature.libeantic.tasks.test-libeantic]
+cmd = "make check"
+cwd = "libeantic"
+depends-on = ["build-libeantic"]
+
+[feature.pyeantic.tasks.test-libeantic-valgrind]
+cmd = "make check-valgrind"
+cwd = "libeantic"
+depends-on = ["build-libeantic"]
+
+[feature.pyeantic.tasks.configure-pyeantic]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-sage --with-realalg'
+cwd = "pyeantic"
+depends-on = ["bootstrap"]
+inputs = ["pyeantic/configure", "pyeantic/**/*.in"]
+
+[feature.pyeantic.tasks.build-pyeantic]
+cmd = "make"
+cwd = "pyeantic"
+depends-on = ["configure-pyeantic"]
+
+[feature.pyeantic.tasks.test-pyeantic]
+cmd = "make check"
+cwd = "pyeantic"
+depends-on = ["build-pyeantic", "build-libeantic"]
+
+[feature.pyeantic.tasks.test-pyeantic-valgrind]
+cmd = "make check-valgrind"
+cwd = "pyeantic"
+depends-on = ["build-pyeantic", "build-libeantic"]
+
+[feature.dev.tasks]
+codespell = { cmd = "codespell $(git ls-files)" }
+
+# "build" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+build = { cmd = "pixi run dev-build" }
+dev-build = { depends-on = ["build-libeantic", "build-pyeantic"] }
+
+# "test" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+test = { cmd = "pixi run dev-test" }
+dev-test = { depends-on = ["test-libeantic", "test-pyeantic"] }
+
+# "sage" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+sage = { cmd = "pixi run dev-sage" }
+dev-sage = { cmd = "pyeantic-sage" , env = { PATH = "./pyeantic/test/bin/:$PATH"}, depends-on = ["build-libeantic", "build-pyeantic"] }
+
+# "clean" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+clean = { cmd = "pixi run dev-clean" }
+dev-clean = { cmd = "make clean", depends-on = ["configure"] }
+
+# "compile-commands" is a shortcut that generates a compile_commands.json that many
+# IDEs expect to make sense of C/C++ code.
+# This shortcut should run with its dependencies in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+compile-commands = { cmd = "pixi run dev-compile-commands" }
+dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libeantic"] }
+
+[feature.dev.tasks.configure]
+cmd = './configure --prefix="$CONDA_PREFIX" --without-doc'
+inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
+outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
+depends-on = ["bootstrap"]
+
+[feature.dev.tasks.distcheck]
+cmd = "make distcheck DISTCHECK_CONFIGURE_FLAGS='--without-doc'"
+depends-on = ["configure"]
+
+[feature.dev.tasks.compiler-warnings-clang]
+cmd = """
+make clean &&
+make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -UNDEBUG\" CXXFLAGS=\"$CXXFLAGS -UNDEBUG\" &&
+make clean &&
+make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -DNDEBUG\" CXXFLAGS=\"$CXXFLAGS -DNDEBUG\"
+"""
+cwd = "libeantic"
+depends-on = "configure-libeantic"
+# We need -Wno-reserved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
+# We need -Wno-unsafe-buffer-usage since we need unsafe pointer arithmetic to extend FLINT (efficiently.)
+env = { CPP="clang-cpp", CC="clang", CXX="clang++", CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-unsafe-buffer-usage", CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation" }
+
+[feature.dev.tasks.compiler-warnings-gcc]
+cmd = """
+make clean &&
+make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -UNDEBUG\" CXXFLAGS=\"$CXXFLAGS -UNDEBUG\" &&
+make clean &&
+make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -DNDEBUG\" CXXFLAGS=\"$CXXFLAGS -DNDEBUG\"
+"""
+cwd = "libeantic"
+depends-on = "configure-libeantic"
+# We need -Wno-dangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
+env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-dangling-reference" }
+
+[feature.dev.tasks.configure-libeantic]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark'
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.dev.target.linux.tasks.configure-libeantic]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark --with-version-script'
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.coverage.tasks.configure-libeantic]
+# The gcov build has visibility issues when the version script is enabled.
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "libeantic"
+depends-on = ["bootstrap"]
+inputs = ["libeantic/configure", "libeantic/**/*.in"]
+
+[feature.integration.tasks.install-libeantic]
+cmd = "make install"
+cwd = "libeantic"
+depends-on = ["build-libeantic"]
+
+[feature.normaliz-integration.tasks.check-normaliz]
+cmd = """
+bash -c '
+normaliz=$(mktemp -d)
+
+cleanup() {
+  rm -rf "$normaliz"
+}
+trap cleanup EXIT
+
+git clone https://github.com/Normaliz/Normaliz.git "$normaliz"
+
+cd "$normaliz"
+
+autoreconf --install
+
+# Disable e-antic visibility flags that normaliz does not like.
+export CXXFLAGS="$CXXFLAGS -fvisibility=default -fno-visibility-inlines-hidden"
+
+chmod +x configure
+./configure --prefix="$CONDA_PREFIX" --with-e-antic="$CONDA_PREFIX" --with-nauty="$CONDA_PREFIX" --with-flint="$CONDA_PREFIX" --with-gmp="$CONDA_PREFIX"
+
+make check
+'
+"""
+depends-on = "install-libeantic"
+
+[feature.doc.tasks.configure-doc]
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "doc"
+depends-on = ["bootstrap"]
+inputs = ["doc/configure", "doc/**/*.in"]
+
+[feature.doc.tasks.build-doc]
+cmd = "make"
+cwd = "doc"
+depends-on = ["configure-doc", "build-libeantic", "build-pyeantic"]
+
+[feature.doc.tasks.doc]
+cmd = "pixi run dev-doc"
+
+[feature.doc.tasks.dev-doc]
+cmd = """
+sh -c '
+python -m http.server $PORT --bind localhost --directory manual/generated/html &
+SERVER_PID=$!
+trap "kill $SERVER_PID" EXIT
+
+sleep 1
+
+echo "Preview the documentation at http://localhost:$PORT/e-antic/libeantic"
+echo "Press Ctrl-C to continue"
+
+wait $SERVER_PID
+'
+"""
+cwd = "doc"
+depends-on = ["build-doc"]
+env = { PORT = "8880" }
+
+[feature.doc.tasks.test-doc-linkchecker]
+cmd = """
+sh -c '
+python -m http.server $PORT --bind localhost --directory manual/generated/html &
+SERVER_PID=$!
+trap "kill $SERVER_PID" EXIT
+
+sleep 1
+
+# Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
+linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org
+'
+"""
+cwd = "doc"
+depends-on = ["build-doc"]
+env = { PORT = "8880" }
+
+################
+# DEPENDENCIES #
+################
+[dependencies]
+automake = "*"
+make = "*"
+libtool = "*"
+coreutils = "*"
+
+[feature.libeantic.dependencies]
+c-compiler = "*"
+cxx-compiler = "*"
+gmp = "*"
+libflint = "*"
+boost-cpp = "*"
+
+[feature.pyeantic.dependencies]
+python = "*"
+cppyy = "*"
+cppyythonizations = "*"
+pytest = "*"
+setuptools = "*"
+sagelib = "*"
+# Some extra dependencies that are needed by SageMath doctesting here.
+gmpxxyy = "*"
+ipywidgets = "*"
+realalg = "*"
+
+[feature.pyeantic.pypi-dependencies]
+pyeantic = { path = "pyeantic/src", editable = true }
+
+[feature.dev.dependencies]
+libflint = "3.*"
+benchmark = "*"
+byexample = "*"
+py = "*"
+sagelib = "10.3"
+codespell = "*"
+clangdev = "*"
+compiledb = "*"
+
+[feature.dev.target.linux.dependencies]
+# A recent functioning valgrind is only available on conda-forge linux builds.
+valgrind = "*"
+
+[feature.address-sanitizer.target.linux.dependencies]
+# Work around https://github.com/actions/runner-images/issues/9491
+gcc = ">=14.2"
+gxx = ">=14.2"
+
+[feature.undefined-sanitizer.target.linux.dependencies]
+# Work around https://github.com/actions/runner-images/issues/9491
+gcc = ">=14.2"
+gxx = ">=14.2"
+
+[feature.doc.target.linux.dependencies]
+sphinx = "*"
+mkdocs = "*"
+standardese = { version = "0.6.0", channel = "saraedum" }
+sphinx_rtd_theme = "*"
+linkchecker = "*"
+
+[feature.flint-26.dependencies]
+libflint = "2.6.*"
+antic = "*"
+arb = "*"
+
+[feature.flint-27.dependencies]
+libflint = "2.7.*"
+antic = "*"
+arb = "*"
+
+[feature.flint-28.dependencies]
+libflint = "2.8.*"
+antic = "*"
+arb = "*"
+
+[feature.flint-29.dependencies]
+libflint = "2.9.*"
+antic = "*"
+arb = "*"
+
+[feature.flint-30.dependencies]
+libflint = "3.0.*"
+
+[feature.sagemath-92.dependencies]
+# SageMath 9.2 shipped with Python 3.8 so we make sure that these compatible versions are installed.
+python = "3.8.*"
+sagelib = "9.2"
+# SageMath 9.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+# SageMath 9.2 does not come with pip which is needed for feature detection
+pip = "*"
+
+[feature.sagemath-93.dependencies]
+# SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
+python = "3.9.*"
+sagelib = "9.3"
+# SageMath 9.3 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-94.dependencies]
+# SageMath 9.4 shipped with Python 3.9 so we make sure that these compatible versions are installed.
+python = "3.9.*"
+sagelib = "9.4"
+# SageMath 9.4 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-95.dependencies]
+# SageMath 9.5 shipped with Python 3.9 so we make sure that these compatible versions are installed.
+python = "3.9.*"
+sagelib = "9.5"
+# SageMath 9.5 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-96.dependencies]
+# SageMath 9.6 shipped with Python 3.10 so we make sure that these compatible versions are installed.
+python = "3.10.*"
+sagelib = "9.6"
+# SageMath 9.6 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-97.dependencies]
+# SageMath 9.7 shipped with Python 3.10 so we make sure that these compatible versions are installed.
+python = "3.10.*"
+sagelib = "9.7"
+# SageMath 9.7 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-98.dependencies]
+# SageMath 9.8 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "9.8"
+# SageMath 9.8 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-100.dependencies]
+# SageMath 10.0 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "10.0"
+# SageMath 10.0 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-101.dependencies]
+# SageMath 10.1 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "10.1"
+# SageMath 10.1 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-102.dependencies]
+# SageMath 10.2 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "10.2"
+# SageMath 10.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+antic = "*"
+
+[feature.sagemath-103.dependencies]
+# SageMath 10.3 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "10.3"
+
+[feature.normaliz-integration.dependencies]
+nauty = "*"

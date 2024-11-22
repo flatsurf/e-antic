@@ -22,8 +22,8 @@ See [repology for e-antic](https://repology.org/project/e-antic/packages).
 The following describe alternative ways of installing e-antic.
 
 * [Install with Conda](install_in_conda)
-* [Build from Source](https://github.com/flatsurf/e-antic/#build-from-the-source-code-repository-or-a-tarball)
-* [Conda Environment to Build from Source](https://github.com/flatsurf/e-antic/#build-with-conda-dependencies)
+* [Build with pixi for Development](https://github.com/flatsurf/e-antic/#build-and-develop-e-antic-with-pixi)
+* [Build from the Source Tarball](https://github.com/flatsurf/e-antic/#build-from-the-source-code-repository-or-a-tarball)
 
 ## C Library
 

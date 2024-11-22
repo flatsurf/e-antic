@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2018 Vincent Delecroix
-    Copyright (C) 2019-2022 Julian Rüth
+    Copyright (C)      2018 Vincent Delecroix
+                  2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -20,7 +20,12 @@
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "../e-antic/e-antic.hpp"
+#include "../e-antic/config.h"
+
+#include "../e-antic/renf_class.hpp"
+#include "../e-antic/renf_elem_class.hpp"
+
+#include "../e-antic/renf_elem.h"
 #include "../e-antic/fmpq_poly_extra.h"
 
 namespace eantic {
@@ -282,6 +287,12 @@ renf_elem_class::renf_elem_class(renf_elem_class && value) noexcept
     *a = *value.a;
 }
 
+renf_elem_class::renf_elem_class(short value)
+    : renf_elem_class(renf_class::make(), value) {}
+
+renf_elem_class::renf_elem_class(unsigned short value)
+    : renf_elem_class(renf_class::make(), value) {}
+
 renf_elem_class::renf_elem_class(int value)
     : renf_elem_class(renf_class::make(), value) {}
 
@@ -318,6 +329,12 @@ renf_elem_class::renf_elem_class(const renf_class& k)
     renf_elem_init(a, nf->renf_t());
     renf_elem_zero(a, nf->renf_t());
 }
+
+renf_elem_class::renf_elem_class(const renf_class& k, short value)
+    : renf_elem_class(k, static_cast<long>(value)) {}
+
+renf_elem_class::renf_elem_class(const renf_class& k, unsigned short value)
+    : renf_elem_class(k, static_cast<unsigned long>(value)) {}
 
 renf_elem_class::renf_elem_class(const renf_class& k, int value)
     : renf_elem_class(k, static_cast<long>(value)) {}
@@ -497,10 +514,19 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpz_clas
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
+    fmpz_t coeff;
     fmpq_poly_t p;
     fmpq_poly_init(p);
     for (size_t i = 0; i < coefficients.size(); i++)
+    {
+#if __FLINT_RELEASE < 30000
         fmpq_poly_set_coeff_mpz(p, static_cast<slong>(i), coefficients[i].__get_mp());
+#else
+        fmpz_init_set_readonly(coeff, coefficients[i].__get_mp());
+        fmpq_poly_set_coeff_fmpz(p, static_cast<slong>(i), coeff);
+        fmpz_clear_readonly(coeff);
+#endif
+    }
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
@@ -512,9 +538,19 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::vector<mpq_clas
     assert(static_cast<slong>(coefficients.size()) <= nf->degree() &&
         "can not assign renf_elem_class from vector whose size exceeds number field degree");
 
+    fmpq_t coeff;
     fmpq_poly_t p;
     fmpq_poly_init(p);
+#if __FLINT_RELEASE < 30000
     fmpq_poly_set_array_mpq(p, reinterpret_cast<const mpq_t*>(&coefficients[0]), coefficients.size());
+#else
+    for (size_t i = 0; i < coefficients.size(); i++)
+    {
+        fmpq_init_set_readonly(coeff, coefficients[i].__get_mp());
+        fmpq_poly_set_coeff_fmpq(p, static_cast<slong>(i), coeff);
+        fmpq_clear_readonly(coeff);
+    }
+#endif
 
     renf_elem_set_fmpq_poly(a, p, nf->renf_t());
     fmpq_poly_clear(p);
@@ -525,6 +561,16 @@ renf_elem_class::~renf_elem_class() noexcept
     // When this element has been moved out by the move-constructor, then nf is
     // null and a points to another element's storage.
     if (nf) renf_elem_clear(a, nf->renf_t());
+}
+
+renf_elem_class & renf_elem_class::operator=(short value)
+{
+    return *this = static_cast<long>(value);
+}
+
+renf_elem_class & renf_elem_class::operator=(unsigned short value)
+{
+    return *this = static_cast<unsigned long>(value);
 }
 
 renf_elem_class & renf_elem_class::operator=(int value)
@@ -971,6 +1017,72 @@ bool operator<(const renf_elem_class & lhs, const renf_elem_class & rhs)
     }
     else
         throw std::logic_error("not implemented: cannot compare renf_elem_class from different number fields");
+}
+
+renf_elem_class& renf_elem_class::operator+=(short rhs)
+{
+    return *this += static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(short rhs)
+{
+    return *this -= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(short rhs)
+{
+    return *this *= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(short rhs)
+{
+    return *this /= static_cast<long>(rhs);
+}
+
+bool operator==(const renf_elem_class& lhs, short rhs) {
+    if (rhs == 0)
+        return lhs.is_zero();
+    return lhs == static_cast<long>(rhs);
+}
+
+bool operator<(const renf_elem_class& lhs, short rhs) {
+    return lhs < static_cast<long>(rhs);
+}
+
+bool operator>(const renf_elem_class& lhs, short rhs) {
+    return lhs > static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator+=(unsigned short rhs)
+{
+    return *this += static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator-=(unsigned short rhs)
+{
+    return *this -= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator*=(unsigned short rhs)
+{
+    return *this *= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::operator/=(unsigned short rhs)
+{
+    return *this /= static_cast<unsigned long>(rhs);
+}
+
+bool operator==(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs == static_cast<unsigned long>(rhs);
+}
+
+bool operator<(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs < static_cast<unsigned long>(rhs);
+}
+
+bool operator>(const renf_elem_class& lhs, unsigned short rhs) {
+    return lhs > static_cast<unsigned long>(rhs);
 }
 
 renf_elem_class& renf_elem_class::operator+=(int rhs)

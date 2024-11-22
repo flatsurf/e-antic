@@ -9,11 +9,17 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "flint/fmpq_poly.h"
-#include "../e-antic/fmpq_poly_extra.h"
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include <errno.h>
+
+#include <flint/fmpq_poly.h>
+#include <flint/fmpq.h>
+
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpq_poly_extra.h"
 
 static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char * w)
 {
@@ -89,7 +95,7 @@ static int _monomial_set_str(fmpq_t coeff, slong * pow, const char * var, char *
 
     x += strlen(var);
 
-    /* 5. carret */
+    /* 5. caret */
     if (!isdigit(*x))
     {
         while (*x == ' ') x++;

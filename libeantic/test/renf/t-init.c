@@ -9,8 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
+#include <stdlib.h>
+
+#include "../../e-antic/config.h"
+
 #include "../../e-antic/renf.h"
-#include "../../e-antic/fmpz_poly_extra.h"
 #include "../../e-antic/fmpq_poly_extra.h"
 
 static void check_renf(renf_t nf)
@@ -23,7 +27,7 @@ static void check_renf(renf_t nf)
     if (fmpq_poly_length(nf->nf->pol) != fmpz_poly_length(nf->der) + 1)
     {
         printf("FAIL:\n");
-        printf("uninitalized derivative");
+        printf("uninitialized derivative");
         fflush(stdout);
         abort();
     }
@@ -86,7 +90,7 @@ static void check_init(fmpq_poly_t p, double demb, double rad1, double rad2, slo
     arb_clear(emb);
 }
 
-int main()
+int main(void)
 {
     fmpq_poly_t p;
 

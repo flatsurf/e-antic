@@ -16,7 +16,12 @@
 #include <e-antic/local.h>
 
 #include <flint/fmpq_poly.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

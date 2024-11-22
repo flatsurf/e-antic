@@ -12,4 +12,6 @@
 
 #include <benchmark/benchmark.h>
 
+#include "../e-antic/config.h"
+
 BENCHMARK_MAIN();

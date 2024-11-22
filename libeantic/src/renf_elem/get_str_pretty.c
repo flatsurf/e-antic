@@ -9,10 +9,21 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
+
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
+
 #include <string.h>
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag)
 {

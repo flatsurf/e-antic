@@ -16,9 +16,17 @@
 
 #include <assert.h>
 
-#include <arb.h>
 #include <flint/fmpz_poly.h>
-#include "../e-antic/fmpz_poly_extra.h"
+
+#if __FLINT_RELEASE < 30000
+#include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
+
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len)
 {

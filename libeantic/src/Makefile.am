@@ -75,7 +75,8 @@ libeantic_la_SOURCES +=               \
     renf/set_immutable.c
 
 noinst_HEADERS =                  \
-    renf_elem/rounding_template.h
+    renf_elem/rounding_template.h \
+    ../e-antic/config.h
 
 # renf_elem
 libeantic_la_SOURCES +=                        \

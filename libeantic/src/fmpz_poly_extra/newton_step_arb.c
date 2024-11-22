@@ -10,8 +10,11 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 int _fmpz_poly_newton_step_arb(arb_t res, const fmpz * pol, const fmpz * der, slong len, arb_t a, slong prec)
 {

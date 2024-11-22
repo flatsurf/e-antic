@@ -10,9 +10,14 @@
 */
 
 #include <assert.h>
+#include <stdlib.h>
 
-#include "../e-antic/renf.h"
-#include "../e-antic/fmpz_poly_extra.h"
+#include <flint/fmpz_vec.h>
+
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf.h"
+#include "../../e-antic/fmpz_poly_extra.h"
 
 slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec)
 {

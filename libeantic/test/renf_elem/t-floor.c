@@ -9,6 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
+#include "../../e-antic/config.h"
 
 #include "../../e-antic/renf_elem.h"
 
@@ -216,7 +219,7 @@ static void test_field2(flint_rand_t state)
     TEST_FLOOR_CLEANUP
 }
 
-int main()
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);

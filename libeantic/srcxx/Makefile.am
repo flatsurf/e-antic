@@ -17,7 +17,11 @@ AM_CPPFLAGS = -DBUILD_LIBEANTIC
 AM_CPPFLAGS += -I$(builddir)/..
 
 # Linked-against libraries
-libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint -lantic
+libeanticxx_la_LIBADD = ../src/libeantic.la -lgmpxx -lflint
+
+if HAVE_LIBANTIC
+libeanticxx_la_LIBADD += -lantic
+endif
 
 # Installed headers
 nobase_pkginclude_HEADERS =        \

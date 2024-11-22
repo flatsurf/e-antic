@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-                  2019-2021 Julian Rüth
+                  2019-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -57,6 +57,8 @@ namespace eantic {
 /// // -> (x ~ 1.4142136)
 /// ```
 class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
+                        boost::ordered_field_operators<renf_elem_class, short>,
+                        boost::ordered_field_operators<renf_elem_class, unsigned short>,
                         boost::ordered_field_operators<renf_elem_class, int>,
                         boost::ordered_field_operators<renf_elem_class, unsigned int>,
                         boost::ordered_field_operators<renf_elem_class, long>,
@@ -76,6 +78,8 @@ public:
     /// Create an element in the rationals.
     /// These are shortcuts equivalent to calling
     /// `renf_elem_class(*renf_class::make(), value)`.
+    renf_elem_class(short);
+    renf_elem_class(unsigned short);
     renf_elem_class(int);
     renf_elem_class(unsigned int);
     renf_elem_class(long);
@@ -92,6 +96,8 @@ public:
 
     /// ==* `renf_elem_class(const renf_class&, integer/rational)` *==
     /// Create a rational element in the field `k`.
+    renf_elem_class(const renf_class& k, short);
+    renf_elem_class(const renf_class& k, unsigned short);
     renf_elem_class(const renf_class& k, int);
     renf_elem_class(const renf_class& k, unsigned int);
     renf_elem_class(const renf_class& k, long);
@@ -152,6 +158,8 @@ public:
     /// a.parent() == *K
     /// // -> true
     /// ```
+    renf_elem_class & operator=(short);
+    renf_elem_class & operator=(unsigned short);
     renf_elem_class & operator=(int);
     renf_elem_class & operator=(unsigned int);
     renf_elem_class & operator=(long);
@@ -376,6 +384,14 @@ public:
     /// Elements in a number field and integers/rationals can be combined with
     /// the usual arithmetic operators `+`, `-`, `*`, `/` and the corresponding
     /// inplace operators `+=`, `-=`, `*=`, `/=`.
+    renf_elem_class & operator+=(short);
+    renf_elem_class & operator-=(short);
+    renf_elem_class & operator*=(short);
+    renf_elem_class & operator/=(short);
+    renf_elem_class & operator+=(unsigned short);
+    renf_elem_class & operator-=(unsigned short);
+    renf_elem_class & operator*=(unsigned short);
+    renf_elem_class & operator/=(unsigned short);
     renf_elem_class & operator+=(int);
     renf_elem_class & operator-=(int);
     renf_elem_class & operator*=(int);
@@ -412,6 +428,12 @@ public:
     /// ==* Relational Operators with Integers & Rationals *==
     /// Elements in a number field and integers/rationals can be compared with
     /// the usual relational operators `==`, `!=`, `<`, `<=`, `>=`, `>`.
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, short);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, short);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, short);
+    LIBEANTIC_API friend bool operator==(const renf_elem_class&, unsigned short);
+    LIBEANTIC_API friend bool operator<(const renf_elem_class&, unsigned short);
+    LIBEANTIC_API friend bool operator>(const renf_elem_class&, unsigned short);
     LIBEANTIC_API friend bool operator==(const renf_elem_class&, int);
     LIBEANTIC_API friend bool operator<(const renf_elem_class&, int);
     LIBEANTIC_API friend bool operator>(const renf_elem_class&, int);
@@ -459,7 +481,7 @@ public:
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
     /// auto a = K->gen();
     /// std::strstream s;
-    /// s << a;
+    /// s << a << std::ends;
     /// std::cout << s.str();
     /// // -> (x ~ 1.4142136)
     ///

@@ -9,7 +9,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/renf_elem.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
 
 void renf_elem_fmpq_div(renf_elem_t a, const fmpq_t b, const renf_elem_t c, const renf_t nf)
 {

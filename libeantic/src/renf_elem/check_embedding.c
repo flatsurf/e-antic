@@ -9,8 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/renf_elem.h"
-#include "../e-antic/fmpq_poly_extra.h"
+#include <stdlib.h>
+
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf_elem.h"
+#include "../../e-antic/fmpq_poly_extra.h"
 
 void renf_elem_check_embedding(const renf_elem_t a, const renf_t nf, slong prec)
 {

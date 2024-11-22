@@ -1,6 +1,6 @@
 /*
     Copyright (C)      2017 Vincent Delecroix
-                  2020-2021 Julian Rüth
+                  2020-2022 Julian Rüth
 
     This file is part of e-antic
 
@@ -10,7 +10,7 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/e-antic.hpp"
+#include "../../e-antic/config.h"
 
 #include "../external/catch2/single_include/catch2/catch.hpp"
 
@@ -20,7 +20,7 @@
 
 using namespace eantic;
 
-TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class]", int, unsigned int, long, unsigned long, long long, unsigned long long)
+TEMPLATE_TEST_CASE("Assign renf_elem_class from integers", "[renf_elem_class]", short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long)
 {
     using T = TestType;
 

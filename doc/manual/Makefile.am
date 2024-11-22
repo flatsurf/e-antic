@@ -75,6 +75,7 @@ html: $(builddir)/generated/libeantic/html $(builddir)/generated/pyeantic/html
 	mkdir -p $(builddir)/generated/html/e-antic
 	cp -RT $(builddir)/generated/libeantic/html/ $(builddir)/generated/html/e-antic/libeantic
 	cp -RT $(builddir)/generated/pyeantic/html/ $(builddir)/generated/html/e-antic/pyeantic
+	cp $(srcdir)/robots.txt $(builddir)/generated/html
 
 serve: html
 	python -m http.server ${PORT} --bind 127.0.0.1 --directory $(builddir)/generated/html
@@ -83,7 +84,7 @@ all: html
 
 .PHONY: serve $(builddir)/generated/libeantic/html $(builddir)/generated/libeantic/markdown $(builddir)/generated/libeantic/inventory $(builddir)/generated/pyeantic/html $(builddir)/generated/pyeantic/inventory $(builddir)/generated/pyeantic/source
 
-EXTRA_DIST = README.md libeantic pyeantic
+EXTRA_DIST = README.md robots.txt libeantic pyeantic
 
 mostlyclean-local:
 	[[ ! -d generated ]] || (chmod -R u+w generated && rm -rf generated)

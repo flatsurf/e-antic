@@ -19,7 +19,7 @@ realalg-doctest.sh: test-env.sh bin/python
 @VALGRIND_CHECK_RULES@
 
 BUILT_SOURCES = test-env.sh bin/python python-doctest.sh sage-doctest.sh realalg-doctest.sh
-EXTRA_DIST += test-env.sh.in bin/python.in python-doctest.sh.in sage-doctest.sh.in realalg-doctest.sh.in disable-pytest/pytest.py
+EXTRA_DIST += test-env.sh.in bin/python.in bin/pyeantic-sage python-doctest.sh.in sage-doctest.sh.in realalg-doctest.sh.in disable-pytest/pytest.py
 CLEANFILES = test-env.sh bin/python python-doctest.sh sage-doctest.sh realalg-doctest.sh
 
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
@@ -29,6 +29,8 @@ $(builddir)/bin/python: $(srcdir)/bin/python.in Makefile
 	mkdir -p $(builddir)/bin
 	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' -e 's,[@]abs_builddir[@],$(abs_builddir),g' -e 's,[@]pythondir[@],$(pythondir),g' < $< > $@
 	chmod +x $@
+	: # Work around https://github.com/flatsurf/e-antic/pull/273#issuecomment-2489791864 (issue with most versions of cppyy on Linux)
+	$@ -c 'import cppyy'
 
 $(builddir)/python-doctest.sh: $(srcdir)/python-doctest.sh.in Makefile
 	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' -e 's,[@]abs_builddir[@],$(abs_builddir),g' < $< > $@

@@ -5,6 +5,7 @@ site_url: https://flatsurf.github.io/e-antic/libeantic/
 theme:
   name: readthedocs
   navigation_depth: 2
+  logo: https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true
 extra_css:
   - extra.css
 extra_javascript:

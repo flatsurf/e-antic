@@ -9,10 +9,15 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../../e-antic/renf.h"
-#include "../../e-antic/fmpz_poly_extra.h"
+#include <stdlib.h>
 
-int main()
+#include <flint/fmpz_vec.h>
+
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/renf.h"
+
+int main(void)
 {
     int iter;
     FLINT_TEST_INIT(state);

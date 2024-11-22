@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2016 Vincent Delecroix
+                  2023 Julian Rüth
 
     This file is part of e-antic
 
@@ -9,7 +10,9 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, mp_limb_signed_t len, const arb_t a, mp_limb_signed_t prec)
 {
@@ -25,15 +28,20 @@ void _fmpz_poly_evaluate_arb(arb_t res, const fmpz * pol, mp_limb_signed_t len, 
 
 void fmpz_poly_evaluate_arb(arb_t res, const fmpz_poly_t pol, const arb_t a, mp_limb_signed_t prec)
 {
-    arb_t rres;
+    if (a == res)
+    {
+        arb_t tmp;
+        arb_init(tmp);
 
-    if (a == res) arb_init(rres);
-    else arb_swap(rres,res);
+        _fmpz_poly_evaluate_arb(tmp, pol->coeffs, fmpz_poly_length(pol), a, prec);
+        arb_swap(tmp, res);
 
-    _fmpz_poly_evaluate_arb(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
-
-    arb_swap(rres,res);
-    if (a == res) arb_clear(rres);
+        arb_clear(tmp);
+    }
+    else
+    {
+      _fmpz_poly_evaluate_arb(res, pol->coeffs, fmpz_poly_length(pol), a, prec);
+    }
 }
 
 void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, mp_limb_signed_t len, const arf_t a, mp_limb_signed_t prec)
@@ -50,13 +58,18 @@ void _fmpz_poly_evaluate_arf(arf_t res, const fmpz * pol, mp_limb_signed_t len, 
 
 void fmpz_poly_evaluate_arf(arf_t res, const fmpz_poly_t pol, const arf_t a, mp_limb_signed_t prec)
 {
-    arf_t rres;
+    if (a == res)
+    {
+        arf_t tmp;
+        arf_init(tmp);
 
-    if (a == res) arf_init(rres);
-    else arf_swap(rres,res);
+        _fmpz_poly_evaluate_arf(tmp, pol->coeffs, fmpz_poly_length(pol), a, prec);
+        arf_swap(tmp, res);
 
-    _fmpz_poly_evaluate_arf(rres, pol->coeffs, fmpz_poly_length(pol), a, prec);
-
-    arf_swap(rres,res);
-    if (a == res) arf_clear(rres);
+        arf_clear(tmp);
+    }
+    else
+    {
+        _fmpz_poly_evaluate_arf(res, pol->coeffs, fmpz_poly_length(pol), a, prec);
+    }
 }

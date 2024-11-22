@@ -9,9 +9,12 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
+#include <flint/fmpz_mod.h>
 #include <flint/fmpz_mod_poly.h>
 
-#include "../e-antic/fmpz_poly_extra.h"
+#include "../../e-antic/config.h"
+
+#include "../../e-antic/fmpz_poly_extra.h"
 
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits)
 {

@@ -43,15 +43,36 @@ def dist():
         popd
     return True
 
+@activity
+def doc():
+    r"""
+    Run make html and create a tarball from the built manual.
+    """
+    from tempfile import TemporaryDirectory
+    from xonsh.dirstack import DIRSTACK
+    with TemporaryDirectory() as tmp:
+        ./bootstrap
+        pushd @(tmp)
+        @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
+        make
+        make html
+        mv doc/manual/generated/html e-antic-manual-$VERSION
+        tar czf e-antic-manual-$VERSION.tar.gz e-antic-manual-$VERSION
+        mv *.tar.gz @(DIRSTACK[-1])
+        popd
+    return True
+
 $PROJECT = 'e-antic'
 
 $ACTIVITIES = [
     'version_bump',
     'changelog',
     'dist',
+    'doc',
     'tag',
     'push_tag',
     'ghrelease',
+    'forge',
 ]
 
 MAJOR, MINOR, PATCH = version.parse($VERSION).release
@@ -63,11 +84,8 @@ $VERSION_BUMP_PATTERNS = [
     ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_MAJOR', rf'#define E_ANTIC_VERSION_MAJOR {MAJOR}'),
     ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
     ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
-    ('libeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
-    ('libeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
-    ('pyeantic/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
-    ('pyeantic/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
+    ('pyeantic/src/setup.py', r'version=', r"version='$VERSION'"),
     ('doc/configure.ac', r'AC_INIT', r'AC_INIT([e-antic-doc], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
     ('doc/manual/pyeantic/conf.py', r'release =', "release = '$VERSION'"),
     ('README.md', r'\* \*\*libeantic\*\* \[!\[Binder\]', r'* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.libeantic.ipynb)'),
@@ -83,4 +101,6 @@ $PUSH_TAG_REMOTE = 'git@github.com:flatsurf/e-antic.git'
 $GITHUB_ORG = 'flatsurf'
 $GITHUB_REPO = 'e-antic'
 
-$GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz']
+$GHRELEASE_ASSETS = ['e-antic-' + $VERSION + '.tar.gz', 'e-antic-manual-' + $VERSION + '.tar.gz']
+
+$FORGE_FEEDSTOCK_ORG = "conda-forge"

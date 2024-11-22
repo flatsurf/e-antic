@@ -18,10 +18,18 @@
 #include <e-antic/local.h>
 
 #include <flint/fmpq_poly.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
 #include <arb_poly.h>
 #include <antic/nf.h>
 #include <antic/nf_elem.h>
+#else
+#include <flint/arb.h>
+#include <flint/arb_poly.h>
+#include <flint/nf.h>
+#include <flint/nf_elem.h>
+#endif
 
 #include "renf.h"
 
@@ -33,11 +41,13 @@ extern "C" {
 #define EANTIC_STR_D   2
 #define EANTIC_STR_ARB 4
 
+#if __FLINT_RELEASE < 30000
 // Patch nf_elem_scalar_div & nf_elem_add_fmpq which have issues in the released version of ANTIC, see upstream/patched.
 LIBEANTIC_API void EANTIC_nf_elem_scalar_div_fmpq(nf_elem_t a, const nf_elem_t b, const fmpq_t c, const nf_t nf);
 #define nf_elem_scalar_div_fmpq(a, b, c, nf) EANTIC_nf_elem_scalar_div_fmpq(a, b, c, nf)
 LIBEANTIC_API void EANTIC_nf_elem_add_fmpq(nf_elem_t a, const nf_elem_t b, const fmpq_t c, const nf_t nf);
 #define nf_elem_add_fmpq(a, b, c, nf) EANTIC_nf_elem_add_fmpq(a, b, c, nf)
+#endif
 
 /// === Memory Layout ===
 /// A real embedded number field element
