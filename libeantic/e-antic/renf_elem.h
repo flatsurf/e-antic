@@ -1,7 +1,7 @@
 /// Embedded number field elements
 /*
-    Copyright (C) 2016 Vincent Delecroix
-                  2021 Julian Rüth
+    Copyright (C)      2016 Vincent Delecroix
+                  2021-2024 Julian Rüth
 
     This file is part of e-antic
 
@@ -49,14 +49,17 @@ LIBEANTIC_API void EANTIC_nf_elem_add_fmpq(nf_elem_t a, const nf_elem_t b, const
 #define nf_elem_add_fmpq(a, b, c, nf) EANTIC_nf_elem_add_fmpq(a, b, c, nf)
 #endif
 
-/// === Memory Layout ===
 /// A real embedded number field element
 typedef struct LIBEANTIC_API renf_elem
 {
-    /// An algebraic ANTIC number field element.
+    /// \rst
+    /// An algebraic :c:type:`ANTIC number field element <nf_elem_t>`.
+    /// \endrst
     nf_elem_t elem;
 
-    /// An approximation of the embedded element as a [real ball](<> "arb_t").
+    /// \rst
+    /// An approximation of the embedded element as a :c:type:`real ball <arb_t>`.
+    /// \endrst
     arb_t emb;
 } renf_elem;
 
@@ -64,13 +67,13 @@ typedef renf_elem* renf_elem_srcptr;
 
 /// An element of a real embedded number field.
 ///
-/// Actually, this is an array of [renf_elem]() of length one.
+/// Actually, this is an array of \ref renf_elem of length one.
 ///
 /// Typically, users of e-antic should not worry about the exact definition of
 /// this and just treat this as *the* type that represents a number field
 /// element in e-antic.
 ///
-/// See the documentation of [renf_t]() for why this is an array.
+/// See the documentation of \ref renf_t for why this is an array.
 typedef renf_elem renf_elem_t[1];
 
 /// Initialize the number field element `a`.
@@ -91,7 +94,6 @@ void renf_elem_swap(renf_elem_t a, renf_elem_t b)
     *b = t;
 }
 
-/// === Setters ===
 /// Set the number field element `a` to zero.
 LIBEANTIC_API void renf_elem_zero(renf_elem_t a, const renf_t nf);
 
@@ -101,19 +103,34 @@ LIBEANTIC_API void renf_elem_one(renf_elem_t a, const renf_t nf);
 /// Set the number field element `a` to the generator of the number field.
 LIBEANTIC_API void renf_elem_gen(renf_elem_t a, const renf_t nf);
 
-/// ==* Integer/Rational Setters *==
-/// Set `a` to provided integer/rational as an element in the number field `nf`.
+
+/// Set `a` to the integer `n` an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_si(renf_elem_t a, slong n, const renf_t nf);
+
+/// Set `a` to the integer `n` as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_ui(renf_elem_t a, ulong n, const renf_t nf);
-LIBEANTIC_API void renf_elem_set_nf_elem(renf_elem_t a, const nf_elem_t b, renf_t nf, slong prec);
+
+/// Set `a` to the number field element `b` which is defined in the number field `nf`.
 LIBEANTIC_API void renf_elem_set(renf_elem_t a, const renf_elem_t b, const renf_t nf);
+
+/// Set `a` to the integer `c` as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_fmpz(renf_elem_t a, const fmpz_t c, const renf_t nf);
+
+/// Set `a` to the integer `c` as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_mpz(renf_elem_t a, const mpz_t c, const renf_t nf);
+
+/// Set `a` to the rational `c` as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_fmpq(renf_elem_t a, const fmpq_t c, const renf_t nf);
+
+/// Set `a` to the rational `c` as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_mpq(renf_elem_t a, const mpq_t c, const renf_t nf);
+
+/// Set `a` to provided integer/rational as an element in the number field `nf`.
 LIBEANTIC_API void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol, const renf_t nf);
 
-/// === Embedding refinement ===
+/// Set `a` to the number field element `b` defined in exact number field underlying `nf`. Then refine `a` to precision `prec`.
+LIBEANTIC_API void renf_elem_set_nf_elem(renf_elem_t a, const nf_elem_t b, renf_t nf, slong prec);
+
 /// Set the enclosure of the number field element `a` using the enclosure
 /// of the generator of `nf`.
 /// Computation is done at precision `prec`. This function does not make any
@@ -121,7 +138,6 @@ LIBEANTIC_API void renf_elem_set_fmpq_poly(renf_elem_t a, const fmpq_poly_t pol,
 /// [renf_refine_embedding]().
 LIBEANTIC_API void renf_elem_set_evaluation(renf_elem_t a, const renf_t nf, slong prec);
 
-/// === Properties and conversion ===
 /// Return 1 if `a` is equal to zero and 0 otherwise.
 LIBEANTIC_API int renf_elem_is_zero(const renf_elem_t a, const renf_t nf);
 
@@ -144,7 +160,6 @@ LIBEANTIC_API void renf_elem_floor(fmpz_t a, renf_elem_t b, renf_t nf);
 /// Set `a` to be the ceil of `b`
 LIBEANTIC_API void renf_elem_ceil(fmpz_t a, renf_elem_t b, renf_t nf);
 
-/// === Floating point approximations ===
 /// Set `x` to a a real ball enclosing the element `a` that belongs to the number field `nf`
 /// with `prec` bits of precision.
 LIBEANTIC_API void renf_elem_get_arb(arb_t x, renf_elem_t a, renf_t nf, slong prec);
@@ -152,7 +167,8 @@ LIBEANTIC_API void renf_elem_get_arb(arb_t x, renf_elem_t a, renf_t nf, slong pr
 /// Return a double approximation.
 LIBEANTIC_API double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
-/// ==* Comparisons *==
+/// \defgroup renf_elem_cmp
+///
 /// All the comparison functions `renf_elem_cmp_…` between two elements `a` and
 /// `b` behave as follows. They return
 /// * a positive integer if `a` is greater than `b`,
@@ -160,6 +176,7 @@ LIBEANTIC_API double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 /// * a negative integer if `a` is smaller than `b`.
 ///
 /// If you want to check for equality, use the faster `renf_elem_equal_…` functions.
+///@{
 LIBEANTIC_API int renf_elem_cmp(renf_elem_t a, renf_elem_t b, renf_t nf);
 LIBEANTIC_API int _renf_elem_cmp_fmpq(renf_elem_t a, fmpz * num, fmpz * den, renf_t nf);
 LIBEANTIC_API int renf_elem_cmp_fmpq(renf_elem_t a, const fmpq_t b, renf_t nf);
@@ -171,8 +188,8 @@ LIBEANTIC_API int renf_elem_equal_si(const renf_elem_t a, const slong b, const r
 LIBEANTIC_API int renf_elem_equal_ui(const renf_elem_t a, const ulong b, const renf_t nf);
 LIBEANTIC_API int renf_elem_equal_fmpz(const renf_elem_t a, const fmpz_t b, const renf_t nf);
 LIBEANTIC_API int renf_elem_equal_fmpq(const renf_elem_t a, const fmpq_t b, const renf_t nf);
+///@}
 
-/// === String Conversion and Printing ===
 /// Return `a` as a string with variable name `var`.
 /// The resulting string needs to be freed with `flint_free`.
 LIBEANTIC_API char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag);
@@ -180,18 +197,17 @@ LIBEANTIC_API char * renf_elem_get_str_pretty(renf_elem_t a, const char * var, r
 /// Write `a` to the standard output.
 LIBEANTIC_API void renf_elem_print_pretty(renf_elem_t a, const char * var, renf_t nf, slong n, int flag);
 
-/// === Randomization ===
 /// Set `a` to a random element in `nf`.
 LIBEANTIC_API void renf_elem_randtest(renf_elem_t a, flint_rand_t state, mp_bitcnt_t bits, renf_t nf);
 
-/// === Unary operations ===
 /// Set `a` to the negative of `b`.
 LIBEANTIC_API void renf_elem_neg(renf_elem_t a, const renf_elem_t b, const renf_t nf);
 
 /// Set `a` to the inverse of `b`.
 LIBEANTIC_API void renf_elem_inv(renf_elem_t a, const renf_elem_t b, const renf_t nf);
 
-/// === Binary operations ===
+/// \defgroup renf_elem_binop
+///
 /// All the binary operation functions are of the form `renf_elem_OP_TYP(a, b, c, nf)` where
 /// * `OP` is the operation type
 /// * `TYP` is the type of the argument `c`
@@ -199,6 +215,7 @@ LIBEANTIC_API void renf_elem_inv(renf_elem_t a, const renf_elem_t b, const renf_
 /// * `b` and `c` are the operands
 /// * `nf` is the parent number field of the operation
 /// In short, these functions perform `a = b OP c`.
+///@{
 LIBEANTIC_API void renf_elem_add_si(renf_elem_t a, const renf_elem_t b, slong c, const renf_t nf);
 LIBEANTIC_API void renf_elem_sub_si(renf_elem_t a, const renf_elem_t b, slong c, const renf_t nf);
 LIBEANTIC_API void renf_elem_mul_si(renf_elem_t a, const renf_elem_t b, slong c, const renf_t nf);
@@ -222,6 +239,7 @@ LIBEANTIC_API void renf_elem_sub(renf_elem_t a, const renf_elem_t b, const renf_
 LIBEANTIC_API void renf_elem_mul(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf);
 LIBEANTIC_API void renf_elem_div(renf_elem_t a, const renf_elem_t b, const renf_elem_t c, const renf_t nf);
 LIBEANTIC_API void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, const renf_t nf);
+///@}
 
 /// Perform the floor division of the number field elements `b` and `c` and set the
 /// result in `a`.
@@ -229,7 +247,6 @@ LIBEANTIC_API void renf_elem_pow(renf_elem_t res, const renf_elem_t a, ulong e, 
 /// [renf_elem_floor]. This function is much faster, though.
 LIBEANTIC_API void renf_elem_fdiv(fmpz_t a, renf_elem_t b, renf_elem_t c, renf_t nf);
 
-/// === Other functions ===
 /// Set the array `c` to the `n`-th first partial quotients of the continued
 /// fraction of the element `a` of `nf`.
 LIBEANTIC_API slong renf_elem_get_cfrac(fmpz * c, renf_elem_t rem, renf_elem_t a, slong n, renf_t nf);

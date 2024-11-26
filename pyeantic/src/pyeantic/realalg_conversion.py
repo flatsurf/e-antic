@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 r"""
-realalg conversions
+Interface with realalg
+======================
 
 ``realag`` is a pure Python library developed by Mark C. Bell that provides
 similarly to ``pyeantic`` exact computations over real embedded number fields.

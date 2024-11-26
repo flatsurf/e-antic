@@ -2,8 +2,7 @@
 # README for how to use pixi with e-antic.
 
 [project]
-# The saraedum channel is needed because we use an unofficial standardese build
-channels = ["conda-forge", "saraedum"]
+channels = ["conda-forge"]
 description = "(Real Embedded) Algebraic Number Theory"
 name = "e-antic"
 platforms = ["linux-64", "osx-64"]
@@ -26,8 +25,7 @@ pyeantic-sagemath-100 = ["libeantic", "pyeantic", "sagemath-100"]
 pyeantic-sagemath-101 = ["libeantic", "pyeantic", "sagemath-101"]
 pyeantic-sagemath-102 = ["libeantic", "pyeantic", "sagemath-102"]
 pyeantic-sagemath-103 = ["libeantic", "pyeantic", "sagemath-103"]
-doc = ["doc", "libeantic", "pyeantic"]
-dev = ["dev", "libeantic", "pyeantic"]
+dev = ["dev", "doc", "libeantic", "pyeantic"]
 env-address-sanitizer = ["address-sanitizer", "libeantic", "pyeantic"]
 env-undefined-sanitizer = ["undefined-sanitizer", "libeantic", "pyeantic"]
 env-coverage = ["coverage", "libeantic", "pyeantic"]
@@ -146,13 +144,13 @@ compile-commands = { cmd = "pixi run dev-compile-commands" }
 dev-compile-commands = { cwd = "libeantic", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libeantic"] }
 
 [feature.dev.tasks.configure]
-cmd = './configure --prefix="$CONDA_PREFIX" --without-doc'
+cmd = './configure --prefix="$CONDA_PREFIX"'
 inputs = ["configure", "{libeantic,pyeantic,doc}/configure", "Makefile.in", "{libeantic,pyeantic,doc}/**/*.in"]
 outputs = ["Makefile", "{libeantic,pyeantic,doc}/**/Makefile"]
 depends-on = ["bootstrap"]
 
 [feature.dev.tasks.distcheck]
-cmd = "make distcheck DISTCHECK_CONFIGURE_FLAGS='--without-doc'"
+cmd = "make distcheck"
 depends-on = ["configure"]
 
 [feature.dev.tasks.compiler-warnings-clang]
@@ -254,7 +252,7 @@ trap "kill $SERVER_PID" EXIT
 
 sleep 1
 
-echo "Preview the documentation at http://localhost:$PORT/e-antic/libeantic"
+echo "Preview the documentation at http://localhost:$PORT/"
 echo "Press Ctrl-C to continue"
 
 wait $SERVER_PID
@@ -274,10 +272,7 @@ trap "kill $SERVER_PID" EXIT
 sleep 1
 
 # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
-# Ignore flatsurf.github.io since mkdocs renders canonical URLs into our
-# metadata that the linkchecker then fails to verify (because the canonical
-# page might not be deployed yet at the time of this test.)
-linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org  --ignore flatsurf.github.io
+linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org
 '
 """
 cwd = "doc"
@@ -339,12 +334,14 @@ gxx = ">=14.2"
 gcc = ">=14.2"
 gxx = ">=14.2"
 
-[feature.doc.target.linux.dependencies]
-sphinx = "*"
-mkdocs = "*"
-standardese = { version = "0.6.0", channel = "saraedum" }
-sphinx_rtd_theme = "*"
+[feature.doc.dependencies]
+sphinx = "7.*"
+sphinx-book-theme = "*"
+# Work around https://github.com/executablebooks/sphinx-book-theme/issues/865
+pydata-sphinx-theme= "<0.16"
 linkchecker = "*"
+breathe = ">=4.35.0"
+doxygen = "*"
 
 [feature.flint-26.dependencies]
 libflint = "2.6.*"
