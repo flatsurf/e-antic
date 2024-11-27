@@ -1,4 +1,4 @@
-html: $(builddir)/generated/doxygen $(builddir)/arb.inv $(builddir)/flint.inv $(builddir)/generated/doxygen
+html: $(builddir)/generated/doxygen $(builddir)/flint.inv $(builddir)/flint.inv $(builddir)/generated/doxygen
 	source $(builddir)/../../pyeantic/test/test-env.sh && \
 	python $(SPHINXBUILD) -b html $(srcdir) $(builddir)/generated/html
 
