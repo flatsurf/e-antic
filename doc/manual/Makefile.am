@@ -1,19 +1,20 @@
-html: $(builddir)/generated/doxygen $(builddir)/flint.inv $(builddir)/flint.inv $(builddir)/generated/doxygen
-	source $(builddir)/../../pyeantic/test/test-env.sh && \
+export ABS_SRCDIR=$(abs_srcdir)
+export ABS_BUILDDIR=$(abs_builddir)
+
+generated/html/index.html: generated/doxygen/xml/index.xml flint.inv $(srcdir)/*.rst $(srcdir)/conf.py $(srcdir)/_static/extra.css ../../pyeantic/test/test-env.sh ../../pyeantic/test/bin/python
+	source ../../pyeantic/test/test-env.sh && \
 	python $(SPHINXBUILD) -b html $(srcdir) $(builddir)/generated/html
 
-$(builddir)/generated/doxygen:
-	mkdir -p $@
+generated/doxygen/xml/index.xml: $(srcdir)/Doxyfile $(srcdir)/../../libeantic/e-antic/*.h $(srcdir)/../../libeantic/e-antic/*.hpp
+	mkdir -p generated/doxygen
 	$(DOXYGEN) $(srcdir)/Doxyfile
 
-$(builddir)/flint.inv:
+flint.inv:
 	wget -O $@ https://flintlib.org/doc/objects.inv
 
 CLEANFILES = flint.inv
 
-all: html
-
-.PHONY: html $(builddir)/generated/doxygen
+all: generated/html/index.html
 
 EXTRA_DIST = README.md
 EXTRA_DIST += robots.txt _static/extra.css

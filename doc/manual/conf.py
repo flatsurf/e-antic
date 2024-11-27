@@ -1,10 +1,9 @@
 # Configuration file for the Sphinx documentation builder.
 
 import os
-import sys
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath('../../pyeantic/src/'))
-
+BUILDDIR = Path(os.environ.get('ABS_BUILDDIR', '.')).absolute()
 
 project = 'pyeantic'
 copyright = '2021-2024, the e-antic authors'
@@ -60,9 +59,9 @@ html_static_path = ['_static']
 html_css_files = ['extra.css']
 
 intersphinx_mapping = {
-    'flint': ('https://flintlib.org/doc/', ('flint.inv', None)),
+    "flint": ('https://flintlib.org/doc/', str(BUILDDIR / 'flint.inv'))
 }
 
-breathe_projects = {"libeantic": "generated/doxygen/xml"}
+breathe_projects = {"libeantic": str(BUILDDIR / "generated/doxygen/xml")}
 breathe_default_project = "libeantic"
 breathe_show_include = False

@@ -46,7 +46,7 @@ def dist():
 @activity
 def doc():
     r"""
-    Run make html and create a tarball from the built manual.
+    Build the documentation and create a tarball from the built manual.
     """
     from tempfile import TemporaryDirectory
     from xonsh.dirstack import DIRSTACK
@@ -55,7 +55,6 @@ def doc():
         pushd @(tmp)
         @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
         make
-        make html
         mv doc/manual/generated/html e-antic-manual-$VERSION
         tar czf e-antic-manual-$VERSION.tar.gz e-antic-manual-$VERSION
         mv *.tar.gz @(DIRSTACK[-1])
