@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>renf.h — Real Embedded Number Fields &#8212; pyeantic 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0b5d17ac"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_renf';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="renf_elem.h — Embedded Number Field Elements" href="c_renf_elem.html" />
+    <link rel="prev" title="Tour of the C Interface" href="c_overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyeantic 2.0.2 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyeantic 2.0.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/e-antic" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">libeantic</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="c_overview.html">Tour of the C Interface</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">renf.h — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf_elem.html">renf_elem.h — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">libeanticxx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_class.html">renf_class — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_elem_class.html">renf_elem_class — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">pyeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_realalg.html">Interface with realalg</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="python_sage.html">Interface with SageMath</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/e-antic/edit/master/doc/manual/c_renf.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/c_renf.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>renf.h — Real Embedded Number Fields</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-allocation-deallocation">Initialization, Allocation, Deallocation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-functions">Other Functions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="renf-h-real-embedded-number-fields">
+<h1>renf.h — Real Embedded Number Fields<a class="headerlink" href="#renf-h-real-embedded-number-fields" title="Permalink to this heading">#</a></h1>
+<p>This header defines one of the basic objects of e-antic, <a class="reference internal" href="#renf_8h_1a74c8e25cd56e27da600d15d6c7d359a4"><span class="std std-ref">renf_t</span></a> a real embedded number field and the functions that interact with it. </p>
+<section id="memory-layout">
+<h2>Memory Layout<a class="headerlink" href="#memory-layout" title="Permalink to this heading">#</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46renf_t">
+<span id="_CPPv36renf_t"></span><span id="_CPPv26renf_t"></span><span id="renf_t"></span><span class="target" id="renf_8h_1a74c8e25cd56e27da600d15d6c7d359a4"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44renf" title="renf"><span class="n"><span class="pre">renf</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_t</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv46renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>A real embedded number field.</p>
+<p>Actually, this is an array of <a class="reference internal" href="#structrenf"><span class="std std-ref">renf</span></a> of length one.</p>
+<p>Typically, users of e-antic should not worry about the exact definition of this and just treat this as <em>the</em> type that represents a number field in e-antic.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using an array of length one instead of a plain <code class="docutils literal notranslate"><span class="pre">renf</span></code> or a <code class="docutils literal notranslate"><span class="pre">renf*</span></code> is a common trick in C which is probably best known from MPFR and GMP but also used in the FLINT library that we build upon. Essentially, this gives much better semantics than a plain <code class="docutils literal notranslate"><span class="pre">renf</span></code>. E.g., a <code class="docutils literal notranslate"><span class="pre">renf_t</span></code> is not assignable. (Directly assigning a <code class="docutils literal notranslate"><span class="pre">renf</span></code> to another <code class="docutils literal notranslate"><span class="pre">renf</span></code> does not do what one would expect as the heap-allocated parts of a <code class="docutils literal notranslate"><span class="pre">renf</span></code> are not duplicated correctly.) Also, calling a function that accepts a <code class="docutils literal notranslate"><span class="pre">renf_t</span></code> passes the value with reference semantics, as if it were a <code class="docutils literal notranslate"><span class="pre">renf*</span></code>, i.e., without copying the underlying value. Since a <code class="docutils literal notranslate"><span class="pre">renf_t</span></code> is always stack allocated and cannot be returned from a function, it is also much harder to produce dangling pointers which one would get when using <code class="docutils literal notranslate"><span class="pre">renf*</span></code> everywhere instead. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv44renf">
+<span id="_CPPv34renf"></span><span id="_CPPv24renf"></span><span id="renf"></span><span class="target" id="structrenf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf</span></span></span><a class="headerlink" href="#_CPPv44renf" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Internal representation of a real embedded number field.</p>
+<p>The attributes are not part of the API and should be accessed directly. The exact structure here is only of interest for those who want to work on e-antic itself. To interact with a real embedded number field, use the <code class="docutils literal notranslate"><span class="pre">renf_</span></code> functions described below.</p>
+<p>Typical users of e-antic will never instantiate a <code class="docutils literal notranslate"><span class="pre">renf</span></code> directly but instead work with a <a class="reference internal" href="#renf_8h_1a74c8e25cd56e27da600d15d6c7d359a4"><span class="std std-ref">renf_t</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4renf2nfE">
+<span id="_CPPv3N4renf2nfE"></span><span id="_CPPv2N4renf2nfE"></span><span id="renf::nf__nf_t"></span><span class="target" id="structrenf_1a7dd1c562f10fa39ea01660561007f8c5"></span><span class="n"><span class="pre">nf_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nf</span></span></span><a class="headerlink" href="#_CPPv4N4renf2nfE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An algebraic number field, provided by FLINT (formerly ANTIC.) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4renf3derE">
+<span id="_CPPv3N4renf3derE"></span><span id="_CPPv2N4renf3derE"></span><span id="renf::der__fmpz_poly_t"></span><span class="target" id="structrenf_1a7d4f107fd4bde0d5098e1789bb4fc4e0"></span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">der</span></span></span><a class="headerlink" href="#_CPPv4N4renf3derE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The derivative of the defining polynomial (without denominator) as a FLINT polynomial over the integers. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4renf4precE">
+<span id="_CPPv3N4renf4precE"></span><span id="_CPPv2N4renf4precE"></span><span id="renf::prec__slong"></span><span class="target" id="structrenf_1a4050668331df0d2741f2f4c672e3e3d6"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prec</span></span></span><a class="headerlink" href="#_CPPv4N4renf4precE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Precision (number of bits) used for binary operations on enclosures. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4renf3embE">
+<span id="_CPPv3N4renf3embE"></span><span id="_CPPv2N4renf3embE"></span><span id="renf::emb__arb_t"></span><span class="target" id="structrenf_1ad165aaf7f9b0250c695ff0c4a21104f9"></span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">emb</span></span></span><a class="headerlink" href="#_CPPv4N4renf3embE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The real embedding of the generator of this number field, given as ball in the reals. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4renf9immutableE">
+<span id="_CPPv3N4renf9immutableE"></span><span id="_CPPv2N4renf9immutableE"></span><span id="renf::immutable__i"></span><span class="target" id="structrenf_1aa858c20c1c1cf879400ac439773c0d43"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">immutable</span></span></span><a class="headerlink" href="#_CPPv4N4renf9immutableE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>A flag used during refinements to ensure thread-safety. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="initialization-allocation-deallocation">
+<h2>Initialization, Allocation, Deallocation<a class="headerlink" href="#initialization-allocation-deallocation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49renf_init6renf_t11fmpq_poly_t5arb_t5slong">
+<span id="_CPPv39renf_init6renf_t11fmpq_poly_t5arb_t5slong"></span><span id="_CPPv29renf_init6renf_t11fmpq_poly_t5arb_t5slong"></span><span id="renf_init__renf_t.fmpq_poly_t.arb_t.slong"></span><span class="target" id="renf_8h_1aa73cd0daa7fda66bec5d1db65c17507a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">emb</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49renf_init6renf_t11fmpq_poly_t5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">nf</span></code> to be the real embedded number field define by the minimal polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> and the (approximate) embedding <code class="docutils literal notranslate"><span class="pre">emb</span></code>. The parameter <code class="docutils literal notranslate"><span class="pre">prec</span></code> is used as the default precision for binary operations on enclosures. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423renf_init_nth_root_fmpq6renf_t6fmpq_t5ulong5slong">
+<span id="_CPPv323renf_init_nth_root_fmpq6renf_t6fmpq_t5ulong5slong"></span><span id="_CPPv223renf_init_nth_root_fmpq6renf_t6fmpq_t5ulong5slong"></span><span id="renf_init_nth_root_fmpq__renf_t.fmpq_t.ulong.slong"></span><span class="target" id="renf_8h_1a896c0bdd462c9b7e5f5884594ba22b45"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_init_nth_root_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">d</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423renf_init_nth_root_fmpq6renf_t6fmpq_t5ulong5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">nf</span></code> to be the real embedded number field defined as the <code class="docutils literal notranslate"><span class="pre">n</span></code>-th root of the rational number <code class="docutils literal notranslate"><span class="pre">d</span></code>. <code class="docutils literal notranslate"><span class="pre">prec</span></code> is the default precision. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_init_set6renf_tK6renf_t">
+<span id="_CPPv313renf_init_set6renf_tK6renf_t"></span><span id="_CPPv213renf_init_set6renf_tK6renf_t"></span><span id="renf_init_set__renf_t.renf_tC"></span><span class="target" id="renf_8h_1ab612edd9e8311f33f59b117779915cbd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_init_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_init_set6renf_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy <code class="docutils literal notranslate"><span class="pre">src</span></code> to <code class="docutils literal notranslate"><span class="pre">dest</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410renf_clear6renf_t">
+<span id="_CPPv310renf_clear6renf_t"></span><span id="_CPPv210renf_clear6renf_t"></span><span id="renf_clear__renf_t"></span><span class="target" id="renf_8h_1a1649abf8a1516061ecf69228b8c2412a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_clear</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410renf_clear6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Deallocate the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code> originally allocated with one of the <code class="docutils literal notranslate"><span class="pre">renf_init</span></code> above. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429renf_set_embeddings_fmpz_polyP4renf11fmpz_poly_t5slong5slong">
+<span id="_CPPv329renf_set_embeddings_fmpz_polyP4renf11fmpz_poly_t5slong5slong"></span><span id="_CPPv229renf_set_embeddings_fmpz_polyP4renf11fmpz_poly_t5slong5slong"></span><span id="renf_set_embeddings_fmpz_poly__renfP.fmpz_poly_t.slong.slong"></span><span class="target" id="renf_8h_1aa1ee010f8e6237a52412edfdf7835592"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_set_embeddings_fmpz_poly</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv44renf" title="renf"><span class="n"><span class="pre">renf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lim</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429renf_set_embeddings_fmpz_polyP4renf11fmpz_poly_t5slong5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the <code class="docutils literal notranslate"><span class="pre">lim</span></code> first elements of the array <code class="docutils literal notranslate"><span class="pre">nf</span></code> to the real embeddings of the irreducible polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code>. Each number field is initialized with a default <code class="docutils literal notranslate"><span class="pre">prec</span></code> of bit precision for binary operations. </p>
+</dd></dl>
+
+</section>
+<section id="other-functions">
+<h2>Other Functions<a class="headerlink" href="#other-functions" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421renf_refine_embedding6renf_t5slong">
+<span id="_CPPv321renf_refine_embedding6renf_t5slong"></span><span id="_CPPv221renf_refine_embedding6renf_t5slong"></span><span id="renf_refine_embedding__renf_t.slong"></span><span class="target" id="renf_8h_1ad8f40a152429afadbf8870ea66d5fb00"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_refine_embedding</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421renf_refine_embedding6renf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Refine the embedding of <code class="docutils literal notranslate"><span class="pre">nf</span></code> to <code class="docutils literal notranslate"><span class="pre">prec</span></code> bits of precision. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_set_immutable6renf_ti">
+<span id="_CPPv318renf_set_immutable6renf_ti"></span><span id="_CPPv218renf_set_immutable6renf_ti"></span><span id="renf_set_immutable__renf_t.i"></span><span class="target" id="renf_8h_1a630a39ebd8e9349d548d1b3d7eddc6dd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_set_immutable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">immutable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_set_immutable6renf_ti" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Change the mutability of the number field. If <code class="docutils literal notranslate"><span class="pre">immutable</span></code> is zero, make the number field mutable. Otherwise, make the number field immutable. Returns the previous value. It is not possible to <a class="reference internal" href="#renf_8h_1ad8f40a152429afadbf8870ea66d5fb00"><span class="std std-ref">refine</span></a> the embedding of an immutable number field. This method is used internally as a sanity-check in multi-threaded code. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410renf_equalK6renf_tK6renf_t">
+<span id="_CPPv310renf_equalK6renf_tK6renf_t"></span><span id="_CPPv210renf_equalK6renf_tK6renf_t"></span><span id="renf_equal__renf_tC.renf_tC"></span><span class="target" id="renf_8h_1ae072dc6022487bc6c079e29881a56151"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410renf_equalK6renf_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return whether the two number fields are equal. Two embedded number field are considered equal if they define the same subfield of the real numbers. The precision of the embedding or the precision of bit operations do not matter in this comparison. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411renf_degree6renf_t">
+<span id="_CPPv311renf_degree6renf_t"></span><span id="_CPPv211renf_degree6renf_t"></span><span id="renf_degree__renf_t"></span><span class="target" id="renf_8h_1ac45b9e574b8e00996952c4b0d90f0108"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_degree</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411renf_degree6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the degree of the number field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_randtest6renf_t12flint_rand_t5slong5slong11mp_bitcnt_t">
+<span id="_CPPv313renf_randtest6renf_t12flint_rand_t5slong5slong11mp_bitcnt_t"></span><span id="_CPPv213renf_randtest6renf_t12flint_rand_t5slong5slong11mp_bitcnt_t"></span><span id="renf_randtest__renf_t.flint_rand_t.slong.slong.mp_bitcnt_t"></span><span class="target" id="renf_8h_1aad5165f8df67a3b90eaa09890017cad4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_randtest</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">flint_rand_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span>, <span class="n"><span class="pre">mp_bitcnt_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_randtest6renf_t12flint_rand_t5slong5slong11mp_bitcnt_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">nf</span></code> to a random number field. Used internally in unit tests. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412renf_get_strK6renf_tPKc5slong">
+<span id="_CPPv312renf_get_strK6renf_tPKc5slong"></span><span id="_CPPv212renf_get_strK6renf_tPKc5slong"></span><span id="renf_get_str__renf_tC.cCP.slong"></span><span class="target" id="renf_8h_1a6322c47e183049e5ef69615e7fdcd4d0"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">renf_get_str</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412renf_get_strK6renf_tPKc5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return a printable representation of this number field. Returns a C string which uses <code class="docutils literal notranslate"><span class="pre">var</span></code> as the name of the variable and the precision is given with <code class="docutils literal notranslate"><span class="pre">prec</span></code> bits. The returned string has to be deallocated with <code class="docutils literal notranslate"><span class="pre">flint_free</span></code> after usage. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410renf_printK6renf_t">
+<span id="_CPPv310renf_printK6renf_t"></span><span id="_CPPv210renf_printK6renf_t"></span><span id="renf_print__renf_tC"></span><span class="target" id="renf_8h_1ac1c89593236394e86bb540cd207c5702"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_print</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410renf_printK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Print the number field on the standard output. </p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="c_overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tour of the C Interface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="c_renf_elem.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">renf_elem.h — Embedded Number Field Elements</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-allocation-deallocation">Initialization, Allocation, Deallocation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-functions">Other Functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024, the e-antic authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>renf_class — number fields &#8212; pyeantic 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0b5d17ac"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_renf_class';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="renf_elem_class — number field elements" href="cxx_renf_elem_class.html" />
+    <link rel="prev" title="Tour of the C++ Interface" href="cxx_overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyeantic 2.0.2 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyeantic 2.0.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/e-antic" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">libeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="c_overview.html">Tour of the C Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf.html">renf.h — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf_elem.html">renf_elem.h — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">libeanticxx</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">renf_class — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_elem_class.html">renf_elem_class — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">pyeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_realalg.html">Interface with realalg</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="python_sage.html">Interface with SageMath</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/e-antic/edit/master/doc/manual/cxx_renf_class.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cxx_renf_class.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>renf_class — number fields</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="renf-class-number-fields">
+<h1>renf_class — number fields<a class="headerlink" href="#renf-class-number-fields" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_classE">
+<span id="_CPPv3N6eantic10renf_classE"></span><span id="_CPPv2N6eantic10renf_classE"></span><span id="eantic::renf_class"></span><span class="target" id="classeantic_1_1renf__class"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_class</span></span></span><a class="headerlink" href="#_CPPv4N6eantic10renf_classE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>A Real Embedded Number Field.</p>
+<p>All number fields are simple extensions of the rational numbers whose defining minimal polynomial has a real root.</p>
+<p>To create a number field, use one of the <a class="reference internal" href="#classeantic_1_1renf__class_1a6b60ec072fab77d23cecd0b8cc84ac5c"><span class="std std-ref">factory functions</span></a>; typically, by specifying the minimal polynomial of the number field and selecting a real root: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>These factories return an <a class="reference external" href="https://www.boost.org/doc/libs/1_75_0/libs/smart_ptr/doc/html/smart_ptr.html#intrusive_ptr">intrusive pointer</a> to a number field which takes care of reference counting, i.e., you do not need to worry about dangling references; any element of the number field keeps the number field itself alive.</p>
+<p>All number fields are unique. If you are familiar with SageMath, they are “unique parents”. If you create the same number field twice, you get a reference to the same field: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_elem_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.41 +/- 1&quot;</span><span class="p">);</span>
+
+<span class="n">L</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="o">*</span><span class="n">K</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="o">&amp;</span><span class="n">L</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="o">&amp;*</span><span class="n">K</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+<p>Number fields are hashable but not ordered, i.e., they can be used in containers such as <code class="docutils literal notranslate"><span class="pre">std::unordered_set</span></code> but not in <code class="docutils literal notranslate"><span class="pre">std::set</span></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class6degreeEv">
+<span id="_CPPv3NK6eantic10renf_class6degreeEv"></span><span id="_CPPv2NK6eantic10renf_class6degreeEv"></span><span id="eantic::renf_class::degreeC"></span><span class="target" id="classeantic_1_1renf__class_1ad37a52e8446eee358293d402c5012ece"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">degree</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class6degreeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the absolute degree of this number field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class4zeroEv">
+<span id="_CPPv3NK6eantic10renf_class4zeroEv"></span><span id="_CPPv2NK6eantic10renf_class4zeroEv"></span><span id="eantic::renf_class::zeroC"></span><span class="target" id="classeantic_1_1renf__class_1a148111100e69e168f3e27829c046fdea"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="cxx_renf_elem_class.html#_CPPv4N6eantic15renf_elem_classE" title="eantic::renf_elem_class"><span class="n"><span class="pre">renf_elem_class</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">zero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class4zeroEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the zero element of this number field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class3oneEv">
+<span id="_CPPv3NK6eantic10renf_class3oneEv"></span><span id="_CPPv2NK6eantic10renf_class3oneEv"></span><span id="eantic::renf_class::oneC"></span><span class="target" id="classeantic_1_1renf__class_1aad01bc3847fe9f16c4141fc771cd0771"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="cxx_renf_elem_class.html#_CPPv4N6eantic15renf_elem_classE" title="eantic::renf_elem_class"><span class="n"><span class="pre">renf_elem_class</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">one</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class3oneEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the one element of this number field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class3genEv">
+<span id="_CPPv3NK6eantic10renf_class3genEv"></span><span id="_CPPv2NK6eantic10renf_class3genEv"></span><span id="eantic::renf_class::genC"></span><span class="target" id="classeantic_1_1renf__class_1a14f94a908a76e1610ced971d16a6c444"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="cxx_renf_elem_class.html#_CPPv4N6eantic15renf_elem_classE" title="eantic::renf_elem_class"><span class="n"><span class="pre">renf_elem_class</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">gen</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class3genEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the generator of this number field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span><span class="o">&amp;</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">();</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">();</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.41 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">L</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">();</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">x</span> <span class="o">~</span> <span class="mf">1.4142136</span><span class="p">)</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class12constructionEv">
+<span id="_CPPv3NK6eantic10renf_class12constructionEv"></span><span id="_CPPv2NK6eantic10renf_class12constructionEv"></span><span id="eantic::renf_class::constructionC"></span><span class="target" id="classeantic_1_1renf__class_1acfe61ea90ee01786a3234725c47b10aa"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">slong</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">construction</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class12constructionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the parameters <code class="docutils literal notranslate"><span class="pre">(minpoly,</span> <span class="pre">gen,</span> <span class="pre">emb,</span> <span class="pre">prec)</span></code> that can be used to construct this field with <a class="reference internal" href="#classeantic_1_1renf__class_1a313acbc038bbc3cdde88e7dd37ee6566"><span class="std std-ref">make</span></a>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;2*x^4 - 4&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+
+<span class="n">auto</span> <span class="n">construction</span> <span class="o">=</span> <span class="n">K</span><span class="o">-&gt;</span><span class="n">construction</span><span class="p">();</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">construction</span><span class="p">),</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">construction</span><span class="p">),</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">construction</span><span class="p">),</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">(</span><span class="n">construction</span><span class="p">));</span>
+<span class="n">K</span> <span class="o">==</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class8gen_nameEv">
+<span id="_CPPv3NK6eantic10renf_class8gen_nameEv"></span><span id="_CPPv2NK6eantic10renf_class8gen_nameEv"></span><span id="eantic::renf_class::gen_nameC"></span><span class="target" id="classeantic_1_1renf__class_1ad0cba16cb909913065fe396179ac2e00"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">gen_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class8gen_nameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the name of the generator of this field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class9to_stringEv">
+<span id="_CPPv3NK6eantic10renf_class9to_stringEv"></span><span id="_CPPv2NK6eantic10renf_class9to_stringEv"></span><span id="eantic::renf_class::to_stringC"></span><span class="target" id="classeantic_1_1renf__class_1a6ab64ffea69f670e1e107ef131a6b20c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class9to_stringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return a human-readable representation of this field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;2*x^4 - 4&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">K</span><span class="o">-&gt;</span><span class="n">to_string</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.18920711500272106671749997056</span> <span class="o">+/-</span> <span class="mf">1.11e-30</span><span class="p">])</span>
+
+<span class="o">//</span> <span class="n">There</span> <span class="ow">is</span> <span class="n">also</span> <span class="n">an</span> <span class="n">operator</span><span class="o">&lt;&lt;</span> <span class="n">which</span> <span class="n">gives</span> <span class="n">the</span> <span class="n">same</span> <span class="n">output</span><span class="o">.</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">K</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.18920711500272106671749997056</span> <span class="o">+/-</span> <span class="mf">1.11e-30</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6eantic10renf_class6renf_tEv">
+<span id="_CPPv3NK6eantic10renf_class6renf_tEv"></span><span id="_CPPv2NK6eantic10renf_class6renf_tEv"></span><span id="eantic::renf_class::renf_tC"></span><span class="target" id="classeantic_1_1renf__class_1a3f2755c6d85812795a78c47934b63151"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">add_lvalue_reference_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_t</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6eantic10renf_class6renf_tEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the underlying <a class="reference internal" href="#classeantic_1_1renf__class_1a3f2755c6d85812795a78c47934b63151"><span class="std std-ref">renf_t</span></a>. We do not return a const <code class="docutils literal notranslate"><span class="pre">renf_t</span></code> since calls in the C API might need to modify it (e.g., to refine the stored embedding) even though they are morally const. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_class4makeEv">
+<span id="_CPPv3N6eantic10renf_class4makeEv"></span><span id="_CPPv2N6eantic10renf_class4makeEv"></span><span id="eantic::renf_class::make"></span><span class="target" id="classeantic_1_1renf__class_1a6b60ec072fab77d23cecd0b8cc84ac5c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_class4makeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the trivial number field obtained by adjoining a root of <span class="math notranslate nohighlight">\(x - 1\)</span> to the rationals. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_class4makeEK6renf_tRKNSt6stringE">
+<span id="_CPPv3N6eantic10renf_class4makeEK6renf_tRKNSt6stringE"></span><span id="_CPPv2N6eantic10renf_class4makeEK6renf_tRKNSt6stringE"></span><span id="eantic::renf_class::make__renf_tC.ssCR"></span><span class="target" id="classeantic_1_1renf__class_1a0a50e931650465dbfb502d450c792cdc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">intrusive_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gen</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;a&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_class4makeEK6renf_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the number field created from a <a class="reference internal" href="#classeantic_1_1renf__class_1a3f2755c6d85812795a78c47934b63151"><span class="std std-ref">renf_t</span></a>, the C type underlying a <code class="docutils literal notranslate"><a class="reference internal" href="#classeantic_1_1renf__class"><span class="std std-ref"><span class="pre">renf_class</span></span></a></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_class4makeERKNSt6stringERKNSt6stringERKNSt6stringE5slong">
+<span id="_CPPv3N6eantic10renf_class4makeERKNSt6stringERKNSt6stringERKNSt6stringE5slong"></span><span id="_CPPv2N6eantic10renf_class4makeERKNSt6stringERKNSt6stringERKNSt6stringE5slong"></span><span id="eantic::renf_class::make__ssCR.ssCR.ssCR.slong"></span><span class="target" id="classeantic_1_1renf__class_1a313acbc038bbc3cdde88e7dd37ee6566"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">intrusive_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">minpoly</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gen</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">emb</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_class4makeERKNSt6stringERKNSt6stringERKNSt6stringE5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the number field obtained by adjoining the root of <code class="docutils literal notranslate"><span class="pre">minpoly</span></code> which is approximately <code class="docutils literal notranslate"><span class="pre">emb</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minpoly</strong> – An irreducible polynomial in the variable <code class="docutils literal notranslate"><span class="pre">gen</span></code>. This minimal polynomial does not have to be totally real or monic. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;2*x^4 - 4&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>gen</strong> – The name of the variable used in <code class="docutils literal notranslate"><span class="pre">minpoly</span></code>. Note that two fields that differ only in the name of the generator are treated as being distinct fields.</p></li>
+<li><p><strong>emb</strong> – An approximation of the root of <code class="docutils literal notranslate"><span class="pre">minpoly</span></code>. It makes no difference to what precision this approximation is provided but it must uniquely determine a single root of the polynomial.</p></li>
+<li><p><strong>prec</strong> – The default precision for all arithmetic. When performing arithmetic in this field, all operations are performed to that precision. When necessary, the precision is dynamically increased. This only affects the performance and inner workings of libeantic, the results of arithmetic operations and comparisons are not affected by this. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_class4makeERKNSt6stringERKNSt6stringEKNSt8functionIFNSt6stringE5slongEEE5slong">
+<span id="_CPPv3N6eantic10renf_class4makeERKNSt6stringERKNSt6stringEKNSt8functionIFNSt6stringE5slongEEE5slong"></span><span id="_CPPv2N6eantic10renf_class4makeERKNSt6stringERKNSt6stringEKNSt8functionIFNSt6stringE5slongEEE5slong"></span><span class="target" id="classeantic_1_1renf__class_1aad7d2ce76562e882eec04da062a3caad"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">intrusive_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">minpoly</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gen</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">emb</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_class4makeERKNSt6stringERKNSt6stringEKNSt8functionIFNSt6stringE5slongEEE5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the number field obtained by adjoining the root of <code class="docutils literal notranslate"><span class="pre">minpoly</span></code> which is approximately <code class="docutils literal notranslate"><span class="pre">emb</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minpoly</strong> – An irreducible polynomial in the variable <code class="docutils literal notranslate"><span class="pre">gen</span></code>. This minimal polynomial does not have to be totally real or monic. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#if __FLINT_RELEASE &lt; 30000</span>
+<span class="c1">#include &lt;arb.h&gt;</span>
+<span class="c1">#include &lt;arf.h&gt;</span>
+<span class="c1">#else</span>
+<span class="c1">#include &lt;flint/arb.h&gt;</span>
+<span class="c1">#include &lt;flint/arf.h&gt;</span>
+<span class="c1">#endif</span>
+
+<span class="n">const</span> <span class="n">auto</span> <span class="n">emb</span> <span class="o">=</span> <span class="p">[](</span><span class="n">slong</span> <span class="n">prec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">arb_t</span> <span class="n">emb</span><span class="p">;</span>
+    <span class="n">arb_init</span><span class="p">(</span><span class="n">emb</span><span class="p">);</span>
+    <span class="n">arb_sqrt_ui</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">prec</span><span class="p">);</span>
+    <span class="n">char</span><span class="o">*</span> <span class="n">c_str</span> <span class="o">=</span> <span class="n">arb_get_str</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">ARB_STR_NO_RADIUS</span><span class="p">);</span>
+    <span class="n">std</span><span class="p">::</span><span class="n">string</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_str</span><span class="p">);</span>
+    <span class="n">flint_free</span><span class="p">(</span><span class="n">c_str</span><span class="p">);</span>
+    <span class="n">arb_clear</span><span class="p">(</span><span class="n">emb</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">emb</span><span class="p">);</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>gen</strong> – The name of the variable used in <code class="docutils literal notranslate"><span class="pre">minpoly</span></code>. Note that two fields that differ only in the name of the generator are treated as being distinct fields.</p></li>
+<li><p><strong>emb</strong> – Creates approximations of the root of <code class="docutils literal notranslate"><span class="pre">minpoly</span></code> that is suitable for computations with precision <code class="docutils literal notranslate"><span class="pre">prec</span></code>. It makes no difference to what precision this approximation is provided but it must for a sufficiently large value of <code class="docutils literal notranslate"><span class="pre">prec</span></code> uniquely determine a single root of the polynomial; with increasing <code class="docutils literal notranslate"><span class="pre">prec</span></code> it should converge to the actual root.</p></li>
+<li><p><strong>prec</strong> – The default precision for all arithmetic. When performing arithmetic in this field, all operations are performed to that precision. When necessary, the precision is dynamically increased. This only affects the performance and inner workings of libeantic, the results of arithmetic operations and comparisons are not affected by this. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_classeqERK10renf_classRK10renf_class">
+<span id="_CPPv3N6eantic10renf_classeqERK10renf_classRK10renf_class"></span><span id="_CPPv2N6eantic10renf_classeqERK10renf_classRK10renf_class"></span><span id="eantic::renf_class::eq-operator__renf_classCR.renf_classCR"></span><span class="target" id="classeantic_1_1renf__class_1a96f5b9770e52b3bb7fd0465ec96322ab"></span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_classeqERK10renf_classRK10renf_class" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return whether two number fields are indistinguishable. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.41 +/- 0.1&quot;</span><span class="p">);</span>
+<span class="n">K</span> <span class="o">==</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;2*x^2 - 4&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">K</span> <span class="o">==</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;y^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;1 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">K</span> <span class="o">==</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+
+<span class="n">K</span> <span class="o">!=</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6eantic10renf_classlsERNSt7ostreamERK10renf_class">
+<span id="_CPPv3N6eantic10renf_classlsERNSt7ostreamERK10renf_class"></span><span id="_CPPv2N6eantic10renf_classlsERNSt7ostreamERK10renf_class"></span><span id="eantic::renf_class::lshift-operator__osR.renf_classCR"></span><span class="target" id="classeantic_1_1renf__class_1abac3e41424984a7d8b3eed31f114588d"></span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><span class="n"><span class="pre">renf_class</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6eantic10renf_classlsERNSt7ostreamERK10renf_class" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Write a human-readable representation of this field to the output stream. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cxx_overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tour of the C++ Interface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_renf_elem_class.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">renf_elem_class — number field elements</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024, the e-antic authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

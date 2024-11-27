@@ -1,0 +1,635 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Flint integral polynomials utilities &#8212; pyeantic 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0b5d17ac"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_fmpz_poly_extra';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyeantic 2.0.2 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyeantic 2.0.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/e-antic" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">libeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="c_overview.html">Tour of the C Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf.html">renf.h — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf_elem.html">renf_elem.h — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">libeanticxx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_class.html">renf_class — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_elem_class.html">renf_elem_class — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">pyeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_realalg.html">Interface with realalg</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="python_sage.html">Interface with SageMath</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/e-antic/edit/master/doc/manual/c_fmpz_poly_extra.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/c_fmpz_poly_extra.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Flint integral polynomials utilities</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="fmpz__poly__extra_8h_1autotoc_md1">
+<h1>Flint integral polynomials utilities<a class="headerlink" href="#fmpz__poly__extra_8h_1autotoc_md1" title="Permalink to this heading">#</a></h1>
+</section>
+<div class="breathe-sectiondef docutils container" id="fmpz__poly__extra_8h_1autotoc_md1">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-real-root-isolation">Real root isolation</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425_fmpz_poly_scale_0_1_fmpqP4fmpz5slong6fmpq_t6fmpq_t">
+<span id="_CPPv325_fmpz_poly_scale_0_1_fmpqP4fmpz5slong6fmpq_t6fmpq_t"></span><span id="_CPPv225_fmpz_poly_scale_0_1_fmpqP4fmpz5slong6fmpq_t6fmpq_t"></span><span id="_fmpz_poly_scale_0_1_fmpq__fmpzP.slong.fmpq_t.fmpq_t"></span><span class="target" id="fmpz__poly__extra_8h_1ad90224d842db643bbd77fb0ee04ab5f5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_scale_0_1_fmpq</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425_fmpz_poly_scale_0_1_fmpqP4fmpz5slong6fmpq_t6fmpq_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Precompose the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> by an affine transformation so that the interval [<code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>] becomes the interval [0,1] </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424_fmpz_poly_has_real_rootP4fmpz5slong">
+<span id="_CPPv324_fmpz_poly_has_real_rootP4fmpz5slong"></span><span id="_CPPv224_fmpz_poly_has_real_rootP4fmpz5slong"></span><span id="_fmpz_poly_has_real_root__fmpzP.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a15a95bd8a00663af145a4f8ee10ae9b8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_has_real_root</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424_fmpz_poly_has_real_rootP4fmpz5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return 1 if the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> has a real root and 0 otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423fmpz_poly_has_real_root11fmpz_poly_t">
+<span id="_CPPv323fmpz_poly_has_real_root11fmpz_poly_t"></span><span id="_CPPv223fmpz_poly_has_real_root11fmpz_poly_t"></span><span id="fmpz_poly_has_real_root__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1af89ebced0bc70b04f8e7a5d26c3af5f6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_has_real_root</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423fmpz_poly_has_real_root11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv440fmpz_poly_positive_root_upper_bound_2expK11fmpz_poly_t">
+<span id="_CPPv340fmpz_poly_positive_root_upper_bound_2expK11fmpz_poly_t"></span><span id="_CPPv240fmpz_poly_positive_root_upper_bound_2expK11fmpz_poly_t"></span><span id="fmpz_poly_positive_root_upper_bound_2exp__fmpz_poly_tC"></span><span class="target" id="fmpz__poly__extra_8h_1ad4e57d90042bbb1cfb716d26eb81cb0c"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_positive_root_upper_bound_2exp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440fmpz_poly_positive_root_upper_bound_2expK11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return an upper bound on the bitsize of largest real root of <code class="docutils literal notranslate"><span class="pre">pol</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv441_fmpz_poly_positive_root_upper_bound_2expPK4fmpz5slong">
+<span id="_CPPv341_fmpz_poly_positive_root_upper_bound_2expPK4fmpz5slong"></span><span id="_CPPv241_fmpz_poly_positive_root_upper_bound_2expPK4fmpz5slong"></span><span id="_fmpz_poly_positive_root_upper_bound_2exp__fmpzCP.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a6606b3f1b6efd99737f52b5c7f91cd4c"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_positive_root_upper_bound_2exp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441_fmpz_poly_positive_root_upper_bound_2expPK4fmpz5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return an upper bound on the bitsize of largest real root of <code class="docutils literal notranslate"><span class="pre">(pol,</span> <span class="pre">len)</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv451_fmpz_poly_positive_root_upper_bound_2exp_local_maxPK4fmpz5slong">
+<span id="_CPPv351_fmpz_poly_positive_root_upper_bound_2exp_local_maxPK4fmpz5slong"></span><span id="_CPPv251_fmpz_poly_positive_root_upper_bound_2exp_local_maxPK4fmpz5slong"></span><span id="_fmpz_poly_positive_root_upper_bound_2exp_local_max__fmpzCP.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a5fc68e43485ff74ae487a1e932a9df8a"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_positive_root_upper_bound_2exp_local_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv451_fmpz_poly_positive_root_upper_bound_2exp_local_maxPK4fmpz5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv436fmpz_poly_num_real_roots_upper_bound11fmpz_poly_t">
+<span id="_CPPv336fmpz_poly_num_real_roots_upper_bound11fmpz_poly_t"></span><span id="_CPPv236fmpz_poly_num_real_roots_upper_bound11fmpz_poly_t"></span><span id="fmpz_poly_num_real_roots_upper_bound__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a66256b88a509bba3bd98244f821d31ed"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_num_real_roots_upper_bound</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436fmpz_poly_num_real_roots_upper_bound11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return an upper bound on the number of real roots of the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> (currently using Descartes’ rule of sign). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430_fmpz_poly_descartes_bound_0_1P4fmpz5slong5slong">
+<span id="_CPPv330_fmpz_poly_descartes_bound_0_1P4fmpz5slong5slong"></span><span id="_CPPv230_fmpz_poly_descartes_bound_0_1P4fmpz5slong5slong"></span><span id="_fmpz_poly_descartes_bound_0_1__fmpzP.slong.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a985235015bf162b3e01867e3b22a82dd"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_descartes_bound_0_1</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bound</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430_fmpz_poly_descartes_bound_0_1P4fmpz5slong5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return an upper bound on the number of real roots between 0 and 1 of the polynomial <code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">len)</span></code> using Descartes’ rule of sign. If the result is larger than <code class="docutils literal notranslate"><span class="pre">bound</span></code> then <code class="docutils literal notranslate"><span class="pre">WORD_MAX</span></code> is returned. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426_fmpz_poly_descartes_boundP4fmpz5slong5slong">
+<span id="_CPPv326_fmpz_poly_descartes_boundP4fmpz5slong5slong"></span><span id="_CPPv226_fmpz_poly_descartes_boundP4fmpz5slong5slong"></span><span id="_fmpz_poly_descartes_bound__fmpzP.slong.slong"></span><span class="target" id="fmpz__poly__extra_8h_1aad9209d59dc7b52d1540cf535da2d796"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_descartes_bound</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bound</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426_fmpz_poly_descartes_boundP4fmpz5slong5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437_fmpz_poly_isolate_real_roots_0_1_vcaP4fmpqP5slongP4fmpzP5slongP5slongP4fmpz5slong">
+<span id="_CPPv337_fmpz_poly_isolate_real_roots_0_1_vcaP4fmpqP5slongP4fmpzP5slongP5slongP4fmpz5slong"></span><span id="_CPPv237_fmpz_poly_isolate_real_roots_0_1_vcaP4fmpqP5slongP4fmpzP5slongP5slongP4fmpz5slong"></span><span id="_fmpz_poly_isolate_real_roots_0_1_vca__fmpqP.slongP.fmpzP.slongP.slongP.fmpzP.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a8fc7222f088b745568d42889d9fcb2d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_isolate_real_roots_0_1_vca</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpq</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">exact_roots</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">n_exact_roots</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">c_array</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">k_array</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">n_intervals</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437_fmpz_poly_isolate_real_roots_0_1_vcaP4fmpqP5slongP4fmpzP5slongP5slongP4fmpz5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Isolate the real roots of <code class="docutils literal notranslate"><span class="pre">(pol,</span> <span class="pre">len)</span></code> contained in the interval <span class="math notranslate nohighlight">\((0, 1)\)</span>. The array <code class="docutils literal notranslate"><span class="pre">exact_roots</span></code> will be set by the exact dyadic roots found by the algorithm and <code class="docutils literal notranslate"><span class="pre">n_exact_roots</span></code> updated accordingly. The arrays <code class="docutils literal notranslate"><span class="pre">c_array</span></code> and <code class="docutils literal notranslate"><span class="pre">k_array</span></code> are set to be interval data that enclose the remaining roots and <code class="docutils literal notranslate"><span class="pre">n_interval</span></code> is updated accordingly. A data <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">c_array</span> <span class="pre">+</span> <span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">k_array[i]</span></code> represents the open interval <span class="math notranslate nohighlight">\((c 2^k, (c + 1) 2^k)\)</span>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428fmpz_poly_isolate_real_rootsP4fmpqP5slongP4fmpzP5slongP5slong11fmpz_poly_t">
+<span id="_CPPv328fmpz_poly_isolate_real_rootsP4fmpqP5slongP4fmpzP5slongP5slong11fmpz_poly_t"></span><span id="_CPPv228fmpz_poly_isolate_real_rootsP4fmpqP5slongP4fmpzP5slongP5slong11fmpz_poly_t"></span><span id="fmpz_poly_isolate_real_roots__fmpqP.slongP.fmpzP.slongP.slongP.fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1acbb61c2d3de2120cfcabbc22c421f9d2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_isolate_real_roots</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpq</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">exact_roots</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">n_exact</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">c_array</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">k_array</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">n_interval</span></span>, <span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428fmpz_poly_isolate_real_rootsP4fmpqP5slongP4fmpzP5slongP5slong11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Isolate the real roots of <code class="docutils literal notranslate"><span class="pre">pol</span></code>. The array <code class="docutils literal notranslate"><span class="pre">exact_roots</span></code> will be set by the exact dyadic roots found by the algorithm and <code class="docutils literal notranslate"><span class="pre">n_exact_roots</span></code> updated accordingly. The arrays <code class="docutils literal notranslate"><span class="pre">c_array</span></code> and <code class="docutils literal notranslate"><span class="pre">k_array</span></code> are set to be interval data that enclose the remaining roots and <code class="docutils literal notranslate"><span class="pre">n_interval</span></code> is updated accordingly. A data <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">c_array</span> <span class="pre">+</span> <span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">k_array[i]</span></code> represents the open interval <span class="math notranslate nohighlight">\((c 2^k, (c + 1) 2^k)\)</span>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-root-refinement">Root refinement</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426_fmpz_poly_newton_step_arb5arb_tPK4fmpzPK4fmpz5slong5arb_t5slong">
+<span id="_CPPv326_fmpz_poly_newton_step_arb5arb_tPK4fmpzPK4fmpz5slong5arb_t5slong"></span><span id="_CPPv226_fmpz_poly_newton_step_arb5arb_tPK4fmpzPK4fmpz5slong5arb_t5slong"></span><span id="_fmpz_poly_newton_step_arb__arb_t.fmpzCP.fmpzCP.slong.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1aba2969ebb9605c406bc11fb73d365bed"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_newton_step_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">der</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426_fmpz_poly_newton_step_arb5arb_tPK4fmpzPK4fmpz5slong5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429_fmpz_poly_bisection_step_arb5arb_tP4fmpz5slong5arb_t5slong">
+<span id="_CPPv329_fmpz_poly_bisection_step_arb5arb_tP4fmpz5slong5arb_t5slong"></span><span id="_CPPv229_fmpz_poly_bisection_step_arb5arb_tP4fmpz5slong5arb_t5slong"></span><span id="_fmpz_poly_bisection_step_arb__arb_t.fmpzP.slong.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a3b2bb1239a2c714704dc7d3d33131237"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_bisection_step_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429_fmpz_poly_bisection_step_arb5arb_tP4fmpz5slong5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425fmpz_poly_newton_step_arb5arb_tK11fmpz_poly_tK11fmpz_poly_t5arb_t5slong">
+<span id="_CPPv325fmpz_poly_newton_step_arb5arb_tK11fmpz_poly_tK11fmpz_poly_t5arb_t5slong"></span><span id="_CPPv225fmpz_poly_newton_step_arb5arb_tK11fmpz_poly_tK11fmpz_poly_t5arb_t5slong"></span><span id="fmpz_poly_newton_step_arb__arb_t.fmpz_poly_tC.fmpz_poly_tC.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a1d86085507fd949fd564052ec1ae9153"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_newton_step_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">der</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425fmpz_poly_newton_step_arb5arb_tK11fmpz_poly_tK11fmpz_poly_t5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429_fmpz_poly_bisection_step_arf5arf_t5arf_tPK4fmpz5slongii5slong">
+<span id="_CPPv329_fmpz_poly_bisection_step_arf5arf_t5arf_tPK4fmpz5slongii5slong"></span><span id="_CPPv229_fmpz_poly_bisection_step_arf5arf_t5arf_tPK4fmpz5slongii5slong"></span><span id="_fmpz_poly_bisection_step_arf__arf_t.arf_t.fmpzCP.slong.i.i.slong"></span><span class="target" id="fmpz__poly__extra_8h_1ad83248a7310bed63b1ef2150d9f3ebac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_bisection_step_arf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span>, <span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sl</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sr</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429_fmpz_poly_bisection_step_arf5arf_t5arf_tPK4fmpz5slongii5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428fmpz_poly_bisection_step_arb5arb_tK11fmpz_poly_t5arb_t5slong">
+<span id="_CPPv328fmpz_poly_bisection_step_arb5arb_tK11fmpz_poly_t5arb_t5slong"></span><span id="_CPPv228fmpz_poly_bisection_step_arb5arb_tK11fmpz_poly_t5arb_t5slong"></span><span id="fmpz_poly_bisection_step_arb__arb_t.fmpz_poly_tC.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a9019bcedcd3fec4d6b0847473de6b80d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_bisection_step_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428fmpz_poly_bisection_step_arb5arb_tK11fmpz_poly_t5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425fmpz_poly_squarefree_part11fmpz_poly_t11fmpz_poly_t">
+<span id="_CPPv325fmpz_poly_squarefree_part11fmpz_poly_t11fmpz_poly_t"></span><span id="_CPPv225fmpz_poly_squarefree_part11fmpz_poly_t11fmpz_poly_t"></span><span id="fmpz_poly_squarefree_part__fmpz_poly_t.fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a23d333359a9b1f9b649de0cbe1a41a49"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_squarefree_part</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">poly</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425fmpz_poly_squarefree_part11fmpz_poly_t11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425fmpz_poly_evaluate_at_one6fmpz_tP4fmpz5slong">
+<span id="_CPPv325fmpz_poly_evaluate_at_one6fmpz_tP4fmpz5slong"></span><span id="_CPPv225fmpz_poly_evaluate_at_one6fmpz_tP4fmpz5slong"></span><span id="fmpz_poly_evaluate_at_one__fmpz_t.fmpzP.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a034f2a90ab64c2d2305b9139fa41f2a8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_evaluate_at_one</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425fmpz_poly_evaluate_at_one6fmpz_tP4fmpz5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-miscellaneous">Miscellaneous</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv434fmpz_poly_num_real_roots_0_1_sturm11fmpz_poly_t">
+<span id="_CPPv334fmpz_poly_num_real_roots_0_1_sturm11fmpz_poly_t"></span><span id="_CPPv234fmpz_poly_num_real_roots_0_1_sturm11fmpz_poly_t"></span><span id="fmpz_poly_num_real_roots_0_1_sturm__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a8386a4f825539e08609a67de19c76c60"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_num_real_roots_0_1_sturm</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv434fmpz_poly_num_real_roots_0_1_sturm11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv432fmpz_poly_num_real_roots_0_1_vca11fmpz_poly_t">
+<span id="_CPPv332fmpz_poly_num_real_roots_0_1_vca11fmpz_poly_t"></span><span id="_CPPv232fmpz_poly_num_real_roots_0_1_vca11fmpz_poly_t"></span><span id="fmpz_poly_num_real_roots_0_1_vca__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1ab5ef232c548aa3b63c021a259d294e63"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_num_real_roots_0_1_vca</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432fmpz_poly_num_real_roots_0_1_vca11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428fmpz_poly_num_real_roots_0_111fmpz_poly_t">
+<span id="_CPPv328fmpz_poly_num_real_roots_0_111fmpz_poly_t"></span><span id="_CPPv228fmpz_poly_num_real_roots_0_111fmpz_poly_t"></span><span id="fmpz_poly_num_real_roots_0_1__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a7e9a263a7934284150c7bc306f0965b6"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_num_real_roots_0_1</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428fmpz_poly_num_real_roots_0_111fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428fmpz_poly_num_real_roots_vca11fmpz_poly_t">
+<span id="_CPPv328fmpz_poly_num_real_roots_vca11fmpz_poly_t"></span><span id="_CPPv228fmpz_poly_num_real_roots_vca11fmpz_poly_t"></span><span id="fmpz_poly_num_real_roots_vca__fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a78d86e9f24fab01ff18cddca649cbc4b"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_num_real_roots_vca</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428fmpz_poly_num_real_roots_vca11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-flint,-arb-extra">FLINT, Arb extra</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413fmpz_poly_abs11fmpz_poly_t11fmpz_poly_t">
+<span id="_CPPv313fmpz_poly_abs11fmpz_poly_t11fmpz_poly_t"></span><span id="_CPPv213fmpz_poly_abs11fmpz_poly_t11fmpz_poly_t"></span><span id="fmpz_poly_abs__fmpz_poly_t.fmpz_poly_t"></span><span class="target" id="fmpz__poly__extra_8h_1a968f589c0f897463e2012c8bf0958a37"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_abs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413fmpz_poly_abs11fmpz_poly_t11fmpz_poly_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">res</span></code> to be the polynomial whose coefficients are the absolute values of the ones in <code class="docutils literal notranslate"><span class="pre">p</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423_fmpz_poly_evaluate_arb5arb_tPK4fmpz5slongK5arb_t5slong">
+<span id="_CPPv323_fmpz_poly_evaluate_arb5arb_tPK4fmpz5slongK5arb_t5slong"></span><span id="_CPPv223_fmpz_poly_evaluate_arb5arb_tPK4fmpz5slongK5arb_t5slong"></span><span id="_fmpz_poly_evaluate_arb__arb_t.fmpzCP.slong.arb_tC.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a52447725993da09b7a28a7de2e1438a5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_evaluate_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423_fmpz_poly_evaluate_arb5arb_tPK4fmpz5slongK5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluate the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> at the ball <code class="docutils literal notranslate"><span class="pre">a</span></code> and set result in <code class="docutils literal notranslate"><span class="pre">res</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422fmpz_poly_evaluate_arb5arb_tK11fmpz_poly_tK5arb_t5slong">
+<span id="_CPPv322fmpz_poly_evaluate_arb5arb_tK11fmpz_poly_tK5arb_t5slong"></span><span id="_CPPv222fmpz_poly_evaluate_arb5arb_tK11fmpz_poly_tK5arb_t5slong"></span><span id="fmpz_poly_evaluate_arb__arb_t.fmpz_poly_tC.arb_tC.slong"></span><span class="target" id="fmpz__poly__extra_8h_1ae2095b1ef3acdf624b993f0f6b7bee60"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_evaluate_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpz_poly_evaluate_arb5arb_tK11fmpz_poly_tK5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423_fmpz_poly_evaluate_arf5arf_tPK4fmpz5slongK5arf_t5slong">
+<span id="_CPPv323_fmpz_poly_evaluate_arf5arf_tPK4fmpz5slongK5arf_t5slong"></span><span id="_CPPv223_fmpz_poly_evaluate_arf5arf_tPK4fmpz5slongK5arf_t5slong"></span><span id="_fmpz_poly_evaluate_arf__arf_t.fmpzCP.slong.arf_tC.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a1c25417ebc20555faa310644cba1d172"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_evaluate_arf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423_fmpz_poly_evaluate_arf5arf_tPK4fmpz5slongK5arf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422fmpz_poly_evaluate_arf5arf_tK11fmpz_poly_tK5arf_t5slong">
+<span id="_CPPv322fmpz_poly_evaluate_arf5arf_tK11fmpz_poly_tK5arf_t5slong"></span><span id="_CPPv222fmpz_poly_evaluate_arf5arf_tK11fmpz_poly_tK5arf_t5slong"></span><span id="fmpz_poly_evaluate_arf__arf_t.fmpz_poly_tC.arf_tC.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a98b35c09b4bc534b77d3161c2da6a691"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_evaluate_arf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpz_poly_evaluate_arf5arf_tK11fmpz_poly_tK5arf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv441_fmpz_poly_relative_condition_number_2expP5slongP4fmpz5slong5arb_t5slong">
+<span id="_CPPv341_fmpz_poly_relative_condition_number_2expP5slongP4fmpz5slong5arb_t5slong"></span><span id="_CPPv241_fmpz_poly_relative_condition_number_2expP5slongP4fmpz5slong5arb_t5slong"></span><span id="_fmpz_poly_relative_condition_number_2exp__slongP.fmpzP.slong.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a11555ea2d9e8130e390e8056364f4974"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fmpz_poly_relative_condition_number_2exp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cond</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441_fmpz_poly_relative_condition_number_2expP5slongP4fmpz5slong5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv440fmpz_poly_relative_condition_number_2expP5slong11fmpz_poly_t5arb_t5slong">
+<span id="_CPPv340fmpz_poly_relative_condition_number_2expP5slong11fmpz_poly_t5arb_t5slong"></span><span id="_CPPv240fmpz_poly_relative_condition_number_2expP5slong11fmpz_poly_t5arb_t5slong"></span><span id="fmpz_poly_relative_condition_number_2exp__slongP.fmpz_poly_t.arb_t.slong"></span><span class="target" id="fmpz__poly__extra_8h_1a53077c961a0107e5434dec2ec5a9232b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_relative_condition_number_2exp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cond</span></span>, <span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440fmpz_poly_relative_condition_number_2expP5slong11fmpz_poly_t5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430fmpz_poly_randtest_irreducible11fmpz_poly_t12flint_rand_t5slong11mp_bitcnt_t">
+<span id="_CPPv330fmpz_poly_randtest_irreducible11fmpz_poly_t12flint_rand_t5slong11mp_bitcnt_t"></span><span id="_CPPv230fmpz_poly_randtest_irreducible11fmpz_poly_t12flint_rand_t5slong11mp_bitcnt_t"></span><span id="fmpz_poly_randtest_irreducible__fmpz_poly_t.flint_rand_t.slong.mp_bitcnt_t"></span><span class="target" id="fmpz__poly__extra_8h_1a24f4e8e1f92d57a91a70add45af83e72"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_randtest_irreducible</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="n"><span class="pre">flint_rand_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">mp_bitcnt_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430fmpz_poly_randtest_irreducible11fmpz_poly_t12flint_rand_t5slong11mp_bitcnt_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">p</span></code> to be a random irreducible polynomial. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424fmpz_poly_set_str_pretty11fmpz_poly_tPKcPKc">
+<span id="_CPPv324fmpz_poly_set_str_pretty11fmpz_poly_tPKcPKc"></span><span id="_CPPv224fmpz_poly_set_str_pretty11fmpz_poly_tPKcPKc"></span><span id="fmpz_poly_set_str_pretty__fmpz_poly_t.cCP.cCP"></span><span class="target" id="fmpz__poly__extra_8h_1a03a5d37d038e75d5e47654a89d496f0c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpz_poly_set_str_pretty</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424fmpz_poly_set_str_pretty11fmpz_poly_tPKcPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the polynomial <code class="docutils literal notranslate"><span class="pre">p</span></code> from the string <code class="docutils literal notranslate"><span class="pre">s</span></code> using <code class="docutils literal notranslate"><span class="pre">var</span></code> as variable name. </p>
+</dd></dl>
+
+</div>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024, the e-antic authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

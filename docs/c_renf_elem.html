@@ -1,0 +1,983 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>renf_elem.h — Embedded Number Field Elements &#8212; pyeantic 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0b5d17ac"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_renf_elem';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tour of the C++ Interface" href="cxx_overview.html" />
+    <link rel="prev" title="renf.h — Real Embedded Number Fields" href="c_renf.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyeantic 2.0.2 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/e-antic/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyeantic 2.0.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/e-antic" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">libeantic</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="c_overview.html">Tour of the C Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c_renf.html">renf.h — number fields</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">renf_elem.h — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">libeanticxx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_class.html">renf_class — number fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_renf_elem_class.html">renf_elem_class — number field elements</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">pyeantic</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_realalg.html">Interface with realalg</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="python_sage.html">Interface with SageMath</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/e-antic/edit/master/doc/manual/c_renf_elem.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/c_renf_elem.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>renf_elem.h — Embedded Number Field Elements</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setters">Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-refinement">Embedding Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-and-conversion">Properties and Conversion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-point-approximations">Floating point approximations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparisons">Comparisons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-conversion-and-printing">String Conversion and Printing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#randomization">Randomization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unary-operations">Unary operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-operations">Binary operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-functions">Other functions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="renf-elem-h-embedded-number-field-elements">
+<h1>renf_elem.h — Embedded Number Field Elements<a class="headerlink" href="#renf-elem-h-embedded-number-field-elements" title="Permalink to this heading">#</a></h1>
+<section id="memory-layout">
+<h2>Memory Layout<a class="headerlink" href="#memory-layout" title="Permalink to this heading">#</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv411renf_elem_t">
+<span id="_CPPv311renf_elem_t"></span><span id="_CPPv211renf_elem_t"></span><span id="renf_elem_t"></span><span class="target" id="renf__elem_8h_1ac0a1908bf3704256dea9b2456fefef7c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49renf_elem" title="renf_elem"><span class="n"><span class="pre">renf_elem</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_t</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv411renf_elem_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An element of a real embedded number field.</p>
+<p>Actually, this is an array of <a class="reference internal" href="#structrenf__elem"><span class="std std-ref">renf_elem</span></a> of length one.</p>
+<p>Typically, users of e-antic should not worry about the exact definition of this and just treat this as <em>the</em> type that represents a number field element in e-antic.</p>
+<p>See the documentation of <a class="reference internal" href="c_renf.html#renf_8h_1a74c8e25cd56e27da600d15d6c7d359a4"><span class="std std-ref">renf_t</span></a> for why this is an array. </p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv49renf_elem">
+<span id="_CPPv39renf_elem"></span><span id="_CPPv29renf_elem"></span><span id="renf_elem"></span><span class="target" id="structrenf__elem"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem</span></span></span><a class="headerlink" href="#_CPPv49renf_elem" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>A real embedded number field element. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9renf_elem4elemE">
+<span id="_CPPv3N9renf_elem4elemE"></span><span id="_CPPv2N9renf_elem4elemE"></span><span id="renf_elem::elem__nf_elem_t"></span><span class="target" id="structrenf__elem_1af3ed6a486f18fedce16c7904da948c86"></span><span class="n"><span class="pre">nf_elem_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elem</span></span></span><a class="headerlink" href="#_CPPv4N9renf_elem4elemE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An algebraic <a class="reference external" href="https://flintlib.org/doc/nf_elem.html#c.nf_elem_t" title="(in Flint v3.2)"><code class="xref c c-type docutils literal notranslate"><span class="pre">ANTIC</span> <span class="pre">number</span> <span class="pre">field</span> <span class="pre">element</span></code></a>.</p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9renf_elem3embE">
+<span id="_CPPv3N9renf_elem3embE"></span><span id="_CPPv2N9renf_elem3embE"></span><span id="renf_elem::emb__arb_t"></span><span class="target" id="structrenf__elem_1a9782d0c9f08f10123c94fe8567436578"></span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">emb</span></span></span><a class="headerlink" href="#_CPPv4N9renf_elem3embE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An approximation of the embedded element as a <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in Flint v3.2)"><code class="xref c c-type docutils literal notranslate"><span class="pre">real</span> <span class="pre">ball</span></code></a>.</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414renf_elem_init11renf_elem_tK6renf_t">
+<span id="_CPPv314renf_elem_init11renf_elem_tK6renf_t"></span><span id="_CPPv214renf_elem_init11renf_elem_tK6renf_t"></span><span id="renf_elem_init__renf_elem_t.renf_tC"></span><span class="target" id="renf__elem_8h_1abb9f0fb0cdb268476859067e2a119cfa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414renf_elem_init11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Initialize the number field element <code class="docutils literal notranslate"><span class="pre">a</span></code>. This function has to be called prior to any code using <code class="docutils literal notranslate"><span class="pre">a</span></code> as it performs allocation. Once done with <code class="docutils literal notranslate"><span class="pre">a</span></code> the memory must be freed with [renf_elem_clear](). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415renf_elem_clear11renf_elem_tK6renf_t">
+<span id="_CPPv315renf_elem_clear11renf_elem_tK6renf_t"></span><span id="_CPPv215renf_elem_clear11renf_elem_tK6renf_t"></span><span id="renf_elem_clear__renf_elem_t.renf_tC"></span><span class="target" id="renf__elem_8h_1ab7390bbc3654893d56f87741587537d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_clear</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415renf_elem_clear11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Deallocate the memory for <code class="docutils literal notranslate"><span class="pre">a</span></code> that was allocated with [renf_elem_init](). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414renf_elem_swap11renf_elem_t11renf_elem_t">
+<span id="_CPPv314renf_elem_swap11renf_elem_t11renf_elem_t"></span><span id="_CPPv214renf_elem_swap11renf_elem_t11renf_elem_t"></span><span id="renf_elem_swap__renf_elem_t.renf_elem_t"></span><span class="target" id="renf__elem_8h_1a013f57d6f7604c5a6a23b012370c6b5d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414renf_elem_swap11renf_elem_t11renf_elem_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Swap the number field elements <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code></p>
+</dd></dl>
+
+</section>
+<section id="setters">
+<h2>Setters<a class="headerlink" href="#setters" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414renf_elem_zero11renf_elem_tK6renf_t">
+<span id="_CPPv314renf_elem_zero11renf_elem_tK6renf_t"></span><span id="_CPPv214renf_elem_zero11renf_elem_tK6renf_t"></span><span id="renf_elem_zero__renf_elem_t.renf_tC"></span><span class="target" id="renf__elem_8h_1a007c611a26f6c644b166dfcd38f6b800"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_zero</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414renf_elem_zero11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the number field element <code class="docutils literal notranslate"><span class="pre">a</span></code> to zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_one11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_one11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_one11renf_elem_tK6renf_t"></span><span id="renf_elem_one__renf_elem_t.renf_tC"></span><span class="target" id="renf__elem_8h_1a857c37251496a801c84ff6434dc215bc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_one</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_one11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the number field element <code class="docutils literal notranslate"><span class="pre">a</span></code> to one. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_gen11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_gen11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_gen11renf_elem_tK6renf_t"></span><span id="renf_elem_gen__renf_elem_t.renf_tC"></span><span class="target" id="renf__elem_8h_1a4a2511934f38c86bc3bdd379916492a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_gen</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_gen11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the number field element <code class="docutils literal notranslate"><span class="pre">a</span></code> to the generator of the number field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_set_si11renf_elem_t5slongK6renf_t">
+<span id="_CPPv316renf_elem_set_si11renf_elem_t5slongK6renf_t"></span><span id="_CPPv216renf_elem_set_si11renf_elem_t5slongK6renf_t"></span><span id="renf_elem_set_si__renf_elem_t.slong.renf_tC"></span><span class="target" id="renf__elem_8h_1aa9d785212ab545a83d1f86974f421c67"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_set_si11renf_elem_t5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the integer <code class="docutils literal notranslate"><span class="pre">n</span></code> an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_set_ui11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv316renf_elem_set_ui11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv216renf_elem_set_ui11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_set_ui__renf_elem_t.ulong.renf_tC"></span><span class="target" id="renf__elem_8h_1ac7a6fba358aaa3d33a6eccccb47412f1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_set_ui11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the integer <code class="docutils literal notranslate"><span class="pre">n</span></code> as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_set11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_set11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_set11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_set__renf_elem_t.renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1ae9a8a7e0ad10ecf7fdd64a25beea7505"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_set11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the number field element <code class="docutils literal notranslate"><span class="pre">b</span></code> which is defined in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_set_fmpz11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv318renf_elem_set_fmpz11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv218renf_elem_set_fmpz11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_set_fmpz__renf_elem_t.fmpz_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a6d4a34933af3ef8d3b50cdc5398ab082"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_set_fmpz11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the integer <code class="docutils literal notranslate"><span class="pre">c</span></code> as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417renf_elem_set_mpz11renf_elem_tK5mpz_tK6renf_t">
+<span id="_CPPv317renf_elem_set_mpz11renf_elem_tK5mpz_tK6renf_t"></span><span id="_CPPv217renf_elem_set_mpz11renf_elem_tK5mpz_tK6renf_t"></span><span id="renf_elem_set_mpz__renf_elem_t.mpz_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a8fa391bfc39282726987103b0f5308cc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_mpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417renf_elem_set_mpz11renf_elem_tK5mpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the integer <code class="docutils literal notranslate"><span class="pre">c</span></code> as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_set_fmpq11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv318renf_elem_set_fmpq11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv218renf_elem_set_fmpq11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_set_fmpq__renf_elem_t.fmpq_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a21e84da83ce7f8c93ee1c9050a33dd08"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_set_fmpq11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the rational <code class="docutils literal notranslate"><span class="pre">c</span></code> as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417renf_elem_set_mpq11renf_elem_tK5mpq_tK6renf_t">
+<span id="_CPPv317renf_elem_set_mpq11renf_elem_tK5mpq_tK6renf_t"></span><span id="_CPPv217renf_elem_set_mpq11renf_elem_tK5mpq_tK6renf_t"></span><span id="renf_elem_set_mpq__renf_elem_t.mpq_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1ac6afcf9d0c00ff91df6f0cc3a0bb2fc4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_mpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417renf_elem_set_mpq11renf_elem_tK5mpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the rational <code class="docutils literal notranslate"><span class="pre">c</span></code> as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423renf_elem_set_fmpq_poly11renf_elem_tK11fmpq_poly_tK6renf_t">
+<span id="_CPPv323renf_elem_set_fmpq_poly11renf_elem_tK11fmpq_poly_tK6renf_t"></span><span id="_CPPv223renf_elem_set_fmpq_poly11renf_elem_tK11fmpq_poly_tK6renf_t"></span><span id="renf_elem_set_fmpq_poly__renf_elem_t.fmpq_poly_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a89b972451fcc4efcf6d5f2aba5d17d8b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_fmpq_poly</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423renf_elem_set_fmpq_poly11renf_elem_tK11fmpq_poly_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to provided integer/rational as an element in the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421renf_elem_set_nf_elem11renf_elem_tK9nf_elem_t6renf_t5slong">
+<span id="_CPPv321renf_elem_set_nf_elem11renf_elem_tK9nf_elem_t6renf_t5slong"></span><span id="_CPPv221renf_elem_set_nf_elem11renf_elem_tK9nf_elem_t6renf_t5slong"></span><span id="renf_elem_set_nf_elem__renf_elem_t.nf_elem_tC.renf_t.slong"></span><span class="target" id="renf__elem_8h_1a00845f0dc9a8f5aa68b4bc349c51bd26"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_nf_elem</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">nf_elem_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421renf_elem_set_nf_elem11renf_elem_tK9nf_elem_t6renf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the number field element <code class="docutils literal notranslate"><span class="pre">b</span></code> defined in exact number field underlying <code class="docutils literal notranslate"><span class="pre">nf</span></code>. Then refine <code class="docutils literal notranslate"><span class="pre">a</span></code> to precision <code class="docutils literal notranslate"><span class="pre">prec</span></code>. </p>
+</dd></dl>
+
+</section>
+<section id="embedding-refinement">
+<h2>Embedding Refinement<a class="headerlink" href="#embedding-refinement" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424renf_elem_set_evaluation11renf_elem_tK6renf_t5slong">
+<span id="_CPPv324renf_elem_set_evaluation11renf_elem_tK6renf_t5slong"></span><span id="_CPPv224renf_elem_set_evaluation11renf_elem_tK6renf_t5slong"></span><span id="renf_elem_set_evaluation__renf_elem_t.renf_tC.slong"></span><span class="target" id="renf__elem_8h_1af46e384b693a24c011db760fb7d8300f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_set_evaluation</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424renf_elem_set_evaluation11renf_elem_tK6renf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the enclosure of the number field element <code class="docutils literal notranslate"><span class="pre">a</span></code> using the enclosure of the generator of <code class="docutils literal notranslate"><span class="pre">nf</span></code>. Computation is done at precision <code class="docutils literal notranslate"><span class="pre">prec</span></code>. This function does not make any refinement of the number field generator. For that purpose see [renf_refine_embedding](). </p>
+</dd></dl>
+
+</section>
+<section id="properties-and-conversion">
+<h2>Properties and Conversion<a class="headerlink" href="#properties-and-conversion" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417renf_elem_is_zeroK11renf_elem_tK6renf_t">
+<span id="_CPPv317renf_elem_is_zeroK11renf_elem_tK6renf_t"></span><span id="_CPPv217renf_elem_is_zeroK11renf_elem_tK6renf_t"></span><span id="renf_elem_is_zero__renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a2f71842acc421bdca444008d82262374"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_is_zero</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417renf_elem_is_zeroK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return 1 if <code class="docutils literal notranslate"><span class="pre">a</span></code> is equal to zero and 0 otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_is_oneK11renf_elem_tK6renf_t">
+<span id="_CPPv316renf_elem_is_oneK11renf_elem_tK6renf_t"></span><span id="_CPPv216renf_elem_is_oneK11renf_elem_tK6renf_t"></span><span id="renf_elem_is_one__renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a5d25ce57444a4100aeac715d95428dc3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_is_one</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_is_oneK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return 1 if <code class="docutils literal notranslate"><span class="pre">a</span></code> is equal to one and 0 otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420renf_elem_is_integerK11renf_elem_tK6renf_t">
+<span id="_CPPv320renf_elem_is_integerK11renf_elem_tK6renf_t"></span><span id="_CPPv220renf_elem_is_integerK11renf_elem_tK6renf_t"></span><span id="renf_elem_is_integer__renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a40cb5a118b5d8d1d4de389a41fad2994"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_is_integer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420renf_elem_is_integerK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return 1 if <code class="docutils literal notranslate"><span class="pre">a</span></code> is integral and 0 otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421renf_elem_is_rationalK11renf_elem_tK6renf_t">
+<span id="_CPPv321renf_elem_is_rationalK11renf_elem_tK6renf_t"></span><span id="_CPPv221renf_elem_is_rationalK11renf_elem_tK6renf_t"></span><span id="renf_elem_is_rational__renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1af8c53f27692b60e51b350587f34e41ce"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_is_rational</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421renf_elem_is_rationalK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return 1 if <code class="docutils literal notranslate"><span class="pre">a</span></code> is rational and 0 otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_sgn11renf_elem_t6renf_t">
+<span id="_CPPv313renf_elem_sgn11renf_elem_t6renf_t"></span><span id="_CPPv213renf_elem_sgn11renf_elem_t6renf_t"></span><span id="renf_elem_sgn__renf_elem_t.renf_t"></span><span class="target" id="renf__elem_8h_1af57e4b63616f2657769e61c4ebd6acff"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sgn</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_sgn11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the sign of <code class="docutils literal notranslate"><span class="pre">a</span></code>. It is <code class="docutils literal notranslate"><span class="pre">1</span></code> if <code class="docutils literal notranslate"><span class="pre">a</span></code> is positive, <code class="docutils literal notranslate"><span class="pre">0</span></code> if <code class="docutils literal notranslate"><span class="pre">a</span></code> is zero and <code class="docutils literal notranslate"><span class="pre">-1</span></code> if <code class="docutils literal notranslate"><span class="pre">a</span></code> is negative. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415renf_elem_floor6fmpz_t11renf_elem_t6renf_t">
+<span id="_CPPv315renf_elem_floor6fmpz_t11renf_elem_t6renf_t"></span><span id="_CPPv215renf_elem_floor6fmpz_t11renf_elem_t6renf_t"></span><span id="renf_elem_floor__fmpz_t.renf_elem_t.renf_t"></span><span class="target" id="renf__elem_8h_1a18aab5cae8d15a2b7eaaad202c6b6a50"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_floor</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415renf_elem_floor6fmpz_t11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to be the floor of <code class="docutils literal notranslate"><span class="pre">b</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414renf_elem_ceil6fmpz_t11renf_elem_t6renf_t">
+<span id="_CPPv314renf_elem_ceil6fmpz_t11renf_elem_t6renf_t"></span><span id="_CPPv214renf_elem_ceil6fmpz_t11renf_elem_t6renf_t"></span><span id="renf_elem_ceil__fmpz_t.renf_elem_t.renf_t"></span><span class="target" id="renf__elem_8h_1af314623f0bd7d4d505d764b8c9fb3bbf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_ceil</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414renf_elem_ceil6fmpz_t11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to be the ceil of <code class="docutils literal notranslate"><span class="pre">b</span></code></p>
+</dd></dl>
+
+</section>
+<section id="floating-point-approximations">
+<h2>Floating point approximations<a class="headerlink" href="#floating-point-approximations" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417renf_elem_get_arb5arb_t11renf_elem_t6renf_t5slong">
+<span id="_CPPv317renf_elem_get_arb5arb_t11renf_elem_t6renf_t5slong"></span><span id="_CPPv217renf_elem_get_arb5arb_t11renf_elem_t6renf_t5slong"></span><span id="renf_elem_get_arb__arb_t.renf_elem_t.renf_t.slong"></span><span class="target" id="renf__elem_8h_1a0e03313455332cef28146ce2c4c825b4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_get_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417renf_elem_get_arb5arb_t11renf_elem_t6renf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">x</span></code> to a a real ball enclosing the element <code class="docutils literal notranslate"><span class="pre">a</span></code> that belongs to the number field <code class="docutils literal notranslate"><span class="pre">nf</span></code> with <code class="docutils literal notranslate"><span class="pre">prec</span></code> bits of precision. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415renf_elem_get_d11renf_elem_t6renf_t9arf_rnd_t">
+<span id="_CPPv315renf_elem_get_d11renf_elem_t6renf_t9arf_rnd_t"></span><span id="_CPPv215renf_elem_get_d11renf_elem_t6renf_t9arf_rnd_t"></span><span id="renf_elem_get_d__renf_elem_t.renf_t.arf_rnd_t"></span><span class="target" id="renf__elem_8h_1a8183267bd8643656ef4513b67a1662c1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_get_d</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">arf_rnd_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rnd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415renf_elem_get_d11renf_elem_t6renf_t9arf_rnd_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return a double approximation. </p>
+</dd></dl>
+
+</section>
+<section id="comparisons">
+<h2>Comparisons<a class="headerlink" href="#comparisons" title="Permalink to this heading">#</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__renf__elem__cmp"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">renf_elem_cmp</span></span></dt>
+<dd><p>All the comparison functions <code class="docutils literal notranslate"><span class="pre">renf_elem_cmp_…</span></code> between two elements <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> behave as follows. They return<ul class="simple">
+<li><p>a positive integer if <code class="docutils literal notranslate"><span class="pre">a</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">b</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> if <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are equal, and</p></li>
+<li><p>a negative integer if <code class="docutils literal notranslate"><span class="pre">a</span></code> is smaller than <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+</ul>
+</p>
+<p>If you want to check for equality, use the faster <code class="docutils literal notranslate"><span class="pre">renf_elem_equal_…</span></code> functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_cmp11renf_elem_t11renf_elem_t6renf_t">
+<span id="_CPPv313renf_elem_cmp11renf_elem_t11renf_elem_t6renf_t"></span><span id="_CPPv213renf_elem_cmp11renf_elem_t11renf_elem_t6renf_t"></span><span id="renf_elem_cmp__renf_elem_t.renf_elem_t.renf_t"></span><span class="target" id="group__renf__elem__cmp_1gaf49e18fb0bdaf4ed43c01c0f6d11c0b6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_cmp</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_cmp11renf_elem_t11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419_renf_elem_cmp_fmpq11renf_elem_tP4fmpzP4fmpz6renf_t">
+<span id="_CPPv319_renf_elem_cmp_fmpq11renf_elem_tP4fmpzP4fmpz6renf_t"></span><span id="_CPPv219_renf_elem_cmp_fmpq11renf_elem_tP4fmpzP4fmpz6renf_t"></span><span id="_renf_elem_cmp_fmpq__renf_elem_t.fmpzP.fmpzP.renf_t"></span><span class="target" id="group__renf__elem__cmp_1ga2ca496b8eab01d4220fc39ac2be2fa45"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_renf_elem_cmp_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">num</span></span>, <span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">den</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419_renf_elem_cmp_fmpq11renf_elem_tP4fmpzP4fmpz6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_cmp_fmpq11renf_elem_tK6fmpq_t6renf_t">
+<span id="_CPPv318renf_elem_cmp_fmpq11renf_elem_tK6fmpq_t6renf_t"></span><span id="_CPPv218renf_elem_cmp_fmpq11renf_elem_tK6fmpq_t6renf_t"></span><span id="renf_elem_cmp_fmpq__renf_elem_t.fmpq_tC.renf_t"></span><span class="target" id="group__renf__elem__cmp_1gae5da6b2d6d2db76d5090223d8a7b646e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_cmp_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_cmp_fmpq11renf_elem_tK6fmpq_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_cmp_fmpz11renf_elem_tK6fmpz_t6renf_t">
+<span id="_CPPv318renf_elem_cmp_fmpz11renf_elem_tK6fmpz_t6renf_t"></span><span id="_CPPv218renf_elem_cmp_fmpz11renf_elem_tK6fmpz_t6renf_t"></span><span id="renf_elem_cmp_fmpz__renf_elem_t.fmpz_tC.renf_t"></span><span class="target" id="group__renf__elem__cmp_1gabd03b14638f826e2cbc2da1e58f2d27a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_cmp_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_cmp_fmpz11renf_elem_tK6fmpz_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_cmp_si11renf_elem_tK5slong6renf_t">
+<span id="_CPPv316renf_elem_cmp_si11renf_elem_tK5slong6renf_t"></span><span id="_CPPv216renf_elem_cmp_si11renf_elem_tK5slong6renf_t"></span><span id="renf_elem_cmp_si__renf_elem_t.slongC.renf_t"></span><span class="target" id="group__renf__elem__cmp_1gae2c801d1339321b358801c8ecd050fec"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_cmp_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_cmp_si11renf_elem_tK5slong6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_cmp_ui11renf_elem_tK5ulong6renf_t">
+<span id="_CPPv316renf_elem_cmp_ui11renf_elem_tK5ulong6renf_t"></span><span id="_CPPv216renf_elem_cmp_ui11renf_elem_tK5ulong6renf_t"></span><span id="renf_elem_cmp_ui__renf_elem_t.ulongC.renf_t"></span><span class="target" id="group__renf__elem__cmp_1gad02dd852aa49e799c2aa94f13a1dffb6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_cmp_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_cmp_ui11renf_elem_tK5ulong6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415renf_elem_equalK11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv315renf_elem_equalK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv215renf_elem_equalK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_equal__renf_elem_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__cmp_1ga7dfe8ebc19bb7579f9dfe05957a99e3c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415renf_elem_equalK11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_equal_siK11renf_elem_tK5slongK6renf_t">
+<span id="_CPPv318renf_elem_equal_siK11renf_elem_tK5slongK6renf_t"></span><span id="_CPPv218renf_elem_equal_siK11renf_elem_tK5slongK6renf_t"></span><span id="renf_elem_equal_si__renf_elem_tC.slongC.renf_tC"></span><span class="target" id="group__renf__elem__cmp_1ga5b099b89c5a9f9c87df9ca02eef0927c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_equal_si</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_equal_siK11renf_elem_tK5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_equal_uiK11renf_elem_tK5ulongK6renf_t">
+<span id="_CPPv318renf_elem_equal_uiK11renf_elem_tK5ulongK6renf_t"></span><span id="_CPPv218renf_elem_equal_uiK11renf_elem_tK5ulongK6renf_t"></span><span id="renf_elem_equal_ui__renf_elem_tC.ulongC.renf_tC"></span><span class="target" id="group__renf__elem__cmp_1ga10c5bb021f9be98f32961b68f8f62136"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_equal_ui</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_equal_uiK11renf_elem_tK5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420renf_elem_equal_fmpzK11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv320renf_elem_equal_fmpzK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv220renf_elem_equal_fmpzK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_equal_fmpz__renf_elem_tC.fmpz_tC.renf_tC"></span><span class="target" id="group__renf__elem__cmp_1ga00a7878e3461709ac7e998b57cc482cc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_equal_fmpz</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420renf_elem_equal_fmpzK11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420renf_elem_equal_fmpqK11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv320renf_elem_equal_fmpqK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv220renf_elem_equal_fmpqK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_equal_fmpq__renf_elem_tC.fmpq_tC.renf_tC"></span><span class="target" id="group__renf__elem__cmp_1gadd048071f3791c85a95c76c0a2a6ce56"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_equal_fmpq</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420renf_elem_equal_fmpqK11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="string-conversion-and-printing">
+<h2>String Conversion and Printing<a class="headerlink" href="#string-conversion-and-printing" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424renf_elem_get_str_pretty11renf_elem_tPKc6renf_t5slongi">
+<span id="_CPPv324renf_elem_get_str_pretty11renf_elem_tPKc6renf_t5slongi"></span><span id="_CPPv224renf_elem_get_str_pretty11renf_elem_tPKc6renf_t5slongi"></span><span id="renf_elem_get_str_pretty__renf_elem_t.cCP.renf_t.slong.i"></span><span class="target" id="renf__elem_8h_1a983eb109e2ac7f5512c0d73bdb4afb88"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_get_str_pretty</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424renf_elem_get_str_pretty11renf_elem_tPKc6renf_t5slongi" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">a</span></code> as a string with variable name <code class="docutils literal notranslate"><span class="pre">var</span></code>. The resulting string needs to be freed with <code class="docutils literal notranslate"><span class="pre">flint_free</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422renf_elem_print_pretty11renf_elem_tPKc6renf_t5slongi">
+<span id="_CPPv322renf_elem_print_pretty11renf_elem_tPKc6renf_t5slongi"></span><span id="_CPPv222renf_elem_print_pretty11renf_elem_tPKc6renf_t5slongi"></span><span id="renf_elem_print_pretty__renf_elem_t.cCP.renf_t.slong.i"></span><span class="target" id="renf__elem_8h_1aa9b66713cab84638a632aff9c855f106"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_print_pretty</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422renf_elem_print_pretty11renf_elem_tPKc6renf_t5slongi" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Write <code class="docutils literal notranslate"><span class="pre">a</span></code> to the standard output. </p>
+</dd></dl>
+
+</section>
+<section id="randomization">
+<h2>Randomization<a class="headerlink" href="#randomization" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_randtest11renf_elem_t12flint_rand_t11mp_bitcnt_t6renf_t">
+<span id="_CPPv318renf_elem_randtest11renf_elem_t12flint_rand_t11mp_bitcnt_t6renf_t"></span><span id="_CPPv218renf_elem_randtest11renf_elem_t12flint_rand_t11mp_bitcnt_t6renf_t"></span><span id="renf_elem_randtest__renf_elem_t.flint_rand_t.mp_bitcnt_t.renf_t"></span><span class="target" id="renf__elem_8h_1aa38e5bfbf9214b460a645d4bc8755c99"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_randtest</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">flint_rand_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="n"><span class="pre">mp_bitcnt_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_randtest11renf_elem_t12flint_rand_t11mp_bitcnt_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to a random element in <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+</section>
+<section id="unary-operations">
+<h2>Unary operations<a class="headerlink" href="#unary-operations" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_neg11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_neg11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_neg11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_neg__renf_elem_t.renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a7b1327768a8cb445cb7f61ca0aa4da30"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_neg</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_neg11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the negative of <code class="docutils literal notranslate"><span class="pre">b</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_inv11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_inv11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_inv11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_inv__renf_elem_t.renf_elem_tC.renf_tC"></span><span class="target" id="renf__elem_8h_1a4597c67f876a2040dd81e87828ef3f47"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_inv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_inv11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a</span></code> to the inverse of <code class="docutils literal notranslate"><span class="pre">b</span></code>. </p>
+</dd></dl>
+
+</section>
+<section id="binary-operations">
+<h2>Binary operations<a class="headerlink" href="#binary-operations" title="Permalink to this heading">#</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__renf__elem__binop"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">renf_elem_binop</span></span></dt>
+<dd><p>All the binary operation functions are of the form <code class="docutils literal notranslate"><span class="pre">renf_elem_OP_TYP(a,</span> <span class="pre">b,</span> <span class="pre">c,</span> <span class="pre">nf)</span></code> where<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OP</span></code> is the operation type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TYP</span></code> is the type of the argument <code class="docutils literal notranslate"><span class="pre">c</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code> is the argument used for returned value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code> and <code class="docutils literal notranslate"><span class="pre">c</span></code> are the operands</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nf</span></code> is the parent number field of the operation In short, these functions perform <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">b</span> <span class="pre">OP</span> <span class="pre">c</span></code>. </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_add_si11renf_elem_tK11renf_elem_t5slongK6renf_t">
+<span id="_CPPv316renf_elem_add_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="_CPPv216renf_elem_add_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="renf_elem_add_si__renf_elem_t.renf_elem_tC.slong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gab11b1ecbd9444c47dd76c10d9ec954d4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_add_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_add_si11renf_elem_tK11renf_elem_t5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_sub_si11renf_elem_tK11renf_elem_t5slongK6renf_t">
+<span id="_CPPv316renf_elem_sub_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="_CPPv216renf_elem_sub_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="renf_elem_sub_si__renf_elem_t.renf_elem_tC.slong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga71b66fa3bb53d6977d424c71f43231f0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sub_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_sub_si11renf_elem_tK11renf_elem_t5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_mul_si11renf_elem_tK11renf_elem_t5slongK6renf_t">
+<span id="_CPPv316renf_elem_mul_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="_CPPv216renf_elem_mul_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="renf_elem_mul_si__renf_elem_t.renf_elem_tC.slong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga0b0c285af58ac9619c0737784936450c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_mul_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_mul_si11renf_elem_tK11renf_elem_t5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_div_si11renf_elem_tK11renf_elem_t5slongK6renf_t">
+<span id="_CPPv316renf_elem_div_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="_CPPv216renf_elem_div_si11renf_elem_tK11renf_elem_t5slongK6renf_t"></span><span id="renf_elem_div_si__renf_elem_t.renf_elem_tC.slong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gaf400dd133b8633ac9d9e466919a1c3d5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_div_si</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_div_si11renf_elem_tK11renf_elem_t5slongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_add_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv316renf_elem_add_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv216renf_elem_add_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_add_ui__renf_elem_t.renf_elem_tC.ulong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga184bc71164d430d9d5f5535d3531ec10"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_add_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_add_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_sub_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv316renf_elem_sub_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv216renf_elem_sub_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_sub_ui__renf_elem_t.renf_elem_tC.ulong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga5d0ba5bb695ce1d61668b8ab0e59cb50"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sub_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_sub_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_mul_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv316renf_elem_mul_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv216renf_elem_mul_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_mul_ui__renf_elem_t.renf_elem_tC.ulong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gaf1d0ed4e0652ef79d109de394d4f6340"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_mul_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_mul_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416renf_elem_div_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv316renf_elem_div_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv216renf_elem_div_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_div_ui__renf_elem_t.renf_elem_tC.ulong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gadda9520e2106959041ebe22da9cbe8d5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_div_ui</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416renf_elem_div_ui11renf_elem_tK11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_add_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv318renf_elem_add_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv218renf_elem_add_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_add_fmpz__renf_elem_t.renf_elem_tC.fmpz_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga89295076e3379b1bdc91ded91461f02e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_add_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_add_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_sub_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv318renf_elem_sub_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv218renf_elem_sub_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_sub_fmpz__renf_elem_t.renf_elem_tC.fmpz_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga7a3ee8180c1fc04bf1cbb39fd555c3ac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sub_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_sub_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_mul_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv318renf_elem_mul_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv218renf_elem_mul_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_mul_fmpz__renf_elem_t.renf_elem_tC.fmpz_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gac3f699eb1b3c0333e2755721a3cd2d00"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_mul_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_mul_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_div_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t">
+<span id="_CPPv318renf_elem_div_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="_CPPv218renf_elem_div_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t"></span><span id="renf_elem_div_fmpz__renf_elem_t.renf_elem_tC.fmpz_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga652355f7455098db508ea6d62794d538"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_div_fmpz</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_div_fmpz11renf_elem_tK11renf_elem_tK6fmpz_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_add_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv318renf_elem_add_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv218renf_elem_add_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_add_fmpq__renf_elem_t.renf_elem_tC.fmpq_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gae40e5a56d59ffae936e8137362c53346"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_add_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_add_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_sub_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv318renf_elem_sub_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv218renf_elem_sub_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_sub_fmpq__renf_elem_t.renf_elem_tC.fmpq_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga7d86cfc51d13bdfa44181ca69137e5f9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sub_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_sub_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_fmpq_sub11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t">
+<span id="_CPPv318renf_elem_fmpq_sub11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t"></span><span id="_CPPv218renf_elem_fmpq_sub11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_fmpq_sub__renf_elem_t.fmpq_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gaf75c6e2cf13163414dee69d2ce6bce65"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_fmpq_sub</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_fmpq_sub11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_mul_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv318renf_elem_mul_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv218renf_elem_mul_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_mul_fmpq__renf_elem_t.renf_elem_tC.fmpq_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga2c4cc5a541a88292d94321cb24e77953"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_mul_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_mul_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_div_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t">
+<span id="_CPPv318renf_elem_div_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="_CPPv218renf_elem_div_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t"></span><span id="renf_elem_div_fmpq__renf_elem_t.renf_elem_tC.fmpq_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gab584fc4a9613179415c2a44bac66e4e3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_div_fmpq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_div_fmpq11renf_elem_tK11renf_elem_tK6fmpq_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418renf_elem_fmpq_div11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t">
+<span id="_CPPv318renf_elem_fmpq_div11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t"></span><span id="_CPPv218renf_elem_fmpq_div11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_fmpq_div__renf_elem_t.fmpq_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gae37f07eaef85a421ff4c6f63153314d0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_fmpq_div</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418renf_elem_fmpq_div11renf_elem_tK6fmpq_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_add11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_add11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_add11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_add__renf_elem_t.renf_elem_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga5448f6d2ad64ff1b62dca3ac42f2c35c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_add</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_add11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_sub11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_sub11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_sub11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_sub__renf_elem_t.renf_elem_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga0fe52af0fc3532e0372861a425a711d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_sub</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_sub11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_mul11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_mul11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_mul11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_mul__renf_elem_t.renf_elem_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gace2d1a8483fa142dbdae7020ec23cc47"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_mul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_mul11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_div11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t">
+<span id="_CPPv313renf_elem_div11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="_CPPv213renf_elem_div11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t"></span><span id="renf_elem_div__renf_elem_t.renf_elem_tC.renf_elem_tC.renf_tC"></span><span class="target" id="group__renf__elem__binop_1gaeb1c3a388744588572ae13a74118b4de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_div</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_div11renf_elem_tK11renf_elem_tK11renf_elem_tK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413renf_elem_pow11renf_elem_tK11renf_elem_t5ulongK6renf_t">
+<span id="_CPPv313renf_elem_pow11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="_CPPv213renf_elem_pow11renf_elem_tK11renf_elem_t5ulongK6renf_t"></span><span id="renf_elem_pow__renf_elem_t.renf_elem_tC.ulong.renf_tC"></span><span class="target" id="group__renf__elem__binop_1ga0f808314227a266d60885855c85d8544"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_pow</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">ulong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413renf_elem_pow11renf_elem_tK11renf_elem_t5ulongK6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414renf_elem_fdiv6fmpz_t11renf_elem_t11renf_elem_t6renf_t">
+<span id="_CPPv314renf_elem_fdiv6fmpz_t11renf_elem_t11renf_elem_t6renf_t"></span><span id="_CPPv214renf_elem_fdiv6fmpz_t11renf_elem_t11renf_elem_t6renf_t"></span><span id="renf_elem_fdiv__fmpz_t.renf_elem_t.renf_elem_t.renf_t"></span><span class="target" id="renf__elem_8h_1a11f7d9eb5bb733bd82a035a1cc6ab063"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_fdiv</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414renf_elem_fdiv6fmpz_t11renf_elem_t11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Perform the floor division of the number field elements <code class="docutils literal notranslate"><span class="pre">b</span></code> and <code class="docutils literal notranslate"><span class="pre">c</span></code> and set the result in <code class="docutils literal notranslate"><span class="pre">a</span></code>. The result is equivalent to a call of [renf_elem_div] followed by [renf_elem_floor]. This function is much faster, though. </p>
+</dd></dl>
+
+</section>
+<section id="other-functions">
+<h2>Other functions<a class="headerlink" href="#other-functions" title="Permalink to this heading">#</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419renf_elem_get_cfracP4fmpz11renf_elem_t11renf_elem_t5slong6renf_t">
+<span id="_CPPv319renf_elem_get_cfracP4fmpz11renf_elem_t11renf_elem_t5slong6renf_t"></span><span id="_CPPv219renf_elem_get_cfracP4fmpz11renf_elem_t11renf_elem_t5slong6renf_t"></span><span id="renf_elem_get_cfrac__fmpzP.renf_elem_t.renf_elem_t.slong.renf_t"></span><span class="target" id="renf__elem_8h_1adac8c2ef878d0a90de2a031879b72a7e"></span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_get_cfrac</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpz</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">c</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">rem</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419renf_elem_get_cfracP4fmpz11renf_elem_t11renf_elem_t5slong6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the array <code class="docutils literal notranslate"><span class="pre">c</span></code> to the <code class="docutils literal notranslate"><span class="pre">n</span></code>-th first partial quotients of the continued fraction of the element <code class="docutils literal notranslate"><span class="pre">a</span></code> of <code class="docutils literal notranslate"><span class="pre">nf</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425renf_elem_check_embeddingK11renf_elem_tK6renf_t5slong">
+<span id="_CPPv325renf_elem_check_embeddingK11renf_elem_tK6renf_t5slong"></span><span id="_CPPv225renf_elem_check_embeddingK11renf_elem_tK6renf_t5slong"></span><span id="renf_elem_check_embedding__renf_elem_tC.renf_tC.slong"></span><span class="target" id="renf__elem_8h_1a9347dc0d091249b69acf031497be0c4b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_check_embedding</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425renf_elem_check_embeddingK11renf_elem_tK6renf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Check that the embedding is consistent. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv440renf_elem_relative_condition_number_2expP5slong11renf_elem_t6renf_t">
+<span id="_CPPv340renf_elem_relative_condition_number_2expP5slong11renf_elem_t6renf_t"></span><span id="_CPPv240renf_elem_relative_condition_number_2expP5slong11renf_elem_t6renf_t"></span><span id="renf_elem_relative_condition_number_2exp__slongP.renf_elem_t.renf_t"></span><span class="target" id="renf__elem_8h_1a3234d694a3cb14ac0a662152fe0fabac"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renf_elem_relative_condition_number_2exp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cond</span></span>, <a class="reference internal" href="#_CPPv411renf_elem_t" title="renf_elem_t"><span class="n"><span class="pre">renf_elem_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><span class="n"><span class="pre">renf_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440renf_elem_relative_condition_number_2expP5slong11renf_elem_t6renf_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Logarithm of the condition number of <code class="docutils literal notranslate"><span class="pre">a</span></code>. The return value corresponds to the number of bits of precision that will be lost when evaluating <code class="docutils literal notranslate"><span class="pre">a</span></code> as a polynomial in the number field generator. </p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="c_renf.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">renf.h — Real Embedded Number Fields</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Tour of the C++ Interface</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setters">Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-refinement">Embedding Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-and-conversion">Properties and Conversion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-point-approximations">Floating point approximations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparisons">Comparisons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-conversion-and-printing">String Conversion and Printing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#randomization">Randomization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unary-operations">Unary operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-operations">Binary operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-functions">Other functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024, the e-antic authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
