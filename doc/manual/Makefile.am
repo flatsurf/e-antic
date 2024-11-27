@@ -4,7 +4,7 @@ html: $(builddir)/generated/doxygen $(builddir)/flint.inv $(builddir)/flint.inv 
 
 $(builddir)/generated/doxygen:
 	mkdir -p $@
-	$(DOXYGEN)
+	$(DOXYGEN) $(srcdir)/Doxyfile
 
 $(builddir)/flint.inv:
 	wget -O $@ https://flintlib.org/doc/objects.inv
