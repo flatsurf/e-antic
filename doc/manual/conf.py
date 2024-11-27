@@ -60,7 +60,7 @@ html_static_path = ['_static']
 html_css_files = ['extra.css']
 
 intersphinx_mapping = {
-    'flint': ('https://flintlib.org/doc/', 'flint.inv'),
+    'flint': ('https://flintlib.org/doc/', ('flint.inv', None)),
 }
 
 breathe_projects = {"libeantic": "generated/doxygen/xml"}

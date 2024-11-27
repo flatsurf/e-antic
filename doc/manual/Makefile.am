@@ -15,7 +15,13 @@ all: html
 
 .PHONY: html $(builddir)/generated/doxygen
 
-EXTRA_DIST = README.md robots.txt conf.py Doxyfile _static/extra.css c_fmpq_poly_extra.rst c_fmpz_poly_extra.rst c_overview.rst c_renf_elem.rst c_renf.rst cxx_overview.rst cxx_renf_class.rst cxx_renf_elem_class.rst index.rst python_overview.rst python_realalg.rst python_sage.rst
+EXTRA_DIST = README.md
+EXTRA_DIST += robots.txt _static/extra.css
+EXTRA_DIST += Doxyfile
+EXTRA_DIST += conf.py index.rst
+EXTRA_DIST += c_fmpq_poly_extra.rst c_fmpz_poly_extra.rst c_overview.rst c_renf_elem.rst c_renf.rst
+EXTRA_DIST += cxx_overview.rst cxx_renf_class.rst cxx_renf_elem_class.rst
+EXTRA_DIST += python_overview.rst python_realalg.rst python_sage.rst
 
 mostlyclean-local:
 	[[ ! -d generated ]] || (chmod -R u+w generated && rm -rf generated)
