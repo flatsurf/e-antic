@@ -167,7 +167,7 @@ LIBEANTIC_API void renf_elem_get_arb(arb_t x, renf_elem_t a, renf_t nf, slong pr
 /// Return a double approximation.
 LIBEANTIC_API double renf_elem_get_d(renf_elem_t a, renf_t nf, arf_rnd_t rnd);
 
-/// \defgroup renf_elem_cmp
+/// \defgroup renf_elem_cmp Comparison Operators
 ///
 /// All the comparison functions `renf_elem_cmp_…` between two elements `a` and
 /// `b` behave as follows. They return
@@ -206,7 +206,7 @@ LIBEANTIC_API void renf_elem_neg(renf_elem_t a, const renf_elem_t b, const renf_
 /// Set `a` to the inverse of `b`.
 LIBEANTIC_API void renf_elem_inv(renf_elem_t a, const renf_elem_t b, const renf_t nf);
 
-/// \defgroup renf_elem_binop
+/// \defgroup renf_elem_binop Binary Arithmetic Operators
 ///
 /// All the binary operation functions are of the form `renf_elem_OP_TYP(a, b, c, nf)` where
 /// * `OP` is the operation type
