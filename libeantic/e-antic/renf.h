@@ -1,10 +1,10 @@
-/// Real Embedded Number Fields
+/// \file
 ///
-/// This header defines one of the basic objects of e-antic, [renf_t]() a real
+/// This header defines one of the basic objects of e-antic, \ref renf_t a real
 /// embedded number field and the functions that interact with it.
 /*
-    Copyright (C)        2016 Vincent Delecroix
-                  2020 - 2021 Julian Rüth
+    Copyright (C)      2016 Vincent Delecroix
+                  2020-2024 Julian Rüth
 
     This file is part of e-antic
 
@@ -38,7 +38,6 @@
 extern "C" {
 #endif
 
-/// === Memory Layout ===
 /// Internal representation of a real embedded number field.
 ///
 /// The attributes are not part of the API and should be accessed directly. The
@@ -47,10 +46,10 @@ extern "C" {
 /// `renf_` functions described below.
 ///
 /// Typical users of e-antic will never instantiate a `renf`
-/// directly but instead work with a [renf_t]().
+/// directly but instead work with a \ref renf_t.
 typedef struct LIBEANTIC_API renf
 {
-  /// An algebraic number field, provided by ANTIC.
+  /// An algebraic number field, provided by FLINT (formerly ANTIC.)
   nf_t nf;
 
   /// The derivative of the defining polynomial (without denominator) as a
@@ -68,20 +67,17 @@ typedef struct LIBEANTIC_API renf
   int immutable;
 } renf;
 
-typedef renf * renf_ptr;
-typedef const renf * renf_srcptr;
-
 /// A real embedded number field.
 ///
-/// Actually, this is an array of [renf]() of length one.
+/// Actually, this is an array of \ref renf of length one.
 ///
 /// Typically, users of e-antic should not worry about the exact definition of
 /// this and just treat this as *the* type that represents a number field in
 /// e-antic.
 ///
-/// Using an array of length one instead of a plain `renf` or a `renf*` is a
+/// \note Using an array of length one instead of a plain `renf` or a `renf*` is a
 /// common trick in C which is probably best known from MPFR and GMP but also
-/// used in the FLINT and Arb libraries that we build upon.
+/// used in the FLINT library that we build upon.
 /// Essentially, this gives much better semantics than a plain `renf`. E.g., a
 /// `renf_t` is not assignable. (Directly assigning a `renf` to another `renf`
 /// does not do what one would expect as the heap-allocated parts of a `renf`
@@ -93,7 +89,10 @@ typedef const renf * renf_srcptr;
 /// `renf*` everywhere instead.
 typedef renf renf_t[1];
 
-/// === Initialization, Allocation, Deallocation ===
+typedef renf * renf_ptr;
+
+typedef const renf * renf_srcptr;
+
 /// Set `nf` to be the real embedded number field define by the minimal
 /// polynomial `pol` and the (approximate) embedding `emb`. The parameter
 /// `prec` is used as the default precision for binary operations on
@@ -116,7 +115,6 @@ LIBEANTIC_API void renf_clear(renf_t nf);
 /// default `prec` of bit precision for binary operations.
 LIBEANTIC_API slong renf_set_embeddings_fmpz_poly(renf * nf, fmpz_poly_t pol, slong lim, slong prec);
 
-/// === Other Functions ===
 /// Refine the embedding of `nf` to `prec` bits of precision.
 LIBEANTIC_API void renf_refine_embedding(renf_t nf, slong prec);
 
@@ -124,7 +122,7 @@ LIBEANTIC_API void renf_refine_embedding(renf_t nf, slong prec);
 /// If `immutable` is zero, make the number field mutable.
 /// Otherwise, make the number field immutable.
 /// Returns the previous value.
-/// It is not possible to [refine](<> "renf_refine_embedding") the embedding of
+/// It is not possible to [refine](\ref renf_refine_embedding) the embedding of
 /// an immutable number field.
 /// This method is used internally as a sanity-check in multi-threaded code.
 LIBEANTIC_API int renf_set_immutable(renf_t nf, int immutable);

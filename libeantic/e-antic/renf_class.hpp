@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-                  2019-2022 Julian Rüth
+                  2019-2024 Julian Rüth
 
     This file is part of e-antic
 
@@ -31,7 +31,7 @@ namespace eantic {
 /// All number fields are simple extensions of the rational numbers whose
 /// defining minimal polynomial has a real root.
 ///
-/// To create a number field, use one of the [factory functions](<> "make");
+/// To create a number field, use one of the [factory functions](\ref make);
 /// typically, by specifying the minimal polynomial of the number field and
 /// selecting a real root:
 /// ```
@@ -64,20 +64,24 @@ namespace eantic {
 ///
 /// Number fields are hashable but not ordered, i.e., they can be used in
 /// containers such as `std::unordered_set` but not in `std::set`.
-class LIBEANTIC_API renf_class : boost::equality_comparable<renf_class> {
+class LIBEANTIC_API renf_class 
+/// @cond INTERNAL
+  : boost::equality_comparable<renf_class>
+/// @endcond
+  {
     renf_class(const ::renf_t, const std::string &);
 
 public:
-    /// Return the trivial number field obtained by adjoining a root of $x - 1$ to the rationals.
+    /// Return the trivial number field obtained by adjoining a root of \f$x - 1\f$ to the rationals.
     static const renf_class& make();
 
-    /// Return the number field created from a [::renf_t](), the C type underlying a `renf_class`.
+    /// Return the number field created from a \ref renf_t, the C type underlying a `renf_class`.
     static boost::intrusive_ptr<const renf_class> make(const ::renf_t, const std::string & gen = "a");
 
-    /// Return the number field obtained by adjoining the root of [minpoly]()
-    /// which is approximately [emb]().
+    /// Return the number field obtained by adjoining the root of `minpoly`
+    /// which is approximately `emb`.
     ///
-    /// :param:`minpoly` An irreducible polynomial in the variable [gen]().
+    /// \param minpoly An irreducible polynomial in the variable `gen`.
     /// This minimal polynomial does not have to be totally real or monic.
     /// ```
     /// #include <e-antic/renf_class.hpp>
@@ -85,15 +89,15 @@ public:
     /// auto K = eantic::renf_class::make("2*x^4 - 4", "x", "1 +/- 1");
     /// ```
     ///
-    /// :param:`gen` The name of the variable used in [minpoly]().
+    /// \param gen The name of the variable used in `minpoly`.
     /// Note that two fields that differ only in the name of the generator are
     /// treated as being distinct fields.
     ///
-    /// :param:`emb` An approximation of the root of [minpoly]().
+    /// \param emb An approximation of the root of `minpoly`.
     /// It makes no difference to what precision this approximation is provided
     /// but it must uniquely determine a single root of the polynomial.
     ///
-    /// :param:`prec` The default precision for all arithmetic.
+    /// \param prec The default precision for all arithmetic.
     /// When performing arithmetic in this field, all operations are performed
     /// to that precision. When necessary, the precision is dynamically
     /// increased. This only affects the performance and inner workings of
@@ -101,10 +105,10 @@ public:
     /// affected by this.
     static boost::intrusive_ptr<const renf_class> make(const std::string & minpoly, const std::string & gen, const std::string &emb, slong prec = 64);
 
-    /// Return the number field obtained by adjoining the root of [minpoly]()
-    /// which is approximately [emb]().
+    /// Return the number field obtained by adjoining the root of `minpoly`
+    /// which is approximately `emb`.
     ///
-    /// :param:`minpoly` An irreducible polynomial in the variable [gen]().
+    /// \param minpoly An irreducible polynomial in the variable `gen`.
     /// This minimal polynomial does not have to be totally real or monic.
     /// ```
     /// #include <e-antic/renf_class.hpp>
@@ -130,18 +134,18 @@ public:
     /// auto K = eantic::renf_class::make("x^2 - 2", "x", emb);
     /// ```
     ///
-    /// :param:`gen` The name of the variable used in [minpoly]().
+    /// \param gen The name of the variable used in `minpoly`.
     /// Note that two fields that differ only in the name of the generator are
     /// treated as being distinct fields.
     ///
-    /// :param:`emb` Creates approximations of the root of [minpoly]() that is
+    /// \param emb Creates approximations of the root of `minpoly` that is
     /// suitable for computations with precision `prec`.
     /// It makes no difference to what precision this approximation is provided
     /// but it must for a sufficiently large value of `prec` uniquely determine
     /// a single root of the polynomial; with increasing `prec` it should
     /// converge to the actual root.
     ///
-    /// :param:`prec` The default precision for all arithmetic.
+    /// \param prec The default precision for all arithmetic.
     /// When performing arithmetic in this field, all operations are performed
     /// to that precision. When necessary, the precision is dynamically
     /// increased. This only affects the performance and inner workings of
@@ -175,7 +179,7 @@ public:
     const renf_elem_class& gen() const;
 
     /// Return the parameters `(minpoly, gen, emb, prec)` that can be used to
-    /// construct this field with [make](<> "make(minpoly, gen, emb, prec)").
+    /// construct this field with [make](\ref make(const std::string&, const std::string&, const std::string&, slong)).
     /// ```
     /// #include <e-antic/renf_class.hpp>
     ///
@@ -243,7 +247,7 @@ public:
     /// Write a human-readable representation of this field to the output stream.
     LIBEANTIC_API friend std::ostream & operator<<(std::ostream &, const renf_class &);
 
-    /// Return the underlying [renf_t]().
+    /// Return the underlying \ref renf_t.
     /// We do not return a const `renf_t` since calls in the C API might need to
     /// modify it (e.g., to refine the stored embedding) even though they are
     /// morally const.

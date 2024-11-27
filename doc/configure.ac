@@ -18,13 +18,9 @@ AC_PATH_PROG([SPHINXBUILD], [sphinx-build], [no])
 AS_IF([test x"$ac_cv_path_SPHINXBUILD" == x"no"], [AC_MSG_ERROR([sphinx-build could not be found. It is required to build the documentation. Use --without-doc to not build the documentation of e-antic.])])
 AC_SUBST([SPHINXBUILD], [$ac_cv_path_SPHINXBUILD])
 
-AC_PATH_PROG([STANDARDESE], [standardese], [no])
-AS_IF([test x"$ac_cv_path_STANDARDESE" == x"no"], [AC_MSG_ERROR([standardese could not be found. It is required to build the documentation. Use --without-doc to not build the documentation of e-antic.])])
-AC_SUBST([STANDARDESE], [$ac_cv_path_STANDARDESE])
-
-AC_PATH_PROG([MKDOCS], [mkdocs], [no])
-AS_IF([test x"$ac_cv_path_MKDOCS" == x"no"], [AC_MSG_ERROR([MkDocs could not be found. It is required to build the documentation. Use --without-doc to not build the documentation of e-antic.])])
-AC_SUBST([MKDOCS], [$ac_cv_path_MKDOCS])
+AC_PATH_PROG([DOXYGEN], [doxygen], [no])
+AS_IF([test x"$ac_cv_path_DOXYGEN" == x"no"], [AC_MSG_ERROR([doxygen could not be found. It is required to build the documentation. Use --without-doc to not build the documentation of e-antic.])])
+AC_SUBST([DOXYGEN], [$ac_cv_path_DOXYGEN])
 
 AC_CONFIG_FILES([Makefile manual/Makefile])
 

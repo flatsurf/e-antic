@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 r"""
-Real Embedded Number Fields for SageMath
+Interface with SageMath
+=======================
 
 This wraps e-antic for SageMath providing number fields with less of a focus
 on number theory but fast exact ball arithmetic of the kind that is usually

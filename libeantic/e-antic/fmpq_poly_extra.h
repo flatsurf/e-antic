@@ -1,4 +1,7 @@
+/// \file
+///
 /// Flint rational polynomials utilities
+/// ====================================
 /*
    Copyright (C) 2016 Vincent Delecroix
 
