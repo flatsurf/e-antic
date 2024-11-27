@@ -272,7 +272,7 @@ trap "kill $SERVER_PID" EXIT
 sleep 1
 
 # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
-linkchecker --check-extern http://localhost:$PORT/e-antic/libeantic --no-warnings --ignore gmplib.org
+linkchecker --check-extern http://localhost:$PORT/ --no-warnings --ignore gmplib.org
 '
 """
 cwd = "doc"
