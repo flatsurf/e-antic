@@ -1,7 +1,10 @@
 export ABS_SRCDIR=$(abs_srcdir)
 export ABS_BUILDDIR=$(abs_builddir)
 
-generated/html/index.html: generated/doxygen/xml/index.xml flint.inv $(srcdir)/*.rst $(srcdir)/conf.py $(srcdir)/_static/extra.css ../../pyeantic/test/test-env.sh ../../pyeantic/test/bin/python
+generated/html/index.html: generated/doxygen/xml/index.xml flint.inv $(srcdir)/*.rst $(srcdir)/conf.py $(srcdir)/_static/extra.css
+	$(MAKE) -C ../../pyeantic/test test-env.sh bin/python
+	$(MAKE) -C ../../libeantic/src
+	$(MAKE) -C ../../libeantic/srcxx
 	source ../../pyeantic/test/test-env.sh && \
 	python $(SPHINXBUILD) -b html $(srcdir) $(builddir)/generated/html
 
