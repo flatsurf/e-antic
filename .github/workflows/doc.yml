@@ -20,7 +20,7 @@ jobs:
           touch doc/manual/generated/html/.nojekyll
       - name: detect broken links
         run: pixi run -e dev test-doc-linkchecker
-      - uses: JamesIves/github-pages-deploy-action@v4.6.9
+      - uses: JamesIves/github-pages-deploy-action@v4.7.2
         with:
           branch: gh-pages
           folder: doc/manual/generated/html
