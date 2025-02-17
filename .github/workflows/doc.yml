@@ -13,14 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { submodules: recursive }
-      - uses: prefix-dev/setup-pixi@v0.8.1
+      - uses: prefix-dev/setup-pixi@v0.8.2
         with: { pixi-version: v0.30.0 }
       - run: |
           pixi run -e dev build-doc
           touch doc/manual/generated/html/.nojekyll
       - name: detect broken links
         run: pixi run -e dev test-doc-linkchecker
-      - uses: JamesIves/github-pages-deploy-action@v4.6.9
+      - uses: JamesIves/github-pages-deploy-action@v4.7.2
         with:
           branch: gh-pages
           folder: doc/manual/generated/html
