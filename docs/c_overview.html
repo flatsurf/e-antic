@@ -404,15 +404,15 @@ Functions that operate on elements of number fields are defined in the header
 <a class="reference internal" href="c_renf_elem.html"><span class="doc">e-antic/renf_elem.h</span></a> and have the prefix <code class="docutils literal notranslate"><span class="pre">renf_elem_</span></code>.</p>
 <p>To work with e-antic, you first need to create a number field. Typically, you
 will use the function <a class="reference internal" href="c_renf.html#_CPPv49renf_init6renf_t11fmpq_poly_t5arb_t5slong" title="renf_init"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">renf_init()</span></code></a> to create a number field from
-its defining rational polynomial as a FLINT <a class="reference external" href="https://flintlib.org/doc/fmpq_poly.html#c.fmpq_poly_t" title="(in Flint v3.2)"><code class="xref c c-type docutils literal notranslate"><span class="pre">fmpq_poly_t</span></code></a> and an
-approximation of one of its real roots as an <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in Flint v3.2)"><code class="xref c c-type docutils literal notranslate"><span class="pre">arb_t</span></code></a>.</p>
+its defining rational polynomial as a FLINT <a class="reference external" href="https://flintlib.org/doc/fmpq_poly.html#c.fmpq_poly_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">fmpq_poly_t</span></code></a> and an
+approximation of one of its real roots as an <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">arb_t</span></code></a>.</p>
 <p>Once a <cite>renf_t</cite> has been initialized, its elements can be created with
 <a class="reference internal" href="c_renf_elem.html#_CPPv414renf_elem_init11renf_elem_tK6renf_t" title="renf_elem_init"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">renf_elem_init()</span></code></a>. Eventually, use <a class="reference internal" href="c_renf_elem.html#_CPPv415renf_elem_clear11renf_elem_tK6renf_t" title="renf_elem_clear"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">renf_elem_clear()</span></code></a> to free
 the memory taken by these elements, and use <a class="reference internal" href="c_renf.html#_CPPv410renf_clear6renf_t" title="renf_clear"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">renf_clear()</span></code></a> to free the
 memory taken by the number field itself.</p>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
-<p>We want to construct a totally real field with minimal polynomial <span class="math notranslate nohighlight">\(x^3 - 3x + 1\)</span>, represented by an <a class="reference external" href="https://flintlib.org/doc/fmpq_poly.html#c.fmpq_poly_t" title="(in Flint v3.2)"><code class="xref c c-type docutils literal notranslate"><span class="pre">fmpq_poly_t</span></code></a>. We include the appropriate headers
+<p>We want to construct a totally real field with minimal polynomial <span class="math notranslate nohighlight">\(x^3 - 3x + 1\)</span>, represented by an <a class="reference external" href="https://flintlib.org/doc/fmpq_poly.html#c.fmpq_poly_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">fmpq_poly_t</span></code></a>. We include the appropriate headers
 and define the polynomial:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;e-antic/fmpq_poly_extra.h&gt;</span>
 
