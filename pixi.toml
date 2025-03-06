@@ -153,30 +153,35 @@ depends-on = ["bootstrap"]
 cmd = "make distcheck"
 depends-on = ["configure"]
 
-[feature.dev.tasks.compiler-warnings-clang]
+[feature.dev.target.linux-64.tasks.compiler-warnings-clang]
+# The env hack is necessary to work around https://github.com/prefix-dev/pixi/issues/3287
+# We disable -Wdeprecated-declarations because we use our own deprecated API, e.g., for testing.
 cmd = """
+/usr/bin/env -u '?' sh -c '
 make clean &&
-make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -UNDEBUG\" CXXFLAGS=\"$CXXFLAGS -UNDEBUG\" &&
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -UNDEBUG\" &&
 make clean &&
-make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -DNDEBUG\" CXXFLAGS=\"$CXXFLAGS -DNDEBUG\"
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -fclang-abi-compat=17 -DNDEBUG\"
+'
 """
 cwd = "libeantic"
 depends-on = "configure-libeantic"
-# We need -Wno-reserved-identifiers since we extend FLINT using their style of having internal functions start with an underscore.
-# We need -Wno-unsafe-buffer-usage since we need unsafe pointer arithmetic to extend FLINT (efficiently.)
-env = { CPP="clang-cpp", CC="clang", CXX="clang++", CFLAGS="-Werror -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-float-equal -Wno-documentation -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-unsafe-buffer-usage", CXXFLAGS="-Wno-exit-time-destructors -Wno-undefined-func-template -Wno-global-constructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-zero-as-null-pointer-constant -Wno-deprecated-declarations -Wno-shadow-field-in-constructor -Wno-documentation" }
 
-[feature.dev.tasks.compiler-warnings-gcc]
+[feature.dev.target.linux-64.tasks.compiler-warnings-gcc]
+# The env hack is necessary to work around https://github.com/prefix-dev/pixi/issues/3287
+# We disable -Wsign-compare because .size() in C++ is well-known to be broken.
+# We disable -Wdeprecated-declarations because we use our own deprecated API, e.g., for testing.
+# We disable -Wdangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
 cmd = """
+/usr/bin/env -u '?' sh -c '
 make clean &&
-make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -UNDEBUG\" CXXFLAGS=\"$CXXFLAGS -UNDEBUG\" &&
+make check TESTS= CFLAGS=\"$CXFLAGS -Werror -Wall -Wextra" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-sign-compare -Wno-deprecated-declarations -Wno-dangling-reference -UNDEBUG\" &&
 make clean &&
-make check TESTS= CPP=$CPP CC=$CC CXX=$CXX CFLAGS=\"$CFLAGS -DNDEBUG\" CXXFLAGS=\"$CXXFLAGS -DNDEBUG\"
+make check TESTS= CFLAGS=\"$CXFLAGS -Werror -Wall -Wextra" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-sign-compare -Wno-deprecated-declarations -Wno-dangling-reference -DNDEBUG\"
+'
 """
 cwd = "libeantic"
 depends-on = "configure-libeantic"
-# We need -Wno-dangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
-env = { CPP="cpp", CC="cc", CXX="c++", CFLAGS="-Werror -Wall -Wextra -pedantic", CXXFLAGS="-Werror -Wall -Wextra -pedantic -Wctor-dtor-privacy -Wold-style-cast -Woverloaded-virtual -Wcast-align -Wcast-qual -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wno-redundant-decls -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations -Wno-float-equal -Wsign-promo -Wstrict-null-sentinel -Wno-dangling-reference" }
 
 [feature.dev.tasks.configure-libeantic]
 cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark'
@@ -315,7 +320,7 @@ libflint = "3.*"
 benchmark = "*"
 byexample = "*"
 py = "*"
-sagelib = "10.3"
+sagelib = "==10.3"
 codespell = "*"
 clangdev = "*"
 compiledb = "*"
@@ -369,7 +374,7 @@ libflint = "3.0.*"
 [feature.sagemath-92.dependencies]
 # SageMath 9.2 shipped with Python 3.8 so we make sure that these compatible versions are installed.
 python = "3.8.*"
-sagelib = "9.2"
+sagelib = "==9.2"
 # SageMath 9.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -379,7 +384,7 @@ pip = "*"
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
-sagelib = "9.3"
+sagelib = "==9.3"
 # SageMath 9.3 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -387,7 +392,7 @@ antic = "*"
 [feature.sagemath-94.dependencies]
 # SageMath 9.4 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
-sagelib = "9.4"
+sagelib = "==9.4"
 # SageMath 9.4 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -395,7 +400,7 @@ antic = "*"
 [feature.sagemath-95.dependencies]
 # SageMath 9.5 shipped with Python 3.9 so we make sure that these compatible versions are installed.
 python = "3.9.*"
-sagelib = "9.5"
+sagelib = "==9.5"
 # SageMath 9.5 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -403,7 +408,7 @@ antic = "*"
 [feature.sagemath-96.dependencies]
 # SageMath 9.6 shipped with Python 3.10 so we make sure that these compatible versions are installed.
 python = "3.10.*"
-sagelib = "9.6"
+sagelib = "==9.6"
 # SageMath 9.6 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -411,7 +416,7 @@ antic = "*"
 [feature.sagemath-97.dependencies]
 # SageMath 9.7 shipped with Python 3.10 so we make sure that these compatible versions are installed.
 python = "3.10.*"
-sagelib = "9.7"
+sagelib = "==9.7"
 # SageMath 9.7 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -419,7 +424,7 @@ antic = "*"
 [feature.sagemath-98.dependencies]
 # SageMath 9.8 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
-sagelib = "9.8"
+sagelib = "==9.8"
 # SageMath 9.8 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -427,7 +432,7 @@ antic = "*"
 [feature.sagemath-100.dependencies]
 # SageMath 10.0 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
-sagelib = "10.0"
+sagelib = "==10.0"
 # SageMath 10.0 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -435,7 +440,7 @@ antic = "*"
 [feature.sagemath-101.dependencies]
 # SageMath 10.1 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
-sagelib = "10.1"
+sagelib = "==10.1"
 # SageMath 10.1 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -443,7 +448,7 @@ antic = "*"
 [feature.sagemath-102.dependencies]
 # SageMath 10.2 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
-sagelib = "10.2"
+sagelib = "==10.2"
 # SageMath 10.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
 arb = "*"
 antic = "*"
@@ -451,7 +456,7 @@ antic = "*"
 [feature.sagemath-103.dependencies]
 # SageMath 10.3 shipped with Python 3.11 so we make sure that these compatible versions are installed.
 python = "3.11.*"
-sagelib = "10.3"
+sagelib = "==10.3"
 
 [feature.normaliz-integration.dependencies]
 nauty = "*"
