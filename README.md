@@ -32,6 +32,22 @@ The dependencies are:
  - [Boost](https://www.boost.org/) for the C++ library
  - [cppyy](https://cppyy.readthedocs.io/en/latest/) for the Python wrapper
 
+## Usage
+
+We compute $a^2 - 2$ in the C++ interface where $a$ is a root of $x^3 - 3x + 1$.
+
+```cpp
+auto K = eantic::renf_class::make("x^3 - 3*x + 1", "x", "0.34 +/- .01");
+auto a = K->gen();
+auto b = a.pow(2) - 2;
+```
+
+Our [documentation](https://flatsurf.github.io/e-antic) has more details about
+[this example](https://flatsurf.github.io/e-antic/cxx_overview.html) and also
+shows you how to do the same computation with the [C
+interface](https://flatsurf.github.io/e-antic/c_overview.html) and the [Python
+interface](https://flatsurf.github.io/e-antic/python_overview.html).
+
 ## Build and Develop e-antic with pixi
 
 If you have cloned the source repository, make sure to pull in all the
@@ -162,10 +178,26 @@ the time of this writing.
 
 For more detailed but generic instructions please refer to the INSTALL file.
 
-## Installation
+## Feedback and Contributions
 
-See [our documentation](https://flatsurf.github.io/e-antic/libeantic/#installation)
-for installation instructions.
+If you have tried out e-antic, we are thrilled to learn about your experiences.
+If you ran into any problems or have suggestions for improvement, please
+[create an issue](https://github.com/flatsurf/e-antic/issues).
+
+If you want to contribute to e-antic, [pull
+requests](https://github.com/flatsurf/e-antic/pulls) are always welcome :heart:
+
+We are also happy to walk you through the process personally if you are unsure
+how to get started. Feel free to reach out in the [#flatsurf stream on
+Zulip](https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf) in any
+case.
+
+## License
+
+e-antic is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License (LGPL) as published by the Free
+Software Foundation; either version 3.0 of the License, or (at your option) any
+later version. See https://www.gnu.org/licenses/.
 
 ## How to Cite this Project
 

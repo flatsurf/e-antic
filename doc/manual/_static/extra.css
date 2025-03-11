@@ -1,0 +1,8 @@
+/* Make blocks of functions in the documentation more compact. Especially if they have no individual documentation. */
+dl[class]:not(.option-list, .field-list, .footnote, .glossary, .simple) {
+  margin-bottom: 0 !important;
+}
+
+dd:last-child:not(:empty) {
+  margin-bottom: 1rem !important;
+}

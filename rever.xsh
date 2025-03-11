@@ -46,7 +46,7 @@ def dist():
 @activity
 def doc():
     r"""
-    Run make html and create a tarball from the built manual.
+    Build the documentation and create a tarball from the built manual.
     """
     from tempfile import TemporaryDirectory
     from xonsh.dirstack import DIRSTACK
@@ -55,7 +55,6 @@ def doc():
         pushd @(tmp)
         @(DIRSTACK[-1])/configure --prefix=$CONDA_PREFIX --without-benchmark --without-byexample
         make
-        make html
         mv doc/manual/generated/html e-antic-manual-$VERSION
         tar czf e-antic-manual-$VERSION.tar.gz e-antic-manual-$VERSION
         mv *.tar.gz @(DIRSTACK[-1])
@@ -87,7 +86,7 @@ $VERSION_BUMP_PATTERNS = [
     ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyeantic/src/setup.py', r'version=', r"version='$VERSION'"),
     ('doc/configure.ac', r'AC_INIT', r'AC_INIT([e-antic-doc], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
-    ('doc/manual/pyeantic/conf.py', r'release =', "release = '$VERSION'"),
+    ('doc/manual/conf.py', r'release =', "release = '$VERSION'"),
     ('README.md', r'\* \*\*libeantic\*\* \[!\[Binder\]', r'* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.libeantic.ipynb)'),
     ('README.md', r'\* \*\*pyeantic\*\* \[!\[Binder\]', r'* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.pyeantic.ipynb)'),
 ]

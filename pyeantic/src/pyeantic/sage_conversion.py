@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*-
 r"""
+Legacy SageMath Conversions
+===========================
+
 Legacy conversions of SageMath Number Fields and their Elements to the real
 embedded variants provided by e-antic.
 """

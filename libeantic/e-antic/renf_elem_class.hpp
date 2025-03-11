@@ -1,7 +1,7 @@
 /*  This is a -*- C++ -*- header file.
 
     Copyright (C) 2016-2018 Vincent Delecroix
-                  2019-2022 Julian Rüth
+                  2019-2024 Julian Rüth
 
     This file is part of e-antic
 
@@ -30,8 +30,8 @@ namespace eantic {
 /// An element of a Real Embedded Number Field.
 ///
 /// Each element lives in a fixed number field. If the number field is an
-/// extension of the rationals of degree $d$, its elements are represented by
-/// rational polynomials of degree $d - 1$.
+/// extension of the rationals of degree \f$d\f$, its elements are represented by
+/// rational polynomials of degree \f$d - 1\f$.
 /// ```
 /// #include <e-antic/renf_class.hpp>
 /// #include <e-antic/renf_elem_class.hpp>
@@ -43,7 +43,7 @@ namespace eantic {
 /// ```
 ///
 /// The underlying data can be accessed directly, e.g., with
-/// [num_vector]() and [den]().
+/// \ref num_vector and \ref den.
 ///
 /// Note that elements do not need to worry about the lifetime of the number
 /// field they are contained in. The number field will be kept alive by smart
@@ -56,58 +56,35 @@ namespace eantic {
 /// std::cout << gen;
 /// // -> (x ~ 1.4142136)
 /// ```
-class LIBEANTIC_API renf_elem_class : boost::ordered_field_operators<renf_elem_class>,
-                        boost::ordered_field_operators<renf_elem_class, short>,
-                        boost::ordered_field_operators<renf_elem_class, unsigned short>,
-                        boost::ordered_field_operators<renf_elem_class, int>,
-                        boost::ordered_field_operators<renf_elem_class, unsigned int>,
-                        boost::ordered_field_operators<renf_elem_class, long>,
-                        boost::ordered_field_operators<renf_elem_class, unsigned long>,
-                        boost::ordered_field_operators<renf_elem_class, long long>,
-                        boost::ordered_field_operators<renf_elem_class, unsigned long long>,
-                        boost::ordered_field_operators<renf_elem_class, mpz_class>,
-                        boost::ordered_field_operators<renf_elem_class, mpq_class> {
+class LIBEANTIC_API renf_elem_class 
+/// @cond INTERNAL
+  : boost::ordered_field_operators<renf_elem_class>,
+    boost::ordered_field_operators<renf_elem_class, short>,
+    boost::ordered_field_operators<renf_elem_class, unsigned short>,
+    boost::ordered_field_operators<renf_elem_class, int>,
+    boost::ordered_field_operators<renf_elem_class, unsigned int>,
+    boost::ordered_field_operators<renf_elem_class, long>,
+    boost::ordered_field_operators<renf_elem_class, unsigned long>,
+    boost::ordered_field_operators<renf_elem_class, long long>,
+    boost::ordered_field_operators<renf_elem_class, unsigned long long>,
+    boost::ordered_field_operators<renf_elem_class, mpz_class>,
+    boost::ordered_field_operators<renf_elem_class, mpq_class>
+/// @endcond
+  {
 public:
+    /// \name renf_elem_class(…)
+    ///@{
     /// Create the zero element of the rationals.
     renf_elem_class() noexcept;
-
-    renf_elem_class(const renf_elem_class &);
-    renf_elem_class(renf_elem_class &&) noexcept;
-
-    /// ==* `renf_elem_class(integer/rational)` *==
-    /// Create an element in the rationals.
-    /// These are shortcuts equivalent to calling
-    /// `renf_elem_class(*renf_class::make(), value)`.
-    renf_elem_class(short);
-    renf_elem_class(unsigned short);
-    renf_elem_class(int);
-    renf_elem_class(unsigned int);
-    renf_elem_class(long);
-    renf_elem_class(unsigned long);
-    renf_elem_class(long long);
-    renf_elem_class(unsigned long long);
-    renf_elem_class(const mpz_class &);
-    renf_elem_class(const fmpz_t);
-    renf_elem_class(const mpq_class &);
-    renf_elem_class(const fmpq_t);
 
     /// Create the zero element in the field `k`.
     explicit renf_elem_class(const renf_class& k);
 
-    /// ==* `renf_elem_class(const renf_class&, integer/rational)` *==
-    /// Create a rational element in the field `k`.
-    renf_elem_class(const renf_class& k, short);
-    renf_elem_class(const renf_class& k, unsigned short);
-    renf_elem_class(const renf_class& k, int);
-    renf_elem_class(const renf_class& k, unsigned int);
-    renf_elem_class(const renf_class& k, long);
-    renf_elem_class(const renf_class& k, unsigned long);
-    renf_elem_class(const renf_class& k, long long);
-    renf_elem_class(const renf_class& k, unsigned long long);
-    renf_elem_class(const renf_class& k, const mpz_class &);
-    renf_elem_class(const renf_class& k, const fmpz_t);
-    renf_elem_class(const renf_class& k, const mpq_class &);
-    renf_elem_class(const renf_class& k, const fmpq_t);
+    /// Create a copy of this element.
+    renf_elem_class(const renf_elem_class &);
+
+    /// Create a new element from an existing element.
+    renf_elem_class(renf_elem_class &&) noexcept;
 
     /// Create an element in the field `k` from an existing element.
     /// This attempts to coerce the element into the field `k`. Currently, this
@@ -126,21 +103,63 @@ public:
     /// ```
     renf_elem_class(const renf_class& k, const std::string &);
 
-    /// ==* `renf_elem_class(vector<integer/rational>)` *==
-    /// Create the element $\sum c_i a^i$ where $a$ is the generator.
+    ///@}
+
+    /// \name renf_elem_class(integer/rational)
+    /// Create an element in the rationals.
+    /// These are shortcuts equivalent to calling
+    /// `renf_elem_class(*renf_class::make(), value)`.
+    ///@{
+    renf_elem_class(short);
+    renf_elem_class(unsigned short);
+    renf_elem_class(int);
+    renf_elem_class(unsigned int);
+    renf_elem_class(long);
+    renf_elem_class(unsigned long);
+    renf_elem_class(long long);
+    renf_elem_class(unsigned long long);
+    renf_elem_class(const mpz_class &);
+    renf_elem_class(const fmpz_t);
+    renf_elem_class(const mpq_class &);
+    renf_elem_class(const fmpq_t);
+    ///@}
+
+    /// \name renf_elem_class(const renf_class&, integer/rational)
+    /// Create a rational element in the field `k`.
+    ///@{
+    renf_elem_class(const renf_class& k, short);
+    renf_elem_class(const renf_class& k, unsigned short);
+    renf_elem_class(const renf_class& k, int);
+    renf_elem_class(const renf_class& k, unsigned int);
+    renf_elem_class(const renf_class& k, long);
+    renf_elem_class(const renf_class& k, unsigned long);
+    renf_elem_class(const renf_class& k, long long);
+    renf_elem_class(const renf_class& k, unsigned long long);
+    renf_elem_class(const renf_class& k, const mpz_class &);
+    renf_elem_class(const renf_class& k, const fmpz_t);
+    renf_elem_class(const renf_class& k, const mpq_class &);
+    renf_elem_class(const renf_class& k, const fmpq_t);
+    ///@}
+
+    /// \name renf_elem_class(vector<integer/rational>)
+    /// Create the element \f$\sum c_i a^i\f$ where \f$a\f$ is the generator.
     /// The number of coefficients must not exceed the degree of the field.
+    ///@{
     renf_elem_class(const renf_class& k, const std::vector<int> &);
     renf_elem_class(const renf_class& k, const std::vector<unsigned int> &);
     renf_elem_class(const renf_class& k, const std::vector<long> &);
     renf_elem_class(const renf_class& k, const std::vector<unsigned long> &);
     renf_elem_class(const renf_class& k, const std::vector<mpz_class> &);
     renf_elem_class(const renf_class& k, const std::vector<mpq_class> &);
+    ///@}
 
+    /// @cond INTERNAL
     ~renf_elem_class() noexcept;
+    /// @endcond
 
-    /// ==* `operator=(integer/rational)` *==
+    /// \name operator=(integer/rational)
     /// Reset this element to a rational number.
-    /// The [parent]() of the element is not preserved, i.e., it's always the
+    /// The \ref parent of the element is not preserved, i.e., it's always the
     /// rational field. To create a rational element in the number field, use
     /// the corresponding constructor.
     /// ```
@@ -158,6 +177,7 @@ public:
     /// a.parent() == *K
     /// // -> true
     /// ```
+    ///@{
     renf_elem_class & operator=(short);
     renf_elem_class & operator=(unsigned short);
     renf_elem_class & operator=(int);
@@ -170,13 +190,16 @@ public:
     renf_elem_class & operator=(const mpq_class &);
     renf_elem_class & operator=(const fmpz_t);
     renf_elem_class & operator=(const fmpq_t);
+    ///@}
 
-    /// ==* `operator=(number field element)` *==
+    /// \name operator=(number field element)
     /// Reset this element to another element.
-    /// The [parent]() of the element is not preserved, i.e., the resulting
+    /// The \ref parent of the element is not preserved, i.e., the resulting
     /// parent is always the parent of the argument.
+    /// @{
     renf_elem_class & operator=(const renf_elem_class &);
     renf_elem_class & operator=(renf_elem_class &&) noexcept;
+    /// @}
 
     /// Return the containing number field.
     const renf_class& parent() const { return *nf; }
@@ -221,18 +244,18 @@ public:
     std::add_lvalue_reference_t<::renf_elem_t> renf_elem_t() const;
 
     /// Return the numerator of this element.
-    /// The element must be rational for this to work, see [num_content]() for
+    /// The element must be rational for this to work, see \ref num_content for
     /// non-rational elements.
     mpz_class num() const;
 
     /// Return the denominator of this element.
     /// For non-rational elements, this returns the least common multiple of
-    /// the denominators of the coefficients when written as $\sum c_i a^i$
-    /// where $a$ is the field generator.
+    /// the denominators of the coefficients when written as \f$\sum c_i a^i\f$
+    /// where \f$a\f$ is the field generator.
     mpz_class den() const;
 
     /// Convert this element to a [GMP integer](https://gmplib.org/manual/C_002b_002b-Interface-Integers).
-    /// The element must be [an integer](<> "is_integer").
+    /// The element must be [an integer](\ref is_integer).
     /// ```
     /// #include <e-antic/renf_class.hpp>
     /// #include <e-antic/renf_elem_class.hpp>
@@ -244,7 +267,7 @@ public:
     explicit operator mpz_class() const;
 
     /// Convert this element to a [GMP rational number](https://gmplib.org/manual/C_002b_002b-Interface-Rationals).
-    /// The element must be [a rational](<> "is_rational").
+    /// The element must be [a rational](\ref is_rational).
     /// ```
     /// #include <e-antic/renf_class.hpp>
     /// #include <e-antic/renf_elem_class.hpp>
@@ -256,13 +279,13 @@ public:
     explicit operator mpq_class() const;
 
     /// Return the numerators of the coefficients of this element when written
-    /// as $\sum c_i a^i$ where $a$ is the field generator.
+    /// as \f$\sum c_i a^i\f$ where \f$a\f$ is the field generator.
     std::vector<mpz_class> num_vector() const;
 
-    /// ==* `string to_string() const` *==
+    /// \name string to_string() const
     /// Return a string representation of this element.
     /// The optional flag of `to_string()` is passed on to
-    /// [renf_elem_get_str_pretty]() internally. Other than that, `to_string()`
+    /// renf_elem_get_str_pretty() internally. Other than that, `to_string()`
     /// and the explicit string conversion are just aliases of each other:
     /// ```
     /// #include <e-antic/renf_class.hpp>
@@ -272,10 +295,12 @@ public:
     /// K->gen().to_string() == static_cast<std::string>(K->gen())
     /// // -> true
     /// ```
+    ///@{
     std::string to_string(int flags = EANTIC_STR_ALG | EANTIC_STR_D) const;
     explicit operator std::string() const;
+    ///@}
 
-    /// Return the greatest common divisor of [num_vector]().
+    /// Return the greatest common divisor of \ref num_vector.
     /// ```
     /// #include <e-antic/renf_class.hpp>
     /// #include <e-antic/renf_elem_class.hpp>
@@ -319,7 +344,7 @@ public:
     int sgn() const;
 
     /// Return the double closest to this element.
-    /// Ties are broken with [ARF_RND_NEAR]().
+    /// Ties are broken with `ARF_RND_NEAR`.
     /// ```
     /// #include <e-antic/renf_class.hpp>
     /// #include <e-antic/renf_elem_class.hpp>
@@ -356,19 +381,22 @@ public:
     /// ```
     explicit operator bool() const;
 
-    /// ==* Arithmetic in the Number Field *==
+    /// \name Arithmetic in the Number Field
     /// Elements in a number field support the usual arithmetic operators `+`, `-`, `*`, `/`.
     /// Internally, these operators are derived from the corresponding inplace
     /// operators `+=`, `-=`, `*=`, `/=`. Note that arithmetic between elements
     /// in different number fields is currently only supported in trivial
     /// cases.
+    ///@{
     renf_elem_class & operator+=(const renf_elem_class &);
     renf_elem_class & operator-=(const renf_elem_class &);
     renf_elem_class & operator*=(const renf_elem_class &);
     renf_elem_class & operator/=(const renf_elem_class &);
+    ///@}
 
     /// Add `a*b` to this element and return this element.
     /// This is more efficient than `x += a*b` which creates more temporaries.
+    ///@{
     renf_elem_class & iaddmul(const renf_elem_class & a, const renf_elem_class & b);
     renf_elem_class & iaddmul(const renf_elem_class & a, short b);
     renf_elem_class & iaddmul(const renf_elem_class & a, unsigned short b);
@@ -380,9 +408,11 @@ public:
     renf_elem_class & iaddmul(const renf_elem_class & a, unsigned long long b);
     renf_elem_class & iaddmul(const renf_elem_class & a, const mpz_class & b);
     renf_elem_class & iaddmul(const renf_elem_class & a, const mpq_class & b);
+    ///@}
 
     /// Subtract `a*b` from this element and return this element.
     /// This is more efficient than `x -= a*b` which creates more temporaries.
+    ///@{
     renf_elem_class & isubmul(const renf_elem_class&, const renf_elem_class&);
     renf_elem_class & isubmul(const renf_elem_class&, short);
     renf_elem_class & isubmul(const renf_elem_class&, unsigned short);
@@ -394,13 +424,16 @@ public:
     renf_elem_class & isubmul(const renf_elem_class&, unsigned long long);
     renf_elem_class & isubmul(const renf_elem_class&, const mpz_class&);
     renf_elem_class & isubmul(const renf_elem_class&, const mpq_class&);
+    ///@}
 
-    /// ==* Relational Operators *==
+    /// \name Relational Operators
     /// Elements can be compared with the usual operators `==`, `!=`, `<`,
     /// `<=`, `>=`, `>`.
     /// Internally, these operators are all derived from the definition of `==` and `<`.
+    ///@{
     LIBEANTIC_API friend bool operator==(const renf_elem_class &, const renf_elem_class &);
     LIBEANTIC_API friend bool operator<(const renf_elem_class &, const renf_elem_class &);
+    ///@}
 
     /// Return the integer floor of the division of this element by `rhs`.
     mpz_class floordiv(const renf_elem_class & rhs) const;
@@ -408,10 +441,11 @@ public:
     /// Return an integer power of this element.
     renf_elem_class pow(int exponent) const;
 
-    /// ==* Arithmetic with Integers & Rationals *==
+    /// \name Arithmetic with Integers & Rationals
     /// Elements in a number field and integers/rationals can be combined with
     /// the usual arithmetic operators `+`, `-`, `*`, `/` and the corresponding
     /// inplace operators `+=`, `-=`, `*=`, `/=`.
+    ///@{
     renf_elem_class & operator+=(short);
     renf_elem_class & operator-=(short);
     renf_elem_class & operator*=(short);
@@ -452,10 +486,12 @@ public:
     renf_elem_class& operator-=(const mpq_class&);
     renf_elem_class& operator*=(const mpq_class&);
     renf_elem_class& operator/=(const mpq_class&);
+    ///@}
 
-    /// ==* Relational Operators with Integers & Rationals *==
+    /// \name Relational Operators with Integers & Rationals
     /// Elements in a number field and integers/rationals can be compared with
     /// the usual relational operators `==`, `!=`, `<`, `<=`, `>=`, `>`.
+    ///@{
     LIBEANTIC_API friend bool operator==(const renf_elem_class&, short);
     LIBEANTIC_API friend bool operator<(const renf_elem_class&, short);
     LIBEANTIC_API friend bool operator>(const renf_elem_class&, short);
@@ -486,9 +522,10 @@ public:
     LIBEANTIC_API friend bool operator==(const renf_elem_class&, const mpq_class&);
     LIBEANTIC_API friend bool operator<(const renf_elem_class&, const mpq_class&);
     LIBEANTIC_API friend bool operator>(const renf_elem_class&, const mpq_class&);
+    ///@}
 
+    /// @cond DEPRECATED
     /// Deprecated methods from e-antic releases before 1.0.0.
-    /// \exclude
     [[deprecated("use to_string() instead")]] std::string get_str(int flag = EANTIC_STR_ALG | EANTIC_STR_D) const;
     [[deprecated("use renf_elem_t() instead")]] renf_elem_srcptr get_renf_elem() const;
     [[deprecated("use den() instead")]] mpz_class get_den() const;
@@ -496,8 +533,9 @@ public:
     [[deprecated("use static_cast<mpq_class>() instead")]] mpq_class get_rational() const;
     [[deprecated("use num_vector() instead")]] std::vector<mpz_class> get_num_vector() const;
     [[deprecated("use static_cast<double>() instead")]] double get_d() const;
+    /// @endcond
 
-    /// ==* I/O *==
+    /// \name I/O
     /// Elements can be written to streams and read from streams.
     /// However, reading non-rational elements from a stream is discouraged as
     /// it relies on the deprecated `set_pword()` method.
@@ -518,8 +556,10 @@ public:
     /// K->set_pword(s);
     /// s >> a;
     /// ```
+    ///@{
     LIBEANTIC_API friend std::ostream & operator<<(std::ostream &, const renf_elem_class &);
     LIBEANTIC_API friend std::istream & operator>>(std::istream &, renf_elem_class &);
+    ///@}
 
     /// Efficiently swap two number field elements.
     LIBEANTIC_API friend void swap(renf_elem_class& lhs, renf_elem_class& rhs) noexcept;
