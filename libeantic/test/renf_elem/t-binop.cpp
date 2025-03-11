@@ -68,7 +68,7 @@ TEST_CASE("Arithmetic with renf_elem", "[renf_elem][binop]")
     /* c -= a * b */
     renf_elem_submul(c, a, b, nf);
 
-    REQUIRE(renf_elem_is_zero(c, nf))
+    REQUIRE(renf_elem_is_zero(c, nf));
 
     renf_elem_clear(c, nf);
 }
