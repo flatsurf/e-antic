@@ -1,6 +1,6 @@
 /*
     Copyright (C)      2017 Vincent Delecroix
-                  2020-2024 Julian Rüth
+                  2020-2025 Julian Rüth
 
     This file is part of e-antic
 
@@ -209,14 +209,14 @@ TEST_CASE("Arithmetic with renf_elem and int", "[renf_elem][binop]")
         REQUIRE(renf_elem_equal(c, a, nf));
     }
 
-    renf_elem_zero(c, nf)
+    renf_elem_zero(c, nf);
 
     /* c += a * b */
-    renf_elem_addmul(c, a, b, nf);
+    renf_elem_addmul_si(c, a, b, nf);
     /* c -= a * b */
-    renf_elem_submul(c, a, b, nf);
+    renf_elem_submul_si(c, a, b, nf);
 
-    REQUIRE(renf_elem_is_zero(c, nf))
+    REQUIRE(renf_elem_is_zero(c, nf));
 
     renf_elem_clear(c, nf);
 }
@@ -259,14 +259,14 @@ TEST_CASE("Arithmetic with renf_elem and unsigned int", "[renf_elem][binop]")
         REQUIRE(renf_elem_equal(c, a, nf));
     }
 
-    renf_elem_zero(c, nf)
+    renf_elem_zero(c, nf);
 
     /* c += a * b */
-    renf_elem_addmul(c, a, b, nf);
+    renf_elem_addmul_ui(c, a, b, nf);
     /* c -= a * b */
-    renf_elem_submul(c, a, b, nf);
+    renf_elem_submul_ui(c, a, b, nf);
 
-    REQUIRE(renf_elem_is_zero(c, nf))
+    REQUIRE(renf_elem_is_zero(c, nf));
 
     renf_elem_clear(c, nf);
 }
@@ -309,14 +309,14 @@ TEST_CASE("Arithmetic with renf_elem and fmpz", "[renf_elem][binop]")
         REQUIRE(renf_elem_equal(c, a, nf));
     }
 
-    renf_elem_zero(c, nf)
+    renf_elem_zero(c, nf);
 
     /* c += a * b */
-    renf_elem_addmul(c, a, b, nf);
+    renf_elem_addmul_fmpz(c, a, b, nf);
     /* c -= a * b */
-    renf_elem_submul(c, a, b, nf);
+    renf_elem_submul_fmpz(c, a, b, nf);
 
-    REQUIRE(renf_elem_is_zero(c, nf))
+    REQUIRE(renf_elem_is_zero(c, nf));
 
     renf_elem_clear(c, nf);
 }
@@ -359,14 +359,14 @@ TEST_CASE("Arithmetic with renf_elem and fmpq", "[renf_elem][binop]")
         REQUIRE(renf_elem_equal(c, a, nf));
     }
 
-    renf_elem_zero(c, nf)
+    renf_elem_zero(c, nf);
 
     /* c += a * b */
-    renf_elem_addmul(c, a, b, nf);
+    renf_elem_addmul_fmpq(c, a, b, nf);
     /* c -= a * b */
-    renf_elem_submul(c, a, b, nf);
+    renf_elem_submul_fmpq(c, a, b, nf);
 
-    REQUIRE(renf_elem_is_zero(c, nf))
+    REQUIRE(renf_elem_is_zero(c, nf));
 
     renf_elem_clear(c, nf);
 }
