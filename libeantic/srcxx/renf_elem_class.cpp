@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <gmp.h>
 #include <flint/fmpq.h>
 #include <cstdlib>
 #include <functional>
