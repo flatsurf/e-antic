@@ -150,6 +150,60 @@ renf_elem_class& binop(renf_elem_class& lhs, const renf_elem_class& rhs)
     return lhs;
 }
 
+template <
+  void renf_op(renf_elem_t, const renf_elem_t, const renf_elem_t, const renf_t),
+  void fmpz_op(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t),
+  void fmpq_op(renf_elem_t, const renf_elem_t, const fmpq_t, const renf_t)
+>
+renf_elem_class& ternop(renf_elem_class& lhs, const renf_elem_class& a, const renf_elem_class& b)
+{
+    if (lhs.parent() == a.parent())
+    {
+        if (a.parent() == b.parent())
+        {
+            renf_op(lhs.renf_elem_t(), a.renf_elem_t(), b.renf_elem_t(), lhs.parent().renf_t());
+        }
+        else if (b.is_integer())
+        {
+            fmpz_op(lhs.renf_elem_t(), a.renf_elem_t(), renf_elem_get_fmpz(b.renf_elem_t(), b.parent().renf_t()), lhs.parent().renf_t());
+        }
+        else if (b.is_rational())
+        {
+            fmpq_t buffer;
+            fmpq_init(buffer);
+            fmpq_op(lhs.renf_elem_t(), a.renf_elem_t(), renf_elem_get_fmpq(buffer, b.renf_elem_t(), b.parent().renf_t()), lhs.parent().renf_t());
+            fmpq_clear(buffer);
+        }
+        else
+        {
+            throw std::logic_error("cannot perform arithmetic with element in different number fields");
+        }
+    }
+    else
+    {
+        // TODO
+        throw std::logic_error("not implemented: ternop lhs/a");
+    }
+    return lhs;
+}
+
+template <
+  typename Integer,
+  void op(renf_elem_t, const renf_elem_t, const Integer, const renf_t)
+>
+renf_elem_class& ternop_primitive(renf_elem_class& lhs, const renf_elem_class& a, const Integer b) {
+    if (lhs.parent() == a.parent())
+    {
+        op(lhs.renf_elem_t(), a.renf_elem_t(), b, lhs.parent().renf_t());
+    }
+    else
+    {
+        // TODO
+        throw std::logic_error("not implemented: ternop_primitive");
+    }
+    return lhs;
+}
+
 template <void op(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>
 renf_elem_class& binop_mpz(renf_elem_class& lhs, const mpz_class& rhs)
 {
@@ -157,6 +211,25 @@ renf_elem_class& binop_mpz(renf_elem_class& lhs, const mpz_class& rhs)
     fmpz_init_set_readonly(r, rhs.get_mpz_t());
     op(lhs.renf_elem_t(), lhs.renf_elem_t(), r, lhs.parent().renf_t());
     fmpz_clear_readonly(r);
+    return lhs;
+}
+
+template <
+  void op(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)
+>
+renf_elem_class& ternop_mpz(renf_elem_class& lhs, const renf_elem_class& a, const mpz_class& b) {
+    if (lhs.parent() == a.parent())
+    {
+        ::fmpz_t r;
+        fmpz_init_set_readonly(r, b.get_mpz_t());
+        op(lhs.renf_elem_t(), a.renf_elem_t(), r, lhs.parent().renf_t());
+        fmpz_clear_readonly(r);
+    }
+    else
+    {
+        // TODO
+        throw std::logic_error("not implemented: ternop_fmpz");
+    }
     return lhs;
 }
 
@@ -186,6 +259,25 @@ renf_elem_class& binop_mpq(renf_elem_class& lhs, const mpq_class& rhs)
     op(lhs.renf_elem_t(), lhs.renf_elem_t(), r, lhs.parent().renf_t());
     fmpq_clear_readonly(r);
 
+    return lhs;
+}
+
+template <
+  void op(renf_elem_t, const renf_elem_t, const fmpq_t, const renf_t)
+>
+renf_elem_class& ternop_mpq(renf_elem_class& lhs, const renf_elem_class& a, const mpq_class& b) {
+    if (lhs.parent() == a.parent())
+    {
+        ::fmpq_t r;
+        fmpq_init_set_readonly(r, b.get_mpq_t());
+        op(lhs.renf_elem_t(), a.renf_elem_t(), r, lhs.parent().renf_t());
+        fmpq_clear_readonly(r);
+    }
+    else
+    {
+        // TODO
+        throw std::logic_error("not implemented: ternop_fmpq");
+    }
     return lhs;
 }
 
@@ -243,6 +335,24 @@ renf_elem_class & binop_maybe_fmpz(renf_elem_class& lhs, Integer rhs, const std:
         [&](const fmpz_t v) { fmpz_op(lhs.renf_elem_t(), lhs.renf_elem_t(), v, lhs.parent().renf_t()); });
     return lhs;
 }
+
+template <typename Integer>
+renf_elem_class & ternop_maybe_fmpz(renf_elem_class& lhs, const renf_elem_class& a, Integer b, const std::function<void(renf_elem_t, const renf_elem_t, Supported<Integer>, const renf_t)>& op, const std::function<void(renf_elem_t, const renf_elem_t, const fmpz_t, const renf_t)>& fmpz_op)
+{
+    if (lhs.parent() == a.parent())
+    {
+        maybe_fmpz(b,
+            [&](auto v) { op(lhs.renf_elem_t(), a.renf_elem_t(), v, lhs.parent().renf_t()); },
+            [&](const fmpz_t v) { fmpz_op(lhs.renf_elem_t(), a.renf_elem_t(), v, lhs.parent().renf_t()); });
+    }
+    else
+    {
+        // TODO
+        throw std::logic_error("not implemented: ternop_maybe_fmpz");
+    }
+    return lhs;
+}
+
 
 template <typename Integer>
 bool relop_maybe_fmpz(const renf_elem_class& lhs, Integer rhs, const std::function<int(renf_elem_t, Supported<Integer>, renf_t)>& op)
@@ -940,6 +1050,14 @@ renf_elem_class & renf_elem_class::operator/=(const renf_elem_class & rhs)
     return binop<renf_elem_div, renf_elem_div_fmpz, renf_elem_div_fmpq>(*this, rhs);
 }
 
+renf_elem_class & renf_elem_class::iaddmul(const renf_elem_class & a, const renf_elem_class & b) {
+    return ternop<renf_elem_addmul, renf_elem_addmul_fmpz, renf_elem_addmul_fmpq>(*this, a, b);
+}
+
+renf_elem_class & renf_elem_class::isubmul(const renf_elem_class & a, const renf_elem_class & b) {
+    return ternop<renf_elem_submul, renf_elem_submul_fmpz, renf_elem_submul_fmpq>(*this, a, b);
+}
+
 mpz_class renf_elem_class::floordiv(const renf_elem_class& rhs) const
 {
     if (parent() != rhs.parent())
@@ -1039,6 +1157,16 @@ renf_elem_class& renf_elem_class::operator/=(short rhs)
     return *this /= static_cast<long>(rhs);
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, short b)
+{
+    return iaddmul(a, static_cast<long>(b));
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, short b)
+{
+    return isubmul(a, static_cast<long>(b));
+}
+
 bool operator==(const renf_elem_class& lhs, short rhs) {
     if (rhs == 0)
         return lhs.is_zero();
@@ -1073,6 +1201,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned short rhs)
     return *this /= static_cast<unsigned long>(rhs);
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, unsigned short b)
+{
+    return iaddmul(a, static_cast<unsigned long>(b));
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, unsigned short b)
+{
+    return isubmul(a, static_cast<unsigned long>(b));
+}
+
 bool operator==(const renf_elem_class& lhs, unsigned short rhs) {
     return lhs == static_cast<unsigned long>(rhs);
 }
@@ -1103,6 +1241,16 @@ renf_elem_class& renf_elem_class::operator*=(int rhs)
 renf_elem_class& renf_elem_class::operator/=(int rhs)
 {
     return *this /= static_cast<long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, int b)
+{
+    return iaddmul(a, static_cast<long>(b));
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, int b)
+{
+    return isubmul(a, static_cast<long>(b));
 }
 
 bool operator==(const renf_elem_class& lhs, int rhs) {
@@ -1137,6 +1285,16 @@ renf_elem_class& renf_elem_class::operator*=(unsigned int rhs)
 renf_elem_class& renf_elem_class::operator/=(unsigned int rhs)
 {
     return *this /= static_cast<unsigned long>(rhs);
+}
+
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, unsigned int b)
+{
+    return iaddmul(a, static_cast<unsigned long>(b));
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, unsigned int b)
+{
+    return isubmul(a, static_cast<unsigned long>(b));
 }
 
 bool operator==(const renf_elem_class& lhs, unsigned int rhs) {
@@ -1175,6 +1333,16 @@ renf_elem_class& renf_elem_class::operator/=(long rhs)
     return *this;
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, long b)
+{
+    return ternop_primitive<long, renf_elem_addmul_si>(*this, a, b);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, long b)
+{
+    return ternop_primitive<long, renf_elem_submul_si>(*this, a, b);
+}
+
 bool operator==(const renf_elem_class& lhs, long rhs) {
     return renf_elem_equal_si(lhs.renf_elem_t(), rhs, lhs.nf->renf_t());
 }
@@ -1209,6 +1377,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long rhs)
 {
     renf_elem_div_ui(renf_elem_t(), renf_elem_t(), rhs, nf->renf_t());
     return *this;
+}
+
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, unsigned long b)
+{
+    return ternop_primitive<unsigned long, renf_elem_addmul_ui>(*this, a, b);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, unsigned long b)
+{
+    return ternop_primitive<unsigned long, renf_elem_submul_ui>(*this, a, b);
 }
 
 bool operator==(const renf_elem_class& lhs, unsigned long rhs) {
@@ -1247,6 +1425,16 @@ renf_elem_class& renf_elem_class::operator/=(long long rhs)
     return *this;
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, long long b)
+{
+    return ternop_maybe_fmpz<long long>(*this, a, b, renf_elem_addmul_si, renf_elem_addmul_fmpz);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, long long b)
+{
+    return ternop_maybe_fmpz<long long>(*this, a, b, renf_elem_submul_si, renf_elem_submul_fmpz);
+}
+
 bool operator==(const renf_elem_class& lhs, long long rhs) {
     return relop_maybe_fmpz(lhs, rhs, renf_elem_equal_si);
 }
@@ -1283,6 +1471,16 @@ renf_elem_class& renf_elem_class::operator/=(unsigned long long rhs)
     return *this;
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, unsigned long long b)
+{
+    return ternop_maybe_fmpz<unsigned long long>(*this, a, b, renf_elem_addmul_ui, renf_elem_addmul_fmpz);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, unsigned long long b)
+{
+    return ternop_maybe_fmpz<unsigned long long>(*this, a, b, renf_elem_submul_ui, renf_elem_submul_fmpz);
+}
+
 bool operator==(const renf_elem_class& lhs, unsigned long long rhs) {
     return relop_maybe_fmpz(lhs, rhs, renf_elem_equal_ui);
 }
@@ -1315,6 +1513,16 @@ renf_elem_class& renf_elem_class::operator/=(const mpz_class& rhs)
     return binop_mpz<renf_elem_div_fmpz>(*this, rhs);
 }
 
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, const mpz_class& b)
+{
+    return ternop_mpz<renf_elem_addmul_fmpz>(*this, a, b);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, const mpz_class& b)
+{
+    return ternop_mpz<renf_elem_submul_fmpz>(*this, a, b);
+}
+
 bool operator==(const renf_elem_class& lhs, const mpz_class& rhs) {
     return relop_mpz(lhs, rhs, 0);
 }
@@ -1345,6 +1553,16 @@ renf_elem_class& renf_elem_class::operator*=(const mpq_class& rhs)
 renf_elem_class& renf_elem_class::operator/=(const mpq_class& rhs)
 {
     return binop_mpq<renf_elem_div_fmpq>(*this, rhs);
+}
+
+renf_elem_class& renf_elem_class::iaddmul(const renf_elem_class& a, const mpq_class& b)
+{
+    return ternop_mpq<renf_elem_addmul_fmpq>(*this, a, b);
+}
+
+renf_elem_class& renf_elem_class::isubmul(const renf_elem_class& a, const mpq_class& b)
+{
+    return ternop_mpq<renf_elem_submul_fmpq>(*this, a, b);
 }
 
 bool operator==(const renf_elem_class& lhs, const mpq_class& rhs) {

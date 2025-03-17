@@ -202,70 +202,70 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
     {
         renf_elem_class c(a);
 
-        c.iaddmul(static_cast<short>(2), a);
+        c.iaddmul(a, static_cast<short>(2));
         REQUIRE(c == 3 * a);
 
-        c.isubmul(static_cast<short>(2), a);
+        c.isubmul(a, static_cast<short>(2));
         REQUIRE(c == a);
 
-        c.iaddmul(static_cast<unsigned short>(2), a);
+        c.iaddmul(a, static_cast<unsigned short>(2));
         REQUIRE(c == 3 * a);
 
-        c.isubmul(static_cast<unsigned short>(2), a);
+        c.isubmul(a, static_cast<unsigned short>(2));
         REQUIRE(c == a);
 
-        c.iaddmul(2, a);
+        c.iaddmul(a, 2);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2, a);
+        c.isubmul(a, 2);
         REQUIRE(c == a);
 
-        c.iaddmul(2u, a);
+        c.iaddmul(a, 2u);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2u, a);
+        c.isubmul(a, 2u);
         REQUIRE(c == a);
 
-        c.iaddmul(2l, a);
+        c.iaddmul(a, 2l);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2l, a);
+        c.isubmul(a, 2l);
         REQUIRE(c == a);
 
-        c.iaddmul(2ul, a);
+        c.iaddmul(a, 2ul);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2ul, a);
+        c.isubmul(a, 2ul);
         REQUIRE(c == a);
 
-        c.iaddmul(2ll, a);
+        c.iaddmul(a, 2ll);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2ll, a);
+        c.isubmul(a, 2ll);
         REQUIRE(c == a);
 
-        c.iaddmul(2ull, a);
+        c.iaddmul(a, 2ull);
         REQUIRE(c == 3 * a);
 
-        c.isubmul(2ull, a);
+        c.isubmul(a, 2ull);
         REQUIRE(c == a);
 
-        c.iaddmul(mpz_class(2), a);
+        c.iaddmul(a, mpz_class(2));
         REQUIRE(c == 3 * a);
 
-        c.isubmul(mpz_class(2), a);
+        c.isubmul(a, mpz_class(2));
         REQUIRE(c == a);
 
-        c.iaddmul(mpq_class(2), a);
+        c.iaddmul(a, mpq_class(2));
         REQUIRE(c == 3 * a);
 
-        c.isubmul(mpq_class(2), a);
+        c.isubmul(a, mpq_class(2));
         REQUIRE(c == a);
 
-        c.iaddmul(renf_elem_class(2), a);
+        c.iaddmul(a, renf_elem_class(2));
         REQUIRE(c == 3 * a);
 
-        c.isubmul(renf_elem_class(2), a);
+        c.isubmul(a, renf_elem_class(2));
         REQUIRE(c == a);
     }
 
