@@ -1,6 +1,6 @@
 /*
     Copyright (C)      2017 Vincent Delecroix
-                  2020-2022 Julian Rüth
+                  2020-2025 Julian Rüth
 
     This file is part of e-antic
 
@@ -266,6 +266,52 @@ TEST_CASE("Arithmetic with renf_elem_class", "[renf_elem_class][binop]")
         REQUIRE(c == 3 * a);
 
         c.isubmul(a, renf_elem_class(2));
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(2), a);
+        REQUIRE(c == 3 * a);
+
+        c.isubmul(renf_elem_class(2), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), a);
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), a);
+        REQUIRE(c == 2 * a);
+
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), a);
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), a);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(1), 2);
+        c.isubmul(renf_elem_class(1), 2);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), 2);
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), 2);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(1), mpz_class(2));
+        c.isubmul(renf_elem_class(1), mpz_class(2));
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), mpz_class(2));
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), mpz_class(2));
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(1), mpq_class(2));
+        c.isubmul(renf_elem_class(1), mpq_class(2));
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), mpq_class(2));
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), mpz_class(2));
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(1), 2ll);
+        c.isubmul(renf_elem_class(1), 2ll);
+        REQUIRE(c == a);
+
+        c.iaddmul(renf_elem_class(mpq_class(1, 2)), 2ll);
+        c.isubmul(renf_elem_class(mpq_class(1, 2)), 2ll);
         REQUIRE(c == a);
     }
 

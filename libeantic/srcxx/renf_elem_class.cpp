@@ -179,10 +179,20 @@ renf_elem_class& ternop(renf_elem_class& lhs, const renf_elem_class& a, const re
             throw std::logic_error("cannot perform arithmetic with element in different number fields");
         }
     }
+    else if (a.is_integer())
+    {
+        ternop<renf_op, fmpz_op, fmpq_op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpz(a.renf_elem_t(), a.parent().renf_t())), b);
+    }
+    else if (a.is_rational())
+    {
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        ternop<renf_op, fmpz_op, fmpq_op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpq(buffer, a.renf_elem_t(), a.parent().renf_t())), b);
+        fmpq_clear(buffer);
+    }
     else
     {
-        // TODO
-        throw std::logic_error("not implemented: ternop lhs/a");
+        throw std::invalid_argument("arguments must be in the same number field");
     }
     return lhs;
 }
@@ -196,10 +206,20 @@ renf_elem_class& ternop_primitive(renf_elem_class& lhs, const renf_elem_class& a
     {
         op(lhs.renf_elem_t(), a.renf_elem_t(), b, lhs.parent().renf_t());
     }
+    else if(a.is_integer())
+    {
+        ternop_primitive<Integer, op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpz(a.renf_elem_t(), a.parent().renf_t())), b);
+    }
+    else if (a.is_rational())
+    {
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        ternop_primitive<Integer, op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpq(buffer, a.renf_elem_t(), a.parent().renf_t())), b);
+        fmpq_clear(buffer);
+    }
     else
     {
-        // TODO
-        throw std::logic_error("not implemented: ternop_primitive");
+        throw std::invalid_argument("arguments must be in the same number field");
     }
     return lhs;
 }
@@ -225,10 +245,20 @@ renf_elem_class& ternop_mpz(renf_elem_class& lhs, const renf_elem_class& a, cons
         op(lhs.renf_elem_t(), a.renf_elem_t(), r, lhs.parent().renf_t());
         fmpz_clear_readonly(r);
     }
+    else if(a.is_integer())
+    {
+        ternop_mpz<op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpz(a.renf_elem_t(), a.parent().renf_t())), b);
+    }
+    else if (a.is_rational())
+    {
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        ternop_mpz<op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpq(buffer, a.renf_elem_t(), a.parent().renf_t())), b);
+        fmpq_clear(buffer);
+    }
     else
     {
-        // TODO
-        throw std::logic_error("not implemented: ternop_fmpz");
+        throw std::invalid_argument("arguments must be in the same number field");
     }
     return lhs;
 }
@@ -273,10 +303,20 @@ renf_elem_class& ternop_mpq(renf_elem_class& lhs, const renf_elem_class& a, cons
         op(lhs.renf_elem_t(), a.renf_elem_t(), r, lhs.parent().renf_t());
         fmpq_clear_readonly(r);
     }
+    else if(a.is_integer())
+    {
+        ternop_mpq<op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpz(a.renf_elem_t(), a.parent().renf_t())), b);
+    }
+    else if (a.is_rational())
+    {
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        ternop_mpq<op>(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpq(buffer, a.renf_elem_t(), a.parent().renf_t())), b);
+        fmpq_clear(buffer);
+    }
     else
     {
-        // TODO
-        throw std::logic_error("not implemented: ternop_fmpq");
+        throw std::invalid_argument("arguments must be in the same number field");
     }
     return lhs;
 }
@@ -345,10 +385,20 @@ renf_elem_class & ternop_maybe_fmpz(renf_elem_class& lhs, const renf_elem_class&
             [&](auto v) { op(lhs.renf_elem_t(), a.renf_elem_t(), v, lhs.parent().renf_t()); },
             [&](const fmpz_t v) { fmpz_op(lhs.renf_elem_t(), a.renf_elem_t(), v, lhs.parent().renf_t()); });
     }
+    else if(a.is_integer())
+    {
+        ternop_maybe_fmpz(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpz(a.renf_elem_t(), a.parent().renf_t())), b, op, fmpz_op);
+    }
+    else if (a.is_rational())
+    {
+        fmpq_t buffer;
+        fmpq_init(buffer);
+        ternop_maybe_fmpz(lhs, renf_elem_class(lhs.parent(), renf_elem_get_fmpq(buffer, a.renf_elem_t(), a.parent().renf_t())), b, op, fmpz_op);
+        fmpq_clear(buffer);
+    }
     else
     {
-        // TODO
-        throw std::logic_error("not implemented: ternop_maybe_fmpz");
+        throw std::invalid_argument("arguments must be in the same number field");
     }
     return lhs;
 }
