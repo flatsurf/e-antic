@@ -117,3 +117,17 @@ LIBEANTIC_1.0.0 {
     fmpz_poly_squarefree_part;
   local: *;
 };
+
+LIBEANTIC_2.1.0 {
+  global:
+    renf_elem_addmul;
+    renf_elem_addmul_fmpq;
+    renf_elem_addmul_fmpz;
+    renf_elem_addmul_si;
+    renf_elem_addmul_ui;
+    renf_elem_submul;
+    renf_elem_submul_fmpq;
+    renf_elem_submul_fmpz;
+    renf_elem_submul_si;
+    renf_elem_submul_ui;
+} LIBEANTIC_1.0.0;
