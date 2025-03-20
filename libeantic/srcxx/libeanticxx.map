@@ -197,3 +197,30 @@ LIBEANTICXX_1.3.0 {
       "eantic::operator>(eantic::renf_elem_class const&, unsigned short)";
     };
 } LIBEANTICXX_1.1.0;
+LIBEANTICXX_2.1.0 {
+  global:
+    extern "C++" {
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, eantic::renf_elem_class const&)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, int)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, long long)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, long)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, short)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, unsigned int)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, unsigned long long)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, unsigned long)";
+      "eantic::renf_elem_class::iaddmul(eantic::renf_elem_class const&, unsigned short)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, eantic::renf_elem_class const&)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, int)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, long long)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, long)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, short)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, unsigned int)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, unsigned long long)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, unsigned long)";
+      "eantic::renf_elem_class::isubmul(eantic::renf_elem_class const&, unsigned short)";
+    };
+} LIBEANTICXX_1.3.0;

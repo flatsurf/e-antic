@@ -382,7 +382,7 @@ public:
     explicit operator bool() const;
 
     /// \name Arithmetic in the Number Field
-    /// ELements in a number field support the usual arithmetic operators `+`, `-`, `*`, `/`.
+    /// Elements in a number field support the usual arithmetic operators `+`, `-`, `*`, `/`.
     /// Internally, these operators are derived from the corresponding inplace
     /// operators `+=`, `-=`, `*=`, `/=`. Note that arithmetic between elements
     /// in different number fields is currently only supported in trivial
@@ -392,6 +392,38 @@ public:
     renf_elem_class & operator-=(const renf_elem_class &);
     renf_elem_class & operator*=(const renf_elem_class &);
     renf_elem_class & operator/=(const renf_elem_class &);
+    ///@}
+
+    /// Add `a*b` to this element and return this element.
+    /// This is more efficient than `x += a*b` which creates more temporaries.
+    ///@{
+    renf_elem_class & iaddmul(const renf_elem_class & a, const renf_elem_class & b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, short b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, unsigned short b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, int b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, unsigned int b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, long b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, unsigned long b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, long long b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, unsigned long long b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, const mpz_class & b);
+    renf_elem_class & iaddmul(const renf_elem_class & a, const mpq_class & b);
+    ///@}
+
+    /// Subtract `a*b` from this element and return this element.
+    /// This is more efficient than `x -= a*b` which creates more temporaries.
+    ///@{
+    renf_elem_class & isubmul(const renf_elem_class&, const renf_elem_class&);
+    renf_elem_class & isubmul(const renf_elem_class&, short);
+    renf_elem_class & isubmul(const renf_elem_class&, unsigned short);
+    renf_elem_class & isubmul(const renf_elem_class&, int);
+    renf_elem_class & isubmul(const renf_elem_class&, unsigned int);
+    renf_elem_class & isubmul(const renf_elem_class&, long);
+    renf_elem_class & isubmul(const renf_elem_class&, unsigned long);
+    renf_elem_class & isubmul(const renf_elem_class&, long long);
+    renf_elem_class & isubmul(const renf_elem_class&, unsigned long long);
+    renf_elem_class & isubmul(const renf_elem_class&, const mpz_class&);
+    renf_elem_class & isubmul(const renf_elem_class&, const mpq_class&);
     ///@}
 
     /// \name Relational Operators

@@ -83,6 +83,11 @@ libeantic_la_SOURCES +=                        \
     renf_elem/add_fmpz.c                       \
     renf_elem/add_si.c                         \
     renf_elem/add_ui.c                         \
+    renf_elem/addmul.c                         \
+    renf_elem/addmul_fmpq.c                    \
+    renf_elem/addmul_fmpz.c                    \
+    renf_elem/addmul_si.c                      \
+    renf_elem/addmul_ui.c                      \
     renf_elem/check_embedding.c                \
     renf_elem/clear.c                          \
     renf_elem/cmp.c                            \
@@ -142,6 +147,11 @@ libeantic_la_SOURCES +=                        \
     renf_elem/sub_fmpz.c                       \
     renf_elem/sub_si.c                         \
     renf_elem/sub_ui.c                         \
+    renf_elem/submul.c                         \
+    renf_elem/submul_fmpq.c                    \
+    renf_elem/submul_fmpz.c                    \
+    renf_elem/submul_si.c                      \
+    renf_elem/submul_ui.c                      \
     renf_elem/zero.c
 
 # We generate local.h in the Makefile (not in configure) as recommended by
