@@ -1,5 +1,7 @@
 noinst_PROGRAMS = benchmark
 
+benchmark_CPPFLAGS = -I$(builddir)/..
+
 benchmark_SOURCES = main.cpp renfxx/b-constructor.cpp renfxx/b-arithmetic.cpp renfxx/b-relop.cpp renfxx/b-assignment.cpp
 
 benchmark_LDADD = $(builddir)/../srcxx/libeanticxx.la $(builddir)/../src/libeantic.la
