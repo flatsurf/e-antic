@@ -47,6 +47,12 @@ jobs:
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-13" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-103", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-103", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "macos-13" }
         - { task: "test-pyeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "macos-13" }
