@@ -40,7 +40,13 @@ int main(void)
         a.get_renf_elem();
     }
 
+#ifdef FLINT_TEST_CLEAR
+    FLINT_TEST_CLEAR(state)
+#else
+    // FLINT <3.2.2 calls this macro FLINT_TEST_CLEAR instead of FLINT_TEST_CLEANUP
     FLINT_TEST_CLEANUP(state)
+#endif
+
     return 0;
 }
 
