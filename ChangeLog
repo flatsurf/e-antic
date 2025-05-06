@@ -4,6 +4,30 @@ e-antic Change Log
 
 .. current developments
 
+v2.1.0
+====================
+
+**Added:**
+
+* Added functions ``renf_elem_addmul`` and ``renf_elem_submul`` to compute ``res += a * b`` and ``res -= a * b`` with fewer temporaries. In the C++ interface, these methods are called ``iaddmul`` and ``isubmul``.
+
+**Changed:**
+
+* Changed the documentation build to use breathe & sphinx instead of standardese & sphinx.
+* Changed the recommended setup for developers to use pixi instead of conda/mamba. See the README for details.
+* Changed ``configure`` to not complain when test-requirements such as byexample, benchmark, realalg, or SageMath are missing. (The tests are included if the dependencies are detected but just disabled otherwise without the need for ``--without-byexample --without-benchmark --without-sage --without-realalg``.)
+
+**Removed:**
+
+* Removed binder demo from our README (we do not think that anybody has been using it never really worked great.)
+
+**Fixed:**
+
+* Fixed build issues with FLINT 3.2.2.
+* Fixed dependency tracking when ``configure`` is rerun with different compiler flags by tracking config.h in all source files.
+
+
+
 v2.0.2
 ====================
 
