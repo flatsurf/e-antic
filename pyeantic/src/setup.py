@@ -23,7 +23,7 @@ class vpath_egg_info(egg_info):
 
 setup(
     name='pyeantic',
-    version='2.0.2',
+    version='2.1.0',
     packages=['pyeantic'],
     license='GPL 2.0+',
     install_requires=[

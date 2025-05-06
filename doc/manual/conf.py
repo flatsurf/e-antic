@@ -8,7 +8,7 @@ BUILDDIR = Path(os.environ.get('ABS_BUILDDIR', '.')).absolute()
 project = 'pyeantic'
 copyright = '2021-2024, the e-antic authors'
 
-release = '2.0.2'
+release = '2.1.0'
 
 extensions = [
     'sphinx.ext.autodoc',

@@ -16,9 +16,9 @@
 /* e-antic version number */
 
 #define E_ANTIC_VERSION_MAJOR 2
-#define E_ANTIC_VERSION_MINOR 0
-#define E_ANTIC_VERSION_PATCHLEVEL 2
-#define E_ANTIC_VERSION "2.0.2"
+#define E_ANTIC_VERSION_MINOR 1
+#define E_ANTIC_VERSION_PATCHLEVEL 0
+#define E_ANTIC_VERSION "2.1.0"
 #define E_ANTIC_RELEASE (E_ANTIC_VERSION_MAJOR * 10000 + \
                            E_ANTIC_VERSION_MINOR * 100 + \
                            E_ANTIC_VERSION_PATCHLEVEL)

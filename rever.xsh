@@ -84,11 +84,9 @@ $VERSION_BUMP_PATTERNS = [
     ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_MINOR', rf'#define E_ANTIC_VERSION_MINOR {MINOR}'),
     ('libeantic/e-antic/local.h.in', r'#define E_ANTIC_VERSION_PATCHLEVEL', rf'#define E_ANTIC_VERSION_PATCHLEVEL {PATCH}'),
     ('pyeantic/configure.ac', r'AC_INIT', r'AC_INIT([pyeantic], [$VERSION], [julian.rueth@fsfe.org])'),
-    ('pyeantic/src/setup.py', r'version=', r"version='$VERSION'"),
+    ('pyeantic/src/setup.py', r'version=', r"version='$VERSION',"),
     ('doc/configure.ac', r'AC_INIT', r'AC_INIT([e-antic-doc], [$VERSION], [vincent.delecroix@math.cnrs.fr])'),
     ('doc/manual/conf.py', r'release =', "release = '$VERSION'"),
-    ('README.md', r'\* \*\*libeantic\*\* \[!\[Binder\]', r'* **libeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.libeantic.ipynb)'),
-    ('README.md', r'\* \*\*pyeantic\*\* \[!\[Binder\]', r'* **pyeantic** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/e-antic/$VERSION?filepath=binder%2FSample.pyeantic.ipynb)'),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
