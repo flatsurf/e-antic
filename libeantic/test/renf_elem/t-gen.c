@@ -62,7 +62,13 @@ int main(void)
         fmpq_clear(d);
     }
 
+#ifdef FLINT_TEST_CLEAR
+    FLINT_TEST_CLEAR(state)
+#else
+    // FLINT <3.2.2 calls this macro FLINT_TEST_CLEAR instead of FLINT_TEST_CLEANUP
     FLINT_TEST_CLEANUP(state)
+#endif
+
     printf("PASS\n");
     return 0;
 }
