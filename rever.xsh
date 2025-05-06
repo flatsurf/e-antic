@@ -1,7 +1,7 @@
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2020-2021 Julian Rüth
+#        Copyright (C) 2020-2025 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -21,11 +21,15 @@ import sys
 from packaging import version
 
 from rever.activity import activity
+from rever.activities.command import command
+
 
 try:
   input("Are you sure you are on the master branch which is identical to origin/master and the only pending changes are a version_info bump in configure.ac? [ENTER]")
 except KeyboardInterrupt:
   sys.exit(1)
+
+command('pixi', 'pixi install --manifest-path "$PWD/pyproject.toml" -e dev')
 
 @activity
 def dist():
@@ -65,6 +69,7 @@ $PROJECT = 'e-antic'
 
 $ACTIVITIES = [
     'version_bump',
+    'pixi',
     'changelog',
     'dist',
     'doc',

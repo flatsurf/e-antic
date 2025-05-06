@@ -20600,8 +20600,8 @@ packages:
   timestamp: 1719344980505
 - pypi: pyeantic/src
   name: pyeantic
-  version: 2.0.2
-  sha256: ac334ab184fa9c9fc10a9d31a6ec1d7dd36138045ad1536f9594c137c0c5dcc7
+  version: 2.1.0
+  sha256: 94fa0c410c5ab9dbf6bfde83215b654afe60b670bd8f73aeb9748a36a2166e10
   requires_dist:
   - cppyy
   - cppyythonizations
