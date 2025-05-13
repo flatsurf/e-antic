@@ -14,7 +14,7 @@ parsing for us.
 ######################################################################
 #  This file is part of e-antic.
 #
-#        Copyright (C) 2021 Julian Rüth
+#        Copyright (C) 2021-2025 Julian Rüth
 #
 #  e-antic is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -87,6 +87,23 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
     def __repr__(self): return "/// ``` ... ```"
+
+
+class RSTCppDelimiter(ZoneDelimiter):
+    r"""
+    Detects C/C++ examples in reStructuredText.
+    """
+    target = {'.rst'}
+
+    @constant
+    def zone_regex(self):
+        return re.compile(r'''
+            ^\.\.[ ]code-block::[ ](c|cpp)$  # start with a .. code-block:: c(pp) marker
+            (?P<zone>.*?)
+            (?=^\S)  # the block ends when the indentation ends
+            ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
+
+    def __repr__(self): return ".. code-block:: c or .. code-block:: cpp"
 
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
