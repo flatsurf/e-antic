@@ -8,13 +8,10 @@ name = "e-antic"
 platforms = ["linux-64", "osx-64"]
 
 [environments]
-libeantic-flint-26 = ["libeantic", "flint-26"]
-libeantic-flint-27 = ["libeantic", "flint-27"]
-libeantic-flint-28 = ["libeantic", "flint-28"]
-libeantic-flint-29 = ["libeantic", "flint-29"]
 libeantic-flint-30 = ["libeantic", "flint-30"]
 libeantic-flint-31 = ["libeantic", "flint-31"]
 libeantic-flint-32 = ["libeantic", "flint-32"]
+libeantic-flint-33 = ["libeantic", "flint-33"]
 libeantic-normaliz-integration = ["normaliz-integration", "integration", "libeantic", "flint-30"]
 pyeantic-sagemath-92 = ["libeantic", "pyeantic", "sagemath-92"]
 pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93"]
@@ -353,26 +350,6 @@ linkchecker = "*"
 breathe = ">=4.35.0"
 doxygen = "*"
 
-[feature.flint-26.dependencies]
-libflint = "2.6.*"
-antic = "*"
-arb = "*"
-
-[feature.flint-27.dependencies]
-libflint = "2.7.*"
-antic = "*"
-arb = "*"
-
-[feature.flint-28.dependencies]
-libflint = "2.8.*"
-antic = "*"
-arb = "*"
-
-[feature.flint-29.dependencies]
-libflint = "2.9.*"
-antic = "*"
-arb = "*"
-
 [feature.flint-30.dependencies]
 libflint = "3.0.*"
 
@@ -381,6 +358,9 @@ libflint = "3.1.*"
 
 [feature.flint-32.dependencies]
 libflint = "3.2.*"
+
+[feature.flint-33.dependencies]
+libflint = "3.3.*"
 
 [feature.sagemath-92.dependencies]
 # SageMath 9.2 shipped with Python 3.8 so we make sure that these compatible versions are installed.
