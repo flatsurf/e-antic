@@ -11,8 +11,8 @@ jobs:
   test-normaliz:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with: { submodules: recursive }
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.9.3
         with: { pixi-version: v0.42.1 }
       - run: pixi run -e libeantic-normaliz-integration check-normaliz
