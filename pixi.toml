@@ -306,7 +306,7 @@ boost-cpp = "*"
 
 [feature.pyeantic.dependencies]
 python = "*"
-cppyy = "*"
+cppyy = ">=3.1.2"
 cppyythonizations = "*"
 pytest = "*"
 setuptools = "*"

@@ -27,7 +27,7 @@ setup(
     packages=['pyeantic'],
     license='GPL 2.0+',
     install_requires=[
-        'cppyy',
+        'cppyy>=3.1.2',
         'cppyythonizations',
     ],
     long_description=open(os.path.join(os.path.dirname(__file__), '../../README.md')).read(),
