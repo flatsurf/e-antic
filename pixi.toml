@@ -302,7 +302,7 @@ c-compiler = "*"
 cxx-compiler = "*"
 gmp = "*"
 libflint = "*"
-boost-cpp = "*"
+libboost-headers = "*"
 
 [feature.pyeantic.dependencies]
 python = "*"
