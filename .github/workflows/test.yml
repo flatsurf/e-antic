@@ -69,7 +69,8 @@ jobs:
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-15" }
+        # SageMath 10.4 fails to resolve some symbols in the linbox stack, https://github.com/conda-forge/sagelib-feedstock/issues/209
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-15" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "macos-15" }
