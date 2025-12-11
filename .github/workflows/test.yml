@@ -35,17 +35,21 @@ jobs:
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15-intel" }
+        # SageMath 9.3 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15-intel" }
+        # SageMath 9.4 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15-intel" }
+        # SageMath 9.5 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15-intel" }
+        # SageMath 9.6 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "macos-15" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "macos-15-intel" }
