@@ -13,49 +13,79 @@ jobs:
     strategy:
       matrix:
         include:
-        - { task: "test-libeantic", environment: "libeantic-flint-26", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-26", on: "macos-13" }
         - { task: "test-libeantic", environment: "libeantic-flint-27", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-27", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-27", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-27", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-28", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-28", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-28", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-28", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-29", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-29", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-29", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-29", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-30", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-30", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-30", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-30", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-31", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-31", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-31", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-31", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-32", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-32", on: "macos-13" }
+        - { task: "test-libeantic", environment: "libeantic-flint-32", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-32", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-92", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "ubuntu-24.04" }
+        # SageMath 9.3 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-93", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "ubuntu-24.04" }
+        # SageMath 9.4 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-94", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "ubuntu-24.04" }
+        # SageMath 9.5 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-95", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "ubuntu-24.04" }
+        # SageMath 9.6 is only compatible with old builds of cppyy 3.1.2 which are not functional with the 10.15 macOS SDK
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15" }
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-96", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-97", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-98", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-98", on: "macos-13" }
+        # SageMath 9.8 fails to resolve some symbols in the linbox stack, https://github.com/conda-forge/sagelib-feedstock/issues/209
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-98", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-98", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-100", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-100", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-100", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-100", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-101", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-101", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-101", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-101", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-103", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-103", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-102", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-13" }
+        # SageMath 10.4 fails to resolve some symbols in the linbox stack, https://github.com/conda-forge/sagelib-feedstock/issues/209
+        # - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-104", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-105", on: "macos-15-intel" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "ubuntu-24.04" }
-        - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "macos-13" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-106", on: "macos-15-intel" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "macos-15-intel" }
         - { task: "test-pyeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "ubuntu-24.04" }
-        - { task: "distcheck", environment: "dev", on: "macos-13" }
+        - { task: "distcheck", environment: "dev", on: "macos-15" }
+        - { task: "distcheck", environment: "dev", on: "macos-15-intel" }
     steps:
       - uses: actions/checkout@v5
         with: { submodules: recursive }
