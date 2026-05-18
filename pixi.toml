@@ -1,7 +1,7 @@
 # This file describes the [pixi](https://pixi.sh) interface to e-antic, see the
 # README for how to use pixi with e-antic.
 
-[project]
+[workspace]
 channels = ["conda-forge"]
 description = "(Real Embedded) Algebraic Number Theory"
 name = "e-antic"
