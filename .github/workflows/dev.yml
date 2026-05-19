@@ -12,12 +12,12 @@ jobs:
     runs-on: ${{ matrix.on }}
     strategy:
       matrix:
-        on: ["ubuntu-24.04", "macos-13"]
+        on: ["ubuntu-24.04", "macos-15-intel"]
     steps:
     - uses: actions/checkout@v5
       with: { submodules: recursive }
-    - uses: prefix-dev/setup-pixi@v0.9.1
-      with: { pixi-version: v0.42.1 }
+    - uses: prefix-dev/setup-pixi@v0.9.4
+      with: { pixi-version: v0.68.0 }
     - run: pixi run build
     - run: pixi run compile-commands
     - run: pixi run sage -c 'import pyeantic'
