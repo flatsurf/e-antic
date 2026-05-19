@@ -1,7 +1,7 @@
 # This file describes the [pixi](https://pixi.sh) interface to e-antic, see the
 # README for how to use pixi with e-antic.
 
-[project]
+[workspace]
 channels = ["conda-forge"]
 description = "(Real Embedded) Algebraic Number Theory"
 name = "e-antic"
@@ -40,22 +40,21 @@ env-coverage = ["coverage", "libeantic", "pyeantic"]
 ##############
 [activation.env]
 MAKEFLAGS = "-j$(nproc)"
-CFLAGS = "-g3"
-CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+CFLAGS = "$CFLAGS -g3"
+CXXFLAGS = "$CXXFLAGS -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
 
 [feature.address-sanitizer.activation.env]
-CFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
-CXXFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
-LDFLAGS = "-fsanitize=address"
+CFLAGS = "$CFLAGS -fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "$CXXFLAGS -fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
 
 [feature.undefined-sanitizer.activation.env]
-CFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
-CXXFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
-LDFLAGS = "-fsanitize=undefined"
+CFLAGS = "$CFLAGS -fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "$CXXFLAGS -fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
 
 [feature.coverage.activation.env]
-CFLAGS = "-coverage -O0 -UNDEBUG"
-CXXFLAGS = "-coverage -O0 -UNDEBUG"
+CFLAGS = "$CFLAGS -coverage -O0 -UNDEBUG"
+CXXFLAGS = "$CXXFLAGS -coverage -O0 -UNDEBUG"
+LIBS = "-lgcov"
 
 #########
 # TASKS #
