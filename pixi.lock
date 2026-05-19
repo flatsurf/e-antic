@@ -7204,10 +7204,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cddlib-1!0.94m-h9202a9a_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cliquer-1.22-hd590300_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/coreutils-9.5-hd590300_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-3.1.2-py310hee898a9_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-backend-1.15.2-py310hd41b1e2_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.30.0-py310h6f61cdf_7.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/cpycppyy-1.12.16-py310hd41b1e2_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-3.5.0-py310haaf941d_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-backend-1.15.3-py310haaf941d_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.32.8-py310he394c10_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/cpycppyy-1.13.0-py310haaf941d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cxx-compiler-1.8.0-h1a2810e_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cypari2-2.1.3-py310h75a4d73_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cysignals-1.11.2-py310h15010d2_0.tar.bz2
@@ -7451,10 +7451,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cliquer-1.22-h10d778d_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/compiler-rt-17.0.6-h1020d70_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-3.1.2-py310h114de30_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-backend-1.15.2-py310hb3b189b_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.30.0-py310hd1ac7de_7.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/cpycppyy-1.12.16-py310hb3b189b_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-3.5.0-py310h355fb9f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-backend-1.15.3-py310h355fb9f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.32.8-py310hc91e259_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/cpycppyy-1.13.0-py310h355fb9f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cxx-compiler-1.8.0-h385f146_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cypari2-2.1.3-py310h479fb02_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cysignals-1.11.2-py310h13c92f6_0.tar.bz2
@@ -7495,7 +7495,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libcblas-3.9.0-25_osx64_openblas.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libclang-cpp17-17.0.6-default_hb173f14_7.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libcurl-8.10.1-h58e7537_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/libcxx-17.0.6-h98a8b60_6.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/libcxx-22.1.5-h19cb2f5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libcxx-devel-17.0.6-h8f8a49f_6.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libdeflate-1.22-h00291cd_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libedit-3.1.20191231-h0678c8f_2.tar.bz2
@@ -8653,6 +8653,24 @@ packages:
   - pkg:pypi/cppyy?source=hash-mapping
   size: 54943
   timestamp: 1704913352511
+- conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-3.5.0-py310haaf941d_0.conda
+  sha256: 3e5d85cb402e5cf3ea0dbe905fe889269dbec33ce02fc2efef96b9e5b4691f8f
+  md5: e54d05b62b125e94b2f95a7ebaa8dab9
+  depends:
+  - python
+  - cpycppyy ==1.13.0
+  - cppyy-backend ==1.15.3
+  - cppyy-cling ==6.32.8
+  - libstdcxx >=14
+  - libgcc >=14
+  - __glibc >=2.17,<3.0.a0
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy?source=hash-mapping
+  size: 59132
+  timestamp: 1765417307606
 - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-3.5.0-py311h724c32c_0.conda
   sha256: 16f08985bcf1d5dd6de28773ef77230b3b26e786b01b006f4748844bda32ff51
   md5: 963f596e72a8031fd636d85844242bc1
@@ -8749,6 +8767,22 @@ packages:
   - pkg:pypi/cppyy-backend?source=hash-mapping
   size: 103996
   timestamp: 1704858126488
+- conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-backend-1.15.3-py310haaf941d_0.conda
+  sha256: a1c6952a5b35b8fe11b7cd23399de46a74da6662a64bed1cf65996ce1845167a
+  md5: 815144873e34091d6c026a972e6c06ea
+  depends:
+  - python
+  - cppyy-cling ==6.32.8
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=14
+  - libgcc >=14
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy-backend?source=hash-mapping
+  size: 124410
+  timestamp: 1765409394541
 - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-backend-1.15.3-py311h724c32c_0.conda
   sha256: e55a9e8f046e533412da87ab4af380f10709cc65e121b488bdbb48d971d42132
   md5: a53d5122c1d8d7e6e23521963c27c212
@@ -8797,23 +8831,6 @@ packages:
   - pkg:pypi/cppyy-cling?source=hash-mapping
   size: 147116064
   timestamp: 1704856279668
-- conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.30.0-py310h6f61cdf_7.conda
-  sha256: c8357bcf7cf4e7626bc41851ddf110b0ea05fd318733a03f8a9990c3ba77f3e5
-  md5: b7d5b4e3e493e5e658bafe2151aca9d4
-  depends:
-  - __glibc >=2.17,<3.0.a0
-  - cxx-compiler
-  - libgcc >=13
-  - libstdcxx >=13
-  - libzlib >=1.3.1,<2.0a0
-  - python >=3.10,<3.11.0a0
-  - python_abi 3.10.* *_cp310
-  license: BSD-3-Clause
-  license_family: BSD
-  purls:
-  - pkg:pypi/cppyy-cling?source=hash-mapping
-  size: 144501958
-  timestamp: 1725345804316
 - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.30.0-py312haa6783c_7.conda
   sha256: 8df510576e95ca2ee68b16fa76a36d3cf438d15692f216caf2c4b29385c8e66a
   md5: fb8c2153bc2ea42faae5d4160d8335c6
@@ -8863,6 +8880,23 @@ packages:
   - pkg:pypi/cppyy-cling?source=hash-mapping
   size: 145874961
   timestamp: 1704856000441
+- conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.32.8-py310he394c10_0.conda
+  sha256: 55100858c00c151b4c7f283e54a6709a03d045fc6e0566110fd57f69454d26b2
+  md5: 915855d15b4722aa909789f1f3ff2250
+  depends:
+  - cxx-compiler
+  - python
+  - libstdcxx >=14
+  - libgcc >=14
+  - __glibc >=2.17,<3.0.a0
+  - libzlib >=1.3.1,<2.0a0
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy-cling?source=hash-mapping
+  size: 54353662
+  timestamp: 1765368931498
 - conda: https://conda.anaconda.org/conda-forge/linux-64/cppyy-cling-6.32.8-py311h3cbf42d_0.conda
   sha256: 20186c81aac7cf786219b2b98ea32b535b74a63aa090c3534b9d8c493a4d7386
   md5: b026894569d44541078c8fc1c7afbbcd
@@ -8961,6 +8995,23 @@ packages:
   - pkg:pypi/cpycppyy?source=hash-mapping
   size: 358187
   timestamp: 1704870560045
+- conda: https://conda.anaconda.org/conda-forge/linux-64/cpycppyy-1.13.0-py310haaf941d_0.conda
+  sha256: 47f54551686f3163250d01cbff56be60b6b858059a61b26b2602cd6754537208
+  md5: b79f5b82dd9e7b3fa229b071a82f7994
+  depends:
+  - python
+  - cppyy-backend ==1.15.3
+  - cppyy-cling ==6.32.8
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=14
+  - libgcc >=14
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cpycppyy?source=hash-mapping
+  size: 414765
+  timestamp: 1765412753536
 - conda: https://conda.anaconda.org/conda-forge/linux-64/cpycppyy-1.13.0-py311h724c32c_0.conda
   sha256: 3d83e6d4ca27df5a947dd8159e4a7e89257ab3d85053e6351390e96cb7c4e375
   md5: f747f7313c3bad328e49e48ba67ece80
@@ -18435,6 +18486,23 @@ packages:
   - pkg:pypi/cppyy?source=hash-mapping
   size: 55195
   timestamp: 1704913530692
+- conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-3.5.0-py310h355fb9f_0.conda
+  sha256: c8869da2efc8329221aa9a9670b8dfd15b89be64b44e910f48c33d484f876abd
+  md5: dff4228259ae8223a1a52a111a069095
+  depends:
+  - python
+  - cpycppyy ==1.13.0
+  - cppyy-backend ==1.15.3
+  - cppyy-cling ==6.32.8
+  - libcxx >=19
+  - __osx >=10.13
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy?source=hash-mapping
+  size: 61494
+  timestamp: 1765417335109
 - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-3.5.0-py311h591569d_0.conda
   sha256: 7304ab2f0ad1bd1f1567e06d69e5ac0cd25a14c1260ecfc7dab8974abc2f9ace
   md5: 7ad8bd15ce749b50d223a29a01378019
@@ -18525,6 +18593,21 @@ packages:
   - pkg:pypi/cppyy-backend?source=hash-mapping
   size: 69188
   timestamp: 1704858309950
+- conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-backend-1.15.3-py310h355fb9f_0.conda
+  sha256: 6551a3dc1b3fa85a94ae2dc7a7ec615253c28858596261330e07a82697c91393
+  md5: d149ce73be8d7a815dadd3b8f074076b
+  depends:
+  - python
+  - cppyy-cling ==6.32.8
+  - __osx >=10.13
+  - libcxx >=19
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy-backend?source=hash-mapping
+  size: 83593
+  timestamp: 1765409403530
 - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-backend-1.15.3-py311h591569d_0.conda
   sha256: 327c7908b52fcb3b2470842a8010ee58b76b17801786feabdedd7aaa896be561
   md5: 97867e2f5ee8adf84ccdfe930a453129
@@ -18570,23 +18653,6 @@ packages:
   - pkg:pypi/cppyy-cling?source=hash-mapping
   size: 119404639
   timestamp: 1704856491550
-- conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.30.0-py310hd1ac7de_7.conda
-  sha256: 16a8d8f4a6029562a6f06a546a4b6836662aaad7f61c9b47b2a59c2b6e5ea8a2
-  md5: 880117ef4f9ad2f7762c36f9d3526b79
-  depends:
-  - __osx >=10.13
-  - cxx-compiler
-  - libcxx 17.*
-  - libcxx >=17
-  - libzlib >=1.3.1,<2.0a0
-  - python >=3.10,<3.11.0a0
-  - python_abi 3.10.* *_cp310
-  license: BSD-3-Clause
-  license_family: BSD
-  purls:
-  - pkg:pypi/cppyy-cling?source=hash-mapping
-  size: 118901527
-  timestamp: 1725349121906
 - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.30.0-py312hf5449ee_7.conda
   sha256: db557b8455c2e2295610b96140aa378c04a32d4cb44f71e5377901458fb198ba
   md5: 15f3b41c4b5ba642f4efe48d0c6429a9
@@ -18634,6 +18700,23 @@ packages:
   - pkg:pypi/cppyy-cling?source=hash-mapping
   size: 118410789
   timestamp: 1704856390061
+- conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.32.8-py310hc91e259_0.conda
+  sha256: dc1867cfcb1734b7c96e98ad463372b39e33503c9a60889c94f851b583db1222
+  md5: 9e7ac1c0ceff9a5e096c6b8600847dee
+  depends:
+  - cxx-compiler
+  - python
+  - libcxx-devel <19
+  - __osx >=10.13
+  - libcxx >=17
+  - libzlib >=1.3.1,<2.0a0
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cppyy-cling?source=hash-mapping
+  size: 40047137
+  timestamp: 1765368736604
 - conda: https://conda.anaconda.org/conda-forge/osx-64/cppyy-cling-6.32.8-py311h99166f2_0.conda
   sha256: 95fc493bc83ee6eb3a75582cab3afe901511a5790675be5d1d37f9256b24a9c4
   md5: 86dfca67cef4b32ae2b106bf9c2820b7
@@ -18728,6 +18811,22 @@ packages:
   - pkg:pypi/cpycppyy?source=hash-mapping
   size: 275780
   timestamp: 1704870952437
+- conda: https://conda.anaconda.org/conda-forge/osx-64/cpycppyy-1.13.0-py310h355fb9f_0.conda
+  sha256: 3ef1734d68b560d13cdb846f73015b326b2a3280983fabafcee3f193c18b5a51
+  md5: ec33e4c672df94118dab48197c379a52
+  depends:
+  - python
+  - cppyy-backend ==1.15.3
+  - cppyy-cling ==6.32.8
+  - __osx >=10.13
+  - libcxx >=19
+  - python_abi 3.10.* *_cp310
+  license: BSD-3-Clause
+  license_family: BSD
+  purls:
+  - pkg:pypi/cpycppyy?source=hash-mapping
+  size: 330472
+  timestamp: 1765412763272
 - conda: https://conda.anaconda.org/conda-forge/osx-64/cpycppyy-1.13.0-py311h591569d_0.conda
   sha256: cde77ffcf8c3f7fe964ea8d17955b777cea9ee15efbd893a7f90c0cd404f0912
   md5: e4fb035e2e001437a82f907221b0997b
