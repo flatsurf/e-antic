@@ -13,9 +13,6 @@ jobs:
     strategy:
       matrix:
         include:
-        - { task: "test-libeantic", environment: "libeantic-flint-26", on: "ubuntu-24.04" }
-        - { task: "test-libeantic", environment: "libeantic-flint-26", on: "macos-15" }
-        - { task: "test-libeantic", environment: "libeantic-flint-26", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "libeantic-flint-27", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "libeantic-flint-27", on: "macos-15" }
         - { task: "test-libeantic", environment: "libeantic-flint-27", on: "macos-15-intel" }
