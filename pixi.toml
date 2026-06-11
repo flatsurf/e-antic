@@ -168,9 +168,9 @@ depends-on = ["configure"]
 cmd = """
 /usr/bin/env -u '?' sh -c '
 make clean &&
-make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -UNDEBUG\" &&
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra -Wno-ignored-optimization-argument\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -UNDEBUG\" &&
 make clean &&
-make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -fclang-abi-compat=17 -DNDEBUG\"
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra -Wno-ignored-optimization-argument\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -fclang-abi-compat=17 -DNDEBUG\"
 '
 """
 cwd = "libeantic"
