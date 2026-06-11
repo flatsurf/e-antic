@@ -164,12 +164,13 @@ depends-on = ["configure"]
 [feature.dev.target.linux-64.tasks.compiler-warnings-clang]
 # The env hack is necessary to work around https://github.com/prefix-dev/pixi/issues/3287
 # We disable -Wdeprecated-declarations because we use our own deprecated API, e.g., for testing.
+# We disable -Wignored-optimization-argument because -fno-merge-constants seems to be set by default from conda-forge at the moment
 cmd = """
 /usr/bin/env -u '?' sh -c '
 make clean &&
-make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -UNDEBUG\" &&
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -UNDEBUG\" &&
 make clean &&
-make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -fclang-abi-compat=17 -DNDEBUG\"
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-optimization-argument -fclang-abi-compat=17 -DNDEBUG\"
 '
 """
 cwd = "libeantic"
