@@ -14,6 +14,9 @@ libeantic-flint-29 = ["libeantic", "flint-29"]
 libeantic-flint-30 = ["libeantic", "flint-30"]
 libeantic-flint-31 = ["libeantic", "flint-31"]
 libeantic-flint-32 = ["libeantic", "flint-32"]
+libeantic-flint-33 = ["libeantic", "flint-33"]
+libeantic-flint-34 = ["libeantic", "flint-34"]
+libeantic-flint-35 = ["libeantic", "flint-35"]
 libeantic-normaliz-integration = ["normaliz-integration", "integration", "libeantic", "flint-30"]
 pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93"]
 pyeantic-sagemath-94 = ["libeantic", "pyeantic", "sagemath-94"]
@@ -29,6 +32,8 @@ pyeantic-sagemath-104 = ["libeantic", "pyeantic", "sagemath-104"]
 pyeantic-sagemath-105 = ["libeantic", "pyeantic", "sagemath-105"]
 pyeantic-sagemath-106 = ["libeantic", "pyeantic", "sagemath-106"]
 pyeantic-sagemath-107 = ["libeantic", "pyeantic", "sagemath-107"]
+pyeantic-sagemath-107 = ["libeantic", "pyeantic", "sagemath-108"]
+pyeantic-sagemath-107 = ["libeantic", "pyeantic", "sagemath-109"]
 dev = ["dev", "doc", "libeantic", "pyeantic"]
 env-address-sanitizer = ["address-sanitizer", "libeantic", "pyeantic"]
 env-undefined-sanitizer = ["undefined-sanitizer", "libeantic", "pyeantic"]
@@ -323,7 +328,7 @@ libflint = "3.*"
 benchmark = "*"
 byexample = "*"
 py = "*"
-sagelib = "==10.7"
+sagelib = "==10.9"
 codespell = "*"
 clangdev = "*"
 compiledb = "*"
@@ -374,6 +379,15 @@ libflint = "3.1.*"
 
 [feature.flint-32.dependencies]
 libflint = "3.2.*"
+
+[feature.flint-33.dependencies]
+libflint = "3.3.*"
+
+[feature.flint-34.dependencies]
+libflint = "3.4.*"
+
+[feature.flint-35.dependencies]
+libflint = "3.5.*"
 
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
@@ -471,6 +485,16 @@ sagelib = "==10.6"
 # SageMath 10.7 shipped with Python 3.12 so we make sure that these compatible versions are installed.
 python = "3.12.*"
 sagelib = "==10.7"
+
+[feature.sagemath-108.dependencies]
+# SageMath 10.8 shipped with Python 3.12 so we make sure that these compatible versions are installed.
+python = "3.12.*"
+sagelib = "==10.8"
+
+[feature.sagemath-109.dependencies]
+# SageMath 10.9 shipped with Python 3.12 so we make sure that these compatible versions are installed.
+python = "3.12.*"
+sagelib = "==10.9"
 
 [feature.normaliz-integration.dependencies]
 nauty = "*"

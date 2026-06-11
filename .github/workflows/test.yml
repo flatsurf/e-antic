@@ -34,6 +34,15 @@ jobs:
         - { task: "test-libeantic", environment: "libeantic-flint-32", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "libeantic-flint-32", on: "macos-15" }
         - { task: "test-libeantic", environment: "libeantic-flint-32", on: "macos-15-intel" }
+        - { task: "test-libeantic", environment: "libeantic-flint-33", on: "ubuntu-24.04" }
+        - { task: "test-libeantic", environment: "libeantic-flint-33", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-33", on: "macos-15-intel" }
+        - { task: "test-libeantic", environment: "libeantic-flint-34", on: "ubuntu-24.04" }
+        - { task: "test-libeantic", environment: "libeantic-flint-34", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-34", on: "macos-15-intel" }
+        - { task: "test-libeantic", environment: "libeantic-flint-35", on: "ubuntu-24.04" }
+        - { task: "test-libeantic", environment: "libeantic-flint-35", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-35", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
@@ -85,6 +94,12 @@ jobs:
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "ubuntu-24.04" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "macos-15" }
         - { task: "test-pyeantic", environment: "pyeantic-sagemath-107", on: "macos-15-intel" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-108", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-108", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-108", on: "macos-15-intel" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-109", on: "ubuntu-24.04" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-109", on: "macos-15" }
+        - { task: "test-pyeantic", environment: "pyeantic-sagemath-109", on: "macos-15-intel" }
         - { task: "test-pyeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "macos-15" }
