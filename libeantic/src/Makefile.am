@@ -11,7 +11,7 @@ endif
 
 EXTRA_DIST = $(srcdir)/libeantic.map
 
-# We are building the libexactreal library so visibility attributes should be
+# We are building the libeantic library so visibility attributes should be
 # set, see https://gcc.gnu.org/wiki/Visibility
 AM_CPPFLAGS = -DBUILD_LIBEANTIC
 

@@ -22,15 +22,23 @@ int main(void)
 
     printf("fmpz_poly_num_real_roots_0_1....");
 
-    for (iter = 0; iter < 10; iter++)
+    for (iter = 0; iter < 11; iter++)
     {
         fmpz_poly_t p;
         slong k1, k2;
 
         fmpz_poly_init(p);
-        do{
+
+        if (iter < 10) {
+          do{
             fmpz_poly_randtest(p, state, 10, 10);
-        }while (fmpz_poly_is_zero(p) || !fmpz_poly_is_squarefree(p));
+          } while (fmpz_poly_is_zero(p) || !fmpz_poly_is_squarefree(p));
+        } else {
+          // issue #301
+          fmpz_poly_set_coeff_si(p, 0, 52);
+          fmpz_poly_set_coeff_si(p, 3, -304);
+          fmpz_poly_set_coeff_si(p, 8, -23);
+        }
 
         k1 = fmpz_poly_num_real_roots_0_1_vca(p);
         k2 = fmpz_poly_num_real_roots_0_1_sturm(p);

@@ -40,30 +40,30 @@ slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol)
     fmpz_poly_evaluate_at_one(c, pol->coeffs, pol->length);
     s0b = fmpz_sgn(c);
 
-    t = 0;
+    /* Sturm's theorem counts roots in (0, 1], so count if there's one at 0 */
+    if (s0a == 0)
+      t = 1;
+    else
+      t = 0;
+
     while (!fmpz_poly_is_zero(p1))
     {
         /* sign change at 0 */
         s = fmpz_sgn(p1->coeffs);
-        if (s0a == 0)
+        if (s != 0)
         {
-            t++;
-            s0a = s;
-        }
-        else if (s != s0a)
-        {
-            t++;
+            if (s0a != 0 && s != s0a)
+                t++;
             s0a = s;
         }
 
         /* sign change at 1 */
         fmpz_poly_evaluate_at_one(c, p1->coeffs, p1->length);
         s = fmpz_sgn(c);
-        if (s0b == 0)
-            s0b = s;
-        else if (s != s0b)
+        if (s != 0)
         {
-            t--;
+            if (s0b != 0 && s != s0b)
+                t--;
             s0b = s;
         }
 
