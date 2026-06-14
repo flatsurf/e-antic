@@ -577,8 +577,9 @@ renf_elem_class::renf_elem_class(const renf_class& k, const std::string & str)
     }
     else
     {
-        t = static_cast<char *>(flint_malloc((strlen(s) + 1) * sizeof(char)));
-        strcpy(t, s);
+        ulong slen = static_cast<ulong>(strlen(s));
+        t = static_cast<char *>(flint_malloc((slen + 1) * sizeof(char)));
+        strncpy(t, s, slen + 1);
     }
 
     fmpq_poly_t p;
