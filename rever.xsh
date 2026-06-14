@@ -29,7 +29,7 @@ try:
 except KeyboardInterrupt:
   sys.exit(1)
 
-command('pixi', 'pixi install --manifest-path "$PWD/pyproject.toml" -e dev')
+command('pixi', 'pixi install --manifest-path "$PWD/pixi.toml" -e dev')
 
 @activity
 def dist():

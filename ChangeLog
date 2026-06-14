@@ -4,6 +4,19 @@ e-antic Change Log
 
 .. current developments
 
+v2.1.1
+====================
+
+**Fixed:**
+
+* Fixed compatibility with SageMath 10.7, 10.8, 10.9
+* Fixed (linker) issues with macOS 15 in CI and for developers.
+* Fixed an issue in fmpz_poly_num_real_roots_0_1_sturm where sometimes
+  the number of sign changes in the Sturm sequence was miscounted.
+* Fixed failing doctest due to noisy deprecation warning from cppyy.
+
+
+
 v2.1.0
 ====================
 
