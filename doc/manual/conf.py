@@ -22,6 +22,8 @@ autodoc_default_options = {
     'members': True,
 }
 
+autodoc_mock_imports = ["cppyy", "cppyythonizations", "realalg"]
+
 templates_path = ['_templates']
 
 exclude_patterns = []

@@ -26,6 +26,8 @@ set -ex
 # script and macOS will sanitize our DYLD_LIBRARY_PATH then. So we need to
 # invoke the Python script `sage-runtests` with our `bin/python` script that
 # sets up that variable properly.
+# Newer versions of SageMath do not ship `sage -tp` support and `sage-runtests`
+# anymore and require us to invoke `sage.doctest` directly instead.
 
 # `sage-runtests` assumes that `sage-env-config` and `sage-env` have been
 # sourced by the `sage` script already. However, not all systems (ArchLinux)
@@ -39,5 +41,12 @@ OLD_PATH=$PATH
 source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"' || echo 'ignoring environment variable that could not be set'"%(key, value) for (key, value) in os.environ.items()]))')
 export PATH=$OLD_PATH
 
-export PYTHONPATH="@abs_srcdir@/disable-pytest:$PYTHONPATH"
-python `which sage-runtests` -p --long --force-lib @abs_srcdir@/../src/pyeantic @abs_srcdir@
+if DOCTEST=$(command -v sage-runtests); then
+    # With `sage-runtests` we need to disable pytest since some versions of SageMath fail during doctesting if pytest is present but not pytest tests are available.
+    export PYTHONPATH="@abs_srcdir@/disable-pytest:$PYTHONPATH"
+else
+    # This is a newer version of SageMath that does not ship sage-runtests anymore.
+    DOCTEST="-m sage.doctest"
+fi
+
+python $DOCTEST -p --long --force-lib @abs_srcdir@/../src/pyeantic @abs_srcdir@

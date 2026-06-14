@@ -6,7 +6,7 @@ generated/html/index.html: generated/doxygen/xml/index.xml flint.inv $(srcdir)/*
 	$(MAKE) -C ../../libeantic/src
 	$(MAKE) -C ../../libeantic/srcxx
 	source ../../pyeantic/test/test-env.sh && \
-	python $(SPHINXBUILD) -b html $(srcdir) $(builddir)/generated/html
+	python $(SPHINXBUILD) -b html -W $(srcdir) $(builddir)/generated/html
 	cp $(srcdir)/robots.txt generated/html/
 
 generated/doxygen/xml/index.xml: $(srcdir)/Doxyfile $(srcdir)/../../libeantic/e-antic/*.h $(srcdir)/../../libeantic/e-antic/*.hpp
