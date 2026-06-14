@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5b0f203b"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=32e37178"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_fmpq_poly_extra';</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -357,7 +357,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -373,6 +375,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Flint rational polynomials utilities</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv424fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_set_str_pretty()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv422fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_evaluate_arb()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv422fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_evaluate_arf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv432fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_check_unique_real_root()</span></code></a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -383,31 +398,31 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="fmpq__poly__extra_8h_1autotoc_md0">
-<h1>Flint rational polynomials utilities<a class="headerlink" href="#fmpq__poly__extra_8h_1autotoc_md0" title="Permalink to this heading">#</a></h1>
+<h1>Flint rational polynomials utilities<a class="headerlink" href="#fmpq__poly__extra_8h_1autotoc_md0" title="Link to this heading">#</a></h1>
 </section>
 <div class="breathe-sectiondef docutils container" id="fmpq__poly__extra_8h_1autotoc_md0">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv424fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc">
-<span id="_CPPv324fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"></span><span id="_CPPv224fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"></span><span id="fmpq_poly_set_str_pretty__fmpq_poly_t.cCP.cCP"></span><span class="target" id="fmpq__poly__extra_8h_1a3a128a52a50e52fc2880756475731922"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_set_str_pretty</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv324fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"></span><span id="_CPPv224fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"></span><span id="fmpq_poly_set_str_pretty__fmpq_poly_t.cCP.cCP"></span><span class="target" id="fmpq__poly__extra_8h_1a3a128a52a50e52fc2880756475731922"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_set_str_pretty</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc" title="Link to this definition">#</a><br /></dt>
 <dd><p>Set the polynomial <code class="docutils literal notranslate"><span class="pre">p</span></code> from the string <code class="docutils literal notranslate"><span class="pre">s</span></code> using <code class="docutils literal notranslate"><span class="pre">var</span></code> as variable name. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv422fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong">
-<span id="_CPPv322fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"></span><span id="_CPPv222fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"></span><span id="fmpq_poly_evaluate_arb__arb_t.fmpq_poly_tC.arb_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a7dc08626c5f9c4352da75e0a86ee8a6c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_evaluate_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv322fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"></span><span id="_CPPv222fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"></span><span id="fmpq_poly_evaluate_arb__arb_t.fmpq_poly_tC.arb_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a7dc08626c5f9c4352da75e0a86ee8a6c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_evaluate_arb</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong" title="Link to this definition">#</a><br /></dt>
 <dd><p>Evaluate the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> at the ball <code class="docutils literal notranslate"><span class="pre">b</span></code></p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv422fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong">
-<span id="_CPPv322fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"></span><span id="_CPPv222fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"></span><span id="fmpq_poly_evaluate_arf__arf_t.fmpq_poly_tC.arf_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a9a89750bc448a5c150e03068ee293734"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_evaluate_arf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv322fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"></span><span id="_CPPv222fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"></span><span id="fmpq_poly_evaluate_arf__arf_t.fmpq_poly_tC.arf_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a9a89750bc448a5c150e03068ee293734"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_evaluate_arf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arf_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong" title="Link to this definition">#</a><br /></dt>
 <dd><p>Evaluate the polynomial <code class="docutils literal notranslate"><span class="pre">pol</span></code> at the ball <code class="docutils literal notranslate"><span class="pre">b</span></code></p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv432fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong">
-<span id="_CPPv332fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"></span><span id="_CPPv232fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"></span><span id="fmpq_poly_check_unique_real_root__fmpq_poly_tC.arb_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a3cf1febe42c6c2f3a24cd6be3af1ab85"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_check_unique_real_root</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv332fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"></span><span id="_CPPv232fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"></span><span id="fmpq_poly_check_unique_real_root__fmpq_poly_tC.arb_tC.slong"></span><span class="target" id="fmpq__poly__extra_8h_1a3cf1febe42c6c2f3a24cd6be3af1ab85"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fmpq_poly_check_unique_real_root</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">fmpq_poly_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="n"><span class="pre">slong</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong" title="Link to this definition">#</a><br /></dt>
 <dd><p>Return 1 if it is possible to check with precision <code class="docutils literal notranslate"><span class="pre">prec</span></code> whether the interval <code class="docutils literal notranslate"><span class="pre">a</span></code> encloses a unique root of <code class="docutils literal notranslate"><span class="pre">pol</span></code></p>
 </dd></dl>
 
@@ -431,6 +446,26 @@ document.write(`
             
             
               
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Flint rational polynomials utilities</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv424fmpq_poly_set_str_pretty11fmpq_poly_tPKcPKc"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_set_str_pretty()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv422fmpq_poly_evaluate_arb5arb_tK11fmpq_poly_tK5arb_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_evaluate_arb()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv422fmpq_poly_evaluate_arf5arf_tK11fmpq_poly_tK5arf_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_evaluate_arf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv432fmpq_poly_check_unique_real_rootK11fmpq_poly_tK5arb_t5slong"><code class="docutils literal notranslate"><span class="pre">fmpq_poly_check_unique_real_root()</span></code></a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
             
           </div>
           <footer class="bd-footer-content">
@@ -439,6 +474,10 @@ document.write(`
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">

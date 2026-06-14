@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5b0f203b"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=32e37178"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_overview';</script>
@@ -395,7 +395,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="tour-of-the-c-interface">
-<h1>Tour of the C Interface<a class="headerlink" href="#tour-of-the-c-interface" title="Permalink to this heading">#</a></h1>
+<h1>Tour of the C Interface<a class="headerlink" href="#tour-of-the-c-interface" title="Link to this heading">#</a></h1>
 <p>There are two main objects in e-antic: number fields, which are represented by a
 <a class="reference internal" href="c_renf.html#_CPPv46renf_t" title="renf_t"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">renf_t</span></code></a>, and their elements, represented by a
 <a class="reference internal" href="c_renf_elem.html#_CPPv411renf_elem_t" title="renf_elem_t"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">renf_elem_t</span></code></a>. Functions that operate on number fields are defined in
@@ -411,7 +411,7 @@ approximation of one of its real roots as an <a class="reference external" href=
 the memory taken by these elements, and use <a class="reference internal" href="c_renf.html#_CPPv410renf_clear6renf_t" title="renf_clear"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">renf_clear()</span></code></a> to free the
 memory taken by the number field itself.</p>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
 <p>We want to construct a totally real field with minimal polynomial <span class="math notranslate nohighlight">\(x^3 - 3x + 1\)</span>, represented by an <a class="reference external" href="https://flintlib.org/doc/fmpq_poly.html#c.fmpq_poly_t" title="(in FLINT v3.6)"><code class="xref c c-type docutils literal notranslate"><span class="pre">fmpq_poly_t</span></code></a>. We include the appropriate headers
 and define the polynomial:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;e-antic/fmpq_poly_extra.h&gt;</span>
@@ -470,7 +470,7 @@ and define the polynomial:</p>
 </div>
 </section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h2>
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h2>
 <p>The same example is also explained in detail in the documentation of
 the <a class="reference internal" href="cxx_overview.html"><span class="doc">C++ interface</span></a>.</p>
 </section>
@@ -536,6 +536,10 @@ the <a class="reference internal" href="cxx_overview.html"><span class="doc">C++
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">

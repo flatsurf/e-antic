@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5b0f203b"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=32e37178"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'python_realalg';</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -397,8 +397,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <span class="target" id="module-pyeantic.realalg_conversion"><span id="realalg-interface"></span></span><section id="interface-with-realalg">
-<h1>Interface with realalg<a class="headerlink" href="#interface-with-realalg" title="Permalink to this heading">#</a></h1>
+  <section id="interface-with-realalg">
+<span id="module-pyeantic.realalg_conversion"></span><span id="realalg-interface"></span><h1>Interface with realalg<a class="headerlink" href="#interface-with-realalg" title="Link to this heading">#</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">realag</span></code> is a pure Python library developed by Mark C. Bell that provides
 similarly to <code class="docutils literal notranslate"><span class="pre">pyeantic</span></code> exact computations over real embedded number fields.
 The source code is available at <a class="github reference external" href="https://github.com/MarkCBell/realalg">MarkCBell/realalg</a>.
@@ -406,20 +406,20 @@ This module provides conversion from and to <code class="docutils literal notran
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeantic.realalg_conversion.poly_string">
-<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">poly_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeffs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.poly_string" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">poly_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeffs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.poly_string" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeantic.realalg_conversion.realalg_interval_to_arb">
-<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_interval_to_arb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_interval_to_arb" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_interval_to_arb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_interval_to_arb" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeantic.realalg_conversion.realalg_nf_elem_to_eantic">
-<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_nf_elem_to_eantic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_nf_elem_to_eantic" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_nf_elem_to_eantic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_nf_elem_to_eantic" title="Link to this definition">#</a></dt>
 <dd><p>Convert a realalg real number field element to eantic</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">realalg</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyeantic.realalg_conversion</span> <span class="kn">import</span> <span class="n">realalg_nf_to_eantic</span><span class="p">,</span> <span class="n">realalg_nf_elem_to_eantic</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">realalg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyeantic.realalg_conversion</span><span class="w"> </span><span class="kn">import</span> <span class="n">realalg_nf_to_eantic</span><span class="p">,</span> <span class="n">realalg_nf_elem_to_eantic</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">realalg</span><span class="o">.</span><span class="n">RealNumberField</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="n">realalg_nf_to_eantic</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">realalg_nf_elem_to_eantic</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">R</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
@@ -430,10 +430,10 @@ This module provides conversion from and to <code class="docutils literal notran
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeantic.realalg_conversion.realalg_nf_to_eantic">
-<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_nf_to_eantic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_nf_to_eantic" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeantic.realalg_conversion.</span></span><span class="sig-name descname"><span class="pre">realalg_nf_to_eantic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeantic.realalg_conversion.realalg_nf_to_eantic" title="Link to this definition">#</a></dt>
 <dd><p>Convert a realalg real number field to eantic</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">realalg</span>  <span class="c1"># random output as it prints a deprecation warning, see https://github.com/MarkCBell/realalg/pull/6</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyeantic.realalg_conversion</span> <span class="kn">import</span> <span class="n">realalg_nf_to_eantic</span>  <span class="c1"># random output due to deprecation warnings from cppyy</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">realalg</span>  <span class="c1"># random output as it prints a deprecation warning, see https://github.com/MarkCBell/realalg/pull/6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyeantic.realalg_conversion</span><span class="w"> </span><span class="kn">import</span> <span class="n">realalg_nf_to_eantic</span>  <span class="c1"># random output due to deprecation warnings from cppyy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">realalg</span><span class="o">.</span><span class="n">RealNumberField</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># random output as it prints a deprecation warning in SageMath</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">realalg_nf_to_eantic</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
 <span class="go">NumberField(a^2 - 2, [1.4142135...])</span>
@@ -509,6 +509,10 @@ This module provides conversion from and to <code class="docutils literal notran
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">

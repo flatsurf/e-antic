@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5b0f203b"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=32e37178"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'python_overview';</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -393,18 +393,18 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="tour-of-the-python-interface">
-<h1>Tour of the Python Interface<a class="headerlink" href="#tour-of-the-python-interface" title="Permalink to this heading">#</a></h1>
+<h1>Tour of the Python Interface<a class="headerlink" href="#tour-of-the-python-interface" title="Link to this heading">#</a></h1>
 <p><cite>pyeantic</cite> is a Python interface to the <cite>e-antic</cite> library. If you want to
 install <cite>pyeantic</cite>, it has to be installed together with <cite>e-antic</cite>. We
 refer to the Installation section in the <a class="reference internal" href="index.html"><span class="doc">e-antic documentation</span></a>
 for instructions.</p>
 <section id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">#</a></h2>
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h2>
 <p>The Python interface is automatically generated from the C++ code using
 <a class="reference external" href="https://cppyy.readthedocs.io/en/latest/">cppyy</a>. In particular, all classes,
 functions and methods available from C++ are available from Python. We
 reproduce here the example from the <a class="reference internal" href="cxx_overview.html"><span class="doc">C++ overview</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyeantic</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyeantic</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="n">pyeantic</span><span class="o">.</span><span class="n">eantic</span><span class="o">.</span><span class="n">renf_class</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;a^3 - 3*a + 1&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;0.34 +/- 0.01&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">2</span>
@@ -475,6 +475,10 @@ reproduce here the example from the <a class="reference internal" href="cxx_over
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">

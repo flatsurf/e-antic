@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5b0f203b"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=32e37178"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_overview';</script>
@@ -395,7 +395,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="tour-of-the-c-interface">
-<h1>Tour of the C++ Interface<a class="headerlink" href="#tour-of-the-c-interface" title="Permalink to this heading">#</a></h1>
+<h1>Tour of the C++ Interface<a class="headerlink" href="#tour-of-the-c-interface" title="Link to this heading">#</a></h1>
 <p>There are two main objects in e-antic: number fields, which are represented by a
 <a class="reference internal" href="cxx_renf_class.html#_CPPv4N6eantic10renf_classE" title="eantic::renf_class"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">eantic::renf_class</span></code></a>, and their elements, represented by a
 <a class="reference internal" href="cxx_renf_elem_class.html#_CPPv4N6eantic15renf_elem_classE" title="eantic::renf_elem_class"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">eantic::renf_elem_class</span></code></a>. These objects are provided by the headers
@@ -408,7 +408,7 @@ with the various constructors. The lifetime of all these objects is managed by
 smart pointers, so you usually do not need to worry about allocating and
 freeing resources manually.</p>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
 <p>We construct a totally real field with the minimal polynomial <span class="math notranslate nohighlight">\(x^3 - 3x + 1\)</span> and
 fix its real root, which is approximately 0.34:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;e-antic/renf_class.hpp&gt;</span>
@@ -431,7 +431,7 @@ fix its real root, which is approximately 0.34:</p>
 </div>
 </section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h2>
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h2>
 <p>The same example is also explained in detail in the documentation of
 the <a class="reference internal" href="c_overview.html"><span class="doc">C interface</span></a>.</p>
 </section>
@@ -497,6 +497,10 @@ the <a class="reference internal" href="c_overview.html"><span class="doc">C int
   
   <div class="footer-item">
     
+<p class="component-author">
+By Author name not set
+</p>
+
   </div>
   
   <div class="footer-item">
