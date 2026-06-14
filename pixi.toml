@@ -286,7 +286,8 @@ trap "kill $SERVER_PID" EXIT
 sleep 1
 
 # Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
-linkchecker --check-extern http://localhost:$PORT/ --no-warnings --ignore gmplib.org
+# Ignore broken links on gnu.org, they seem to be blocking GitHub.
+linkchecker --check-extern http://localhost:$PORT/ --no-warnings --ignore gmplib.org --ignore www.gnu.org
 '
 """
 cwd = "doc"
