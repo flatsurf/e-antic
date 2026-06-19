@@ -15,6 +15,8 @@ EXTRA_DIST = $(srcdir)/libeantic.map
 # set, see https://gcc.gnu.org/wiki/Visibility
 AM_CPPFLAGS = -DBUILD_LIBEANTIC
 
+AM_CPPFLAGS += -I$(builddir)/..
+
 # Linked-against libraries
 libeantic_la_LIBADD = @LIBS@ $(LTLIBOBJS)
 
