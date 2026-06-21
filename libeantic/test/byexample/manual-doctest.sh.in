@@ -26,4 +26,4 @@ set -ex
 # our bin/python wrapper to set the necessary environment variables and invoke
 # the Python binary to run pytest which keeps our environment intact on macOS.
 
-python -c 'from byexample.byexample import main; exit(main())' -vvv -m @abs_srcdir@/extensions -l cpp @abs_srcdir@/../../../doc/manual/libeantic/*.md @abs_srcdir@/../../e-antic/*.hpp @abs_srcdir@/../../e-antic/*.h
+python -c 'from byexample.byexample import main; exit(main())' -vvv -m @abs_srcdir@/extensions -l cpp @abs_srcdir@/../../../doc/manual/*.rst @abs_srcdir@/../../e-antic/*.hpp @abs_srcdir@/../../e-antic/*.h
