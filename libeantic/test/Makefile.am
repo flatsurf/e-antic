@@ -10,6 +10,8 @@ LDADD = ../src/libeantic.la ../srcxx/libeanticxx.la -lgmpxx
 
 AM_CPPFLAGS = -isystem "@abs_srcdir@/external/cereal/include"
 
+AM_CPPFLAGS += -I$(builddir)/..
+
 check_PROGRAMS =                                     \
     fmpq_poly_extra/t-evaluate                       \
     fmpq_poly_extra/t-set_str_pretty                 \
