@@ -78,11 +78,7 @@ LIBEANTIC_API slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol);
 /// the result is larger than `bound` then `WORD_MAX` is
 /// returned.
 LIBEANTIC_API slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
-#endif
 
-LIBEANTIC_API slong _fmpz_poly_descartes_bound(fmpz * p, slong len, slong bound);
-
-#if __FLINT_RELEASE < 30600
 /// Isolate the real roots of `(pol, len)` contained in the
 /// interval \f$(0, 1)\f$. The array `exact_roots` will be set by
 /// the exact dyadic roots found by the algorithm and
