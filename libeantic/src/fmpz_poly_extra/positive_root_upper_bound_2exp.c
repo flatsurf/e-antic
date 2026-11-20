@@ -28,6 +28,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 slong _fmpz_poly_positive_root_upper_bound_2exp_local_max(const fmpz * pol, slong len)
 {
     slong b, b0, bmin;
@@ -105,3 +108,5 @@ slong fmpz_poly_positive_root_upper_bound_2exp(const fmpz_poly_t pol)
                pol->coeffs + i0,
                fmpz_poly_length(pol) - i0);
 }
+
+#endif

@@ -13,6 +13,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly)
 {
 
@@ -42,3 +45,5 @@ void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly)
         }
     }
 }
+
+#endif

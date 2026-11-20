@@ -86,7 +86,6 @@ LIBEANTIC_1.0.0 {
     fmpq_poly_check_unique_real_root;
     _fmpz_poly_bisection_step_arb;
     _fmpz_poly_bisection_step_arf;
-    _fmpz_poly_descartes_bound;
     _fmpz_poly_descartes_bound_0_1;
     _fmpz_poly_evaluate_arb;
     _fmpz_poly_evaluate_arf;

@@ -19,6 +19,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 /* isolate the real roots of pol contained in [0,1] */
 /* using VCA (Vincent-Collins-Akritas) method       */
 /* the output are arrays of fmpz c and integers k so that the roots belong to */
@@ -223,4 +226,4 @@ void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_
     _fmpz_vec_clear(p, len);
 }
 
-
+#endif

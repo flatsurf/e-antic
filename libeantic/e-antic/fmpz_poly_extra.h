@@ -33,8 +33,15 @@
 extern "C" {
 #endif
 
+#if __FLINT_RELEASE < 30000
+// Since FLINT 3.0, this function is provided by FLINT itself in
+// <flint/fmpz_poly.h>. We only provide it ourselves for older versions of
+// FLINT. Note that FLINT's version produces a polynomial of length *at most*
+// `len` whereas our version produces a polynomial of length exactly `len`.
+
 /// Set `p` to be a random irreducible polynomial
 LIBEANTIC_API void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+#endif
 
 /// Set the polynomial `p` from the string `s` using `var` as variable name
 LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var);
@@ -44,6 +51,11 @@ LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const 
 /// Precompose the polynomial `pol` by an affine transformation so that the interval
 /// [`a`, `b`] becomes the interval [0,1]
 LIBEANTIC_API void _fmpz_poly_scale_0_1_fmpq(fmpz * pol, slong len, fmpq_t a, fmpq_t b);
+
+#if __FLINT_RELEASE < 30600
+// Since FLINT 3.6, the following functions are provided by FLINT itself (with
+// const-correct signatures) in <flint/fmpz_poly.h>. We only provide them
+// ourselves for older versions of FLINT.
 
 /// Return 1 if the polynomial `pol` has a real root and 0 otherwise
 LIBEANTIC_API int _fmpz_poly_has_real_root(fmpz * pol, slong len);
@@ -67,8 +79,6 @@ LIBEANTIC_API slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol);
 /// returned.
 LIBEANTIC_API slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound);
 
-LIBEANTIC_API slong _fmpz_poly_descartes_bound(fmpz * p, slong len, slong bound);
-
 /// Isolate the real roots of `(pol, len)` contained in the
 /// interval \f$(0, 1)\f$. The array `exact_roots` will be set by
 /// the exact dyadic roots found by the algorithm and
@@ -89,6 +99,7 @@ LIBEANTIC_API void _fmpz_poly_isolate_real_roots_0_1_vca(fmpq * exact_roots, slo
 /// `c = c_array + i` and `k = k_array[i]` represents the
 /// open interval \f$(c 2^k, (c + 1) 2^k)\f$.
 LIBEANTIC_API void fmpz_poly_isolate_real_roots(fmpq * exact_roots, slong * n_exact, fmpz * c_array, slong * k_array, slong * n_interval, fmpz_poly_t pol);
+#endif
 ///@}
 
 //// \name Root refinement
@@ -103,7 +114,9 @@ LIBEANTIC_API void _fmpz_poly_bisection_step_arf(arf_t l, arf_t r, const fmpz * 
 
 LIBEANTIC_API int fmpz_poly_bisection_step_arb(arb_t res, const fmpz_poly_t pol, arb_t a, slong prec);
 
+#if __FLINT_RELEASE < 30600
 LIBEANTIC_API void fmpz_poly_squarefree_part(fmpz_poly_t res, fmpz_poly_t poly);
+#endif
 
 
 LIBEANTIC_API void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len);
@@ -111,6 +124,7 @@ LIBEANTIC_API void fmpz_poly_evaluate_at_one(fmpz_t res, fmpz * p, slong len);
 
 /// \name Miscellaneous
 ///@{
+#if __FLINT_RELEASE < 30600
 LIBEANTIC_API slong fmpz_poly_num_real_roots_0_1_sturm(fmpz_poly_t pol);
 
 LIBEANTIC_API slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol);
@@ -118,6 +132,7 @@ LIBEANTIC_API slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol);
 LIBEANTIC_API slong fmpz_poly_num_real_roots_0_1(fmpz_poly_t pol);
 
 LIBEANTIC_API slong fmpz_poly_num_real_roots_vca(fmpz_poly_t pol);
+#endif
 ///@}
 
 /// \name FLINT, Arb extra

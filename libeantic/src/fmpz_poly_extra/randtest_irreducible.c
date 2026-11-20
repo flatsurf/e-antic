@@ -16,6 +16,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.0, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30000
+
 void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits)
 {
     slong i;
@@ -60,3 +63,5 @@ void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len
 #endif
     fmpz_clear(c);
 }
+
+#endif
