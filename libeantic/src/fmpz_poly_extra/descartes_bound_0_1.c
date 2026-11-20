@@ -20,6 +20,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound)
 {
     slong V = 0;
@@ -101,4 +104,4 @@ slong _fmpz_poly_descartes_bound_0_1(fmpz * p, slong len, slong bound)
     return V;
 }
 
-
+#endif

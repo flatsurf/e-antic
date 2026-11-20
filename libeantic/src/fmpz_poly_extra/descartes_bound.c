@@ -18,6 +18,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol)
 {
     slong i, i0, k, ret, len;
@@ -64,3 +67,4 @@ slong fmpz_poly_num_real_roots_upper_bound(fmpz_poly_t pol)
     return ret;
 }
 
+#endif

@@ -13,6 +13,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 int _fmpz_poly_has_real_root(fmpz * p, slong len)
 {
     slong n, i;
@@ -69,3 +72,4 @@ int fmpz_poly_has_real_root(fmpz_poly_t pol)
     return _fmpz_poly_has_real_root(pol->coeffs, pol->length);
 }
 
+#endif

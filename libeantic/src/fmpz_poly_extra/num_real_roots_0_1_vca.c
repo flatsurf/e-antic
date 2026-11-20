@@ -13,6 +13,9 @@
 
 #include "../../e-antic/fmpz_poly_extra.h"
 
+// Since FLINT 3.6, this is provided by FLINT itself.
+#if __FLINT_RELEASE < 30600
+
 slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol)
 {
     slong n_exact = 0;
@@ -23,3 +26,4 @@ slong fmpz_poly_num_real_roots_0_1_vca(fmpz_poly_t pol)
     return n_exact + n_interval;
 }
 
+#endif
