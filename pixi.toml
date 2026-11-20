@@ -61,6 +61,10 @@ CFLAGS = "$CFLAGS -coverage -O0 -UNDEBUG"
 CXXFLAGS = "$CXXFLAGS -coverage -O0 -UNDEBUG"
 LIBS = "-lgcov"
 
+[feature.flint-31.activation.env]
+# FLINT 3.1 headers do not compile with the default C23
+CFLAGS = "$CFLAGS -g3 -std=gnu17"
+
 #########
 # TASKS #
 #########
