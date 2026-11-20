@@ -33,8 +33,15 @@
 extern "C" {
 #endif
 
+#if __FLINT_RELEASE < 30000
+// Since FLINT 3.0, this function is provided by FLINT itself in
+// <flint/fmpz_poly.h>. We only provide it ourselves for older versions of
+// FLINT. Note that FLINT's version produces a polynomial of length *at most*
+// `len` whereas our version produces a polynomial of length exactly `len`.
+
 /// Set `p` to be a random irreducible polynomial
 LIBEANTIC_API void fmpz_poly_randtest_irreducible(fmpz_poly_t p, flint_rand_t state, slong len, mp_bitcnt_t bits);
+#endif
 
 /// Set the polynomial `p` from the string `s` using `var` as variable name
 LIBEANTIC_API int fmpz_poly_set_str_pretty(fmpz_poly_t p, const char * s, const char * var);
