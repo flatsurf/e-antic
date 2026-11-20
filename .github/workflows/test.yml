@@ -40,6 +40,9 @@ jobs:
         - { task: "test-libeantic", environment: "libeantic-flint-35", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "libeantic-flint-35", on: "macos-15" }
         - { task: "test-libeantic", environment: "libeantic-flint-35", on: "macos-15-intel" }
+        - { task: "test-libeantic", environment: "libeantic-flint-36", on: "ubuntu-24.04" }
+        - { task: "test-libeantic", environment: "libeantic-flint-36", on: "macos-15" }
+        - { task: "test-libeantic", environment: "libeantic-flint-36", on: "macos-15-intel" }
         - { task: "test-libeantic", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libeantic-valgrind", environment: "dev", on: "ubuntu-24.04" }

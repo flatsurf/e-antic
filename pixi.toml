@@ -17,6 +17,7 @@ libeantic-flint-32 = ["libeantic", "flint-32"]
 libeantic-flint-33 = ["libeantic", "flint-33"]
 libeantic-flint-34 = ["libeantic", "flint-34"]
 libeantic-flint-35 = ["libeantic", "flint-35"]
+libeantic-flint-36 = ["libeantic", "flint-36"]
 libeantic-normaliz-integration = ["normaliz-integration", "integration", "libeantic", "flint-30"]
 pyeantic-sagemath-93 = ["libeantic", "pyeantic", "sagemath-93"]
 pyeantic-sagemath-94 = ["libeantic", "pyeantic", "sagemath-94"]
@@ -391,6 +392,9 @@ libflint = "3.4.*"
 
 [feature.flint-35.dependencies]
 libflint = "3.5.*"
+
+[feature.flint-36.dependencies]
+libflint = "3.6.*"
 
 [feature.sagemath-93.dependencies]
 # SageMath 9.3 shipped with Python 3.9 so we make sure that these compatible versions are installed.
